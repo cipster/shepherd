@@ -65,7 +65,7 @@
             <div class="col-md-12">
                 <button type="button" class="btn btn-primary col-md-2" id="btnMod" data-toggle="modal"
                         data-target="#estiSigurProiect" onclick="atribuieNumeMod();">
-                    <spring:message code="MODPROJ.TITLE" />
+                    <spring:message code="DIALOG.MOD" />
                 </button>
                 <div id="updatedProj"></div>
             </div>
