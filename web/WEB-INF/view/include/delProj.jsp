@@ -13,18 +13,16 @@
 <form id="delProjForm" method="get">
     <div class="input-group col-md-12">
         <div class="col-md-12">
-            <select id="idProiect" class="form-control input-sm">
-                <option value="0" ><spring:message code="FORM.SELECT" /></option>
+            <select id="idProiect" data-placeholder="Alege un proiect..." class="chosen-select">
                 <c:forEach items="${listaProiecte}" var="users">
-                    <option value="${users.idProiect}" label="${users.nrProiect}  ${users.numeProiect}"></option>
+                    <option value="${users.idProiect}" label="${users.nrProiect}  ${users.numeProiect}">${users.nrProiect}  ${users.numeProiect}</option>
                 </c:forEach>
             </select>
         </div>
     </div>
     <div class="col-md-12"><br/></div>
     <div class="col-md-12">
-        <button type="button" class="btn btn-danger col-md-2" id="btnDelProj" data-toggle="modal"
-                data-target="#estiSigurClient" onclick="atribuieNumeDel();">
+        <button type="button" class="btn btn-danger col-md-2" id="btnDelProj" onclick="delBut();">
             <spring:message code="DELPROJ.BUTTONDEL" />
         </button>
         <div id="delProjResponse"></div>
@@ -54,6 +52,16 @@
 <!-- /.modal -->
 <script src="/js/jquery.min.js"></script>
 <script type="application/javascript">
+
+    function delBut(){
+        if ($("#idProiect").val() == null) {
+            alert("Alege un proiect din lista!");
+            return;
+        } else {
+            $("#estiSigurClient").modal('show');
+            atribuieNumeDel();
+        }
+    }
 
     function atribuieNumeDel() {
         $("#projNumeDel").text($('#idProiect').find('option:selected').attr('label'))

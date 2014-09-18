@@ -117,11 +117,18 @@
         }
 
         $(document).ready(function () {
-            $(".chosen-select").chosen({
+            $("#adminInput").chosen({
                 width:"100%",
                 search_contains: true,
-                no_results_text: "Rolul nu exista"
+                no_results_text: "Rolul nu exista!"
             });
+             $("#idProiect").chosen({
+                    width:"100%",
+                    search_contains: true,
+                    no_results_text: "Proiectul nu exista!"
+             });
+            $("#idProiect").val([]);
+            $("#idProiect").trigger("chosen:updated");
 
             $("#addProj").css('display', "none");
             $("#modProj").css('display', "none");
