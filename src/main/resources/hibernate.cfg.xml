@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost:3306/proiecte</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password"></property>
+        <property name="show_sql">true</property>
+        <mapping class="projectManager.repository.AlteMateriale"/>
+        <mapping class="projectManager.repository.Bd"/>
+        <mapping resource="persistence.xml"/>
+        <mapping class="projectManager.repository.ChestionarFinal"/>
+        <mapping class="projectManager.repository.Client"/>
+        <mapping class="projectManager.repository.ListaProiecte"/>
+        <mapping class="projectManager.repository.Propunere"/>
+        <mapping class="projectManager.repository.RaportFinal"/>
+        <mapping class="projectManager.repository.User"/>
+        <mapping class="projectManager.repository.UserRoles"/>
+        <mapping class="projectManager.repository.Roles"/>
+
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>

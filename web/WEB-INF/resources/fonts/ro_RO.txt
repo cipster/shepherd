@@ -1,0 +1,23 @@
+{
+    "emptyTable":     "Nu sunt &#238;nregistr&#259;ri",
+    "info":           "Se arat&#259; de la _START_ p&#226;n&#259; la _END_ din _TOTAL_ &#238;nregistr&#259;ri",
+    "infoEmpty":      "Se arat&#259; de la 0 la 0 din 0 &#238;nregistr&#259;ri",
+    "infoFiltered":   "(filtrate din _MAX_ &#238;nregistr&#259;ri totale)",
+    "infoPostFix":    "",
+    "thousands":      ".",
+    "lengthMenu":     "Arat&#259; _MENU_ &#238;nregistr&#259;ri",
+    "loadingRecords": "Se &#238;ncarc&#259;...",
+    "processing":     "Se proceseaz&#259;...",
+    "search":         "Caut&#259;:",
+    "zeroRecords":    "Nu s-au g&#259;sit &#238;nregistr&#259;ri",
+    "paginate": {
+        "first":      "Prima",
+        "last":       "Ultima",
+        "next":       "Urm&#259;toarea",
+        "previous":   "Precedenta"
+    },
+    "aria": {
+        "sortAscending":  ": activeaz&#259; pentru a sorta cresc&#259;tor",
+        "sortDescending": ": activeaz&#259; pentru a sorta descresc&#259;tor"
+    }
+}
