@@ -12,12 +12,11 @@
     <div class="col-md-12"><br/></div>
     <div class="col-md-6">
         <span><spring:message code="MODUSER.ALEGE" /></span>
-        <select id="idUserSelect" class="form-control input-sm">
-            <option value="0"><spring:message code="FORM.SELECT" /></option>
+        <select id="idUserSelect" data-placeholder="Alege un utilizator..." class="chosen-select">
             <c:forEach items="${listaUsers}" var="users">
                 <option id="${users.username}" data-username="${users.username}"
                         data-password="${users.password}" data-status="${users.enabled}"
-                        value="${users.username}" label="${users.username}">
+                        value="${users.username}" label="${users.username}"> ${users.username}
 
                 </option>
             </c:forEach>
@@ -25,7 +24,7 @@
     </div>
     <div class="col-md-6">
         <span><spring:message code="MODUSER.STATUS" /></span>
-        <select path="enabled" id="statusInput" class="form-control input-sm" required="true">
+        <select path="enabled" id="statusInput" data-placeholder="Alege starea utilizatorului" class="chosen-select" required="true">
             <option value="1"><spring:message code="MODUSER.ACTIVE" /></option>
             <option value="0"><spring:message code="MODUSER.INACTIVE" /></option>
         </select>
@@ -148,66 +147,67 @@
 <script type="text/javascript">
     $("#adminInput").val([]);
     $("#statusInput").val("");
-    $("#idUserSelect").on('change', function (evt, params) {
+    $(document).ready(function(){
+        $("#idUserSelect").on('change', function (evt, params) {
+            var id = $("#idUserSelect").val();
+            var user = document.getElementById(id);
+            if (id != 0) {
+                $("#usernameInput").text(user.getAttribute("data-username"));
+                $("#passwordInput").val(user.getAttribute("data-password"));
+                $("#statusInput").val(user.getAttribute("data-status"));
+            } else {
+                $("#usernameInput").text("");
+                $("#passwordInput").val("");
+                $("#statusInput").val("");
+            }
 
-        var id = $("#idUserSelect").val();
-        var user = document.getElementById(id);
-        if (id != 0) {
-            $("#usernameInput").text(user.getAttribute("data-username"));
-            $("#passwordInput").val(user.getAttribute("data-password"));
-            $("#statusInput").val(user.getAttribute("data-status"));
-        } else {
-            $("#usernameInput").text("");
-            $("#passwordInput").val("");
-            $("#statusInput").val("");
-        }
+            var username = user.getAttribute("data-username");
 
-        var username = user.getAttribute("data-username");
+            $.ajax({
+                type: 'post',
+                url: '${pageContext.request.contextPath}/projAdmin/getrole',
+                data: 'username=' + username,
+                async: true,
+                cache: false,
 
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/projAdmin/getrole',
-            data: 'username=' + username,
-            async: true,
-            cache: false,
+                success: function (response) {
+                    if (response == "error") {
+                        $("#alert").notify({
+                            message: { text: 'Utilizatorul nu are roluri' },
+                            type: 'danger',
+                            closeable: 'true',
+                            transition: 'fade',
+                            fadeOut: { enabled: true, delay: 15000 }
+                        }).show();
+                        return;
+                    }
+                    debugger;
+                    var uploadResponse = JSON.parse(response);
+                    var roles = new Array();
+                    var roleArr = uploadResponse.role.split('=');
 
-            success: function (response) {
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Utilizatorul nu are roluri' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-                debugger;
-                var uploadResponse = JSON.parse(response);
-                var roles = new Array();
-                var roleArr = uploadResponse.role.split('=');
-
-                for (var i=0 ;i < roleArr.length; i++) {
-                    if(roleArr[i] !== 'undefined' && roleArr[i] != "" && roleArr[i].length > -1) {
-                        if (roleArr[i] == 'ROLE_ADMIN') {
-                            roles[2] = 2;
-                        } else if (roleArr[i] == 'ROLE_USER') {
-                            roles[0] = 1;
-                        } else if (roleArr[i] == 'ROLE_DOWNLOAD') {
-                            roles[1] = 3;
+                    for (var i=0 ;i < roleArr.length; i++) {
+                        if(roleArr[i] !== 'undefined' && roleArr[i] != "" && roleArr[i].length > -1) {
+                            if (roleArr[i] == 'ROLE_ADMIN') {
+                                roles[2] = 2;
+                            } else if (roleArr[i] == 'ROLE_USER') {
+                                roles[0] = 1;
+                            } else if (roleArr[i] == 'ROLE_DOWNLOAD') {
+                                roles[1] = 3;
+                            }
                         }
                     }
-
+                    $("#adminInput").val(roles);
+                    $("#adminInput").trigger("chosen:updated");
+                    $("#statusInput").trigger("chosen:updated");
+                },
+                error: function (e) {
+                    alert("Eroare la conexiune!");
                 }
-
-                $("#adminInput").val(roles);
-                $("#adminInput").trigger("chosen:updated");
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!");
-            }
+            });
         });
     });
+
 
 </script>
 

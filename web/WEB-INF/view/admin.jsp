@@ -118,17 +118,40 @@
 
         $(document).ready(function () {
             $("#adminInput").chosen({
-                width:"100%",
+                width: "100%",
                 search_contains: true,
                 no_results_text: "Rolul nu exista!"
             });
-             $("#idProiect").chosen({
-                    width:"100%",
-                    search_contains: true,
-                    no_results_text: "Proiectul nu exista!"
-             });
+            $("#idProiect").chosen({
+                width: "100%",
+                search_contains: true,
+                no_results_text: "Proiectul nu exista!",
+                allow_single_deselect: true
+            });
+            $("#idProiectSelect").chosen({
+                width: "100%",
+                search_contains: true,
+                no_results_text: "Proiectul nu exista!",
+                allow_single_deselect: true
+            });
+            $("#idUserSelect").chosen({
+                width: "100%",
+                search_contains: true,
+                no_results_text: "Utilizatorul nu exista!",
+                allow_single_deselect: true,
+                disable_search_threshold: 5
+            });
+           $("#statusInput").chosen({
+                width: "100%",
+                disable_search: true,
+                allow_single_deselect: true
+            });
             $("#idProiect").val([]);
             $("#idProiect").trigger("chosen:updated");
+            $("#idUserSelect").val([]);
+            $("#idUserSelect").trigger("chosen:updated");
+            $("#idProiectSelect").val([]);
+            $("#idProiectSelect").trigger("chosen:updated");
 
             $("#addProj").css('display', "none");
             $("#modProj").css('display', "none");

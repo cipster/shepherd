@@ -89,8 +89,10 @@
                 if (response === 'undefined' || response === 0) {
                     respContent = "<label class='label-danger'>Proiectul nu a fost sters!</label>";
                 } else {
-                    $('#idProiect').val("0");
+                    $('#idProiect').val([]);
+                    $("#idProiect").trigger("chosen:updated");
                     respContent += "<label class='label-success'>Proiectul a fost sters cu succes!</label>";
+
                 }
                 $('.modal.in').modal('hide');
                 $('body').removeClass('modal-open');

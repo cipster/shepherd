@@ -17,14 +17,14 @@
 
             <div class="col-md-12">
                 <span><spring:message code="MODPROJ.ALEGE" /></span>
-                <select id="idProiectSelect" class="form-control input-sm">
-                    <option value="0"><spring:message code="FORM.SELECT" /></option>
+                <select id="idProiectSelect" data-placeholder="Alege un proiect..." class="chosen-select">
                     <c:forEach items="${listaProiecte}" var="projects">
                         <option id="${projects.idProiect}" data-nume="${projects.numeProiect}"
                                 data-nr="${projects.nrProiect}" data-an="${projects.an}"
                                 data-idClient="${projects.idClient}"
                                 value="${projects.idProiect}"
-                                label="${projects.nrProiect}  ${projects.numeProiect} ${projects.an}">
+                                label="${projects.nrProiect}  ${projects.numeProiect} ${projects.an}"
+                                >${projects.nrProiect}  ${projects.numeProiect} ${projects.an}
                         </option>
                     </c:forEach>
                 </select>
@@ -103,15 +103,17 @@
     function atribuieNumeMod() {
         $("#projNumeMod").text($('#idProiectSelect option:selected').attr('label'))
     }
-    $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
-    $("#idProiectSelect").change(function () {
-        var id = $("#idProiectSelect").val();
-        var proiect = document.getElementById(id);
-        $("#numeProiectInput").val(proiect.getAttribute("data-nume"));
-        $("#nrProiectInput").val(proiect.getAttribute("data-nr"));
-        $("#anSelInput").val(proiect.getAttribute("data-an"));
-        $("#idClientInput").val(proiect.getAttribute("data-idClient"));
-    });
+
+    $(document).ready(function(){
+        $("#idProiectSelect").on('change', function(evt, params) {
+            var id = $("#idProiectSelect").val();
+            var proiect = document.getElementById(id);
+            $("#numeProiectInput").val(proiect.getAttribute("data-nume"));
+            $("#nrProiectInput").val(proiect.getAttribute("data-nr"));
+            $("#anSelInput").val(proiect.getAttribute("data-an"));
+            $("#idClientInput").val(proiect.getAttribute("data-idClient"));
+        });
+    })
 
     function modProjAxajCall() {
 

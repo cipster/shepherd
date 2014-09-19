@@ -141,7 +141,6 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
         } else {
             return null;
         }
-
     }
 
     @Override
