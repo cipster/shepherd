@@ -983,7 +983,7 @@
                         if($("#propDownloadString") && $("#propDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/propunere\/' + id + '" title="Click pentru download"';
                         }
-                        propString += '<a class="download pr"' + downloadLink + ' id="prop' + id + '" data-idp="' + id + '">' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        propString += '<a class="download pr"' + downloadLink + ' id="prop' + id + '" data-idp="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < chestArr.length; i++) {
@@ -996,7 +996,7 @@
                         if($("#chestDownloadString") && $("#chestDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/chestionar\/' + id + '" title="Click pentru download"';
                         }
-                        chestString += '<a class="download ch" ' + downloadLink +' id="chest' + id + '" data-idc="' + id + '">' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        chestString += '<a class="download ch" ' + downloadLink +' id="chest' + id + '" data-idc="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < rapArr.length; i++) {
@@ -1009,7 +1009,7 @@
                         if($("#rapDownloadString") && $("#rapDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/raport\/' + id + '" title="Click pentru download"';
                         }
-                        rapString += '<a class="download ra" ' + downloadLink + ' id="rap' + id + '" data-idr="' + id + '">' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        rapString += '<a class="download ra" ' + downloadLink + ' id="rap' + id + '" data-idr="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < bdArr.length; i++) {
@@ -1022,7 +1022,7 @@
                         if($("#bdDownloadString") && $("#bdDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/bd\/' + id + '" title="Click pentru download"';
                         }
-                        bdString += '<a class="download bd" ' + downloadLink + ' id="bd' + id + '" data-idb="' + id + '"">' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        bdString += '<a class="download bd" ' + downloadLink + ' id="bd' + id + '" data-idb="' + id + '""> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < amArr.length; i++) {
@@ -1035,7 +1035,7 @@
                         if($("#amDownloadString") && $("#amDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/altemateriale\/' + id + '" title="Click pentru download"';
                         }
-                        amString += '<a class="download am" ' + downloadLink + ' id="am' + id + '" data-ida="' + id + '">' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        amString += '<a class="download am" ' + downloadLink + ' id="am' + id + '" data-ida="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
             },
