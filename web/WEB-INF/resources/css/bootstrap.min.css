@@ -6392,3 +6392,23 @@ button.close {
 .modal-xlg{
     min-width: 1300px;
 }
+
+.code-block {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    position: fixed;
+    top:250px;
+    right:15px;
+    background-color: #f5f5f5;
+    border: 2px solid darkgray;
+    border-radius: .5em;
+    width: 350px;
+    height: 350px;
+}
+
+.code-block img {
+    width: 200px;
+    height:200px;
+
+}

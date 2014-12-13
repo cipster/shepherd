@@ -11,7 +11,7 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return null; /*new Class[] { WebSecurityConfig.class };*/
+        return new Class[]{AppConfig.class};
     }
 
     @Override

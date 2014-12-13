@@ -23,6 +23,15 @@
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
     <link href="/css/datatables.bootstrap.css" rel="stylesheet">
+    <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        @media print
+        {
+            body * { visibility: hidden; }
+            .barcode * { visibility: visible; }
+            .barcode { position: absolute; top: 40px; left: 30px; }
+        }
+    </style>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -55,12 +64,12 @@
             </ul>
 
             <ul class="nav nav-tabs nav-navbar">
-                <li class="active"><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
+                <li><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
                 <li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
                 </sec:authorize>
-                <li><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
+                <li class="active"><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
                 <li><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
             </ul>
         </div>
@@ -71,6 +80,16 @@
 
 <div class="container">
 
+    <div class="btn-group" style="float:right; margin: 15px;">
+    <button id="add-item" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga articol</button>
+    <button id="add-person" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga persoana</button>
+    <button id="add-place" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga loc</button>
+        </div>
+    <div class="code-block">
+        <h5><span>Articol: <br/> "BIROU 10213 FILDES 80 x 140 Prince Int"</span></h5>
+        <img class="barcode" onclick="javascript:window.print();">
+        <h5>200-5-00013</h5>
+    </div>
     <!-- Main component -->
     <div class="jumbotron">
         <br/>

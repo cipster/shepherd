@@ -62,6 +62,7 @@
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                     <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
                 </sec:authorize>
+                <li><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
                 <li><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
             </ul>
         </div>
