@@ -38,7 +38,7 @@ public class Barcode {
             throw new IllegalArgumentException("Can't encode null or empty contents.");
         switch (barcodeFormat){
             case CODE_128:
-                width = 250;
+                width = 150;
                 height = 100;
                 break;
             case QR_CODE:

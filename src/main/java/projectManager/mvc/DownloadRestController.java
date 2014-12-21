@@ -1,5 +1,6 @@
 package projectManager.mvc;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -9,12 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import projectManager.bean.FileBean;
-import projectManager.dao.*;
 import projectManager.repository.*;
+import projectManager.repository.dao.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 @Controller
@@ -42,9 +46,12 @@ public class DownloadRestController {
 
         Propunere propunere = propunereJDBCDAO.findByID(id);
         FileBean file = new FileBean();
-
+        File serverFile = new File(propunere.getPropunere());
+        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+        byte[] bytes = new byte[(int) serverFile.length()];
+        stream.read(bytes);
         file.setId(propunere.getIdPropunere());
-        file.setFile(propunere.getPropunere());
+        file.setFile(bytes);
         file.setCreatDe(propunere.getCreat_de());
         file.setCreatLa(propunere.getCreat_la());
         file.setFilename(propunere.getNume());
@@ -65,9 +72,12 @@ public class DownloadRestController {
 
             ChestionarFinal chestionarFinal = chestionarFinalJDBCDAO.findByID(id);
             FileBean file = new FileBean();
-
+            File serverFile = new File(chestionarFinal.getChestionarFinal());
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+            byte[] bytes = new byte[(int) serverFile.length()];
+            stream.read(bytes);
             file.setId(chestionarFinal.getIdChestionarFinal());
-            file.setFile(chestionarFinal.getChestionarFinal());
+            file.setFile(bytes);
             file.setCreatDe(chestionarFinal.getCreat_de());
             file.setCreatLa(chestionarFinal.getCreat_la());
             file.setFilename(chestionarFinal.getNume());
@@ -88,9 +98,12 @@ public class DownloadRestController {
 
             RaportFinal raportFinal = raportFinalJDBCDAO.findByID(id);
             FileBean file = new FileBean();
-
+            File serverFile = new File(raportFinal.getRaportFinal());
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+            byte[] bytes = new byte[(int) serverFile.length()];
+            stream.read(bytes);
             file.setId(raportFinal.getIdRaportFinal());
-            file.setFile(raportFinal.getRaportFinal());
+            file.setFile(bytes);
             file.setCreatDe(raportFinal.getCreat_de());
             file.setCreatLa(raportFinal.getCreat_la());
             file.setFilename(raportFinal.getNume());
@@ -109,10 +122,13 @@ public class DownloadRestController {
         String bdDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
             Bd bd = bdJDBCDAO.findByID(id);
+            File serverFile = new File(bd.getBd());
             FileBean file = new FileBean();
-
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+            byte[] bytes = new byte[(int) serverFile.length()];
+            stream.read(bytes);
             file.setId(bd.getIdBd());
-            file.setFile(bd.getBd());
+            file.setFile(bytes);
             file.setCreatDe(bd.getCreat_de());
             file.setCreatLa(bd.getCreat_la());
             file.setFilename(bd.getNume());
@@ -132,9 +148,12 @@ public class DownloadRestController {
 
             AlteMateriale alteMateriale = alteMaterialeJDBCDAO.findByID(id);
             FileBean file = new FileBean();
-
+            File serverFile = new File(alteMateriale.getAltemateriale());
+            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+            byte[] bytes = new byte[(int) serverFile.length()];
+            stream.read(bytes);
             file.setId(alteMateriale.getIdAlteMateriale());
-            file.setFile(alteMateriale.getAltemateriale());
+            file.setFile(bytes);
             file.setCreatDe(alteMateriale.getCreat_de());
             file.setCreatLa(alteMateriale.getCreat_la());
             file.setFilename(alteMateriale.getNume());

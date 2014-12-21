@@ -87,40 +87,25 @@
         </div>
     <div class="code-block">
         <h5><span>Articol: <br/> "BIROU 10213 FILDES 80 x 140 Prince Int"</span></h5>
-        <img class="barcode" onclick="javascript:window.print();">
+        <div id="barcode" class="barcode" onclick="javascript:window.print();"></div>
         <h5>200-5-00013</h5>
     </div>
     <!-- Main component -->
     <div class="jumbotron">
         <br/>
-        <table id="tabelProiecte" class="table unselectable" width="auto">
+        <table id="inventory-table" class="table unselectable" width="100%">
             <thead>
-            <th hidden="hidden">Id</th>
-            <th><spring:message code="MAIN.NR" /></th>
-            <th><spring:message code="MAIN.AN" /></th>
-            <th><spring:message code="MAIN.NUME" /></th>
-            <th><spring:message code="MAIN.CLIENT" /></th>
+            <tr>
+                <th>Nr</th>
+                <th><spring:message code="INVENTAR.CATEGORIE" /></th>
+                <th><spring:message code="INVENTAR.TIP" /></th>
+                <th><spring:message code="INVENTAR.ARTICOL" /></th>
+                <th><spring:message code="INVENTAR.COD" /></th>
+                <th><spring:message code="INVENTAR.DETALII" /></th>
+                <th><spring:message code="INVENTAR.PRETACHIZITIE" /></th>
+            </tr>
             </thead>
-            <tbody>
-            <c:forEach items="${listaProiecte}" var="prj">
-                <tr id="${prj.idProiect}" class="idTabel" data-id="${prj.idProiect}" data-idBd="${prj.idBd}"
-                    data-idPropunere="${prj.idPropunere}" data-idChestionarFinal="${prj.idChestionarFinal}"
-                    data-idRaportFinal="${prj.idRaportFinal}" data-idAlteMateriale="${prj.idAlteMateriale}">
-                    <td hidden="hidden" class="id">${prj.idProiect}</td>
-                    <td>${prj.nrProiect} </td>
-                    <td>${prj.an}</td>
-                    <td>${prj.numeProiect}</td>
-                    <td>
-                        <c:forEach items="${listaClienti}" var="clnt">
-                            <c:if test="${prj.idClient == clnt.idClient}">
-                                ${clnt.client}
-                            </c:if>
 
-                        </c:forEach>
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
         </table>
 
     </div>
@@ -227,7 +212,6 @@
 <!-- /.modal -->
 <div id="alert" class="notifications"></div>
 
-
 <form action="/logout" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}"
                value="${_csrf.token}"/>
@@ -257,711 +241,29 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/docs.min.js"></script>
 <script src="/js/bootstrap.file-input.js"></script>
-<script src="/js/datatables.js"></script>
-<script src="/js/datatables.bootstrap.js"></script>
+<script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
 <script type="text/javascript">
     var table;
-    var appLangCode = getUrlParameter("lang");
-    var appLang;
+    var idArticol;
 
-    switch(appLangCode){
-        case '':
-            appLang = "/fonts/ro_RO.txt";
-            break;
-        case 'ro':
-            appLang = "/fonts/ro_RO.txt";
-            break;
-        case 'en':
-            appLang = "/fonts/en_EN.txt";
-            break;
-        default:
-            appLang = "/fonts/ro_RO.txt";
-            break;
-    }
-
-    function getUrlParameter(sParam) {
-        var sPageURL = window.location.search.substring(1);
-        var sURLVariables = sPageURL.split('&');
-        for (var i=0; i < sURLVariables.length; i++){
-            var sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] == sParam) {
-                return sParameterName[1];
-            }
-        }
-    }
-    function deleteFile(){
-        var category = $("#category").val();
-        switch(category) {
-            case 'p':
-                propunereDelete();
-                break;
-            case 'c':
-                chestionarDelete();
-                break;
-            case 'r':
-                raportDelete();
-                break;
-            case 'bd':
-                bdDelete();
-                break;
-            case 'am':
-                alteMaterialeDelete();
-                break;
-            default:
-                return;
-        }
-    }
-
-    function atribuieNumeFile() {
-        $("#fileNameDel").text($('#fileName').val());
-    }
-
-    function download(){
-        window.location = $("#download").val();
-    }
-
-    function verificaFisierC() {
-        if ($("#filechestionarFile").text() == "Click aici pentru a selecta un chestionar final") {
-            $('#mesajAlertaC').show();
-            $('#mesajAlertaC').fadeOut(3000);
-        } else {
-            chestionarAjaxCall();
-        }
-    }
-
-    function verificaFisierP() {
-        if ($("#filepropunereFile").text() == "Click aici pentru a selecta o propunere") {
-            $('#mesajAlertaP').show();
-            $('#mesajAlertaP').fadeOut(3000);
-        } else {
-            propunereAjaxCall();
-        }
-    }
-
-    function verificaFisierR() {
-        if ($("#fileraportFile").text() == "Click aici pentru a selecta un raport final") {
-            $('#mesajAlertaR').show();
-            $('#mesajAlertaR').fadeOut(3000);
-        } else {
-            raportAjaxCall();
-        }
-    }
-
-    function verificaFisierBD() {
-        if ($("#filebdFile").text() === "Click aici pentru a selecta o baza de date") {
-            $('#mesajAlertaBD').show();
-            $('#mesajAlertaBD').fadeOut(3000);
-        } else {
-            bdAjaxCall();
-        }
-    }
-
-    function verificaFisierAM() {
-        if ($("#filealteMaterialeFile").text() == "Click aici pentru a selecta alte materiale") {
-            $('#mesajAlertaAM').show();
-            $('#mesajAlertaAM').fadeOut(3000);
-        } else {
-            alteMaterialeAjaxCall();
-        }
-    }
-
-    function formSubmit() {
-        document.getElementById("logoutForm").submit();
-    }
-
-    $('input[type=file]').bootstrapFileInput();
-    $('.file-inputs').bootstrapFileInput();
-
-    function bdAjaxCall() {
-        var data;
-        var idProiect = $('#idProiectBd').val();
-        data = new FormData();
-        data.append('file', $('#bdFile')[0].files[0]);
-        data.append('idProiect', idProiect);
-        data.append('user', $('#username').val());
+    function showBarcode(idArticol){
         $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/upload/uploadBd',
-            data: data,
-            dataType: 'text',
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
-                $("#uploadAlert").html("");
-                $("#bdFile").val("");
-                $("#filebdFile").text("Click aici pentru a selecta o baza de date");
-
-
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.fileName;
-                respContent += " a fost adaugat cu succes in sectiunea baza de date!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
-                $("#alert").notify({
-                    message: { text: respContent},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function propunereAjaxCall() {
-        var data;
-        var idProiect = $('#idProiectPropunere').val();
-        data = new FormData();
-        data.append('file', $('#propunereFile')[0].files[0]);
-        data.append('idProiect', idProiect);
-        data.append('user', $('#username').val());
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/upload/uploadPropunere',
-            data: data,
-            dataType: 'text',
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-                $("#uploadAlert").html("");
-                $("#propunereFile").val("");
-                $("#filepropunereFile").text("Click aici pentru a selecta o propunere");
-
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-                respContent += "Fisierul ";
-                respContent += uploadResponse.fileName;
-                respContent += " a fost adaugat cu succes in sectiunea propunere!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $("#alert").show();
-                $("#alert").notify({
-                    message: { text: respContent},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function chestionarAjaxCall() {
-        var data;
-        var idProiect = $('#idProiectChestionar').val();
-        data = new FormData();
-        data.append('file', $('#chestionarFile')[0].files[0]);
-        data.append('idProiect', idProiect);
-        data.append('user', $('#username').val());
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/upload/uploadChestionar',
-            data: data,
-            dataType: 'text',
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-                $("#uploadAlert").html("");
-                $("#chestionarFile").val("");
-                $("#filechestionarFile").text("Click aici pentru a selecta un chestionar final");
-
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.fileName;
-                respContent += " a fost adaugat cu succes in sectiunea chestionar final!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $("#alert").show();
-                $("#alert").notify({
-                    message: { text: respContent + " "},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function raportAjaxCall() {
-        var data;
-        var idProiect = $('#idProiectRaport').val();
-        data = new FormData();
-        data.append('file', $('#raportFile')[0].files[0]);
-        data.append('idProiect', idProiect);
-        data.append('user', $('#username').val());
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/upload/uploadRaport',
-            data: data,
-            dataType: 'text',
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-                $("#uploadAlert").html("");
-                $("#raportFile").val("");
-                $("#fileraportFile").text("Click aici pentru a selecta un raport final");
-
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.fileName;
-                respContent += " a fost adaugat cu succes in sectiunea raport final!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $("#alert").show();
-                $("#alert").notify({
-                    message: { text: respContent + " "},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function alteMaterialeAjaxCall() {
-        var data;
-        var idProiect = $('#idProiectAlteMateriale').val();
-        data = new FormData();
-        data.append('file', $('#alteMaterialeFile')[0].files[0]);
-        data.append('idProiect', idProiect);
-        data.append('user', $('#username').val());
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/upload/uploadAlteMateriale',
-            data: data,
-            dataType: 'text',
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                $("#uploadAlert").html("");
-                $("#alteMaterialeFile").val("");
-                $("#filealteMaterialeFile").text("Click aici pentru a selecta alte materiale");
-
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.fileName;
-                respContent += " a fost adaugat cu succes in sectiunea alte materiale!  ";
-
-                var t = '#' + uploadResponse.idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $("#alert").show();
-                $("#alert").notify({
-                    message: { text: respContent + " "},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function alteMaterialeDelete() {
-        var idProiect = $('#idMaster').val();
-        var idAM = $('#id').val() ;
-        var fileName = $('#fileName').val();
-
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/delete/altemateriale',
-            data: 'idProiect=' + idProiect + "&idAM=" + idAM,
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/generatebarcode/' + idArticol,
+            datatype:"image/jpeg",
             cache: false,
-
             success: function (response) {
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.nume;
-                respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
-                $("#alert").notify({
-                    message: { text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
+                var $img = $('#barcode');debugger;
+                $img.empty();
+                var encodedData = window.btoa(response);
+                $img.html('<img src="data:image/jpeg;base64,'+ encodedData + '" />');
             },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
+            error: function(err){
+                alert('Erroare la conexiune');
             }
         });
-    }
-    ;
-
-    function propunereDelete() {
-        var idProiect = $('#idMaster').val();
-        var idP = $('#id').val() ;
-        var fileName = $('#fileName').val();
-
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/delete/propunere',
-            data: 'idProiect=' + idProiect + "&idP=" + idP,
-            cache: false,
-
-            success: function (response) {
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.nume;
-                respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
-                $("#alert").notify({
-                    message: { text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function chestionarDelete() {
-        var idProiect = $('#idMaster').val();
-        var idC = $('#id').val() ;
-        var fileName = $('#fileName').val();
-
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/delete/chestionar',
-            data: 'idProiect=' + idProiect + "&idC=" + idC,
-            cache: false,
-
-            success: function (response) {
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.nume;
-                respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
-                $("#alert").notify({
-                    message: { text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function raportDelete() {
-        var idProiect = $('#idMaster').val();
-        var idR = $('#id').val() ;
-        var fileName = $('#fileName').val();
-
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/delete/raport',
-            data: 'idProiect=' + idProiect + "&idR=" + idR,
-            cache: false,
-
-            success: function (response) {
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.nume;
-                respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
-                $("#alert").notify({
-                    message: { text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function bdDelete() {
-        var idProiect = $('#idMaster').val();
-        var idB = $('#id').val() ;
-        var fileName = $('#fileName').val();
-
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/delete/bd',
-            data: 'idProiect=' + idProiect + "&idB=" + idB,
-            cache: false,
-
-            success: function (response) {
-                if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
-                    return;
-                }
-                var respContent = "";
-                var uploadResponse = JSON.parse(response);
-
-                respContent += "Fisierul ";
-                respContent += uploadResponse.nume;
-                respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
-                $("#alert").notify({
-                    message: { text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
-
-            },
-            error: function (e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
-    ;
-
-    function getProjId(id) {
-        $("input[name='idProiect']").val(id);
     }
 
     function format(idProj) {
@@ -1069,11 +371,11 @@
         rapString += '</td>';
         bdString += '</td>';
         amString += '</td>';
-        var buttonString =  '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="glyphicon glyphicon-upload "></span> Upload Propunere</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="glyphicon glyphicon-upload "></span> Upload Chestionar</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="glyphicon glyphicon-upload"></span> Upload Raport</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="glyphicon glyphicon-upload "></span> Upload Baza de date</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="glyphicon glyphicon-upload "></span> Upload Alte Materiale</a></td></tr>';
+        var buttonString =  '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="fa fa-upload "></span> Upload Propunere</a></td>' +
+                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="fa fa-upload "></span> Upload Chestionar</a></td>' +
+                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="fa fa-upload"></span> Upload Raport</a></td>' +
+                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="fa fa-upload "></span> Upload Baza de date</a></td>' +
+                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="fa fa-upload "></span> Upload Alte Materiale</a></td></tr>';
         childString += propString + chestString + rapString + bdString + amString + '</tr>';
         childString += buttonString;
         childString += '</tbody></table></div>';
@@ -1082,94 +384,128 @@
     }
 
     $(document).ready(function () {
-        table = $('#tabelProiecte').DataTable({
-            "language": {
-                "url": appLang
+//        table = $('#tabelProiecte').DataTable({
+//            "language": {
+//                "url": appLang
+//            }
+//        });
+
+        table = $('#inventory-table').dataTable( {
+            "ajax": {
+                "url": '${pageContext.request.contextPath}/api/getinventory',
+                "dataSrc": ""
+            },
+            "columns": [
+                { "data": "idCod3" },
+                { "data": "denumire1" },
+                { "data": "denumire2" },
+                { "data": "denumire3" },
+                { "data": "barcode" },
+                { "data": "detalii" },
+                { "data": "pretAchizitie" }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [ 0 ],
+                    "visible": true,
+                    "searchable": false
+                }
+            ]
+        } );
+        $('#inventory-table tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
             }
-        });
-
-        // Add event listener for opening and closing details
-        $('#tabelProiecte tbody').on('dblclick', 'tr', function () {
-            var tr = $(this).closest('tr');
-            var row = table.row(tr);
-            if (!$(this).hasClass('copil')) {
-                if (row.child.isShown()) {
-                    // This row is already open - close it
-                    row.child.hide();
-                    tr.removeClass('shown');
-                }
-                else {
-                    // Open this row
-                    row.child(format(tr.prop("id"))).show();
-                    tr.next().addClass('copil');
-                    $("#copil").children().addClass('copil');
-                    tr.addClass('shown');
-                }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                idArticol = $(this).children().first().text();
+                showBarcode(idArticol);
+                $(this).addClass('selected');
             }
-        });
+        } );
 
-        $('#tabelProiecte tbody').on('mousedown', 'tr', function (e) {
-            var tr = $(this).closest('tr');
-            if (!tr.hasClass('copil')) {
-                if ($(this).hasClass('selected')) {
-                    var id = $(this).closest('tr').attr('id');
-                    $("input[name='idProiect']").val(id);
-                    $("#idMaster").val(id);
-                } else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                    var id = $(this).closest('tr').attr('id');
-                    $("input[name='idProiect']").val(id);
-                }
+//        // Add event listener for opening and closing details
+//        $('#inventory-table tbody').on('dblclick', 'tr', function () {
+//            var tr = $(this).closest('tr');
+//            var row = table.row(tr);
+//            if (!$(this).hasClass('copil')) {
+//                if (row.child.isShown()) {
+//                    // This row is already open - close it
+//                    row.child.hide();
+//                    tr.removeClass('shown');
+//                }
+//                else {
+//                    // Open this row
+//                    row.child(format(tr.prop("id"))).show();
+//                    tr.next().addClass('copil');
+//                    $("#copil").children().addClass('copil');
+//                    tr.addClass('shown');
+//                }
+//            }
+//        });
 
-                if (e.button == 2) {
-                    $("#rcmenu").css('left', e.pageX + 5);
-                    $("#rcmenu").css('top', e.pageY + 5);
-                    $("#rcmenu").fadeIn(80);
-                }
-            }
-
-
-        });
-
-        $('#tabelProiecte tbody').on('mousedown', 'tr', function (e) {
-            var elem = $(event.target).closest("a");
-            if (elem.hasClass('download')) {
-                if (e.button == 2) {
-                    $("#download").val(elem.attr('href'));
-                    if(elem.hasClass('am')) {
-                        $("#id").val(elem.data('ida'));
-                        $("#category").val("am");
-                    } else if(elem.hasClass('pr')) {
-                        $("#id").val(elem.data('idp'));
-                        $("#category").val("p");
-                    } else if(elem.hasClass('ch')) {
-                        $("#id").val(elem.data('idc'));
-                        $("#category").val("c");
-                    } else if(elem.hasClass('ra')) {
-                        $("#id").val(elem.data('idr'));
-                        $("#category").val("r");
-                    } else {
-                        $("#id").val(elem.data('idb'));
-                        $("#category").val("bd");
-                    }
-                    $('#fileName').val(elem.text());
-                    $("#childrcmenu").css('left', e.pageX + 5);
-                    $("#childrcmenu").css('top', e.pageY + 5);
-                    $("#childrcmenu").fadeIn(80);
-                }
-            }
-        });
-
-        document.getElementById("tabelProiecte").oncontextmenu = function () {
+//        $('#inventory-table tbody').on('mousedown', 'tr', function (e) {
+//            var tr = $(this).closest('tr');
+//            if (!tr.hasClass('copil')) {
+//                if ($(this).hasClass('selected')) {
+//                    var id = $(this).closest('tr').attr('id');
+//                    $("input[name='idProiect']").val(id);
+//                    $("#idMaster").val(id);
+//                } else {
+//                    table.$('tr.selected').removeClass('selected');
+//                    $(this).addClass('selected');
+//                    var id = $(this).closest('tr').attr('id');
+//                    $("input[name='idProiect']").val(id);
+//                }
+//
+//                if (e.button == 2) {
+//                    $("#rcmenu").css('left', e.pageX + 5);
+//                    $("#rcmenu").css('top', e.pageY + 5);
+//                    $("#rcmenu").fadeIn(80);
+//                }
+//            }
+//
+//
+//        });
+//
+//        $('#inventory-table tbody').on('mousedown', 'tr', function (e) {
+//            var elem = $(event.target).closest("a");
+//            if (elem.hasClass('download')) {
+//                if (e.button == 2) {
+//                    $("#download").val(elem.attr('href'));
+//                    if(elem.hasClass('am')) {
+//                        $("#id").val(elem.data('ida'));
+//                        $("#category").val("am");
+//                    } else if(elem.hasClass('pr')) {
+//                        $("#id").val(elem.data('idp'));
+//                        $("#category").val("p");
+//                    } else if(elem.hasClass('ch')) {
+//                        $("#id").val(elem.data('idc'));
+//                        $("#category").val("c");
+//                    } else if(elem.hasClass('ra')) {
+//                        $("#id").val(elem.data('idr'));
+//                        $("#category").val("r");
+//                    } else {
+//                        $("#id").val(elem.data('idb'));
+//                        $("#category").val("bd");
+//                    }
+//                    $('#fileName').val(elem.text());
+//                    $("#childrcmenu").css('left', e.pageX + 5);
+//                    $("#childrcmenu").css('top', e.pageY + 5);
+//                    $("#childrcmenu").fadeIn(80);
+//                }
+//            }
+//        });
+//
+        document.getElementById("inventory-table").oncontextmenu = function () {
             return false;
         }
-
-        $(document).click(function (e) {
-            if (e.button == 0 ||e.button == 1 ) {
-                $("#rcmenu").fadeOut(40);
-                $("#childrcmenu").fadeOut(40);
-            }
-        });
+//
+//        $(document).click(function (e) {
+//            if (e.button == 0 ||e.button == 1 ) {
+//                $("#rcmenu").fadeOut(40);
+//                $("#childrcmenu").fadeOut(40);
+//            }
+//        });
     })
 </script>

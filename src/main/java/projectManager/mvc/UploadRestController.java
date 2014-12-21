@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import projectManager.dao.*;
 import projectManager.repository.*;
+import projectManager.repository.dao.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -47,14 +50,25 @@ public class UploadRestController {
         if(file == null) {
             return "error";
         } else {
-            try {
-                bd.setBd(file.getBytes());
+            byte[] bytes = file.getBytes();
+            String name = file.getOriginalFilename();
+            String rootPath = System.getProperty("catalina.home");
+            File dir = new File(rootPath + File.separator  + "fisiere" + File.separator + "bd");
+            if (!dir.exists())
+                dir.mkdirs();
+
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath()
+                    + File.separator + name);
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+            bd.setBd(serverFile.getAbsolutePath());
                 bd.setNume(file.getOriginalFilename());
                 bd.setCreat_de(username);
 
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+
 
             int idBd = bdJDBCDAO.create(bd);
             proiecteJDBCDAO.updateBd(idBd, id);
@@ -76,14 +90,23 @@ public class UploadRestController {
         if(file == null) {
             return "error";
         } else {
-            try {
-                propunere.setPropunere(file.getBytes());
-                propunere.setNume(file.getOriginalFilename());
-                propunere.setCreat_de(username);
+            byte[] bytes = file.getBytes();
+            String name = file.getOriginalFilename();
+            String rootPath = System.getProperty("catalina.home");
+            File dir = new File(rootPath + File.separator  + "fisiere" + File.separator + "propunere");
+            if (!dir.exists())
+                dir.mkdirs();
 
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath()
+                    + File.separator + name);
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+            propunere.setPropunere(serverFile.getAbsolutePath());
+            propunere.setNume(name);
+            propunere.setCreat_de(username);
 
             int idPropunere = propunereJDBCDAO.create(propunere);
             proiecteJDBCDAO.updatePropunere(idPropunere, id);
@@ -105,14 +128,23 @@ public class UploadRestController {
         if(file == null) {
             return "error";
         } else {
-            try {
-                chestionarFinal.setChestionarFinal(file.getBytes());
-                chestionarFinal.setNume(file.getOriginalFilename());
-                chestionarFinal.setCreat_de(username);
+            byte[] bytes = file.getBytes();
+            String name = file.getOriginalFilename();
+            String rootPath = System.getProperty("catalina.home");
+            File dir = new File(rootPath + File.separator  + "fisiere" + File.separator + "chestionarFinal");
+            if (!dir.exists())
+                dir.mkdirs();
 
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath()
+                    + File.separator + name);
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+            chestionarFinal.setChestionarFinal(serverFile.getAbsolutePath());
+            chestionarFinal.setNume(name);
+            chestionarFinal.setCreat_de(username);
 
             int idChestionar = chestionarFinalJDBCDAO.create(chestionarFinal);
             proiecteJDBCDAO.updateChestionarFinal(idChestionar, id);
@@ -134,14 +166,23 @@ public class UploadRestController {
         if(file == null) {
             return "error";
         } else {
-            try {
-                raportFinal.setRaportFinal(file.getBytes());
-                raportFinal.setNume(file.getOriginalFilename());
-                raportFinal.setCreat_de(username);
+            byte[] bytes = file.getBytes();
+            String name = file.getOriginalFilename();
+            String rootPath = System.getProperty("catalina.home");
+            File dir = new File(rootPath + File.separator  + "fisiere" + File.separator + "raportFinal");
+            if (!dir.exists())
+                dir.mkdirs();
 
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath()
+                    + File.separator + name);
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+            raportFinal.setRaportFinal(serverFile.getAbsolutePath());
+            raportFinal.setNume(name);
+            raportFinal.setCreat_de(username);
 
             int idRaport = raportFinalJDBCDAO.create(raportFinal);
             proiecteJDBCDAO.updateRaportFinal(idRaport, id);
@@ -163,19 +204,27 @@ public class UploadRestController {
         if(file == null) {
             return "error";
         } else {
-            try {
-                alteMateriale.setAltemateriale(file.getBytes());
-                alteMateriale.setNume(file.getOriginalFilename());
-                alteMateriale.setCreat_de(username);
+            byte[] bytes = file.getBytes();
+            String name = file.getOriginalFilename();
+            String rootPath = System.getProperty("catalina.home");
+            File dir = new File(rootPath + File.separator + "fisiere" + File.separator + "alteMateriale");
+            if (!dir.exists())
+                dir.mkdirs();
 
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath()
+                    + File.separator + name);
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+            alteMateriale.setAltemateriale(serverFile.getAbsolutePath());
+            alteMateriale.setNume(name);
+            alteMateriale.setCreat_de(username);
 
             int idAlteMateriale = alteMaterialeJDBCDAO.create(alteMateriale);
             proiecteJDBCDAO.updateAlteMateriale(idAlteMateriale, id);
-            String responseString = "{\"idProiect\":\"" + id + "\", \"fileName\":\"" + file.getOriginalFilename() + "\"}";
-            return responseString;
+            return "{\"idProiect\":\"" + id + "\", \"fileName\":\"" + file.getOriginalFilename() + "\"}";
         }
     }
 }

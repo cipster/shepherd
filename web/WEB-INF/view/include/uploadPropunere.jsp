@@ -25,7 +25,7 @@
 
                             <div class="col-md-12"><br/></div>
                             <a type="button" class="btn btn-primary"
-                               onclick="verificaFisierP();"><span class="glyphicon glyphicon-upload "></span> <spring:message code="MAIN.PROPUNERE" /></a>
+                               onclick="verificaFisierP();"><span class="fa fa-upload "></span> <spring:message code="MAIN.PROPUNERE" /></a>
                         </div>
                     </form>
                 </div>

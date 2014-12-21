@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class AlteMateriale {
 
     private int idAlteMateriale;
-    private byte[] altemateriale;
+    private String altemateriale;
     private String nume;
     private String creat_de;
     private Timestamp creat_la;
@@ -39,11 +39,11 @@ public class AlteMateriale {
 
     @Basic
     @Column(name = "altemateriale", nullable = false, insertable = true, updatable = true)
-    public byte[] getAltemateriale() {
+    public String getAltemateriale() {
         return altemateriale;
     }
 
-    public void setAltemateriale(byte[] altemateriale) {
+    public void setAltemateriale(String altemateriale) {
         this.altemateriale = altemateriale;
     }
 
@@ -68,22 +68,29 @@ public class AlteMateriale {
     }
 
     @Override
-    public int hashCode() {
-        int result = idAlteMateriale;
-        result = 31 * result + (altemateriale != null ? Arrays.hashCode(altemateriale) : 0);
-        return result;
-    }
-
-    @Override
     public boolean equals(Object o) {
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         AlteMateriale that = (AlteMateriale) o;
 
-        if(idAlteMateriale != that.idAlteMateriale) return false;
-        if(!Arrays.equals(altemateriale, that.altemateriale)) return false;
+        if (idAlteMateriale != that.idAlteMateriale) return false;
+        if (altemateriale != null ? !altemateriale.equals(that.altemateriale) : that.altemateriale != null)
+            return false;
+        if (creat_de != null ? !creat_de.equals(that.creat_de) : that.creat_de != null) return false;
+        if (creat_la != null ? !creat_la.equals(that.creat_la) : that.creat_la != null) return false;
+        if (nume != null ? !nume.equals(that.nume) : that.nume != null) return false;
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idAlteMateriale;
+        result = 31 * result + (altemateriale != null ? altemateriale.hashCode() : 0);
+        result = 31 * result + (nume != null ? nume.hashCode() : 0);
+        result = 31 * result + (creat_de != null ? creat_de.hashCode() : 0);
+        result = 31 * result + (creat_la != null ? creat_la.hashCode() : 0);
+        return result;
     }
 }

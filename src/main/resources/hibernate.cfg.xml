@@ -6,8 +6,6 @@
     <session-factory>
         <property name="connection.url">jdbc:mysql://localhost:3306/proiecte</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.username">root</property>
-        <property name="connection.password"></property>
         <property name="show_sql">true</property>
         <mapping class="projectManager.repository.AlteMateriale"/>
         <mapping class="projectManager.repository.Bd"/>
@@ -20,6 +18,13 @@
         <mapping class="projectManager.repository.User"/>
         <mapping class="projectManager.repository.UserRoles"/>
         <mapping class="projectManager.repository.Roles"/>
+        <mapping class="projectManager.repository.Cod1"/>
+        <mapping class="projectManager.repository.Cod2"/>
+        <mapping class="projectManager.repository.Cod3"/>
+        <mapping class="projectManager.repository.EvidentaInventar"/>
+        <mapping class="projectManager.repository.Loc"/>
+        <mapping class="projectManager.repository.Persoana"/>
+        <mapping class="projectManager.repository.Articole"/>
 
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->

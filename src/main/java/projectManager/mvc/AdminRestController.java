@@ -5,17 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import projectManager.dao.ClientDAO;
-import projectManager.dao.ListaProiecteDAO;
-import projectManager.dao.UserRolesDAO;
-import projectManager.dao.jdbc.UserRolesJDBCDAO;
 import projectManager.repository.Client;
 import projectManager.repository.ListaProiecte;
 import projectManager.repository.UserRoles;
+import projectManager.repository.dao.ClientDAO;
+import projectManager.repository.dao.ListaProiecteDAO;
+import projectManager.repository.dao.UserRolesDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller

@@ -25,7 +25,7 @@
 
                             <div class="col-md-12"><br/></div>
                             <a type="button" class="btn btn-primary"
-                               onclick="verificaFisierC();"><span class="glyphicon glyphicon-upload "></span> <spring:message code="MAIN.CHESTIONAR" /></a>
+                               onclick="verificaFisierC();"><span class="fa fa-upload "></span> <spring:message code="MAIN.CHESTIONAR" /></a>
                         </div>
                     </form>
                 </div>

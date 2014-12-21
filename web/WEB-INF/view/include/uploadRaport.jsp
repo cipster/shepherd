@@ -25,7 +25,7 @@
 
                             <div class="col-md-12"><br/></div>
                             <a type="button" class="btn btn-primary"
-                               onclick="verificaFisierR();"><span class="glyphicon glyphicon-upload "></span> <spring:message code="MAIN.RAPORT" /></a>
+                               onclick="verificaFisierR();"><span class="fa fa-upload "></span> <spring:message code="MAIN.RAPORT" /></a>
                         </div>
                     </form>
                 </div>

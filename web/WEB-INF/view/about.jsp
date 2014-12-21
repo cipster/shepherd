@@ -21,6 +21,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/cover.css" rel="stylesheet">
     <link href="/css/carousel.css" rel="stylesheet">
 
@@ -72,7 +73,7 @@
 
 <!-- Carousel
 ================================================== -->
-<div id="myCarousel" class="carousel slide unselectable" data-ride="carousel">
+<div id="myCarousel"  class="carousel slide unselectable" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -131,10 +132,10 @@
             </div>
         </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span
-            class="glyphicon glyphicon-chevron-left"></span></a>
-    <a class="right carousel-control" href="#myCarousel" data-slide="next"><span
-            class="glyphicon glyphicon-chevron-right"></span></a>
+    <a class="left carousel-control" style="display: table-cell" href="#myCarousel" data-slide="prev"><span
+            class="fa fa-2x fa-chevron-left" style="vertical-align: middle;"></span></a>
+    <a class="right carousel-control" style="display: table-cell" href="#myCarousel" data-slide="next"><span
+            class="fa fa-2x fa-chevron-right" style="top:100px;"></span></a>
 </div>
 <!-- /.carousel -->
 

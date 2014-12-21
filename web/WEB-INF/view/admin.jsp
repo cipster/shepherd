@@ -21,6 +21,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/chosen.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -66,15 +67,15 @@
         <div class="jumbotron col-md-12" style="height: 557px;">
             <div class="list-group col-md-3">
                 <a href="#adauga" id="adauga" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> <spring:message code="ADMIN.ADDPROJ" /></a>
+                    <span class="fa fa-plus">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ" /></a>
                 <a href="#modifica" id="modifica" class="list-group-item">
-                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span class="fa fa-pencil">&nbsp;</span>
                     <spring:message code="ADMIN.MODPROJ" /></a>
                 <a href="#sterge" id="sterge" class="list-group-item">
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="fa fa-remove">&nbsp;</span>
                     <spring:message code="ADMIN.DELPROJ" /></a>
                 <a href="#utilizatori" id="utilizatori" class="list-group-item">
-                    <span class="glyphicon glyphicon-user"></span> <spring:message code="ADMIN.MODUSER" /></a>
+                    <span class="fa fa-user">&nbsp;</span> <spring:message code="ADMIN.MODUSER" /></a>
             </div>
             <div class="well col-md-9 col-md-offset-0" id="continut">
 

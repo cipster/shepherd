@@ -23,9 +23,13 @@
                             <div class="col-md-12"><br/></div>
                             <span id="mesajAlertaBD" style="color: red; display: none;"><spring:message code="DIALOG.NOFILE" /></span>
 
-                            <div class="col-md-12"><br/></div>
+                                <div class="progress">
+                                    <div id="progress" class="progress-bar active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        <span class="sr-only">45% Complete</span>
+                                    </div>
+                                </div>
                             <a type="button" class="btn btn-primary"
-                               onclick="verificaFisierBD();"><span class="glyphicon glyphicon-upload "> </span> <spring:message code="MAIN.BD" /></a>
+                               onclick="verificaFisierBD();"><span class="fa fa-upload "> </span> <spring:message code="MAIN.BD" /></a>
                         </div>
                     </form>
                 </div>

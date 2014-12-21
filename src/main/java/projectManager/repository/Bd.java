@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class Bd {
 
     private int idBd;
-    private byte[] bd;
+    private String bd;
     private String nume;
     private String creat_de;
     private Timestamp creat_la;
@@ -59,18 +59,21 @@ public class Bd {
 
     @Basic
     @Column(name = "bd", nullable = false, insertable = true, updatable = true)
-    public byte[] getBd() {
+    public String getBd() {
         return bd;
     }
 
-    public void setBd(byte[] bd) {
+    public void setBd(String bd) {
         this.bd = bd;
     }
 
     @Override
     public int hashCode() {
         int result = idBd;
-        result = 31 * result + (bd != null ? Arrays.hashCode(bd) : 0);
+        result = 31 * result + (bd != null ? bd.hashCode() : 0);
+        result = 31 * result + (nume != null ? nume.hashCode() : 0);
+        result = 31 * result + (creat_de != null ? creat_de.hashCode() : 0);
+        result = 31 * result + (creat_la != null ? creat_la.hashCode() : 0);
         return result;
     }
 
@@ -82,7 +85,7 @@ public class Bd {
         Bd bd1 = (Bd) o;
 
         if(idBd != bd1.idBd) return false;
-        if(!Arrays.equals(bd, bd1.bd)) return false;
+        if(!bd.equals( bd1.bd)) return false;
 
         return true;
     }

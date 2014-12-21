@@ -6,11 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import projectManager.dao.*;
-import projectManager.dao.jdbc.BdJDBCDAO;
-import projectManager.dao.jdbc.ClientiJDBCDAO;
 import projectManager.repository.Client;
 import projectManager.repository.ListaProiecte;
+import projectManager.repository.dao.*;
+import projectManager.repository.dao.jdbc.BdJDBCDAO;
+import projectManager.repository.dao.jdbc.ClientiJDBCDAO;
 
 @Controller
 public class MainController {

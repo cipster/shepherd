@@ -7,30 +7,28 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import projectManager.core.security.WebSecurityConfig;
-import projectManager.dao.jdbc.*;
+import projectManager.repository.dao.*;
+import projectManager.repository.dao.jdbc.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @EnableWebMvc
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 @ComponentScan(basePackages = {"projectManager.mvc"})
 @Import({WebSecurityConfig.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
@@ -65,11 +63,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.favorPathExtension(true).useJaf(false).ignoreAcceptHeader(true).mediaType("html", MediaType.TEXT_HTML).mediaType("json", MediaType.APPLICATION_JSON).defaultContentType(MediaType.TEXT_HTML);
-    }
-
     @Bean
     public MessageSource messageSource() {
 
@@ -85,24 +78,25 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
-
-        List<ViewResolver> resolvers = new ArrayList<ViewResolver>();
-
-        InternalResourceViewResolver r1 = new InternalResourceViewResolver();
-        r1.setPrefix("/WEB-INF/view/");
-        r1.setSuffix(".jsp");
-        r1.setViewClass(JstlView.class);
-        resolvers.add(r1);
-
-        JsonViewResolver r2 = new JsonViewResolver();
-        resolvers.add(r2);
-
-        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
-        resolver.setViewResolvers(resolvers);
-        resolver.setContentNegotiationManager(manager);
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/view/");
+        resolver.setSuffix(".jsp");
         return resolver;
+    }
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
+        stringConverter.setWriteAcceptCharset(false);
 
+        converters.add(new AllEncompassingFormHttpMessageConverter());
+        converters.add(jackson2Converter());
+    }
+
+    @Bean
+    public MappingJackson2HttpMessageConverter jackson2Converter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        return converter;
     }
 
     @Bean(name = "dataSource")
@@ -154,8 +148,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public PropunereJDBCDAO propunereJDBCDAO() {
-        PropunereJDBCDAO propunereJDBCDAO = new PropunereJDBCDAO(dataSource());
-        return propunereJDBCDAO;
+        return new PropunereJDBCDAO(dataSource());
     }
 
     @Bean
@@ -182,16 +175,38 @@ public class AppConfig extends WebMvcConfigurerAdapter {
             return rolesJDBCDAO;
     }
 
-    /**
-     * View resolver for returning JSON in a view-based system. Always returns a
-     * {@link MappingJackson2JsonView}.
-     */
-    public class JsonViewResolver implements ViewResolver {
+    @Bean
+    public Cod1DAO cod1DAO() {
+        return new Cod1DAOImpl(dataSource());
+    }
 
-        public View resolveViewName(String viewName, Locale locale) throws Exception {
-            MappingJackson2JsonView view = new MappingJackson2JsonView();
-            view.setPrettyPrint(true);
-            return view;
+    @Bean
+    public Cod2DAO cod2DAO() {
+        return new Cod2DAOImpl(dataSource());
+    }
+
+    @Bean
+    public Cod3DAO cod3DAO() {
+        return new Cod3DAOImpl(dataSource());
+    }
+
+    @Bean
+    public LocDAO locDAO() {
+        return new LocDAOImpl(dataSource());
+    }
+
+    @Bean
+    public PersoanaDAO persoanaDAO() {
+            return new PersoanaDAOImpl(dataSource());
         }
+
+    @Bean
+    public EvidentaInventarDAO evidentaInventarDAO() {
+        return new EvidentaInventarDAOImpl(dataSource());
+    }
+
+    @Bean
+    public ArticoleDAO articoleDAO() {
+        return new ArticoleDAOImpl(dataSource());
     }
 }

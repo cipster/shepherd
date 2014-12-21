@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="ro">
@@ -59,20 +60,19 @@
 <div class="container" style="text-align:center;">
 
 
-    <form class="form-signin" name='loginForm'
+    <form:form class="form-signin" name='loginForm'
           action="/login" method="POST">
         <h2 class="form-signin-heading"><img style="margin-top: 6px;" width="200"
                                              src="/img/logoLogin.png"/></h2>
-        <input name="username" type="text" class="form-control" placeholder="<spring:message code="USER" />"
+        <input id="username" name="username" type="text" autocomplete="off" class="form-control" placeholder="<spring:message code="USER" />"
                 />
         <input name="password" type="password" class="form-control" placeholder="<spring:message code="PASSWORD" />"
                 />
         <button id="btnLogin" class="btn btn-lg btn-primary btn-block" type="submit"><span
                 class="glyphicon glyphicon-login"></span> Sign in
         </button>
-        <input type="hidden"
-               name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </form>
+
+    </form:form>
 
     <c:if test="${not empty error}">
         <div class="error">${error}</div>
@@ -107,6 +107,7 @@
     if(/chrom(e|ium)/.test(navigator.userAgent.toLowerCase())){
         $("#downloadChrome").hide();
         $(".container").show();
+        $('#username').focus();
     } else {
         $(".container").hide()
         $("#downloadChrome").show()

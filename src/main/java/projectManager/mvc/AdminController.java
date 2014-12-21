@@ -8,12 +8,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import projectManager.dao.*;
-import projectManager.dao.jdbc.RolesJDBCDAO;
-import projectManager.dao.jdbc.UserRolesJDBCDAO;
 import projectManager.repository.Client;
 import projectManager.repository.ListaProiecte;
 import projectManager.repository.User;
+import projectManager.repository.dao.*;
 
 @Controller
 public class AdminController {

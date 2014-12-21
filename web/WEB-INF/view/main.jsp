@@ -22,6 +22,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/datatables.bootstrap.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -368,6 +369,17 @@
             dataType: 'text',
             processData: false,
             contentType: false,
+            xhr: function() {  // custom xhr
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // check if upload property exists
+                    myXhr.upload.addEventListener('progress', function (evt) {
+                        if (evt.lengthComputable) {
+                            $('#progress').css('width', evt.loaded);
+                        }
+                    }, false);
+                }
+                return myXhr;
+            },
             success: function (response) {
                 var t = '#' + idProiect;
                 var tr = $(t);
@@ -392,7 +404,7 @@
                     return;
                 }
                 var respContent = "";
-                var uploadResponse = JSON.parse(response);
+                var uploadResponse = JSON.parse(JSON.parse(response));
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
@@ -454,7 +466,7 @@
                 }
 
                 var respContent = "";
-                var uploadResponse = JSON.parse(response);
+                var uploadResponse = JSON.parse(JSON.parse(response));
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea propunere!  ";
@@ -515,7 +527,7 @@
                 }
 
                 var respContent = "";
-                var uploadResponse = JSON.parse(response);
+                var uploadResponse = JSON.parse(JSON.parse(response));
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
@@ -577,7 +589,7 @@
                 }
 
                 var respContent = "";
-                var uploadResponse = JSON.parse(response);
+                var uploadResponse = JSON.parse(JSON.parse(response));
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
@@ -631,9 +643,9 @@
                     }).show();
                     return;
                 }
-
+debugger;
                 var respContent = "";
-                var uploadResponse = JSON.parse(response);
+                var uploadResponse = JSON.parse(JSON.parse(response));
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
@@ -959,7 +971,7 @@
             async: false,
             cache: false,
 
-            success: function (response) {
+            success: function (response) {debugger;
                 var project = JSON.parse(response);
 
                 var propunere = project.propunere;
@@ -1050,11 +1062,11 @@
         rapString += '</td>';
         bdString += '</td>';
         amString += '</td>';
-        var buttonString =  '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="glyphicon glyphicon-upload "></span> Upload Propunere</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="glyphicon glyphicon-upload "></span> Upload Chestionar</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="glyphicon glyphicon-upload"></span> Upload Raport</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="glyphicon glyphicon-upload "></span> Upload Baza de date</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="glyphicon glyphicon-upload "></span> Upload Alte Materiale</a></td></tr>';
+        var buttonString =  '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="fa fa-upload ">&nbsp;</span> Upload Propunere</a></td>' +
+                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="fa fa-upload ">&nbsp;</span> Upload Chestionar</a></td>' +
+                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="fa fa-upload">&nbsp;</span> Upload Raport</a></td>' +
+                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="fa fa-upload ">&nbsp;</span> Upload Baza de date</a></td>' +
+                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="fa fa-upload ">&nbsp;</span> Upload Alte Materiale</a></td></tr>';
         childString += propString + chestString + rapString + bdString + amString + '</tr>';
         childString += buttonString;
         childString += '</tbody></table></div>';
