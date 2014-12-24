@@ -150,7 +150,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
             </div>
             </form>
         </div>
@@ -167,17 +167,28 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON" /></h4>
             </div>
+            <form id="adaugapersoana" action="api/adaugapersoana" method="post">
             <div class="modal-body">
-                <div class="form-control">
-
+                <div class="form-group">
+                    <label for="nume">Nume</label>
+                    <input id="nume" name="nume" title="nume" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="cnp">CNP</label>
+                    <input id="cnp" name="cnp" title="cnp" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="functie">Functie</label>
+                    <input id="functie" name="functie" title="functie" class="form-control">
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick=""><spring:message code="DIALOG.ADD" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
 
             </div>
+            </form>
         </div>
         <!-- /.modal-content -->
     </div>
@@ -191,17 +202,19 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title"><spring:message code="DIALOG.ADDPLACE" /></h4>
             </div>
+            <form id="adaugaloc" action="/api/adaugaloc" method="post">
             <div class="modal-body">
-                <div class="form-control">
-
+                <div class="form-group">
+                    <label for="denumireLoc">Denumire loc</label>
+                    <input id="denumireLoc" name="denumireLoc" title="denumireLoc" class="form-control">
                 </div>
-
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick=""><spring:message code="DIALOG.ADD" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                <button type="button" id="closeloc" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
 
             </div>
+            </form>
         </div>
         <!-- /.modal-content -->
     </div>
@@ -255,7 +268,7 @@
             datatype:"image/jpeg",
             cache: false,
             success: function (response) {
-                var $img = $('#barcode');debugger;
+                var $img = $('#barcode');
                 $img.empty();
                 var encodedData = window.btoa(response);
                 $img.html('<img src="data:image/jpeg;base64,'+ encodedData + '" />');
@@ -392,7 +405,7 @@
             placeholder_text_single: 'Alege o optiune',
             disable_search: true
         });
-        selcod1.val(-1)
+        selcod1.val(-1);
         selcod1.trigger('chosen:updated');
         selcod2.chosen({
             width: "60%",
@@ -400,9 +413,9 @@
             allow_single_deselect: true,
             disable_search: true
         });
-        selcod2.val(-1)
+        selcod2.val(-1);
         selcod2.trigger('chosen:updated');
-
+try{
         table = $('#inventory-table').dataTable( {
             "ajax": {
                 "url": '${pageContext.request.contextPath}/api/getinventory',
@@ -437,10 +450,21 @@
                 $(this).addClass('selected');
             }
         } );
+} catch (err){
+    console.log(err);
+}
 
-        $('#adaugaarticol').on('submit', function(){
+        $('#adaugaarticol').on('submit', function(e){
+            e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
+            var cod1 = $('#selcod1').val();
+            var cod2 = $('#selcod2').val();
+            var denumire3 = $('#denumire3').val();
+            var detalii = $('#detalii').val();
+            var pret = $('#pretachizitie').val();
+            var data = { "cod1" : cod1, "cod2" : cod2, "denumire3": denumire3,
+                "detalii": detalii, "pretAchizitie": pret};
             // will pass the form date using the jQuery serialize function
             $.ajax({
                 type: 'post',
@@ -448,14 +472,98 @@
                 beforeSend: function(xhr){
                     xhr.setRequestHeader(header, token);
                 },
-                data: $(this).serialize(),
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
                 success: function (response) {
+                    $('#selcod1').val(-1);
+                    $('#selcod1').trigger('chosen:updated');
+                    $('#selcod2').val(-1);
+                    $('#selcod2').trigger('chosen:updated');
+                    $('#denumire3').val('');
+                    $('#detalii').val('');
+                    $('#pret').val('');
+                    $('#closeart').click();
                     $("#alert").notify({
                         message: { text: 'Articol adaugat cu succes!' },
                         type: 'success',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 1500 }
+                        fadeOut: { enabled: true, delay: 3500 }
+                    }).show()
+                },
+                error: function(err){
+                    alert('Eroare la conexiune!');
+                }
+            });
+        });
+
+        $('#adaugapersoana').on('submit', function(e){
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var nume = $('#nume').val();
+            var cnp = $('#cnp').val();
+            var functie = $('#functie').val();
+            var data = { "nume" : nume, "cnp" : cnp, "functie": functie};
+            // will pass the form date using the jQuery serialize function
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $('#nume').val('');
+                    $('#cnp').val('');
+                    $('#functie').val('');
+                    $('#closepers').click();
+                    $("#alert").notify({
+                        message: { text: 'Persoana adaugata cu succes!' },
+                        type: 'success',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 3500 }
+                    }).show()
+                },
+                error: function(err){
+                    alert('Eroare la conexiune!');
+                }
+            });
+
+        });$('#adaugaloc').on('submit', function(e){
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var denumireloc = $('#denumireLoc').val();
+            var data = { "denumireLoc" : denumireloc};
+            // will pass the form date using the jQuery serialize function
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $('#denumireLoc').val('');
+                    $('#closeloc').click();
+                    $("#alert").notify({
+                        message: { text: 'Loc adaugat cu succes!' },
+                        type: 'success',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 3500 }
                     }).show()
                 },
                 error: function(err){

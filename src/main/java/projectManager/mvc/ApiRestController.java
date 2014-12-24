@@ -11,8 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projectManager.repository.Articole;
 import projectManager.repository.Cod3;
+import projectManager.repository.Loc;
+import projectManager.repository.Persoana;
 import projectManager.repository.dao.ArticoleDAO;
 import projectManager.repository.dao.Cod3DAO;
+import projectManager.repository.dao.LocDAO;
+import projectManager.repository.dao.PersoanaDAO;
 import projectManager.util.Barcode;
 
 import javax.servlet.ServletContext;
@@ -40,6 +44,10 @@ public class ApiRestController {
     private ArticoleDAO articoleDAO;
     @Autowired
     ServletContext servletContext;
+    @Autowired
+    private PersoanaDAO persoanaDAO;
+    @Autowired
+    private LocDAO locDAO;
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -78,13 +86,47 @@ public class ApiRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_SUPERUSER')")
-    @RequestMapping(value = "/addtipcontract", method = RequestMethod.POST)
+    @RequestMapping(value = "/adaugaarticol", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String addClient(@RequestBody Cod3 cod3, BindingResult result) {
+    public String addClient(@RequestBody Cod3 cod3) {
 
         String response = "";
             try {
                 cod3DAO.create(cod3);
+                response = "1";
+            } catch (DataAccessException ex) {
+                ex.printStackTrace();
+                response = "-1";
+            }
+
+        return response;
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @RequestMapping(value = "/adaugapersoana", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String addPersoana(@RequestBody Persoana persoana) {
+
+        String response = "";
+            try {
+                persoanaDAO.create(persoana);
+                response = "1";
+            } catch (DataAccessException ex) {
+                ex.printStackTrace();
+                response = "-1";
+            }
+
+        return response;
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @RequestMapping(value = "/adaugaloc", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String addLoc(@RequestBody Loc loc) {
+
+        String response = "";
+            try {
+                locDAO.create(loc);
                 response = "1";
             } catch (DataAccessException ex) {
                 ex.printStackTrace();
