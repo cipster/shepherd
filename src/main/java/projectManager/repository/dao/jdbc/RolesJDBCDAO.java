@@ -34,7 +34,7 @@ public class RolesJDBCDAO extends JdbcDaoSupport implements RolesDAO {
         public Roles mapRow(ResultSet rs, int rowNum) throws SQLException {
             Roles roles = new Roles();
 
-            roles.setIdRole(rs.getInt("idRole"));
+            roles.setIdRole(rs.getInt("id_role"));
             roles.setRole(rs.getString("role"));
 
             return roles;

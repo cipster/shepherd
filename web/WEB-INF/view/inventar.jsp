@@ -13,7 +13,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="/img/favico.png">
-
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
     <title>Shepherd</title>
 
@@ -24,6 +25,7 @@
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
     <link href="/css/datatables.bootstrap.css" rel="stylesheet">
     <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/chosen.css" rel="stylesheet">
     <style type="text/css">
         @media print
         {
@@ -67,7 +69,7 @@
                 <li><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
                 <li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
+                    <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
                 </sec:authorize>
                 <li class="active"><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
                 <li><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
@@ -81,15 +83,11 @@
 <div class="container">
 
     <div class="btn-group" style="float:right; margin: 15px;">
-    <button id="add-item" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga articol</button>
-    <button id="add-person" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga persoana</button>
-    <button id="add-place" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga loc</button>
-        </div>
-    <div class="code-block">
-        <h5><span>Articol: <br/> "BIROU 10213 FILDES 80 x 140 Prince Int"</span></h5>
-        <div id="barcode" class="barcode" onclick="javascript:window.print();"></div>
-        <h5>200-5-00013</h5>
+        <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga articol</button>
+        <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga persoana</button>
+        <button id="add-place" data-toggle="modal"  data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga loc</button>
     </div>
+
     <!-- Main component -->
     <div class="jumbotron">
         <br/>
@@ -102,7 +100,7 @@
                 <th><spring:message code="INVENTAR.ARTICOL" /></th>
                 <th><spring:message code="INVENTAR.COD" /></th>
                 <th><spring:message code="INVENTAR.DETALII" /></th>
-                <th><spring:message code="INVENTAR.PRETACHIZITIE" /></th>
+                <th><spring:message code="INVENTAR.ALOCAT" /></th>
             </tr>
             </thead>
 
@@ -110,71 +108,51 @@
 
     </div>
 </div>
-    <sec:authorize access="hasRole('ROLE_DOWNLOAD')">
-        <div id="childrcmenu" class="unselectable">
-                <div class="menuItem" onclick="download();"><spring:message code="MAIN.DESCARCA" /></div>
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <input id="idMaster" hidden="hidden"/>
-                <input id="id" hidden="hidden"/>
-                <input id="category" hidden="hidden"/>
-                <input id="fileName" hidden="hidden"/>
-                <div class="menuItem" data-toggle="modal"
-                     data-target="#estiSigurFile" onclick="atribuieNumeFile();"><spring:message code="MAIN.DELETE" /></div>
-            </sec:authorize>
-        </div>
-    </sec:authorize>
-<div id="rcmenu" class="unselectable">
-    <div class="menuItem" data-toggle="modal" data-target="#cercCheltuieli"><spring:message code="MAIN.CHELTUIELI" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadPropunere"><spring:message code="MAIN.PROPUNERE" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadChestionar"><spring:message code="MAIN.CHESTIONAR" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadRaport"><spring:message code="MAIN.RAPORT" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadBd"><spring:message code="MAIN.BD" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadAlteMateriale"><spring:message code="MAIN.ALTEMATERIALE" /></div>
-</div>
 
-
-</div> <!-- /container -->
-
-
-<div class="modal fade" id="uploadPropunere">
-    <c:import url="include/uploadPropunere.jsp"></c:import>
-</div>
-<!-- /.modal -->
-
-<div class="modal fade" id="uploadChestionar">
-    <c:import url="include/uploadChestionar.jsp"></c:import>
-</div>
-<!-- /.modal -->
-
-<div class="modal fade" id="uploadRaport">
-    <c:import url="include/uploadRaport.jsp"></c:import>
-</div>
-<!-- /.modal -->
-
-<div class="modal fade" id="uploadBd" role="dialog">
-    <c:import url="include/uploadBd.jsp"></c:import>
-</div>
-<!-- /.modal -->
-
-<div class="modal fade" id="uploadAlteMateriale">
-    <c:import url="include/uploadAlteMateriale.jsp"></c:import>
-</div>
-<!-- /.modal -->
-<div class="modal fade" id="estiSigurFile">
+<div class="modal fade" id="add-item-modal">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="DIALOG.DELETE" /></h4>
+                <h4 class="modal-title"><spring:message code="DIALOG.ADDITEM" /></h4>
             </div>
+            <form id="adaugaarticol" action="/api/adaugaarticol" method="post">
             <div class="modal-body">
-                <h3><spring:message code="DIALOG.ESTISIGURDELETE" /> <span id="fileNameDel" style="color: #149bdf"></span>?</h3>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="deleteFile();"><spring:message code="DIALOG.DEL" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="NU" /></button>
+                <div class="form-group">
+                    <label for="selcod1">Alege cod 1</label><br/>
+                    <select id="selcod1" name="cod1" title="">
+                        <c:forEach items="${cod1}" var="codunu">
+                            <option value="${codunu.cod1}">${codunu.denumire1}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="selcod2">Alege cod 2</label><br/>
+                    <select id="selcod2" name="cod2" title="">
+                        <c:forEach items="${cod2}" var="coddoi">
+                            <option value="${coddoi.cod2}">${coddoi.denumire2}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="denumire3">Denumire articol</label>
+                    <input id="denumire3" name="denumire3" title="" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="detalii">Detalii articol</label>
+                    <textarea id="detalii" name="detalii" title="" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="pretachizitie">Pret achizitie</label>
+                    <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
+                </div>
 
             </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+            </div>
+            </form>
         </div>
         <!-- /.modal-content -->
     </div>
@@ -182,25 +160,21 @@
 </div>
 <!-- /.modal -->
 
-<!-- /.modal -->
-<div class="modal fade" id="cercCheltuieli">
-    <div class="modal-dialog modal-xlg">
+<div class="modal fade" id="add-person-modal">
+    <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="MAIN.CHELTUIELI" /></h4>
+                <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON" /></h4>
             </div>
             <div class="modal-body">
-                <table>
-                    <tr>
-                        <td>
-                            <div class="pic img-circle"></div>
-                        </td>
-                    </tr>
-                </table>
+                <div class="form-control">
+
+                </div>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary pull-left" onclick=""><spring:message code="DIALOG.ADD" /></button>
+                <button type="button" class="btn btn-success" onclick=""><spring:message code="DIALOG.ADD" /></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
 
             </div>
@@ -210,11 +184,36 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<div class="modal fade" id="add-place-modal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><spring:message code="DIALOG.ADDPLACE" /></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-control">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick=""><spring:message code="DIALOG.ADD" /></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <div id="alert" class="notifications"></div>
 
 <form action="/logout" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}"
-               value="${_csrf.token}"/>
+           value="${_csrf.token}"/>
 </form>
 
 <input id="username" hidden="hidden" value="${pageContext.request.userPrincipal.name}"/>
@@ -243,6 +242,7 @@
 <script src="/js/bootstrap.file-input.js"></script>
 <script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script src="/js/chosen.jquery.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
 <script type="text/javascript">
     var table;
@@ -372,10 +372,10 @@
         bdString += '</td>';
         amString += '</td>';
         var buttonString =  '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="fa fa-upload "></span> Upload Propunere</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="fa fa-upload "></span> Upload Chestionar</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="fa fa-upload"></span> Upload Raport</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="fa fa-upload "></span> Upload Baza de date</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="fa fa-upload "></span> Upload Alte Materiale</a></td></tr>';
+                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="fa fa-upload "></span> Upload Chestionar</a></td>' +
+                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="fa fa-upload"></span> Upload Raport</a></td>' +
+                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="fa fa-upload "></span> Upload Baza de date</a></td>' +
+                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="fa fa-upload "></span> Upload Alte Materiale</a></td></tr>';
         childString += propString + chestString + rapString + bdString + amString + '</tr>';
         childString += buttonString;
         childString += '</tbody></table></div>';
@@ -384,11 +384,24 @@
     }
 
     $(document).ready(function () {
-//        table = $('#tabelProiecte').DataTable({
-//            "language": {
-//                "url": appLang
-//            }
-//        });
+        var selcod1 = $('#selcod1');
+        var selcod2 = $('#selcod2');
+        selcod1.chosen({
+            width: "60%",
+            allow_single_deselect: true,
+            placeholder_text_single: 'Alege o optiune',
+            disable_search: true
+        });
+        selcod1.val(-1)
+        selcod1.trigger('chosen:updated');
+        selcod2.chosen({
+            width: "60%",
+            placeholder_text_single: 'Alege o optiune',
+            allow_single_deselect: true,
+            disable_search: true
+        });
+        selcod2.val(-1)
+        selcod2.trigger('chosen:updated');
 
         table = $('#inventory-table').dataTable( {
             "ajax": {
@@ -412,6 +425,7 @@
                 }
             ]
         } );
+
         $('#inventory-table tbody').on( 'click', 'tr', function () {
             if ( $(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
@@ -424,6 +438,31 @@
             }
         } );
 
+        $('#adaugaarticol').on('submit', function(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            // will pass the form date using the jQuery serialize function
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
+                data: $(this).serialize(),
+                success: function (response) {
+                    $("#alert").notify({
+                        message: { text: 'Articol adaugat cu succes!' },
+                        type: 'success',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 1500 }
+                    }).show()
+                },
+                error: function(err){
+                    alert('Eroare la conexiune!');
+                }
+            });
+        });
 //        // Add event listener for opening and closing details
 //        $('#inventory-table tbody').on('dblclick', 'tr', function () {
 //            var tr = $(this).closest('tr');

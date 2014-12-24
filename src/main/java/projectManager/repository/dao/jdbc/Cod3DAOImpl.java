@@ -74,7 +74,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     public Integer create(final Cod3 entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        final String query = "INSERT INTO proiecte.cod_3(id_cod_3, cod_1, cod_2, cod_3, denumire_3, barcode, detalii, pret_achizitie) VALUES (?,?,?,?,?,?,?,?)";
+        final String query = "INSERT INTO proiecte.cod_3(id_cod_3, cod_1, cod_2, cod_3, denumire_3, barcode, detalii, pret_achizitie) VALUES (?,?,?,getLastCode3(),?,uuid(),?,?)";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -84,11 +84,9 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
                 ps.setInt(1, entity.getIdCod3());
                 ps.setInt(2, entity.getCod1());
                 ps.setInt(3, entity.getCod2());
-                ps.setInt(4, entity.getCod3());
-                ps.setString(5, entity.getDenumire3());
-                ps.setString(6, entity.getBarcode());
-                ps.setString(7, entity.getDetalii());
-                ps.setString(8, entity.getPretAchizitie());
+                ps.setString(4, entity.getDenumire3());
+                ps.setString(5, entity.getDetalii());
+                ps.setString(6, entity.getPretAchizitie());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -102,7 +100,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     @Override
     public Integer update(final Cod3 entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, cod_3=?, denumire_3=?, barcode=?, detalii=?, pret_achizitie=? WHERE id_cod_3=?";
+        final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, denumire_3=?, detalii=?, pret_achizitie=? WHERE id_cod_3=?";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -112,12 +110,10 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
 
                 ps.setInt(1, entity.getCod1());
                 ps.setInt(2, entity.getCod2());
-                ps.setInt(3, entity.getCod3());
-                ps.setString(4, entity.getDenumire3());
-                ps.setString(5, entity.getBarcode());
-                ps.setString(7, entity.getDetalii());
-                ps.setString(8, entity.getPretAchizitie());
-                ps.setInt(8, entity.getIdCod3());
+                ps.setString(3, entity.getDenumire3());
+                ps.setString(4, entity.getDetalii());
+                ps.setString(5, entity.getPretAchizitie());
+                ps.setInt(6, entity.getIdCod3());
 
                 logger.debug(ps.toString());
                 return ps;

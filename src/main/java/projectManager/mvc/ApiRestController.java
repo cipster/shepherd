@@ -3,13 +3,12 @@ package projectManager.mvc;
 import com.google.zxing.BarcodeFormat;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import projectManager.repository.Articole;
 import projectManager.repository.Cod3;
 import projectManager.repository.dao.ArticoleDAO;
@@ -22,7 +21,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Ciprian on 12/14/2014.
@@ -74,5 +75,22 @@ public class ApiRestController {
         headers.setContentType(MediaType.IMAGE_JPEG); //or what ever type it is
         headers.setContentLength(image.length);
         return new ResponseEntity<byte[]>(image, headers, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @RequestMapping(value = "/addtipcontract", method = RequestMethod.POST)
+    @ResponseBody
+    public String addClient(@RequestBody Cod3 cod3, BindingResult result) {
+
+        String response = "";
+            try {
+                cod3DAO.create(cod3);
+                response = "1";
+            } catch (DataAccessException ex) {
+                ex.printStackTrace();
+                response = "-1";
+            }
+
+        return response;
     }
 }
