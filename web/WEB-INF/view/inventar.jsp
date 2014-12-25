@@ -82,12 +82,17 @@
 
 <div class="container">
 
-    <div class="btn-group" style="float:right; margin: 15px;">
-        <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga articol</button>
-        <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga persoana</button>
-        <button id="add-place" data-toggle="modal"  data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga loc</button>
+    <div class="btn-group" style="float:left; margin: 15px;">
+        <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Iese</button>
+        <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Intra</button>
     </div>
-
+    <sec:authorize access="hasRole('ROLE_SUPERUSER')">
+        <div class="btn-group" style="float:right; margin: 15px;">
+            <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga articol</button>
+            <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga persoana</button>
+            <button id="add-place" data-toggle="modal"  data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga loc</button>
+        </div>
+    </sec:authorize>
     <!-- Main component -->
     <div class="jumbotron">
         <br/>
@@ -117,41 +122,41 @@
                 <h4 class="modal-title"><spring:message code="DIALOG.ADDITEM" /></h4>
             </div>
             <form id="adaugaarticol" action="/api/adaugaarticol" method="post">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="selcod1">Alege cod 1</label><br/>
-                    <select id="selcod1" name="cod1" title="">
-                        <c:forEach items="${cod1}" var="codunu">
-                            <option value="${codunu.cod1}">${codunu.denumire1}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="selcod2">Alege cod 2</label><br/>
-                    <select id="selcod2" name="cod2" title="">
-                        <c:forEach items="${cod2}" var="coddoi">
-                            <option value="${coddoi.cod2}">${coddoi.denumire2}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="denumire3">Denumire articol</label>
-                    <input id="denumire3" name="denumire3" title="" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="detalii">Detalii articol</label>
-                    <textarea id="detalii" name="detalii" title="" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="pretachizitie">Pret achizitie</label>
-                    <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
-                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="selcod1">Alege cod 1</label><br/>
+                        <select id="selcod1" name="cod1" title="">
+                            <c:forEach items="${cod1}" var="codunu">
+                                <option value="${codunu.cod1}">${codunu.denumire1}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selcod2">Alege cod 2</label><br/>
+                        <select id="selcod2" name="cod2" title="">
+                            <c:forEach items="${cod2}" var="coddoi">
+                                <option value="${coddoi.cod2}">${coddoi.denumire2}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="denumire3">Denumire articol</label>
+                        <input id="denumire3" name="denumire3" title="" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="detalii">Detalii articol</label>
+                        <textarea id="detalii" name="detalii" title="" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="pretachizitie">Pret achizitie</label>
+                        <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
+                    </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                    <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                </div>
             </form>
         </div>
         <!-- /.modal-content -->
@@ -168,26 +173,26 @@
                 <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON" /></h4>
             </div>
             <form id="adaugapersoana" action="api/adaugapersoana" method="post">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="nume">Nume</label>
-                    <input id="nume" name="nume" title="nume" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="cnp">CNP</label>
-                    <input id="cnp" name="cnp" title="cnp" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="functie">Functie</label>
-                    <input id="functie" name="functie" title="functie" class="form-control">
-                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nume">Nume</label>
+                        <input id="nume" name="nume" title="nume" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="cnp">CNP</label>
+                        <input id="cnp" name="cnp" title="cnp" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="functie">Functie</label>
+                        <input id="functie" name="functie" title="functie" class="form-control">
+                    </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                    <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
 
-            </div>
+                </div>
             </form>
         </div>
         <!-- /.modal-content -->
@@ -203,17 +208,83 @@
                 <h4 class="modal-title"><spring:message code="DIALOG.ADDPLACE" /></h4>
             </div>
             <form id="adaugaloc" action="/api/adaugaloc" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="denumireLoc">Denumire loc</label>
+                        <input id="denumireLoc" name="denumireLoc" title="denumireLoc" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                    <button type="button" id="closeloc" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="iese-modal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><spring:message code="DIALOG.IESE" /></h4>
+            </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="denumireLoc">Denumire loc</label>
-                    <input id="denumireLoc" name="denumireLoc" title="denumireLoc" class="form-control">
+                <div id="ieseq" style="text-align: center">
+                    <h4><spring:message code="INVENTAE.QIESE"/></h4><br/>
+                    <div style="width: 200px; margin-left: auto; margin-right: auto;">
+                        <button class="btn btn-default" style="float: left;" id="scanbut"><span class="fa fa-barcode">&nbsp;</span> Scan</button>
+                        <button class="btn btn-default" style="float: right" id="pickbut"><span class="fa fa-edit">&nbsp;</span> Alege</button>
+                    </div>
+                </div><br/>
+                <form id="ieseform" action="/api/iese" method="post"></form>
+                <div id="ieseas" class="ieseas">
+                    <div class="form-group">
+                        <label for="ieseloc">Alege locul</label><br/>
+                        <select id="ieseloc"></select>
+                        </div>
+                    <div class="form-group">
+                        <label for="iesepers">Alege persoana</label><br/>
+                        <select id="iesepers"></select>
+                    </div>
+                    <div id="iesebarcode" class="form-group">
+                        <h3>Scaneaza articolul</h3>
+                        <input id="iesebarcodeinput" class="form-control" style="width: 70%;">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                <button type="button" id="closeloc" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
-
+                <button type="button" id="closeiese" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                <button type="button" id="backiese" class="btn btn-default" data-dismiss="modal"><span class="fa fa-back">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
             </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="intra-modal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><spring:message code="DIALOG.INTRA" /></h4>
+            </div>
+            <form id="intraform" action="/api/intra" method="post">
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                    <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+
+                </div>
             </form>
         </div>
         <!-- /.modal-content -->
@@ -396,63 +467,146 @@
         return childString;
     }
 
+    function getPersoane(){
+        $("#iesepers").html("");
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/persoane',
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        $("#iesepers").append($("<option>").val(response[i].idPersoana).text(response[i].nume + '  ' + response[i].cnp));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        $("#iesepers").val(-1);
+        $("#iesepers").trigger("chosen:updated");
+
+    }
+
+    function getLoc(){
+        $("#ieseloc").html("");
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/locuri',
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        $("#ieseloc").append($("<option>").val(response[i].idLoc).text(response[i].denumireLoc));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        $("#ieseloc").val(-1);
+        $("#ieseloc").trigger("chosen:updated");
+
+    }
     $(document).ready(function () {
         var selcod1 = $('#selcod1');
         var selcod2 = $('#selcod2');
+        var iesepers = $('#iesepers');
+        var ieseloc = $('#ieseloc');
+
         selcod1.chosen({
             width: "60%",
             allow_single_deselect: true,
-            placeholder_text_single: 'Alege o optiune',
+            placeholder_text_single: 'Alege o optiune...',
             disable_search: true
         });
         selcod1.val(-1);
         selcod1.trigger('chosen:updated');
+
         selcod2.chosen({
             width: "60%",
-            placeholder_text_single: 'Alege o optiune',
+            placeholder_text_single: 'Alege o optiune...',
             allow_single_deselect: true,
             disable_search: true
         });
         selcod2.val(-1);
         selcod2.trigger('chosen:updated');
-try{
-        table = $('#inventory-table').dataTable( {
-            "ajax": {
-                "url": '${pageContext.request.contextPath}/api/getinventory',
-                "dataSrc": ""
-            },
-            "columns": [
-                { "data": "idCod3" },
-                { "data": "denumire1" },
-                { "data": "denumire2" },
-                { "data": "denumire3" },
-                { "data": "barcode" },
-                { "data": "detalii" },
-                { "data": "pretAchizitie" }
-            ],
-            "columnDefs": [
-                {
-                    "targets": [ 0 ],
-                    "visible": true,
-                    "searchable": false
-                }
-            ]
-        } );
 
-        $('#inventory-table tbody').on( 'click', 'tr', function () {
-            if ( $(this).hasClass('selected') ) {
-                $(this).removeClass('selected');
-            }
-            else {
-                table.$('tr.selected').removeClass('selected');
-                idArticol = $(this).children().first().text();
-                showBarcode(idArticol);
-                $(this).addClass('selected');
-            }
-        } );
-} catch (err){
-    console.log(err);
-}
+        iesepers.chosen({
+            width: "60%",
+            allow_single_deselect: true,
+            placeholder_text_single: 'Alege o optiune...',
+            no_results_text: 'Nu a fost gasit...'
+        });
+        getPersoane();
+
+        ieseloc.chosen({
+            width: "60%",
+            allow_single_deselect: true,
+            placeholder_text_single: 'Alege o optiune...',
+            no_results_text: 'Nu a fost gasit...'
+        });
+        getLoc();
+
+        $('#scanbut').on('click', function(){
+           $('#ieseq').hide();
+           $('#ieseas').show();
+        });
+
+        iesepers.on('change', function(){
+           if($(this).val() > 0){
+               $('#iesebarcode').show();
+               $('#iesebarcodeinput').focus();
+           }
+        });
+
+        $('#iesebarcodeinput').on('', function(e){
+            console.log(e.originalEvent);
+        });
+
+
+        try{
+            table = $('#inventory-table').dataTable( {
+                "ajax": {
+                    "url": '${pageContext.request.contextPath}/api/getinventory',
+                    "dataSrc": ""
+                },
+                "columns": [
+                    { "data": "idCod3" },
+                    { "data": "denumire1" },
+                    { "data": "denumire2" },
+                    { "data": "denumire3" },
+                    { "data": "barcode" },
+                    { "data": "detalii" },
+                    { "data": "pretAchizitie" }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": [ 0 ],
+                        "visible": true,
+                        "searchable": false
+                    }
+                ]
+            } );
+
+            $('#inventory-table tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    idArticol = $(this).children().first().text();
+                    showBarcode(idArticol);
+                    $(this).addClass('selected');
+                }
+            } );
+        } catch (err){
+            console.log(err);
+        }
 
         $('#adaugaarticol').on('submit', function(e){
             e.preventDefault();
@@ -524,6 +678,7 @@ try{
                     $('#cnp').val('');
                     $('#functie').val('');
                     $('#closepers').click();
+                    getPersoane();
                     $("#alert").notify({
                         message: { text: 'Persoana adaugata cu succes!' },
                         type: 'success',
@@ -558,6 +713,7 @@ try{
                 success: function (response) {
                     $('#denumireLoc').val('');
                     $('#closeloc').click();
+                    getLoc();
                     $("#alert").notify({
                         message: { text: 'Loc adaugat cu succes!' },
                         type: 'success',
@@ -571,88 +727,10 @@ try{
                 }
             });
         });
-//        // Add event listener for opening and closing details
-//        $('#inventory-table tbody').on('dblclick', 'tr', function () {
-//            var tr = $(this).closest('tr');
-//            var row = table.row(tr);
-//            if (!$(this).hasClass('copil')) {
-//                if (row.child.isShown()) {
-//                    // This row is already open - close it
-//                    row.child.hide();
-//                    tr.removeClass('shown');
-//                }
-//                else {
-//                    // Open this row
-//                    row.child(format(tr.prop("id"))).show();
-//                    tr.next().addClass('copil');
-//                    $("#copil").children().addClass('copil');
-//                    tr.addClass('shown');
-//                }
-//            }
-//        });
 
-//        $('#inventory-table tbody').on('mousedown', 'tr', function (e) {
-//            var tr = $(this).closest('tr');
-//            if (!tr.hasClass('copil')) {
-//                if ($(this).hasClass('selected')) {
-//                    var id = $(this).closest('tr').attr('id');
-//                    $("input[name='idProiect']").val(id);
-//                    $("#idMaster").val(id);
-//                } else {
-//                    table.$('tr.selected').removeClass('selected');
-//                    $(this).addClass('selected');
-//                    var id = $(this).closest('tr').attr('id');
-//                    $("input[name='idProiect']").val(id);
-//                }
-//
-//                if (e.button == 2) {
-//                    $("#rcmenu").css('left', e.pageX + 5);
-//                    $("#rcmenu").css('top', e.pageY + 5);
-//                    $("#rcmenu").fadeIn(80);
-//                }
-//            }
-//
-//
-//        });
-//
-//        $('#inventory-table tbody').on('mousedown', 'tr', function (e) {
-//            var elem = $(event.target).closest("a");
-//            if (elem.hasClass('download')) {
-//                if (e.button == 2) {
-//                    $("#download").val(elem.attr('href'));
-//                    if(elem.hasClass('am')) {
-//                        $("#id").val(elem.data('ida'));
-//                        $("#category").val("am");
-//                    } else if(elem.hasClass('pr')) {
-//                        $("#id").val(elem.data('idp'));
-//                        $("#category").val("p");
-//                    } else if(elem.hasClass('ch')) {
-//                        $("#id").val(elem.data('idc'));
-//                        $("#category").val("c");
-//                    } else if(elem.hasClass('ra')) {
-//                        $("#id").val(elem.data('idr'));
-//                        $("#category").val("r");
-//                    } else {
-//                        $("#id").val(elem.data('idb'));
-//                        $("#category").val("bd");
-//                    }
-//                    $('#fileName').val(elem.text());
-//                    $("#childrcmenu").css('left', e.pageX + 5);
-//                    $("#childrcmenu").css('top', e.pageY + 5);
-//                    $("#childrcmenu").fadeIn(80);
-//                }
-//            }
-//        });
-//
         document.getElementById("inventory-table").oncontextmenu = function () {
             return false;
         }
-//
-//        $(document).click(function (e) {
-//            if (e.button == 0 ||e.button == 1 ) {
-//                $("#rcmenu").fadeOut(40);
-//                $("#childrcmenu").fadeOut(40);
-//            }
-//        });
+
     })
 </script>

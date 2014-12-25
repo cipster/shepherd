@@ -10,6 +10,7 @@ import projectManager.repository.Cod3;
 import projectManager.repository.dao.Cod1DAO;
 import projectManager.repository.dao.Cod2DAO;
 import projectManager.repository.dao.Cod3DAO;
+import projectManager.repository.dao.LocDAO;
 
 @Controller
 public class InventarController {
@@ -19,6 +20,8 @@ public class InventarController {
     private Cod1DAO cod1DAO;
     @Autowired
     private Cod2DAO cod2DAO;
+    @Autowired
+    private LocDAO locDAO;
 
     @RequestMapping(value = "/inventar", method = RequestMethod.GET)
     public String inventar(ModelMap map) {

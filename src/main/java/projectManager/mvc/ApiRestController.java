@@ -58,6 +58,22 @@ public class ApiRestController {
         return articoleDAO.getAll();
     }
 
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @RequestMapping(value = "/persoane", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<Persoana> getPersoane() {
+
+        return persoanaDAO.getAll();
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @RequestMapping(value = "/locuri", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<Loc> getLocuri() {
+
+        return locDAO.getAll();
+    }
+
     @RequestMapping(value = "/generatebarcode/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<byte[]> generateBarcode(@PathVariable String id) throws IOException {

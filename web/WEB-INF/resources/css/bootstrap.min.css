@@ -6415,5 +6415,12 @@ button.close {
 
 .file-input-wrapper {
     max-width: 490px;
+}
 
+.ieseas {
+    display: none;
+}
+
+#iesebarcode {
+    display: none;
 }
