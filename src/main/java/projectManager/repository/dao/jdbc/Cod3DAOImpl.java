@@ -37,6 +37,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
             cod3.setBarcode(rs.getString("barcode"));
             cod3.setDetalii(rs.getString("detalii"));
             cod3.setPretAchizitie(rs.getString("pret_achizitie"));
+            cod3.setStare(rs.getByte("stare"));
 
             return cod3;
         }
@@ -59,9 +60,40 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     }
 
     @Override
+    public Cod3 findByBarcode(String code) throws DataAccessException{
+        final String query = "SELECT * FROM proiecte.cod_3 WHERE barcode=" + code;
+
+        return getJdbcTemplate().queryForObject(query, rowMapper);
+
+    }
+
+    @Override
+    public void setStare(final byte stare, final int id) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        final String query = "UPDATE proiecte.cod_3 SET stare=? WHERE cod_3=?";
+
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+                PreparedStatement ps = con.prepareStatement(query);
+
+                ps.setInt(1, stare);
+
+                ps.setInt(2, id);
+
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc);
+    }
+
+    @Override
     public Cod3 findByID(Integer id) {
         try {
-            String query = "SELECT * FROM proiecte.cod_3 WHERE id_cod_3=" + id;
+            final String query = "SELECT * FROM proiecte.cod_3 WHERE id_cod_3=" + id;
 
             return getJdbcTemplate().queryForObject(query, rowMapper);
         } catch (DataAccessException e) {
@@ -74,7 +106,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     public Integer create(final Cod3 entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        final String query = "INSERT INTO proiecte.cod_3(id_cod_3, cod_1, cod_2, cod_3, denumire_3, barcode, detalii, pret_achizitie) VALUES (?,?,?,getLastCode3(),?,uuid(),?,?)";
+        final String query = "INSERT INTO proiecte.cod_3(id_cod_3, cod_1, cod_2, cod_3, denumire_3, barcode, detalii, pret_achizitie,stare) VALUES (?,?,?,getLastCode3(),?,uuid(),?,?,1)";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -100,7 +132,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     @Override
     public Integer update(final Cod3 entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, denumire_3=?, detalii=?, pret_achizitie=? WHERE id_cod_3=?";
+        final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, denumire_3=?, detalii=?, pret_achizitie=?, stare =? WHERE id_cod_3=?";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -113,7 +145,9 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
                 ps.setString(3, entity.getDenumire3());
                 ps.setString(4, entity.getDetalii());
                 ps.setString(5, entity.getPretAchizitie());
-                ps.setInt(6, entity.getIdCod3());
+                ps.setByte(6, entity.getStare());
+                ps.setInt(7, entity.getIdCod3());
+
 
                 logger.debug(ps.toString());
                 return ps;

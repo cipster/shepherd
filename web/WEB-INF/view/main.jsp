@@ -645,7 +645,6 @@
                     }).show();
                     return;
                 }
-debugger;
                 var respContent = "";
                 var uploadResponse = JSON.parse(JSON.parse(response));
 

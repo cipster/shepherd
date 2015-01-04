@@ -1,5 +1,6 @@
 package projectManager.mvc;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.zxing.BarcodeFormat;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,21 +10,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import projectManager.repository.Articole;
-import projectManager.repository.Cod3;
-import projectManager.repository.Loc;
-import projectManager.repository.Persoana;
-import projectManager.repository.dao.ArticoleDAO;
-import projectManager.repository.dao.Cod3DAO;
-import projectManager.repository.dao.LocDAO;
-import projectManager.repository.dao.PersoanaDAO;
+import projectManager.repository.*;
+import projectManager.repository.dao.*;
 import projectManager.util.Barcode;
 
+import javax.json.*;
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +42,8 @@ public class ApiRestController {
     private PersoanaDAO persoanaDAO;
     @Autowired
     private LocDAO locDAO;
+    @Autowired
+    private EvidentaInventarDAO evidentaInventarDAO;
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -72,6 +68,19 @@ public class ApiRestController {
     public List<Loc> getLocuri() {
 
         return locDAO.getAll();
+    }
+
+    @RequestMapping(value = "/articol/{code}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Cod3 getArticol(@PathVariable String code) {
+        Cod3 cod3 = null;
+
+        try {
+            cod3 = cod3DAO.findByBarcode(code);
+        } catch (Exception e) {
+
+        }
+        return cod3;
     }
 
     @RequestMapping(value = "/generatebarcode/{id}", method = RequestMethod.GET)
@@ -107,13 +116,13 @@ public class ApiRestController {
     public String addClient(@RequestBody Cod3 cod3) {
 
         String response = "";
-            try {
-                cod3DAO.create(cod3);
-                response = "1";
-            } catch (DataAccessException ex) {
-                ex.printStackTrace();
-                response = "-1";
-            }
+        try {
+            cod3DAO.create(cod3);
+            response = "1";
+        } catch (DataAccessException ex) {
+            ex.printStackTrace();
+            response = "-1";
+        }
 
         return response;
     }
@@ -124,14 +133,51 @@ public class ApiRestController {
     public String addPersoana(@RequestBody Persoana persoana) {
 
         String response = "";
-            try {
-                persoanaDAO.create(persoana);
-                response = "1";
-            } catch (DataAccessException ex) {
-                ex.printStackTrace();
-                response = "-1";
-            }
+        try {
+            persoanaDAO.create(persoana);
+            response = "1";
+        } catch (DataAccessException ex) {
+            ex.printStackTrace();
+            response = "-1";
+        }
 
+        return response;
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @RequestMapping(value = "/evidentaiese", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String evidentaIese(HttpServletRequest request) {
+        EvidentaInventar evidentaInventar = new EvidentaInventar();
+        String evidenta = request.getParameterNames().nextElement();
+        String response = "";
+        if(evidenta != null) {
+            JsonObject obj = Json.createReader(new StringReader(evidenta)).readObject();
+
+            if (obj != null) {
+                Integer idLoc = Integer.parseInt(obj.getString("idLoc"));
+                Integer idPersoana = Integer.parseInt(obj.getString("idPersoana"));
+                String detalii = obj.getString("detalii");
+                int stare = obj.getInt("stare");
+
+                evidentaInventar.setIdLoc(idLoc);
+                evidentaInventar.setIdPersoana(idPersoana);
+                evidentaInventar.setDetalii(detalii);
+                JsonArray cod3 = obj.getJsonArray("cod3");
+                for(int i = 0; i < cod3.size(); i ++){
+                    Integer cod3Val = Integer.parseInt(cod3.getJsonString(i).getString());
+                    evidentaInventar.setIdCod3(cod3Val);
+                    try {
+                        cod3DAO.setStare((byte)stare, cod3Val);
+                        evidentaInventarDAO.create(evidentaInventar);
+                        response = "1";
+                    } catch (DataAccessException ex) {
+                        ex.printStackTrace();
+                        response = "-1";
+                    }
+                }
+            }
+        }
         return response;
     }
 
@@ -141,13 +187,13 @@ public class ApiRestController {
     public String addLoc(@RequestBody Loc loc) {
 
         String response = "";
-            try {
-                locDAO.create(loc);
-                response = "1";
-            } catch (DataAccessException ex) {
-                ex.printStackTrace();
-                response = "-1";
-            }
+        try {
+            locDAO.create(loc);
+            response = "1";
+        } catch (DataAccessException ex) {
+            ex.printStackTrace();
+            response = "-1";
+        }
 
         return response;
     }

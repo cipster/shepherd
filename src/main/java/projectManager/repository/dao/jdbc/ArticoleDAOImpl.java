@@ -37,6 +37,7 @@ public class ArticoleDAOImpl extends JdbcDaoSupport implements ArticoleDAO {
             articole.setBarcode(rs.getString("barcode"));
             articole.setDetalii(rs.getString("detalii"));
             articole.setPretAchizitie(rs.getString("pret_achizitie"));
+            articole.setStare(rs.getByte("stare"));
 
             return articole;
         }

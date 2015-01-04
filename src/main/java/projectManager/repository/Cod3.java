@@ -17,6 +17,7 @@ public class Cod3 {
     private String barcode;
     private String detalii;
     private String pretAchizitie;
+    private byte stare;
 
     @Id
     @Column(name = "id_cod_3")
@@ -92,6 +93,16 @@ public class Cod3 {
     @Column(name = "pret_achizitie")
     public String getPretAchizitie() {
         return pretAchizitie;
+    }
+
+    @Basic
+    @Column(name ="stare")
+    public byte getStare() {
+        return stare;
+    }
+
+    public void setStare(byte stare) {
+        this.stare = stare;
     }
 
     public void setPretAchizitie(String pretAchizitie) {

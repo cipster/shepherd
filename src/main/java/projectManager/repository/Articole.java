@@ -3,6 +3,7 @@ package projectManager.repository;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by Ciprian on 12/14/2014.
@@ -17,8 +18,9 @@ public class Articole {
     private String barcode;
     private String detalii;
     private String pretAchizitie;
+    private byte stare;
 
-    @Basic
+    @Id
     @Column(name = "id_cod_3")
     public int getIdCod3() {
         return idCod3;
@@ -86,6 +88,16 @@ public class Articole {
 
     public void setPretAchizitie(String pretAchizitie) {
         this.pretAchizitie = pretAchizitie;
+    }
+
+    @Basic
+    @Column(name = "stare")
+    public byte getStare() {
+        return stare;
+    }
+
+    public void setStare(byte stare) {
+        this.stare = stare;
     }
 
     @Override

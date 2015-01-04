@@ -72,7 +72,7 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
     public Long create(final EvidentaInventar entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        final String query = "INSERT INTO proiecte.evidenta_inventar(id_evidenta_inventar, id_cod_3, id_persoana, id_loc, data_preluarii, detalii) VALUES (?,?,?,?,?,?)";
+        final String query = "INSERT INTO proiecte.evidenta_inventar(id_evidenta_inventar, id_cod_3, id_persoana, id_loc, data_preluarii, detalii) VALUES (?,?,?,?,now(),?)";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -83,8 +83,8 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
                 ps.setInt(2, entity.getIdCod3());
                 ps.setInt(3, entity.getIdPersoana());
                 ps.setInt(4, entity.getIdLoc());
-                ps.setDate(5, entity.getDataPreluarii());
-                ps.setString(6, entity.getDetalii());
+
+                ps.setString(5, (entity.getDetalii() == null)?"":entity.getDetalii());
 
                 logger.debug(ps.toString());
                 return ps;

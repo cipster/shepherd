@@ -109,7 +109,7 @@
         $(".container").show();
         $('#username').focus();
     } else {
-        $(".container").hide()
+        $(".container").hide();
         $("#downloadChrome").show()
     }
 </script>

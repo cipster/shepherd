@@ -24,8 +24,9 @@
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
     <link href="/css/datatables.bootstrap.css" rel="stylesheet">
-    <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/chosen.css" rel="stylesheet">
+    <link href="/css/datatabletools.css" rel="stylesheet">
     <style type="text/css">
         @media print
         {
@@ -83,8 +84,8 @@
 <div class="container">
 
     <div class="btn-group" style="float:left; margin: 15px;">
-        <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Iese</button>
-        <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Intra</button>
+        <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
+        <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Intrare</button>
     </div>
     <sec:authorize access="hasRole('ROLE_SUPERUSER')">
         <div class="btn-group" style="float:right; margin: 15px;">
@@ -151,7 +152,6 @@
                         <label for="pretachizitie">Pret achizitie</label>
                         <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
@@ -235,32 +235,45 @@
                 <h4 class="modal-title"><spring:message code="DIALOG.IESE" /></h4>
             </div>
             <div class="modal-body">
-                <div id="ieseq" style="text-align: center">
-                    <h4><spring:message code="INVENTAE.QIESE"/></h4><br/>
-                    <div style="width: 200px; margin-left: auto; margin-right: auto;">
-                        <button class="btn btn-default" style="float: left;" id="scanbut"><span class="fa fa-barcode">&nbsp;</span> Scan</button>
-                        <button class="btn btn-default" style="float: right" id="pickbut"><span class="fa fa-edit">&nbsp;</span> Alege</button>
-                    </div>
-                </div><br/>
-                <form id="ieseform" action="/api/iese" method="post"></form>
+                <%--<div id="ieseq" style="text-align: center">--%>
+                <%--<h4><spring:message code="INVENTAE.QIESE"/></h4><br/>--%>
+                <%--<div style="width: 200px; margin-left: auto; margin-right: auto;">--%>
+                <%--<button class="btn btn-default" style="float: left;" id="scanbut"><span class="fa fa-barcode">&nbsp;</span> Scan</button>--%>
+                <%--<button class="btn btn-default" style="float: right" id="pickbut"><span class="fa fa-edit">&nbsp;</span> Alege</button>--%>
+                <%--</div>--%>
+                <%--</div><br/>--%>
+
                 <div id="ieseas" class="ieseas">
                     <div class="form-group">
                         <label for="ieseloc">Alege locul</label><br/>
                         <select id="ieseloc"></select>
-                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="iesepers">Alege persoana</label><br/>
                         <select id="iesepers"></select>
                     </div>
+                    <div class="form-group">
+                        <ol id="articolecautate">
+
+                        </ol>
+
+                    </div>
                     <div id="iesebarcode" class="form-group">
                         <h3>Scaneaza articolul</h3>
-                        <input id="iesebarcodeinput" class="form-control" style="width: 70%;">
+
                     </div>
+                    <input id="iesebarcodeinput">
+                </div>
+                <div id="detalii-group" class="form-group">
+                    <label for="detaliiiese">Detalii</label>
+                    <textarea id="detaliiiese" rows="3" cols="75" class="form-control"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="closeiese" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
-                <button type="button" id="backiese" class="btn btn-default" data-dismiss="modal"><span class="fa fa-back">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
+                <button type="button" id="backiese" class="btn btn-default"><span class="fa fa-">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
+                <button type="button" id="nextiese" class="btn btn-success ascuns"><span class="fa fa-">&nbsp;</span><spring:message code="DIALOG.NEXT" /></button>
+                <button type="button" id="atribuie-articole" class="btn btn-success ascuns"><span class="fa fa-">&nbsp;</span><spring:message code="DIALOG.ATRIBUIE" /></button>
+                <button type="button" id="closeiese" class="btn btn-default" data-dismiss="modal"><span class="fa fa-cross"></span><spring:message code="DIALOG.CLOSE" /></button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -328,9 +341,14 @@
 <script src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <script src="/js/chosen.jquery.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
+<script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 <script type="text/javascript">
     var table;
     var idArticol;
+
+    function formSubmit() {
+        document.getElementById("logoutForm").submit();
+    }
 
     function showBarcode(idArticol){
         $.ajax({
@@ -467,6 +485,26 @@
         return childString;
     }
 
+    function getArticol(code){
+        var articolJSON;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/articol/' + code,
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    articolJSON = response;
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+
+        return articolJSON;
+    }
+
     function getPersoane(){
         $("#iesepers").html("");
         $.ajax({
@@ -512,11 +550,96 @@
         $("#ieseloc").trigger("chosen:updated");
 
     }
+
     $(document).ready(function () {
         var selcod1 = $('#selcod1');
         var selcod2 = $('#selcod2');
         var iesepers = $('#iesepers');
         var ieseloc = $('#ieseloc');
+
+        try{
+            table = $('#inventory-table').DataTable( {
+                "ajax": {
+                    "url": '${pageContext.request.contextPath}/api/getinventory',
+                    "dataSrc": ""
+                },
+                "language": {
+                    "url": '/fonts/ro_RO.txt'
+                },
+                stateSave: true,
+                "columns": [
+                    { "data": "idCod3" },
+                    { "data": "denumire1" },
+                    { "data": "denumire2" },
+                    { "data": "denumire3" },
+                    { "data": "barcode" },
+                    { "data": "detalii" },
+                    { "data": "stare" }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": [ 0 ],
+                        "visible": true,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [ 5 ],
+                        "data": "stare",
+                        "defaultContent": '<div class="btn ' + ( "data" == 1 ? " success ": " danger " ) + '"><span class=""></span></div>'
+                    }
+                ],
+                dom: 'T<"clear">lfrtip',
+                tableTools: {
+                    "sSwfPath": "/swf/copy_csv_xls_pdf.swf",
+                    "aButtons": [
+                        {
+                            "sExtends": "csv",
+                            "sButtonClass": "btn btn-default",
+                            "sButtonText": '<span class="fa fa-file-o">&nbsp;&nbsp;</span><span>CSV</span>',
+                            "oSelectorOpts": {
+                                page: 'current'
+                            }
+                        },
+                        {
+                            "sExtends": "xls",
+                            "sButtonClass": "btn btn-default",
+                            "sCharSet": "utf16le",
+                            "sButtonText": '<span class="fa fa-file-excel-o">&nbsp;&nbsp;</span><span>XLS</span>',
+                            "oSelectorOpts": {
+                                page: 'current'
+                            }
+                        },
+                        {
+                            "sExtends": "pdf",
+                            "sButtonClass": "btn btn-default",
+                            "sButtonText": '<span class="fa fa-file-pdf-o">&nbsp;&nbsp;</span><span>PDF</span>',
+                            "oSelectorOpts": {
+                                page: 'current'
+                            }
+                        }
+                    ]
+                }
+            } );
+
+            $('#inventory-table tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    idArticol = $(this).children().first().text();
+                    showBarcode(idArticol);
+                    $(this).addClass('selected');
+                }
+            } );
+        } catch (err){
+            console.log(err);
+        }
+
+        $("#iesebarcodeinput").css({
+            position: 'absolute',
+            top: '-700px'
+        });
 
         selcod1.chosen({
             width: "60%",
@@ -552,61 +675,164 @@
         });
         getLoc();
 
+        //butonul de scan la iese
         $('#scanbut').on('click', function(){
-           $('#ieseq').hide();
-           $('#ieseas').show();
+//            $('#ieseq').hide();
+            $('#backiese').show();
+            $('#ieseas').show();
         });
 
+        //butonul de back de la scanare iese
+        $('#backiese').on('click', function(){
+            if($(this).hasClass('pas2')){
+                $('#backiese').hide();
+                $('#ieseas').show();
+                $('#detalii-group').hide();
+                $('#nextiese').removeClass('ascuns');
+                $('#iesebarcodeinput').focus();
+                $('#atribuie-articole').addClass('ascuns');
+                $(this).removeClass('pas2');
+            } else {
+                ieseloc.val(-1);
+                ieseloc.trigger('chosen:updated');
+                iesepers.val(-1);
+                iesepers.trigger('chosen:updated');
+                $('#iesebarcodeinput').val('');
+                $('#ieseq').show();
+                $('#backiese').hide();
+                $('#ieseas').hide();
+                $('#atribuie-articole').addClass('ascuns');
+                $('#iesebarcode').addClass('ascuns');
+                $('#articolecautate').html('');
+                $('#nextiese').addClass('ascuns');
+                $('#detaliiiese').val('');
+            }
+        });
+
+        //actiunea cand se schimba persoana la scan iese
         iesepers.on('change', function(){
-           if($(this).val() > 0){
-               $('#iesebarcode').show();
-               $('#iesebarcodeinput').focus();
-           }
+            if($(this).val() > 0 && ieseloc.val() > 0){
+                $('#iesebarcode').show();
+                setTimeout(function(){
+                    iesepers.removeClass('chosen-container-active');
+                    $('#iesebarcodeinput').focus();
+                }, 0);
+            }
         });
 
-        $('#iesebarcodeinput').on('', function(e){
-            console.log(e.originalEvent);
+        //actiunea cand se schimba locul la scan iese
+        ieseloc.on('change', function(){
+            if($(this).val() > 0 && iesepers.val() > 0){
+                $('#iesebarcode').show();
+                setTimeout(function(){
+                    ieseloc.removeClass('chosen-container-active');
+                    $('#iesebarcodeinput').focus();
+                }, 0);
+            }
         });
 
+        //la click pe text se face focus pt scan
+        $('#iesebarcode').on('click', function(){
+            $('#iesebarcodeinput').focus();
+        });
 
-        try{
-            table = $('#inventory-table').dataTable( {
-                "ajax": {
-                    "url": '${pageContext.request.contextPath}/api/getinventory',
-                    "dataSrc": ""
-                },
-                "columns": [
-                    { "data": "idCod3" },
-                    { "data": "denumire1" },
-                    { "data": "denumire2" },
-                    { "data": "denumire3" },
-                    { "data": "barcode" },
-                    { "data": "detalii" },
-                    { "data": "pretAchizitie" }
-                ],
-                "columnDefs": [
-                    {
-                        "targets": [ 0 ],
-                        "visible": true,
-                        "searchable": false
+        //aduce valoarea articolului dupa ce a fost scanat
+        $('#iesebarcodeinput').on('keyup', function(e){
+            if(e.keyCode == 13){
+                var code= $(this).val();
+                $(this).val('');
+                var articolJSON = getArticol(code);
+                if(typeof  articolJSON !== 'undefined') {
+                    if(articolJSON.stare != 0) {
+                        if($('#articolecautate').html().trim() === ''){
+                            $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+
+                        } else {
+                            $('#articolecautate').find('li').each(function(){
+                                if($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
+                                    $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                                }
+                            });
+                        }
+
+                        if($('#nextiese').hasClass('ascuns')){
+                            $('#nextiese').removeClass('ascuns');
+                        }
+                    } else {
+                        alert('Articolul este deja alocat! Daca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
                     }
-                ]
-            } );
 
-            $('#inventory-table tbody').on( 'click', 'tr', function () {
-                if ( $(this).hasClass('selected') ) {
-                    $(this).removeClass('selected');
+                } else {
+                    alert('Articolul nu a fost gasit!');
                 }
-                else {
-                    table.$('tr.selected').removeClass('selected');
-                    idArticol = $(this).children().first().text();
-                    showBarcode(idArticol);
-                    $(this).addClass('selected');
+            }
+        });
+
+        //butonul de next
+        //la apasarea next se afiseaza detaliile si apare butonul de final
+        $('#nextiese').on('click', function() {
+            $('#backiese').show();
+            $('#ieseas').hide();
+            if ($('#atribuie-articole').hasClass('ascuns')) {
+                $('#atribuie-articole').removeClass('ascuns');
+                $('#backiese').addClass('pas2');
+            }
+            $('#nextiese').addClass('ascuns');
+            $('#detalii-group').show();
+        });
+        //butonul care introduce datele in evidenta de inventar
+        $('#atribuie-articole').on('click', function(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var pers = iesepers.val();
+            var loc = ieseloc.val();
+            var articole = [];
+            $('#articolecautate').find('li').each(function(){
+                if($(this).prop('id')) {
+                    articole.push($(this).prop('id'));
                 }
-            } );
-        } catch (err){
-            console.log(err);
-        }
+            });
+            var detalii = $('#detaliiiese').val();
+            var data = { "idPersoana" : pers, "idLoc" : loc, "cod3": articole, "detalii": detalii, "stare": 0 };
+            $.ajax({
+                type: 'post',
+                url: '${pageContext.request.contextPath}/api/evidentaiese',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
+                data: JSON.stringify(data),
+                success: function (response) {
+                    ieseloc.val(-1);
+                    ieseloc.trigger('chosen:updated');
+                    iesepers.val(-1);
+                    iesepers.trigger('chosen:updated');
+                    $('#iesebarcodeinput').val('');
+                    $('#detalii-group').hide();
+                    $('#nextiese').addClass('ascuns');
+                    $('#atribuie-articole').addClass('ascuns');
+                    $('#backiese').removeClass('pas2');
+                    $('#backiese').hide();
+                    $('#iesebarcode').hide();
+                    $('#ieseq').show();
+                    $('#articolecautate').html('');
+                    $('#closeiese').click();
+                    table.ajax.reload();
+                    $("#alert").notify({
+                        message: { text: 'Operatie cu succes!' },
+                        type: 'success',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 3500 }
+                    }).show();
+
+                },
+                error: function(err){
+                }
+            });
+
+        });
+
+
 
         $('#adaugaarticol').on('submit', function(e){
             e.preventDefault();
@@ -645,7 +871,7 @@
                         closeable: 'true',
                         transition: 'fade',
                         fadeOut: { enabled: true, delay: 3500 }
-                    }).show()
+                    }).show();
                 },
                 error: function(err){
                     alert('Eroare la conexiune!');
@@ -692,7 +918,9 @@
                 }
             });
 
-        });$('#adaugaloc').on('submit', function(e){
+        });
+
+        $('#adaugaloc').on('submit', function(e){
             e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");

@@ -2138,22 +2138,22 @@ textarea.input-lg, select[multiple].input-lg {
 
 .btn {
     display: inline-block;
-    margin-bottom: 0;
-    font-weight: 400;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
+    margin-bottom: 0!important;
+    font-weight: 400!important;
+    text-align: center!important;
+    vertical-align: middle!important;
+    cursor: pointer!important;
+    background-image: none!important;
+    border: 1px solid transparent!important;
+    white-space: nowrap!important;
     padding: 6px 12px;
     font-size: 14px;
-    line-height: 1.42857143;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none
+    line-height: 1.42857143!important;
+    border-radius: 4px!important;
+    -webkit-user-select: none!important;
+    -moz-user-select: none!important;
+    -ms-user-select: none!important;
+    user-select: none!important;
 }
 
 .btn:focus, .btn:active:focus, .btn.active:focus {
@@ -2184,9 +2184,9 @@ textarea.input-lg, select[multiple].input-lg {
 }
 
 .btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc
+    color: #333!important;
+    background-color: #fff!important;
+    border-color: #ccc!important;
 }
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
@@ -2210,9 +2210,9 @@ textarea.input-lg, select[multiple].input-lg {
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: #428bca;
-    border-color: #357ebd
+    color: #fff!important;
+    background-color: #428bca!important;
+    border-color: #357ebd!important;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
@@ -6389,7 +6389,7 @@ button.close {
     font-size: 30px;
 }
 
-.modal-xlg{
+.modal-xlg {
     min-width: 1300px;
 }
 
@@ -6398,8 +6398,8 @@ button.close {
     vertical-align: middle;
     text-align: center;
     position: fixed;
-    top:250px;
-    right:15px;
+    top: 250px;
+    right: 15px;
     background-color: #f5f5f5;
     border: 2px solid darkgray;
     border-radius: .5em;
@@ -6409,7 +6409,7 @@ button.close {
 
 .code-block img {
     width: 200px;
-    height:200px;
+    height: 200px;
 
 }
 
@@ -6417,10 +6417,31 @@ button.close {
     max-width: 490px;
 }
 
-.ieseas {
-    display: none;
-}
+/*.ieseas {*/
+    /*display: none;*/
+/*}*/
 
 #iesebarcode {
     display: none;
+}
+
+#backiese {
+    display: none;
+}
+
+#detalii-group {
+    display: none;
+}
+
+.ascuns {
+    display: none;
+}
+
+div.DTTT {
+    margin-bottom: 0.5em;
+    float: right;
+}
+
+div.dataTables_wrapper {
+    clear: both;
 }
