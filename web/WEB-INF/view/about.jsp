@@ -132,10 +132,10 @@
             </div>
         </div>
     </div>
-    <a class="left carousel-control" style="display: table-cell" href="#myCarousel" data-slide="prev"><span
-            class="fa fa-2x fa-chevron-left" style="vertical-align: middle;"></span></a>
-    <a class="right carousel-control" style="display: table-cell" href="#myCarousel" data-slide="next"><span
-            class="fa fa-2x fa-chevron-right" style="top:100px;"></span></a>
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span
+            class="fa fa-2x fa-chevron-left" style="margin-top:100%;"></span></a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next"><span
+            class="fa fa-2x fa-chevron-right" style="margin-top:100%;"></span></a>
 </div>
 <!-- /.carousel -->
 

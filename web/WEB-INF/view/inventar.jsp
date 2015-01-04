@@ -27,14 +27,7 @@
     <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/chosen.css" rel="stylesheet">
     <link href="/css/datatabletools.css" rel="stylesheet">
-    <style type="text/css">
-        @media print
-        {
-            body * { visibility: hidden; }
-            .barcode * { visibility: visible; }
-            .barcode { position: absolute; top: 40px; left: 30px; }
-        }
-    </style>
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -81,7 +74,7 @@
 </div>
 
 
-<div class="container">
+<div class="container" style="margin-bottom: 50px;">
 
     <div class="btn-group" style="float:left; margin: 15px;">
         <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
@@ -96,6 +89,7 @@
     </sec:authorize>
     <!-- Main component -->
     <div class="jumbotron">
+        <br/>
         <br/>
         <table id="inventory-table" class="table unselectable" width="100%">
             <thead>
@@ -235,14 +229,6 @@
                 <h4 class="modal-title"><spring:message code="DIALOG.IESE" /></h4>
             </div>
             <div class="modal-body">
-                <%--<div id="ieseq" style="text-align: center">--%>
-                <%--<h4><spring:message code="INVENTAE.QIESE"/></h4><br/>--%>
-                <%--<div style="width: 200px; margin-left: auto; margin-right: auto;">--%>
-                <%--<button class="btn btn-default" style="float: left;" id="scanbut"><span class="fa fa-barcode">&nbsp;</span> Scan</button>--%>
-                <%--<button class="btn btn-default" style="float: right" id="pickbut"><span class="fa fa-edit">&nbsp;</span> Alege</button>--%>
-                <%--</div>--%>
-                <%--</div><br/>--%>
-
                 <div id="ieseas" class="ieseas">
                     <div class="form-group">
                         <label for="ieseloc">Alege locul</label><br/>
@@ -260,7 +246,6 @@
                     </div>
                     <div id="iesebarcode" class="form-group">
                         <h3>Scaneaza articolul</h3>
-
                     </div>
                     <input id="iesebarcodeinput">
                 </div>
@@ -296,7 +281,6 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
                     <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
-
                 </div>
             </form>
         </div>
@@ -325,7 +309,7 @@
 <input hidden="hidden" id="appLangCode" value="">
 </body>
 <footer class="panel-footer">
-    <p class="pull-right"><a href="#"><spring:message code="NAVBAR.BACKTOTOP" /></a></p>
+    <p class="pull-right"><a href="#top"><spring:message code="NAVBAR.BACKTOTOP" /></a></p>
     <p>&copy; fieldcover 2014 <a href="#"></a> &middot; <a href="#">Shepherd</a></p>
 </footer>
 </html>
@@ -337,8 +321,10 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/docs.min.js"></script>
 <script src="/js/bootstrap.file-input.js"></script>
-<script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
-<script src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script src="/js/datatables.js"></script>
+<script src="/js/datatables.bootstrap.js"></script>
+<%--<script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>--%>
+<%--<script src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>--%>
 <script src="/js/chosen.jquery.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
 <script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
@@ -551,12 +537,26 @@
 
     }
 
+    function drawDisponibil(table){
+        tableData = table.rows().nodes();
+        for (var i = 0; i < tableData.length; i++) {
+            var td = $(tableData[i]).find("td:eq(6)");
+            td.css('text-align','center');
+            var bul = td.text();
+            if(bul == 1){
+                td.html('<div class="btn btn-success"><span class="fa fa-check"></span></div>');
+            } else {
+                td.html('<div class="btn btn-danger"><span class="fa fa-ban"></span></div>');
+            }
+        }
+    }
+
     $(document).ready(function () {
         var selcod1 = $('#selcod1');
         var selcod2 = $('#selcod2');
         var iesepers = $('#iesepers');
         var ieseloc = $('#ieseloc');
-
+        var tableData;
         try{
             table = $('#inventory-table').DataTable( {
                 "ajax": {
@@ -581,14 +581,9 @@
                         "targets": [ 0 ],
                         "visible": true,
                         "searchable": false
-                    },
-                    {
-                        "targets": [ 5 ],
-                        "data": "stare",
-                        "defaultContent": '<div class="btn ' + ( "data" == 1 ? " success ": " danger " ) + '"><span class=""></span></div>'
                     }
                 ],
-                dom: 'T<"clear">lfrtip',
+                dom: 'T<"clear"><"break-row">lfrtip<"break-row-lg">',
                 tableTools: {
                     "sSwfPath": "/swf/copy_csv_xls_pdf.swf",
                     "aButtons": [
@@ -621,20 +616,23 @@
                 }
             } );
 
+
             $('#inventory-table tbody').on( 'click', 'tr', function () {
                 if ( $(this).hasClass('selected') ) {
                     $(this).removeClass('selected');
                 }
                 else {
                     table.$('tr.selected').removeClass('selected');
-                    idArticol = $(this).children().first().text();
-                    showBarcode(idArticol);
                     $(this).addClass('selected');
                 }
             } );
         } catch (err){
             console.log(err);
         }
+
+        setTimeout(function() {
+            drawDisponibil(table);
+        },1000);
 
         $("#iesebarcodeinput").css({
             position: 'absolute',
@@ -817,6 +815,9 @@
                     $('#articolecautate').html('');
                     $('#closeiese').click();
                     table.ajax.reload();
+                    setTimeout(function(){
+                        drawDisponibil(table);
+                    },1000)
                     $("#alert").notify({
                         message: { text: 'Operatie cu succes!' },
                         type: 'success',

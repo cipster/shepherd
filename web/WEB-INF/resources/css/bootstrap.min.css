@@ -5223,7 +5223,9 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:hover, a.list-g
     background-color: #f5f5f5;
     border-top: 1px solid #ddd;
     border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px
+    border-bottom-left-radius: 3px;
+    opacity: .8;
+    z-index: 50;
 }
 
 .panel > .list-group {
@@ -6425,6 +6427,15 @@ button.close {
     display: none;
 }
 
+.break-row {
+    height: 10px;
+    display: block;
+}
+
+.break-row-lg {
+    height: 20px;
+    display: block;
+}
 #backiese {
     display: none;
 }

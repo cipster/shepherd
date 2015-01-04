@@ -24,7 +24,8 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
-    <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/datatabletools.css" rel="stylesheet">
     <link href="/css/datatables.bootstrap.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -72,7 +73,7 @@
 </div>
 
 
-<div class="container">
+<div class="container" style="margin-bottom: 50px;">
 
     <!-- Main component -->
     <div class="jumbotron">
@@ -130,9 +131,6 @@
     <div class="menuItem" data-toggle="modal" data-target="#uploadBd"><spring:message code="MAIN.BD" /></div>
     <div class="menuItem" data-toggle="modal" data-target="#uploadAlteMateriale"><spring:message code="MAIN.ALTEMATERIALE" /></div>
 </div>
-
-
-</div> <!-- /container -->
 
 
 <div class="modal fade" id="uploadPropunere">
@@ -230,7 +228,7 @@
 </body>
 <footer class="panel-footer">
     <p class="pull-right"><a href="#"><spring:message code="NAVBAR.BACKTOTOP" /></a></p>
-    <p>&copy; fieldcover 2014 <a href="#"></a> &middot; <a href="#">Shepherd</a></p>
+    <p>&copy; fieldcover 2014 <a href="#top"></a> &middot; <a href="#">Shepherd</a></p>
 </footer>
 </html>
 
@@ -244,6 +242,7 @@
 <script src="/js/datatables.js"></script>
 <script src="/js/datatables.bootstrap.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
+<script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 <script type="text/javascript">
     var table;
     var appLangCode = getUrlParameter("lang");
@@ -614,7 +613,7 @@
             }
         });
     }
-    ;
+
 
     function alteMaterialeAjaxCall() {
         var data;
@@ -676,7 +675,7 @@
             }
         });
     }
-    ;
+
 
     function alteMaterialeDelete() {
         var idProiect = $('#idMaster').val();
@@ -731,7 +730,6 @@
             }
         });
     }
-    ;
 
     function propunereDelete() {
         var idProiect = $('#idMaster').val();
@@ -786,7 +784,6 @@
             }
         });
     }
-    ;
 
     function chestionarDelete() {
         var idProiect = $('#idMaster').val();
@@ -841,7 +838,6 @@
             }
         });
     }
-    ;
 
     function raportDelete() {
         var idProiect = $('#idMaster').val();
@@ -896,7 +892,6 @@
             }
         });
     }
-    ;
 
     function bdDelete() {
         var idProiect = $('#idMaster').val();
@@ -952,7 +947,6 @@
             }
         });
     }
-    ;
 
     function getProjId(id) {
         $("input[name='idProiect']").val(id);
@@ -997,7 +991,7 @@
                         if($("#propDownloadString") && $("#propDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/propunere\/' + id + '" title="Click pentru download"';
                         }
-                        propString += '<a class="download pr"' + downloadLink + ' id="prop' + id + '" data-idp="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        propString += '<a class="download pr"' + downloadLink + ' id="prop' + id + '" data-idp="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < chestArr.length; i++) {
@@ -1010,7 +1004,7 @@
                         if($("#chestDownloadString") && $("#chestDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/chestionar\/' + id + '" title="Click pentru download"';
                         }
-                        chestString += '<a class="download ch" ' + downloadLink +' id="chest' + id + '" data-idc="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        chestString += '<a class="download ch" ' + downloadLink +' id="chest' + id + '" data-idc="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < rapArr.length; i++) {
@@ -1023,7 +1017,7 @@
                         if($("#rapDownloadString") && $("#rapDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/raport\/' + id + '" title="Click pentru download"';
                         }
-                        rapString += '<a class="download ra" ' + downloadLink + ' id="rap' + id + '" data-idr="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        rapString += '<a class="download ra" ' + downloadLink + ' id="rap' + id + '" data-idr="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < bdArr.length; i++) {
@@ -1036,7 +1030,7 @@
                         if($("#bdDownloadString") && $("#bdDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/bd\/' + id + '" title="Click pentru download"';
                         }
-                        bdString += '<a class="download bd" ' + downloadLink + ' id="bd' + id + '" data-idb="' + id + '""> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        bdString += '<a class="download bd" ' + downloadLink + ' id="bd' + id + '" data-idb="' + id + '""> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < amArr.length; i++) {
@@ -1049,7 +1043,7 @@
                         if($("#amDownloadString") && $("#amDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/altemateriale\/' + id + '" title="Click pentru download"';
                         }
-                        amString += '<a class="download am" ' + downloadLink + ' id="am' + id + '" data-ida="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        amString += '<a class="download am" ' + downloadLink + ' id="am' + id + '" data-ida="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
             },
@@ -1078,7 +1072,39 @@
     $(document).ready(function () {
         table = $('#tabelProiecte').DataTable({
             "language": {
-                "url": appLang
+                "url": '/fonts/ro_RO.txt'
+            },
+            stateSave: true,
+            dom: 'Tlfrtip<"break-row-lg">',
+            tableTools: {
+                "sSwfPath": "/swf/copy_csv_xls_pdf.swf",
+                "aButtons": [
+                    {
+                        "sExtends": "csv",
+                        "sButtonClass": "btn btn-default",
+                        "sButtonText": '<span class="fa fa-file-o">&nbsp;&nbsp;</span><span>CSV</span>',
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
+                    },
+                    {
+                        "sExtends": "xls",
+                        "sButtonClass": "btn btn-default",
+                        "sCharSet": "utf16le",
+                        "sButtonText": '<span class="fa fa-file-excel-o">&nbsp;&nbsp;</span><span>XLS</span>',
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
+                    },
+                    {
+                        "sExtends": "pdf",
+                        "sButtonClass": "btn btn-default",
+                        "sButtonText": '<span class="fa fa-file-pdf-o">&nbsp;&nbsp;</span><span>PDF</span>',
+                        "oSelectorOpts": {
+                            page: 'current'
+                        }
+                    }
+                ]
             }
         });
 
