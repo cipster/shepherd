@@ -78,13 +78,13 @@
 
     <div class="btn-group" style="float:left; margin: 15px;">
         <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
-        <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Intrare</button>
+        <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Recuperare</button>
     </div>
     <sec:authorize access="hasRole('ROLE_SUPERUSER')">
         <div class="btn-group" style="float:right; margin: 15px;">
-            <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga articol</button>
-            <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga persoana</button>
-            <button id="add-place" data-toggle="modal"  data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adauga loc</button>
+            <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; articol</button>
+            <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; persoan&#259;</button>
+            <button id="add-place" data-toggle="modal"  data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; loc</button>
         </div>
     </sec:authorize>
     <!-- Main component -->
@@ -226,7 +226,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="DIALOG.IESE" /></h4>
+                <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.IESE" /></h4>
             </div>
             <div class="modal-body">
                 <div id="ieseas" class="ieseas">
@@ -239,10 +239,7 @@
                         <select id="iesepers"></select>
                     </div>
                     <div class="form-group">
-                        <ol id="articolecautate">
-
-                        </ol>
-
+                        <ol id="articolecautate"></ol>
                     </div>
                     <div id="iesebarcode" class="form-group">
                         <h3>Scaneaza articolul</h3>
@@ -272,16 +269,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="DIALOG.INTRA" /></h4>
+                <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.INTRA" /></h4>
             </div>
-            <form id="intraform" action="/api/intra" method="post">
-                <div class="modal-body">
+            <div class="modal-body">
 
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                    <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+            </div>
             </form>
         </div>
         <!-- /.modal-content -->
@@ -632,7 +627,7 @@
 
         setTimeout(function() {
             drawDisponibil(table);
-        },1000);
+        },3000);
 
         $("#iesebarcodeinput").css({
             position: 'absolute',
