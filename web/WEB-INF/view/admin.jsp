@@ -53,7 +53,7 @@
                 </ul>
                 <ul class="nav nav-tabs">
                     <li><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
-                    <li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>
+                    <%--<li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>--%>
                     <li class="active"><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
                     <li><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
                     <li><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>

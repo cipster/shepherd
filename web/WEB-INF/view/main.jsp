@@ -60,7 +60,7 @@
 
             <ul class="nav nav-tabs nav-navbar">
                 <li class="active"><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
-                <li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>
+                <%--<li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>--%>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
                 </sec:authorize>

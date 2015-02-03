@@ -49,15 +49,16 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a>${pageContext.request.userPrincipal.name}</a></li>
+                <li><a href="/setari" data-toggle="tooltip" data-placement="bottom"
+                       title="<spring:message code="MAIN.ESTI_INREGISTRAT_CA" /> ${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a>
+                </li>
                 <li><a href="javascript:formSubmit()"><spring:message code="NAVBAR.LOG_OUT" /></a></li>
             </ul>
             <ul class="nav nav-tabs">
                 <li><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
-                <li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
-                </sec:authorize>
+                <%--<li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>--%>
+                <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
+                <li><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
                 <li><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
             </ul>
         </div>
