@@ -18,15 +18,7 @@
             <div class="col-md-12">
                 <span><spring:message code="MODPROJ.ALEGE" /></span>
                 <select id="idProiectSelect" data-placeholder="Alege un proiect..." class="chosen-select">
-                    <c:forEach items="${listaProiecte}" var="projects">
-                        <option id="${projects.idProiect}" data-nume="${projects.numeProiect}"
-                                data-nr="${projects.nrProiect}" data-an="${projects.an}"
-                                data-idClient="${projects.idClient}"
-                                value="${projects.idProiect}"
-                                label="${projects.nrProiect}  ${projects.numeProiect} ${projects.an}"
-                                >${projects.nrProiect}  ${projects.numeProiect} ${projects.an}
-                        </option>
-                    </c:forEach>
+
                 </select>
             </div>
             <div class="col-md-12"><br/></div>
@@ -43,22 +35,17 @@
             </div>
             <div class="col-md-6">
                 <span><spring:message code="FORM.AN" /></span>
-                <select id="anSelInput" class="form-control input-sm" required="true">
-                    <option value="0"><spring:message code="FORM.SELECT" /></option>
+                <select id="anSelInput" data-placeholder="Alege un an..." class="chosen-select">
                     <c:forEach var="ani" begin="2008" end="2030">
-                        <option value="${ani}" label="${ani}"></option>
+                        <option value="${ani}" label="${ani}">${ani}</option>
                     </c:forEach>
                 </select>
             </div>
             <div class="col-md-12"><br/></div>
             <div class="col-md-12">
                 <span><spring:message code="FORM.CLIENT" /></span>
-                <select id="idClientInput" class="form-control input-sm" required="true">
-                    <option value="0"><spring:message code="FORM.SELECT" /></option>
-                    <c:forEach items="${listaClienti}" var="clnt">
-                        <option value="${clnt.idClient}" label="${clnt.client}">
-                        </option>
-                    </c:forEach>
+                <select id="idClientInput" data-placeholder="Alege un client..." class="chosen-select">
+
                 </select>
             </div>
             <div class="col-md-12"><br/></div>
@@ -101,7 +88,7 @@
 <script type="text/javascript">
 
     function atribuieNumeMod() {
-        $("#projNumeMod").text($('#idProiectSelect option:selected').attr('label'))
+        $("#projNumeMod").text($('#idProiectSelect option:selected').text());
     }
 
     $(document).ready(function(){
@@ -111,9 +98,11 @@
             $("#numeProiectInput").val(proiect.getAttribute("data-nume"));
             $("#nrProiectInput").val(proiect.getAttribute("data-nr"));
             $("#anSelInput").val(proiect.getAttribute("data-an"));
+            $("#anSelInput").trigger('chosen:updated');
             $("#idClientInput").val(proiect.getAttribute("data-idClient"));
+            $("#idClientInput").trigger('chosen:updated');
         });
-    })
+    });
 
     function modProjAxajCall() {
 
@@ -151,6 +140,7 @@
                 $("#updatedProj").html(respContent);
                 $("#updatedProj").css('display', 'block');
                 $("#updatedProj").fadeOut(6000);
+                $('#modifica').click();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);

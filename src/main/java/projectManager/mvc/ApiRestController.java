@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projectManager.repository.*;
 import projectManager.repository.dao.*;
+import projectManager.repository.dao.jdbc.ClientiJDBCDAO;
+import projectManager.repository.dao.jdbc.ListaProiecteJDBCDAO;
 import projectManager.util.Barcode;
 
 import javax.json.*;
@@ -44,6 +46,10 @@ public class ApiRestController {
     private LocDAO locDAO;
     @Autowired
     private EvidentaInventarDAO evidentaInventarDAO;
+    @Autowired
+    private ClientDAO clientiDAO;
+    @Autowired
+    private ListaProiecteDAO listaProiecteDAO;
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -52,6 +58,22 @@ public class ApiRestController {
     public List<Articole> getAllStoc() {
 
         return articoleDAO.getAll();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/clientlist", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<Client> getAllClienti() {
+
+        return clientiDAO.getAll();
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/proiectelist", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<ListaProiecte> getAllProiecte() {
+
+        return listaProiecteDAO.getAll();
     }
 
     @PreAuthorize("hasRole('ROLE_SUPERUSER')")
@@ -122,6 +144,45 @@ public class ApiRestController {
         } catch (DataAccessException ex) {
             ex.printStackTrace();
             response = "-1";
+        }
+
+        return response;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/modificaclient", method = RequestMethod.POST)
+    @ResponseBody
+    public String modificaClient(@RequestBody Client client) {
+        String response = "";
+        Client deModificat = clientiDAO.findByID(client.getIdClient());
+        if(deModificat != null) {
+            try {
+                deModificat.setClient(client.getClient());
+                clientiDAO.update(deModificat);
+                response = "1";
+            } catch (DataAccessException ex) {
+                ex.printStackTrace();
+                response = "-1";
+            }
+        }
+
+        return response;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/stergeclient", method = RequestMethod.POST)
+    @ResponseBody
+    public String stergeClient(@RequestBody Client client) {
+        String response = "";
+        Client deSters = clientiDAO.findByID(client.getIdClient());
+        if(deSters != null) {
+            try {
+                clientiDAO.deleteByID(deSters.getIdClient());
+                response = "1";
+            } catch (DataAccessException ex) {
+                ex.printStackTrace();
+                response = "-1";
+            }
         }
 
         return response;

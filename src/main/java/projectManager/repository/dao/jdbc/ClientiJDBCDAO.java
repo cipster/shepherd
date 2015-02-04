@@ -61,11 +61,8 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
     @Override
     public Client findByID(Integer id) {
         try {
-            Map<String, Object> args = new HashMap<String, Object>();
-            args.put("id_client", id);
-            StringBuilder findProiect = new StringBuilder(FIND_CLIENTI_BY_ID);
-
-            return getJdbcTemplate().queryForObject(findProiect.toString(), clientiParameterizedRowMapper, args);
+            String findProiect = "SELECT * FROM clienti WHERE id_client=" + id;
+            return getJdbcTemplate().queryForObject(findProiect, clientiParameterizedRowMapper);
         } catch (Exception e) {
             return null;
         }
@@ -103,7 +100,7 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
                 PreparedStatement ps = con.prepareStatement(UPDATE_CLIENTI);
 
                 ps.setString(1, entity.getClient());
-
+                ps.setInt(2, entity.getIdClient());
                 logger.debug(ps.toString());
                 return ps;
 

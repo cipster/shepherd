@@ -14,9 +14,7 @@
     <div class="input-group col-md-12">
         <div class="col-md-12">
             <select id="idProiect" data-placeholder="Alege un proiect..." class="chosen-select">
-                <c:forEach items="${listaProiecte}" var="users">
-                    <option value="${users.idProiect}" label="${users.nrProiect}  ${users.numeProiect}">${users.nrProiect}  ${users.numeProiect}</option>
-                </c:forEach>
+
             </select>
         </div>
     </div>
@@ -64,7 +62,7 @@
     }
 
     function atribuieNumeDel() {
-        $("#projNumeDel").text($('#idProiect').find('option:selected').attr('label'))
+        $("#projNumeDel").text($('#idProiect').find('option:selected').text());
     }
 
     function delProjAjaxCall() {
@@ -100,6 +98,7 @@
                 $("#delProjResponse").html(respContent);
                 $("#delProjResponse").css('display', 'block');
                 $("#delProjResponse").fadeOut(6000);
+                $('#sterge').click();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
