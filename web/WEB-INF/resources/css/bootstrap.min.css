@@ -4755,9 +4755,25 @@ a.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
     max-width: 100%
 }
 
-@media screen and (min-width: 850px) {
+@media screen and (max-device-width: 1280px) {
+    #inventory-table{
+        font-size: 9pt;
+    }
+    #tabelProiecte td {
+        font-size: 10pt;
+    }
+
+    #inventory-table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td  {
+        padding: 5px!important;
+        line-height: 1!important;
+    }
+    #tabelProiecte > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 7px!important;
+        line-height: 1.05!important;
+    }
+
     .jumbotron {
-        padding-top: 28px;
+        padding-top: 10px;
         padding-bottom: 28px
     }
 
@@ -4767,7 +4783,7 @@ a.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
     }
 
     .jumbotron h1, .jumbotron .h1 {
-        font-size: 63px
+        font-size: 40px
     }
 }
 
@@ -5514,7 +5530,7 @@ button.close {
 .modal {
     display: none;
     overflow: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     position: fixed;
     top: 0;
     right: 0;
@@ -6420,7 +6436,7 @@ button.close {
 }
 
 /*.ieseas {*/
-    /*display: none;*/
+/*display: none;*/
 /*}*/
 
 #iesebarcode {
@@ -6456,3 +6472,4 @@ div.DTTT {
 div.dataTables_wrapper {
     clear: both;
 }
+

@@ -71,7 +71,7 @@
 </div>
 
 <div class="container">
-    <div class="jumbotron col-md-12" style="height: 557px;">
+    <div class="jumbotron col-md-12" style="min-height: 500px;">
         <div class="list-group col-md-3">
             <a href="#adauga" id="adauga" class="list-group-item">
                 <span class="fa fa-plus">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ" /></a>
@@ -172,7 +172,7 @@
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {debugger;
+                if(typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
                         idProiectSelect
                                 .append($('<option id="' + response[i].idProiect + '" data-nume="' + response[i].numeProiect +'" data-nr="' + response[i].nrProiect +'" data-an="' + response[i].an + '" data-idClient="' + response[i].idClient +'">')

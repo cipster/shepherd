@@ -95,7 +95,7 @@
                         <div class="col-md-12"><br/></div>
                         <div class="col-md-6">
                             <span><spring:message code="PASSWORD" /></span>
-                            <sform:input path="password" id="newPasswordInput" cssClass="form-control input-sm"
+                            <input  id="newPasswordInput" class="form-control input-sm"
                                          required="true"/>
                         </div>
                         <div class="col-md-12"><br/></div>
@@ -181,7 +181,6 @@
                         }).show();
                         return;
                     }
-                    debugger;
                     var uploadResponse = JSON.parse(response);
                     var roles = new Array();
                     var roleArr = uploadResponse.role.split('=');

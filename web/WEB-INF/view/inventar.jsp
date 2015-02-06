@@ -129,9 +129,7 @@
                     <div class="form-group">
                         <label for="selcod2">Alege cod 2</label><br/>
                         <select id="selcod2" name="cod2" title="">
-                            <c:forEach items="${cod2}" var="coddoi">
-                                <option value="${coddoi.cod2}">${coddoi.denumire2}</option>
-                            </c:forEach>
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -486,6 +484,30 @@
         return articolJSON;
     }
 
+    function getCod2ByCod1(idCod1){
+        var cod2 = $('#selcod2');
+        cod2.html('');
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/cod2list/' + idCod1,
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        cod2.append($("<option>").val(response[i].idCod2).text(response[i].denumire2));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        cod2.val(-1);
+        cod2.trigger('chosen:updated');
+
+    }
+
     function getPersoane(){
         $("#iesepers").html("");
         $.ajax({
@@ -651,6 +673,10 @@
         });
         selcod2.val(-1);
         selcod2.trigger('chosen:updated');
+
+        selcod1.on('change', function(){
+            getCod2ByCod1(selcod1.val());
+        });
 
         iesepers.chosen({
             width: "60%",
@@ -825,10 +851,7 @@
                 error: function(err){
                 }
             });
-
         });
-
-
 
         $('#adaugaarticol').on('submit', function(e){
             e.preventDefault();

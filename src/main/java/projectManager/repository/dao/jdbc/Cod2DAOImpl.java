@@ -55,6 +55,17 @@ public class Cod2DAOImpl extends JdbcDaoSupport implements Cod2DAO {
     }
 
     @Override
+    public List<Cod2> getAllByCod1(int cod1) {
+        final String query = "SELECT * FROM proiecte.cod_2 WHERE cod_1=" + cod1;
+        try {
+            return getJdbcTemplate().query(query, rowMapper);
+        } catch (DataAccessException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public Cod2 findByID(Integer id) {
         try {
             String query = "SELECT * FROM proiecte.cod_2 WHERE id_cod_2=" + id;

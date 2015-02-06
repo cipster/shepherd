@@ -966,7 +966,7 @@
             async: false,
             cache: false,
 
-            success: function (response) {debugger;
+            success: function (response) {
                 var project = JSON.parse(response);
 
                 var propunere = project.propunere;

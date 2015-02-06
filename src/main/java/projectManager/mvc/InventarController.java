@@ -18,16 +18,12 @@ public class InventarController {
     MessageSource messageSource;
     @Autowired
     private Cod1DAO cod1DAO;
-    @Autowired
-    private Cod2DAO cod2DAO;
-    @Autowired
-    private LocDAO locDAO;
+
 
     @RequestMapping(value = "/inventar", method = RequestMethod.GET)
     public String inventar(ModelMap map) {
 
         map.addAttribute("cod1", cod1DAO.getAll());
-        map.addAttribute("cod2", cod2DAO.getAll());
         return "inventar";
     }
 

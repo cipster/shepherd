@@ -104,7 +104,7 @@
         });
     });
 
-    function modProjAxajCall() {
+    function modProjAxajCall(type,url,contentType,data,async) {
 
         if ($("#idProiectSelect").val() == 0) {
             $('.modal.in').modal('hide');
@@ -147,6 +147,6 @@
             }
         });
     }
-    ;
+
 </script>
 

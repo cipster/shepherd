@@ -50,6 +50,8 @@ public class ApiRestController {
     private ClientDAO clientiDAO;
     @Autowired
     private ListaProiecteDAO listaProiecteDAO;
+    @Autowired
+    private Cod2DAO cod2DAO;
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -74,6 +76,14 @@ public class ApiRestController {
     public List<ListaProiecte> getAllProiecte() {
 
         return listaProiecteDAO.getAll();
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @RequestMapping(value = "/cod2list/{id}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<Cod2> getAllCod2ByCod1(@PathVariable int id) {
+
+        return cod2DAO.getAllByCod1(id);
     }
 
     @PreAuthorize("hasRole('ROLE_SUPERUSER')")
