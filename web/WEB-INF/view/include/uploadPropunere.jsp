@@ -10,6 +10,7 @@
             <h4 class="modal-title"><spring:message code="DIALOG.UPLOADFILES" /></h4>
         </div>
         <div class="modal-body">
+            <div id="inprogress" class="inprogress-gif"></div>
             <div class="input-group">
                 <div class="col-md-4">
                     <form method="POST" enctype="multipart/form-data">

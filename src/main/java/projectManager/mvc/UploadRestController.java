@@ -2,6 +2,8 @@ package projectManager.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,7 +38,7 @@ public class UploadRestController {
     @Autowired
     private ListaProiecteDAO proiecteJDBCDAO;
 
-
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/uploadBd", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -77,6 +79,7 @@ public class UploadRestController {
         }
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/uploadPropunere", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -115,6 +118,7 @@ public class UploadRestController {
         }
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/uploadChestionar", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -153,6 +157,7 @@ public class UploadRestController {
         }
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/uploadRaport", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -191,6 +196,7 @@ public class UploadRestController {
         }
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/uploadAlteMateriale", method = RequestMethod.POST)
     public
     @ResponseBody

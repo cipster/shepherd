@@ -55,8 +55,7 @@
 <script type="application/javascript">
 
     function addProjAxajCall() {
-        var dataReq = 'nrProiect=' + $('#nrProiect').val() + "&an=" + $('#anInput').val() + "&numeProiect=" + $('#numeProiect').val() + "&idClient=" + $("#idClient").val() + "'";
-        if ($("#nrProiect").val() == "" || $("#anInput").val() == 0 || $("#numeProiect").val() == "" || $("#idClient").val() == 0) {
+        if ($("#nrProiect").val() === '' || $("#anInput").val() <= 0 || $("#numeProiect").val() === '' || $("#idClient").val() <= 0) {
 
             alert("Asigurati-va ca ati completat toate campurile!");
             return;
@@ -68,6 +67,10 @@
             cache: false,
 
             success: function (response) {
+                if(response && response == '-1'){
+                    alert('Eroare la salvare!');
+                    return;
+                }
 
                 $("#newProjAdded").html("");
                 $('#nrProiect').val("");

@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.Bd;
 import projectManager.repository.dao.BdDAO;
 
@@ -45,6 +47,7 @@ public class BdJDBCDAO extends JdbcDaoSupport implements BdDAO {
 
 
     @Override
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public Bd findByID(Integer id) {
         try {
 
@@ -57,6 +60,7 @@ public class BdJDBCDAO extends JdbcDaoSupport implements BdDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer create(final Bd entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -92,6 +96,7 @@ public class BdJDBCDAO extends JdbcDaoSupport implements BdDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer deleteByID(Integer id) {
 
         return getJdbcTemplate().update(DELETE_DB_BY_ID, new Object[]{id});
@@ -99,6 +104,7 @@ public class BdJDBCDAO extends JdbcDaoSupport implements BdDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<Bd> getAll() {
         List<Bd> result = getJdbcTemplate().query(DB, bdRowMapper);
 

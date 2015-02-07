@@ -50,8 +50,7 @@
             </div>
             <div class="col-md-12"><br/></div>
             <div class="col-md-12">
-                <button type="button" class="btn btn-primary col-md-2" id="btnMod" data-toggle="modal"
-                        data-target="#estiSigurProiect" onclick="atribuieNumeMod();">
+                <button type="button" class="btn btn-primary col-md-2" id="btnMod" data-toggle="modal" onclick="atribuieNumeMod();">
                     <spring:message code="DIALOG.MOD" />
                 </button>
                 <div id="updatedProj"></div>
@@ -88,7 +87,20 @@
 <script type="text/javascript">
 
     function atribuieNumeMod() {
+        if($("#idProiectSelect").val() <= 0){
+            alert("Alege un proiect din lista!");
+            return;
+        }
+        if ($("#nrProiectInput").val() === '' || $("#anSelInput").val() <= 0 || $("#numeProiectInput").val() === '' || $("#idClientInput").val() <= 0) {
+            $('.modal.in').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            alert("Asigurati-va ca ati completat toate campurile!");
+            return;
+        }
+
         $("#projNumeMod").text($('#idProiectSelect option:selected').text());
+        $('#btnMod').attr('data-target', '#estiSigurProiect');
     }
 
     $(document).ready(function(){
@@ -113,6 +125,8 @@
             alert("Alege un proiect din lista!");
             return;
         }
+
+
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/projAdmin/modificaProj',
@@ -120,6 +134,10 @@
             cache: false,
 
             success: function (response) {
+                if(response && response == '-1'){
+                    alert('Eroare la salvare!');
+                    return;
+                }
                 $("#updatedProj").html("");
                 $("#idProiectSelect").val("0");
                 $('#nrProiectInput').val("");
@@ -142,7 +160,7 @@
                 $("#updatedProj").fadeOut(6000);
                 $('#modifica').click();
             },
-            error: function (e) {
+            error: function (xhr,e) {
                 alert("Eroare la conexiune!" + e);
             }
         });

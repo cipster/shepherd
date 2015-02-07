@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.ChestionarFinal;
 import projectManager.repository.dao.ChestionarFinalDAO;
 
@@ -44,6 +46,7 @@ public class ChestionarFinalJDBCDAO extends JdbcDaoSupport implements Chestionar
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public ChestionarFinal findByID(Integer id) {
         try {
             String findChestionarFinal = FIND_CHESTIONAR_FINAL_BY_ID + id;
@@ -55,6 +58,7 @@ public class ChestionarFinalJDBCDAO extends JdbcDaoSupport implements Chestionar
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer create(final ChestionarFinal entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -89,11 +93,13 @@ public class ChestionarFinalJDBCDAO extends JdbcDaoSupport implements Chestionar
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer deleteByID(Integer id) {
         return getJdbcTemplate().update(DELETE_CHESTIONAR_FINAL_BY_ID, new Object[]{id});
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<ChestionarFinal> getAll() {
         List<ChestionarFinal> result = getJdbcTemplate().query(CHESTIONAR_FINAL, chestionarFinalRowMapper);
 

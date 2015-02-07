@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.Propunere;
 import projectManager.repository.dao.PropunereDAO;
 
@@ -44,6 +46,7 @@ public class PropunereJDBCDAO extends JdbcDaoSupport implements PropunereDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Propunere findByID(Integer id) {
         try {
 
@@ -56,6 +59,7 @@ public class PropunereJDBCDAO extends JdbcDaoSupport implements PropunereDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer create(final Propunere entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -90,11 +94,13 @@ public class PropunereJDBCDAO extends JdbcDaoSupport implements PropunereDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer deleteByID(Integer id) {
         return getJdbcTemplate().update(DELETE_PROPUNERE_BY_ID, new Object[]{id});
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<Propunere> getAll() {
         List<Propunere> result = getJdbcTemplate().query(PROPUNERE, propunereParameterizedRowMapper);
 

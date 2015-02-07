@@ -6473,3 +6473,22 @@ div.dataTables_wrapper {
     clear: both;
 }
 
+.inprogress-gif {
+    position: fixed;
+    display: none;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 66666;
+    background: url("/img/ajax-loader.gif") 50% 50% no-repeat;
+    opacity: 1;
+}
+
+.inprogress {
+    opacity: 0.3;
+    filter: alpha(opacity=30); /* For IE8 and earlier */
+}
+
+
+

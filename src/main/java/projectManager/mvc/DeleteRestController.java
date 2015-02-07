@@ -2,6 +2,8 @@ package projectManager.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +31,7 @@ public class DeleteRestController {
     @Autowired
     private BdDAO bdJDBCDAO;
 
-
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/altemateriale", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -45,6 +47,7 @@ public class DeleteRestController {
 
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/propunere", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -60,6 +63,7 @@ public class DeleteRestController {
 
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/chestionar", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -75,6 +79,7 @@ public class DeleteRestController {
 
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/raport", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -90,6 +95,7 @@ public class DeleteRestController {
 
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/bd", method = RequestMethod.POST)
     public
     @ResponseBody

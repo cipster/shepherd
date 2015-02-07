@@ -1,21 +1,15 @@
 package projectManager.repository.dao.jdbc;
 
-import com.mysql.jdbc.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.Articole;
-import projectManager.repository.Cod3;
 import projectManager.repository.dao.ArticoleDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -49,6 +43,7 @@ public class ArticoleDAOImpl extends JdbcDaoSupport implements ArticoleDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<Articole> getAll() {
         final String query = "SELECT * FROM proiecte.articole";
         try {
@@ -60,6 +55,7 @@ public class ArticoleDAOImpl extends JdbcDaoSupport implements ArticoleDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Articole findByID(Integer id) {
         try {
             String query = "SELECT * FROM proiecte.articole WHERE id_cod_3=" + id;

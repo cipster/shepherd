@@ -11,8 +11,11 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
@@ -28,6 +31,7 @@ import java.util.List;
 
 @EnableWebMvc
 @Configuration
+@EnableTransactionManagement
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 @ComponentScan(basePackages = {"projectManager.mvc"})
 @Import({WebSecurityConfig.class})
@@ -49,6 +53,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
+    }
+
+    @Bean
+    public PlatformTransactionManager txManager() {
+        return new DataSourceTransactionManager(dataSource());
     }
 
     @Bean
@@ -96,8 +105,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public MappingJackson2HttpMessageConverter jackson2Converter() {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        return converter;
+        return new MappingJackson2HttpMessageConverter();
     }
 
     @Bean(name = "dataSource")
@@ -118,62 +126,53 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public ListaProiecteJDBCDAO listaProiecteDAO() {
-        ListaProiecteJDBCDAO listaProiecteJDBCDAO = new ListaProiecteJDBCDAO(dataSource());
-        return listaProiecteJDBCDAO;
+    public ListaProiecteDAO listaProiecteDAO() {
+        return new ListaProiecteJDBCDAO(dataSource());
     }
 
     @Bean
-    public AlteMaterialeJDBCDAO alteMaterialeDAO() {
-        AlteMaterialeJDBCDAO alteMaterialeJDBCDAO = new AlteMaterialeJDBCDAO(dataSource());
-        return alteMaterialeJDBCDAO;
+    public AlteMaterialeDAO alteMaterialeDAO() {
+        return new AlteMaterialeJDBCDAO(dataSource());
     }
 
     @Bean
-    public BdJDBCDAO bdDAO() {
-        BdJDBCDAO bdJDBCDAO = new BdJDBCDAO(dataSource());
-        return bdJDBCDAO;
+    public BdDAO bdDAO() {
+        return new BdJDBCDAO(dataSource());
     }
 
     @Bean
-    public ChestionarFinalJDBCDAO chestionarFinalDAO() {
-        ChestionarFinalJDBCDAO chestionarFinalJDBCDAO = new ChestionarFinalJDBCDAO(dataSource());
-        return chestionarFinalJDBCDAO;
+    public ChestionarFinalDAO chestionarFinalDAO() {
+        return new ChestionarFinalJDBCDAO(dataSource());
     }
 
     @Bean
-    public ClientiJDBCDAO clientiJDBCDAO() {
-        ClientiJDBCDAO clientiJDBCDAO = new ClientiJDBCDAO(dataSource());
-        return clientiJDBCDAO;
+    public ClientDAO clientiDAO() {
+        return new ClientiJDBCDAO(dataSource());
     }
 
     @Bean
-    public PropunereJDBCDAO propunereJDBCDAO() {
+    public PropunereDAO propunereDAO() {
         return new PropunereJDBCDAO(dataSource());
     }
 
     @Bean
     public RaportFinalJDBCDAO raportFinalJDBCDAO() {
-        RaportFinalJDBCDAO raportFinalJDBCDAO = new RaportFinalJDBCDAO(dataSource());
-        return raportFinalJDBCDAO;
+        return new RaportFinalJDBCDAO(dataSource());
     }
 
     @Bean
-    public UserJDBCDAO userJDBCDAO() {
-        UserJDBCDAO userJDBCDAO = new UserJDBCDAO(dataSource());
-        return userJDBCDAO;
+    public UserDAO userDAO() {
+        return new UserJDBCDAO(dataSource());
     }
 
     @Bean
-    public UserRolesJDBCDAO userRolesJDBCDAO() {
-            UserRolesJDBCDAO userRolesJDBCDAO = new UserRolesJDBCDAO(dataSource());
-            return userRolesJDBCDAO;
+    public UserRolesDAO userRolesDAO() {
+        return new UserRolesJDBCDAO(dataSource());
     }
 
     @Bean
-    public RolesJDBCDAO rolesJDBCDAO() {
-            RolesJDBCDAO rolesJDBCDAO = new RolesJDBCDAO(dataSource());
-            return rolesJDBCDAO;
+    public RolesDAO rolesJDBCDAO() {
+        return new RolesDAOImpl(dataSource());
     }
 
     @Bean

@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.Client;
 import projectManager.repository.dao.ClientDAO;
 
@@ -17,9 +19,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
 
@@ -48,6 +48,7 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<Client> getAll() {
         List<Client> result = getJdbcTemplate().query(CLIENTI, clientiParameterizedRowMapper);
 
@@ -59,6 +60,7 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Client findByID(Integer id) {
         try {
             String findProiect = "SELECT * FROM clienti WHERE id_client=" + id;
@@ -69,6 +71,7 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer create(final Client entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -92,6 +95,7 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer update(final Client entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -112,6 +116,7 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer deleteByID(Integer id) {
         return getJdbcTemplate().update(DELETE_CLIENTI_BY_ID, new Object[]{id});
     }

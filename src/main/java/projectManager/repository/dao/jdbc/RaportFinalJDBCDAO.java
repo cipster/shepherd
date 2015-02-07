@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.RaportFinal;
 import projectManager.repository.dao.RaportFinalDAO;
 
@@ -44,6 +46,7 @@ public class RaportFinalJDBCDAO extends JdbcDaoSupport implements RaportFinalDAO
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public RaportFinal findByID(Integer id) {
         try {
 
@@ -56,6 +59,7 @@ public class RaportFinalJDBCDAO extends JdbcDaoSupport implements RaportFinalDAO
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer create(final RaportFinal entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -85,16 +89,19 @@ public class RaportFinalJDBCDAO extends JdbcDaoSupport implements RaportFinalDAO
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer update(final RaportFinal entity) {
         return null;
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer deleteByID(Integer id) {
         return getJdbcTemplate().update(DELETE_RAPORT_FINAL_BY_ID, new Object[]{id});
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<RaportFinal> getAll() {
         List<RaportFinal> result = getJdbcTemplate().query(RAPORT_FINAL, raportFinalParameterizedRowMapper);
 

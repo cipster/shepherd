@@ -580,6 +580,7 @@
                     "url": '${pageContext.request.contextPath}/api/getinventory',
                     "dataSrc": ""
                 },
+                "aLengthMenu": [[10, 25, 50, 100,-1], [10, 25, 50, 100, "Toate"]],
                 "language": {
                     "url": '/fonts/ro_RO.txt'
                 },
@@ -608,6 +609,7 @@
                             "sExtends": "csv",
                             "sButtonClass": "btn btn-default",
                             "sButtonText": '<span class="fa fa-file-o">&nbsp;&nbsp;</span><span>CSV</span>',
+                            "mColumns": [0, 1, 2, 3, 4,5 ,6],
                             "oSelectorOpts": {
                                 page: 'current'
                             }
@@ -617,6 +619,7 @@
                             "sButtonClass": "btn btn-default",
                             "sCharSet": "utf16le",
                             "sButtonText": '<span class="fa fa-file-excel-o">&nbsp;&nbsp;</span><span>XLS</span>',
+                            "mColumns": [0, 1, 2, 3, 4,5 ,6],
                             "oSelectorOpts": {
                                 page: 'current'
                             }
@@ -625,6 +628,7 @@
                             "sExtends": "pdf",
                             "sButtonClass": "btn btn-default",
                             "sButtonText": '<span class="fa fa-file-pdf-o">&nbsp;&nbsp;</span><span>PDF</span>',
+                            "mColumns": [0, 1, 2, 3, 4,5 ,6],
                             "oSelectorOpts": {
                                 page: 'current'
                             }
@@ -799,6 +803,7 @@
             $('#nextiese').addClass('ascuns');
             $('#detalii-group').show();
         });
+
         //butonul care introduce datele in evidenta de inventar
         $('#atribuie-articole').on('click', function(){
             var token = $("meta[name='_csrf']").attr("content");
@@ -902,7 +907,6 @@
             e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
-
             var nume = $('#nume').val();
             var cnp = $('#cnp').val();
             var functie = $('#functie').val();
@@ -943,7 +947,6 @@
             e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
-
             var denumireloc = $('#denumireLoc').val();
             var data = { "denumireLoc" : denumireloc};
             // will pass the form date using the jQuery serialize function
@@ -978,6 +981,5 @@
         document.getElementById("inventory-table").oncontextmenu = function () {
             return false;
         }
-
     })
 </script>

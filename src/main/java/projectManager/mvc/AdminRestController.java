@@ -57,10 +57,14 @@ public class AdminRestController {
     String createProiect(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ListaProiecte proiect = new ListaProiecte();
 
-        String numeProiect = request.getParameter("numeProiect");
-        String nrProiect = request.getParameter("nrProiect");
-        String an = request.getParameter("an");
-        String idClient = request.getParameter("idClient");
+        String numeProiect = request.getParameter("numeProiect").trim();
+        String nrProiect = request.getParameter("nrProiect").trim();
+        String an = request.getParameter("an").trim();
+        String idClient = request.getParameter("idClient").trim();
+
+        if(numeProiect.length() == 0 || nrProiect.length() == 0 || an.length() == 0 || idClient.length() == 0 ){
+            return "-1";
+        }
 
         proiect.setNumeProiect(numeProiect);
         proiect.setNrProiect(nrProiect);
@@ -86,7 +90,7 @@ public class AdminRestController {
             clientiJDBCDAO.create(client);
             responseString = "{\"client\":\"" + numeClient + "\"}";
         } catch(Exception e) {
-            responseString = null;
+            responseString = "-1";
         }
         return responseString;
     }
@@ -103,7 +107,7 @@ public class AdminRestController {
             if(status == null || status == 0) {
                 responseString = null;
             } else {
-                responseString = "{\"idProiect\":\"" + -1 + "\"}";
+                responseString = "{\"idProiect\":\"-1\"}";
             }
         }
         return responseString;
@@ -115,11 +119,16 @@ public class AdminRestController {
     String modProiect(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ListaProiecte proiect = new ListaProiecte();
         String responseString = null;
-        String idProiect = request.getParameter("idProiect");
-        String numeProiect = request.getParameter("numeProiect");
-        String nrProiect = request.getParameter("nrProiect");
-        String an = request.getParameter("an");
-        String idClient = request.getParameter("idClient");
+
+        String idProiect = request.getParameter("idProiect").trim();
+        String numeProiect = request.getParameter("numeProiect").trim();
+        String nrProiect = request.getParameter("nrProiect").trim();
+        String an = request.getParameter("an").trim();
+        String idClient = request.getParameter("idClient").trim();
+
+        if(idProiect.length() == 0 || numeProiect.length() == 0 || nrProiect.length() == 0 || an.length() == 0 || idClient.length() == 0 ){
+            return "-1";
+        }
 
         proiect.setIdProiect(Integer.parseInt(idProiect));
         proiect.setNumeProiect(numeProiect);

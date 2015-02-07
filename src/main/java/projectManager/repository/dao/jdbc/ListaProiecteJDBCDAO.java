@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.ListaProiecte;
 import projectManager.repository.dao.ListaProiecteDAO;
 
@@ -70,6 +72,7 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional
     public Integer create(final ListaProiecte entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -99,6 +102,7 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Integer update(final ListaProiecte entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -127,11 +131,13 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer deleteByID(Integer id) {
         return getJdbcTemplate().update(DELETE_LISTA_PROIECTE_BY_ID, new Object[]{id});
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public List<ListaProiecte> getAll() {
 
         List<ListaProiecte> result = getJdbcTemplate().query(LISTA_PROIECTE, listaProiecteParameterizedRowMapper);
@@ -157,6 +163,7 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updatePropunere(final Integer id_propunere, final Integer id_proiect) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -183,6 +190,7 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updateChestionarFinal(final Integer id_chestionar_final, final Integer id_proiect) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -208,6 +216,7 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updateRaportFinal(final Integer id_raport_final, final Integer id_proiect) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -233,6 +242,7 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updateBd(final Integer id_bd, final Integer id_proiect) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -258,6 +268,7 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updateAlteMateriale(final Integer id_alte_materiale, final Integer id_proiect) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -283,13 +294,14 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergeAlteMateriale(final Integer id_alte_materiale, final Integer id_proiect) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 String idAM = findByID(id_proiect).getIdAlteMateriale();
-                idAM = idAM.replace(id_alte_materiale.toString(), "");
+                idAM = idAM.replace("," + id_alte_materiale.toString() , ",");
                 PreparedStatement ps = con.prepareStatement(UPDATE_ID_ALTE_MATERIALE);
 
                 if (id_alte_materiale <= 0 || id_alte_materiale.equals(null)) {
@@ -308,13 +320,14 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergePropunere(final Integer id_propunere, final Integer id_proiect) {
             JdbcTemplate jdbcTemplate = getJdbcTemplate();
             PreparedStatementCreator psc = new PreparedStatementCreator() {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                     String idP = findByID(id_proiect).getIdPropunere();
-                    idP = idP.replace(id_propunere.toString(), "");
+                    idP = idP.replace("," + id_propunere.toString(), ",");
                     PreparedStatement ps = con.prepareStatement(UPDATE_ID_PROPUNERE);
 
                     if (id_propunere <= 0 || id_propunere.equals(null)) {
@@ -333,13 +346,14 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
      }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergeChestionar(final Integer id_chestionar, final Integer id_proiect) {
             JdbcTemplate jdbcTemplate = getJdbcTemplate();
             PreparedStatementCreator psc = new PreparedStatementCreator() {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                     String idC = findByID(id_proiect).getIdChestionarFinal();
-                    idC = idC.replace(id_chestionar.toString(), "");
+                    idC = idC.replace("," + id_chestionar.toString(), ",");
                     PreparedStatement ps = con.prepareStatement(UPDATE_ID_CHESTIONAR_FINAL);
 
                     if (id_chestionar <= 0 || id_chestionar.equals(null)) {
@@ -358,13 +372,14 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
      }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergeRaport(final Integer id_raport, final Integer id_proiect) {
             JdbcTemplate jdbcTemplate = getJdbcTemplate();
             PreparedStatementCreator psc = new PreparedStatementCreator() {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                     String idR = findByID(id_proiect).getIdRaportFinal();
-                    idR = idR.replace(id_raport.toString(), "");
+                    idR = idR.replace("," + id_raport.toString(), ",");
                     PreparedStatement ps = con.prepareStatement(UPDATE_ID_RAPORT_FINAL);
 
                     if (id_raport <= 0 || id_raport.equals(null)) {
@@ -383,13 +398,14 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
      }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergeBd(final Integer id_bd, final Integer id_proiect) {
             JdbcTemplate jdbcTemplate = getJdbcTemplate();
             PreparedStatementCreator psc = new PreparedStatementCreator() {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                     String idP = findByID(id_proiect).getIdBd();
-                    idP = idP.replace(id_bd.toString(), "");
+                    idP = idP.replace("," + id_bd.toString(), ",");
                     PreparedStatement ps = con.prepareStatement(UPDATE_ID_BD);
 
                     if (id_bd <= 0 || id_bd.equals(null)) {

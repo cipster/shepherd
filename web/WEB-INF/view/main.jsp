@@ -62,7 +62,7 @@
                 <li class="active"><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
                 <%--<li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>--%>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
+                    <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
                 </sec:authorize>
                 <li><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
                 <li><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
@@ -110,19 +110,19 @@
 
     </div>
 </div>
-    <sec:authorize access="hasRole('ROLE_DOWNLOAD')">
-        <div id="childrcmenu" class="unselectable">
-                <div class="menuItem" onclick="download();"><spring:message code="MAIN.DESCARCA" /></div>
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <input id="idMaster" hidden="hidden"/>
-                <input id="id" hidden="hidden"/>
-                <input id="category" hidden="hidden"/>
-                <input id="fileName" hidden="hidden"/>
-                <div class="menuItem" data-toggle="modal"
-                     data-target="#estiSigurFile" onclick="atribuieNumeFile();"><spring:message code="MAIN.DELETE" /></div>
-            </sec:authorize>
-        </div>
-    </sec:authorize>
+<sec:authorize access="hasRole('ROLE_DOWNLOAD')">
+    <div id="childrcmenu" class="unselectable">
+        <div class="menuItem" onclick="download();"><spring:message code="MAIN.DESCARCA" /></div>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <input id="idMaster" hidden="hidden"/>
+            <input id="id" hidden="hidden"/>
+            <input id="category" hidden="hidden"/>
+            <input id="fileName" hidden="hidden"/>
+            <div class="menuItem" data-toggle="modal"
+                 data-target="#estiSigurFile" onclick="atribuieNumeFile();"><spring:message code="MAIN.DELETE" /></div>
+        </sec:authorize>
+    </div>
+</sec:authorize>
 <div id="rcmenu" class="unselectable">
     <div class="menuItem" data-toggle="modal" data-target="#cercCheltuieli"><spring:message code="MAIN.CHELTUIELI" /></div>
     <div class="menuItem" data-toggle="modal" data-target="#uploadPropunere"><spring:message code="MAIN.PROPUNERE" /></div>
@@ -165,7 +165,7 @@
                 <h4 class="modal-title"><spring:message code="DIALOG.DELETE" /></h4>
             </div>
             <div class="modal-body">
-                <h3><spring:message code="DIALOG.ESTISIGURDELETE" /> <span id="fileNameDel" style="color: #149bdf"></span>?</h3>
+                <h3><spring:message code="DIALOG.ESTISIGURDELETE" /> <span id="fileNameDel" style="color: #149bdf; word-break: break-all;"></span>?</h3>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" onclick="deleteFile();"><spring:message code="DIALOG.DEL" /></button>
@@ -212,7 +212,7 @@
 
 <form action="/logout" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}"
-               value="${_csrf.token}"/>
+           value="${_csrf.token}"/>
 </form>
 
 <input id="username" hidden="hidden" value="${pageContext.request.userPrincipal.name}"/>
@@ -356,7 +356,18 @@
     $('input[type=file]').bootstrapFileInput();
     $('.file-inputs').bootstrapFileInput();
 
+    function ajaxLoaderShow(type){
+        $('.inprogress-gif').show();
+        $('div.modal-body').addClass('inprogress');
+    }
+
+    function ajaxLoaderHide(){
+        $('div.modal-body').removeClass('inprogress');
+        $('.inprogress-gif').hide();
+    }
+
     function bdAjaxCall() {
+        ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectBd').val();
         data = new FormData();
@@ -370,18 +381,8 @@
             dataType: 'text',
             processData: false,
             contentType: false,
-            xhr: function() {  // custom xhr
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) { // check if upload property exists
-                    myXhr.upload.addEventListener('progress', function (evt) {
-                        if (evt.lengthComputable) {
-                            $('#progress').css('width', evt.loaded);
-                        }
-                    }, false);
-                }
-                return myXhr;
-            },
             success: function (response) {
+
                 var t = '#' + idProiect;
                 var tr = $(t);
                 var row = table.row(tr);
@@ -425,12 +426,17 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete:function(e){
+                ajaxLoaderHide();
+
             }
         });
     }
 
 
     function propunereAjaxCall() {
+        ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectPropunere').val();
         data = new FormData();
@@ -486,12 +492,15 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                ajaxLoaderHide();
             }
         });
     }
-    ;
 
     function chestionarAjaxCall() {
+        ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectChestionar').val();
         data = new FormData();
@@ -548,12 +557,16 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                ajaxLoaderHide();
             }
         });
     }
     ;
 
     function raportAjaxCall() {
+        ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectRaport').val();
         data = new FormData();
@@ -610,12 +623,16 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                ajaxLoaderHide();
             }
         });
     }
 
 
     function alteMaterialeAjaxCall() {
+        ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectAlteMateriale').val();
         data = new FormData();
@@ -672,6 +689,9 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                ajaxLoaderHide();
             }
         });
     }
@@ -710,13 +730,6 @@
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
 
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'info',
@@ -727,6 +740,14 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                var t = '#' + idProiect;
+                var tr = $(t);
+                var row = table.row(tr);
+                row.child(format(tr.prop("id"))).show();
+                tr.next().addClass('copil');
+                $("#copil").children().addClass('copil');
             }
         });
     }
@@ -764,12 +785,6 @@
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
 
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
 
                 $("#alert").notify({
                     message: { text: respContent},
@@ -781,6 +796,14 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                var t = '#' + idProiect;
+                var tr = $(t);
+                var row = table.row(tr);
+                row.child(format(tr.prop("id"))).show();
+                tr.next().addClass('copil');
+                $("#copil").children().addClass('copil');
             }
         });
     }
@@ -818,13 +841,6 @@
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
 
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'info',
@@ -835,6 +851,14 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                var t = '#' + idProiect;
+                var tr = $(t);
+                var row = table.row(tr);
+                row.child(format(tr.prop("id"))).show();
+                tr.next().addClass('copil');
+                $("#copil").children().addClass('copil');
             }
         });
     }
@@ -872,13 +896,6 @@
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
 
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
-
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'info',
@@ -889,6 +906,14 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                var t = '#' + idProiect;
+                var tr = $(t);
+                var row = table.row(tr);
+                row.child(format(tr.prop("id"))).show();
+                tr.next().addClass('copil');
+                $("#copil").children().addClass('copil');
             }
         });
     }
@@ -926,12 +951,7 @@
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
 
-                var t = '#' + idProiect;
-                var tr = $(t);
-                var row = table.row(tr);
-                row.child(format(tr.prop("id"))).show();
-                tr.next().addClass('copil');
-                $("#copil").children().addClass('copil');
+
 
                 $("#alert").notify({
                     message: { text: respContent},
@@ -944,6 +964,14 @@
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
+            },
+            complete: function(e){
+                var t = '#' + idProiect;
+                var tr = $(t);
+                var row = table.row(tr);
+                row.child(format(tr.prop("id"))).show();
+                tr.next().addClass('copil');
+                $("#copil").children().addClass('copil');
             }
         });
     }
@@ -953,7 +981,7 @@
     }
 
     function format(idProj) {
-        var childString = '<div id="copil" class="well copil"><table class="table copil" style="width: 100%;font-size: 8pt;"><thead class="copil" style="margin-bottom:10px;"><tr class="copil"><th>Propunere</th><th>Chestionar final</th><th>Raport final</th><th>Baza de date</th><th>Alte materiale</th></tr></thead><tbody class="copil"><tr class="copil"> ';
+        var childString = '<div id="copil" class="well copil"><table class="table copil" style="width: 100%;font-size: 8pt;word-break: break-all;"><thead class="copil" style="margin-bottom:10px;"><tr class="copil"><th>Propunere</th><th>Chestionar final</th><th>Raport final</th><th>Baza de date</th><th>Alte materiale</th></tr></thead><tbody class="copil"><tr class="copil"> ';
         var propString  = '<td style="vertical-align: top;">';
         var chestString = '<td style="vertical-align: top;">';
         var rapString   = '<td style="vertical-align: top;">';
@@ -1058,10 +1086,10 @@
         bdString += '</td>';
         amString += '</td>';
         var buttonString =  '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="fa fa-upload ">&nbsp;</span> Upload Propunere</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="fa fa-upload ">&nbsp;</span> Upload Chestionar</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="fa fa-upload">&nbsp;</span> Upload Raport</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="fa fa-upload ">&nbsp;</span> Upload Baza de date</a></td>' +
-                                                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="fa fa-upload ">&nbsp;</span> Upload Alte Materiale</a></td></tr>';
+                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="fa fa-upload ">&nbsp;</span> Upload Chestionar</a></td>' +
+                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="fa fa-upload">&nbsp;</span> Upload Raport</a></td>' +
+                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="fa fa-upload ">&nbsp;</span> Upload Baza de date</a></td>' +
+                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="fa fa-upload ">&nbsp;</span> Upload Alte Materiale</a></td></tr>';
         childString += propString + chestString + rapString + bdString + amString + '</tr>';
         childString += buttonString;
         childString += '</tbody></table></div>';
@@ -1074,7 +1102,29 @@
             "language": {
                 "url": '/fonts/ro_RO.txt'
             },
+            "aLengthMenu": [[10, 25, 50, 100,-1], [10, 25, 50, 100, "Toate"]],
             stateSave: true,
+            "aoColumns": [{
+                "sWidth": "0px",
+                "bSortable": false
+            }, {
+                "sWidth": "50px",
+                "sClass": "center"
+            }, {
+                "sWidth": "50px",
+                "sClass": "center"
+            }, {
+                "sWidth": "600px",
+                "sClass": "center"
+            }, {
+                "sWidth": "300px",
+                "sClass": "center"
+            }],
+            "aoColumnDefs": [{
+                "fnRender": function (o, val) {
+                    return o.aData[0];
+                }
+            }],
             dom: 'Tlfrtip<"break-row-lg">',
             tableTools: {
                 "sSwfPath": "/swf/copy_csv_xls_pdf.swf",
@@ -1083,6 +1133,7 @@
                         "sExtends": "csv",
                         "sButtonClass": "btn btn-default",
                         "sButtonText": '<span class="fa fa-file-o">&nbsp;&nbsp;</span><span>CSV</span>',
+                        "mColumns": [1, 2, 3, 4],
                         "oSelectorOpts": {
                             page: 'current'
                         }
@@ -1092,6 +1143,7 @@
                         "sButtonClass": "btn btn-default",
                         "sCharSet": "utf16le",
                         "sButtonText": '<span class="fa fa-file-excel-o">&nbsp;&nbsp;</span><span>XLS</span>',
+                        "mColumns": [1, 2, 3, 4],
                         "oSelectorOpts": {
                             page: 'current'
                         }
@@ -1100,6 +1152,7 @@
                         "sExtends": "pdf",
                         "sButtonClass": "btn btn-default",
                         "sButtonText": '<span class="fa fa-file-pdf-o">&nbsp;&nbsp;</span><span>PDF</span>',
+                        "mColumns": [1, 2, 3, 4],
                         "oSelectorOpts": {
                             page: 'current'
                         }

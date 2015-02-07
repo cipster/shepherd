@@ -9,18 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import projectManager.repository.Client;
 import projectManager.repository.ListaProiecte;
 import projectManager.repository.dao.*;
-import projectManager.repository.dao.jdbc.BdJDBCDAO;
-import projectManager.repository.dao.jdbc.ClientiJDBCDAO;
 
 @Controller
 public class MainController {
 
     @Autowired
     MessageSource messageSource;
-    @Autowired
-    private ClientiJDBCDAO clientiJDBCDAO;
-    @Autowired
-    private BdJDBCDAO bdJDBCDAO;
+
+
     @Autowired
     private ListaProiecteDAO proiecteJDBCDAO;
     @Autowired
@@ -31,6 +27,10 @@ public class MainController {
     private RaportFinalDAO raportFinalJDBCDAO;
     @Autowired
     private AlteMaterialeDAO alteMaterialeJDBCDAO;
+    @Autowired
+    private ClientDAO clientiDAO;
+    @Autowired
+    private BdDAO bdDAO;
 
 
     @RequestMapping(value = {"/main", "/"}, method = RequestMethod.GET)
@@ -39,35 +39,13 @@ public class MainController {
         map.addAttribute("proiect", new ListaProiecte());
         map.addAttribute("listaProiecte", proiecteJDBCDAO.getAll());
         map.addAttribute("client", new Client());
-        map.addAttribute("listaClienti", clientiJDBCDAO.getAll());
+        map.addAttribute("listaClienti", clientiDAO.getAll());
         map.addAttribute("listaPropunere", propunereJDBCDAO.getAll());
         map.addAttribute("listaChestionar", chestionarFinalJDBCDAO.getAll());
         map.addAttribute("listaRaport", raportFinalJDBCDAO.getAll());
-        map.addAttribute("listaBD", bdJDBCDAO.getAll());
+        map.addAttribute("listaBD", bdDAO.getAll());
         map.addAttribute("listaAM", alteMaterialeJDBCDAO.getAll());
 
         return "main";
-    }
-
-    @RequestMapping(value = "/buget", method = RequestMethod.GET)
-    public String getBugetPage(ModelMap map) {
-
-        map.addAttribute("proiect", new ListaProiecte());
-        map.addAttribute("listaProiecte", proiecteJDBCDAO.getAll());
-        map.addAttribute("client", new Client());
-        map.addAttribute("listaClienti", clientiJDBCDAO.getAll());
-
-        return "buget";
-    }
-
-    @RequestMapping(value = "/cheltuieli", method = RequestMethod.GET)
-    public String getCheltuieliPage(ModelMap map) {
-
-        map.addAttribute("proiect", new ListaProiecte());
-        map.addAttribute("listaProiecte", proiecteJDBCDAO.getAll());
-        map.addAttribute("client", new Client());
-        map.addAttribute("listaClienti", clientiJDBCDAO.getAll());
-
-        return "cheltuieli";
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import projectManager.repository.Roles;
-import projectManager.repository.dao.RolesDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class RolesJDBCDAO extends JdbcDaoSupport implements RolesDAO {
+public class RolesDAOImpl extends JdbcDaoSupport implements projectManager.repository.dao.RolesDAO {
 
     String ROLE = "SELECT * FROM roles ORDER BY role ASC";
     String FIND_ROLE_BY_ID = ROLE + " WHERE idRole=?";
@@ -42,7 +41,7 @@ public class RolesJDBCDAO extends JdbcDaoSupport implements RolesDAO {
     };
 
     @Autowired
-    public RolesJDBCDAO(DriverManagerDataSource driverManagerDataSource) {
+    public RolesDAOImpl(DriverManagerDataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

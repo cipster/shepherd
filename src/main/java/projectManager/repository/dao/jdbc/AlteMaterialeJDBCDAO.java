@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.AlteMateriale;
 import projectManager.repository.dao.AlteMaterialeDAO;
 
@@ -56,6 +58,7 @@ public class AlteMaterialeJDBCDAO extends JdbcDaoSupport implements AlteMaterial
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer create(final AlteMateriale entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -90,11 +93,13 @@ public class AlteMaterialeJDBCDAO extends JdbcDaoSupport implements AlteMaterial
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer deleteByID(Integer id) {
         return getJdbcTemplate().update(DELETE_ALTE_MATERIALE_BY_ID, new Object[]{id});
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public List<AlteMateriale> getAll() {
 
         List<AlteMateriale> result = getJdbcTemplate().query(ALTE_MATERIALE, alteMaterialeRowMapper);
