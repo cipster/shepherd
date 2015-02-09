@@ -9,6 +9,7 @@ public class UserRoles {
     private int userRoleId;
     private String role;
     private String username;
+    private int roleType;
 
     @Id
     @Column(name = "user_role_id", nullable = false, insertable = true, updatable = true)
@@ -36,6 +37,16 @@ public class UserRoles {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Basic
+    @Column(name = "role_type", nullable = false, insertable = true, updatable = true, length = 45)
+    public int getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(int roleType) {
+        this.roleType = roleType;
     }
 
     @Override

@@ -40,7 +40,7 @@ public class AdminRestController {
             List<UserRoles> userRoles = userRolesJDBCDAO.findByID(username);
             if(userRoles != null && userRoles.size() > 0) {
                 for (UserRoles s : userRoles) {
-                    roleString += s.getRole() + "=";
+                    roleString += s.getRoleType() + "=";
                 }
             }
             responseString = "{\"username\":\"" + username + "\", \"role\":\"" + roleString + "\"}";

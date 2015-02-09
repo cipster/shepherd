@@ -7,9 +7,11 @@ import javax.persistence.*;
 public class Roles {
     private int idRole;
     private String role;
+    private String roleValue;
+
 
     @Id
-    @Column(name = "idRole")
+    @Column(name = "id_role")
     public int getIdRole() {
         return idRole;
     }
@@ -26,6 +28,16 @@ public class Roles {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Basic
+    @Column(name = "role_value")
+    public String getRoleValue() {
+        return roleValue;
+    }
+
+    public void setRoleValue(String roleValue) {
+        this.roleValue = roleValue;
     }
 
     @Override

@@ -16,17 +16,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class RolesDAOImpl extends JdbcDaoSupport implements projectManager.repository.dao.RolesDAO {
 
     String ROLE = "SELECT * FROM roles ORDER BY role ASC";
-    String FIND_ROLE_BY_ID = ROLE + " WHERE idRole=?";
-    String DELETE_ROLE = "DELETE FROM roles where idRole=?";
-    String INSERT_INTO_ROLES = "INSERT INTO roles(idRole, role) VALUES(?,?)";
+    String FIND_ROLE_BY_ID = "SELECT * FROM roles WHERE id_role=?";
+    String DELETE_ROLE = "DELETE FROM roles where id_role=?";
+    String INSERT_INTO_ROLES = "INSERT INTO roles(id_role, role) VALUES(?,?)";
 
     private RowMapper<Roles> rolesParameterizedRowMapper = new RowMapper<Roles>() {
         @Override
@@ -35,6 +33,7 @@ public class RolesDAOImpl extends JdbcDaoSupport implements projectManager.repos
 
             roles.setIdRole(rs.getInt("id_role"));
             roles.setRole(rs.getString("role"));
+            roles.setRoleValue(rs.getString("role_value"));
 
             return roles;
         }
@@ -60,11 +59,10 @@ public class RolesDAOImpl extends JdbcDaoSupport implements projectManager.repos
     @Override
     public Roles findByID(Integer id) {
         try {
-            Map<String, Object> args = new HashMap<String, Object>();
-            args.put("id_role", id);
-            StringBuilder findUser = new StringBuilder(FIND_ROLE_BY_ID);
 
-            return getJdbcTemplate().queryForObject(findUser.toString(), rolesParameterizedRowMapper, args);
+            String findUser = "SELECT * FROM roles where id_role=" + id;
+
+            return getJdbcTemplate().queryForObject(findUser, rolesParameterizedRowMapper);
         } catch(EmptyResultDataAccessException e) {
             return null;
         }

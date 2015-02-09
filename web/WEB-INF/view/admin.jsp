@@ -109,6 +109,8 @@
     </div>
 </div><!--/.container-->
 
+<div id="alert" class="notifications"></div>
+
 <form action="/logout" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}"
            value="${_csrf.token}"/>
@@ -125,6 +127,7 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/chosen.jquery.js"></script>
+<script src="/js/bootstrap-notify.js"></script>
 <script type="text/javascript">
     function formSubmit() {
         document.getElementById("logoutForm").submit();
@@ -159,6 +162,31 @@
         $("#idClient").val(-1);
         $("#idClient").trigger("chosen:updated");
 
+    }
+
+    function getUsers(){
+        var idUserSelect = $("#idUserSelect");
+        idUserSelect.html("");
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/userlist',
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        idUserSelect
+                                .append( $('<option id="' + response[i].username + '" data-username="' + response[i].username +'" data-password="' + response[i].password +'" data-status="' + response[i].enabled + '">')
+                                        .val(response[i].username).text(response[i].username) );
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        idUserSelect.val(-1);
+        idUserSelect.trigger("chosen:updated");
     }
 
     function getProjects(){
@@ -253,6 +281,12 @@
         });
 
         $("#anSelInput").chosen({
+            width: "100%",
+            disable_search: true,
+            allow_single_deselect: true
+        });
+
+        $("#newRoluriInput").chosen({
             width: "100%",
             disable_search: true,
             allow_single_deselect: true
@@ -360,12 +394,11 @@
             $("#modUsers").css('display', "block");
             $("#modClienti").css('display', "none");
             $("#sfat").css('display', "none");
-
+            getUsers();
+            $('#btnChPass').attr('data-target','');
+            $('#btnModUser').attr('data-target','');
 
         });
-
-
     });
-
 
 </script>

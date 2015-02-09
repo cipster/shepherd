@@ -14,4 +14,6 @@ public interface UserDAO extends GenericDAO<User, Integer> {
 
     Integer updatePassword(String username, String newpassword);
 
+    Integer deleteByUsername(String username);
+
 }

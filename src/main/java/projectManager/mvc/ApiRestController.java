@@ -1,29 +1,29 @@
 package projectManager.mvc;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.zxing.BarcodeFormat;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import projectManager.repository.*;
 import projectManager.repository.dao.*;
-import projectManager.repository.dao.jdbc.ClientiJDBCDAO;
-import projectManager.repository.dao.jdbc.ListaProiecteJDBCDAO;
 import projectManager.util.Barcode;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Ciprian on 12/14/2014.
@@ -52,9 +52,15 @@ public class ApiRestController {
     private ListaProiecteDAO listaProiecteDAO;
     @Autowired
     private Cod2DAO cod2DAO;
+    @Autowired
+    private UserDAO userDAO;
+    @Autowired
+    private UserRolesDAO userRolesDAO;
+    @Autowired
+    private RolesDAO rolesDAO;
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
     @RequestMapping(value = "/getinventory", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Articole> getAllStoc() {
@@ -62,7 +68,7 @@ public class ApiRestController {
         return articoleDAO.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
     @RequestMapping(value = "/clientlist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Client> getAllClienti() {
@@ -70,12 +76,20 @@ public class ApiRestController {
         return clientiDAO.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
     @RequestMapping(value = "/proiectelist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ListaProiecte> getAllProiecte() {
 
         return listaProiecteDAO.getAll();
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @RequestMapping(value = "/userlist", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<User> getAllUsers() {
+
+        return userDAO.getAll();
     }
 
     @PreAuthorize("hasRole('ROLE_SUPERUSER')")
@@ -266,6 +280,109 @@ public class ApiRestController {
             response = "-1";
         }
 
+        return response;
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/schimbaparola", method = RequestMethod.POST)
+    @ResponseBody
+    public String schimbaParola(HttpServletRequest request) {
+
+        String response = "";
+        try {
+            userDAO.updatePassword(request.getParameter("user"),request.getParameter("password"));
+            response = "1";
+        } catch (DataAccessException ex) {
+            ex.printStackTrace();
+            response = "-1";
+        }
+
+        return response;
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @RequestMapping(value = "/adaugauser", method = RequestMethod.POST)
+    @ResponseBody
+    public String adaugaUser(HttpServletRequest request) {
+
+        String response = "";
+        String user = request.getParameter("username");
+        String password = new BCryptPasswordEncoder(4).encode("qwerty");
+        String[] roluri = request.getParameterValues("rol");
+        if((user != null &&user.length() == 0) || ( roluri != null && roluri.length == 0)){
+            response = "-1";
+        } else {
+            try {
+                User deCreat = new User();
+                deCreat.setPassword(password);
+                deCreat.setUsername(user);
+                deCreat.setEnabled(1);
+
+                UserRoles userRoles = new UserRoles();
+                userRoles.setUsername(user);
+
+                Roles roles = null;
+
+                userDAO.create(deCreat);
+
+                for(String rol : roluri){
+                    roles = rolesDAO.findByID(Integer.parseInt(rol));
+                    if(roles != null) {
+                        userRoles.setRole(roles.getRoleValue());
+                        userRoles.setRoleType(roles.getIdRole());
+                        userRolesDAO.create(userRoles);
+                    }
+                }
+                response = "1";
+            } catch (DataAccessException ex) {
+                ex.printStackTrace();
+                response = "-1";
+            }
+        }
+        return response;
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @RequestMapping(value = "/modificauser", method = RequestMethod.POST)
+    @ResponseBody
+    public String modificaUser(HttpServletRequest request) {
+
+        String response = "";
+        String user = request.getParameter("username");
+        String status = request.getParameter("status");
+        String[] roluri = request.getParameterValues("rol");
+        if((user != null &&user.length() == 0) || ( roluri != null && roluri.length == 0)){
+            response = "-1";
+        } else {
+            try {
+                User deModificat = userDAO.findByID(user);
+                deModificat.setEnabled(Integer.parseInt(status));
+
+                UserRoles userRoles = new UserRoles();
+                userRoles.setUsername(user);
+
+                Roles roles = null;
+
+                userDAO.update(deModificat);
+                userRolesDAO.deleteByUsername(user);
+
+                for(String rol : roluri){
+                    roles = rolesDAO.findByID(Integer.parseInt(rol));
+                    if(roles != null) {
+                        userRoles.setRole(roles.getRoleValue());
+                        userRoles.setRoleType(roles.getIdRole());
+                        userRolesDAO.create(userRoles);
+                    }
+                }
+                response = "1";
+            } catch (DataAccessException ex) {
+                ex.printStackTrace();
+                response = "-1";
+            }
+        }
         return response;
     }
 }

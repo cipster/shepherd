@@ -3,6 +3,7 @@ package projectManager.repository.dao.jdbc;
 
 import com.mysql.jdbc.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -11,6 +12,9 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.User;
 import projectManager.repository.dao.UserDAO;
 
@@ -18,19 +22,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UserJDBCDAO extends JdbcDaoSupport implements UserDAO {
 
     private static final String USER = "SELECT * FROM users ";
     private static final String FIND_USER_BY_USERNAME = USER + " WHERE username=:username";
-    private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE usename= ?";
     private static final String INSERT_INTO_USER = "INSERT INTO users(username, password, enabled)VALUES(?, ?, ?)";
-    private static final String UPDATE_USER_PASSWORD = "UPDATE users SET password = ? WHERE username = ?";
     private static final String UPDATE_USER = "UPDATE users SET password = ?, enabled = ? WHERE username = ?";
-
 
     private RowMapper<User> userParameterizedRowMapper = new RowMapper<User>() {
         @Override
@@ -44,51 +43,64 @@ public class UserJDBCDAO extends JdbcDaoSupport implements UserDAO {
             return user;
         }
     };
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Autowired
     public UserJDBCDAO(DriverManagerDataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 
+
     @Override
     public User findByID(String username) {
         try {
-            Map<String, Object> args = new HashMap<String, Object>();
-            args.put("username", username);
-            StringBuilder findUser = new StringBuilder(FIND_USER_BY_USERNAME);
+            final String query = "SELECT * FROM users WHERE username ='" + username + "'";
 
-            return getJdbcTemplate().queryForObject(findUser.toString(), userParameterizedRowMapper, args);
+            return getJdbcTemplate().queryForObject(query, userParameterizedRowMapper);
         } catch(EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<User> getAll() {
-        List<User> result = getJdbcTemplate().query(USER, userParameterizedRowMapper);
+        final String query = "SELECT * FROM proiecte.users";
+        try {
 
-        if(result != null) {
-            return result;
-        } else {
+            return getJdbcTemplate().query(query, userParameterizedRowMapper);
+        } catch (DataAccessException ex){
+            ex.printStackTrace();
             return null;
         }
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer updatePassword(String username, String password) {
-        Map<String, Object> args = new HashMap<String, Object>();
-        args.put("usename", username);
-        args.put("password", password);
+        password = encoder.encode(password);
+        String query = "UPDATE proiecte.users SET password = '" + password + "' WHERE username='" + username + "'";
 
-        return getJdbcTemplate().update(UPDATE_USER_PASSWORD, args);
+        return getJdbcTemplate().update(query);
+
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public Integer deleteByUsername(String username) {
+        String query = "DELETE FROM proiecte.users WHERE username='" + username + "'";
+        return getJdbcTemplate().update(query);
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public User findByID(Integer id) {
         return null;
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer create(final User entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -98,24 +110,20 @@ public class UserJDBCDAO extends JdbcDaoSupport implements UserDAO {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(INSERT_INTO_USER, Statement.RETURN_GENERATED_KEYS);
 
-
                 ps.setString(1, entity.getUsername());
-
                 ps.setString(2, entity.getPassword());
-
                 ps.setInt(3, entity.getEnabled());
-
 
                 logger.debug(ps.toString());
                 return ps;
             }
         };
         jdbcTemplate.update(psc, keyHolder);
-
-        return keyHolder.getKey().intValue();
+        return 1;
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer update(final User entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -124,14 +132,12 @@ public class UserJDBCDAO extends JdbcDaoSupport implements UserDAO {
 
                 PreparedStatement ps = con.prepareStatement(UPDATE_USER);
 
-
                 ps.setString(1, entity.getPassword());
                 ps.setInt(2, entity.getEnabled());
-
+                ps.setString(3, entity.getUsername());
 
                 logger.debug(ps.toString());
                 return ps;
-
             }
         };
         jdbcTemplate.update(psc);
@@ -140,6 +146,6 @@ public class UserJDBCDAO extends JdbcDaoSupport implements UserDAO {
 
     @Override
     public Integer deleteByID(Integer id) {
-        return getJdbcTemplate().update(DELETE_USER_BY_ID, new Object[]{id});
+        return null;
     }
 }

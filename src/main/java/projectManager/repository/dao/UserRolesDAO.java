@@ -12,4 +12,6 @@ public interface UserRolesDAO extends GenericDAO<UserRoles, Integer> {
     List<UserRoles> findByID(String username);
 
     void deleteByUsernameAndRole(String username, String role);
+
+    Integer deleteByUsername(String user);
 }
