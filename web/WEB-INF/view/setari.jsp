@@ -33,37 +33,7 @@
 </head>
 
 <body>
-
-<!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/main"><img style="height:30px;"
-                                                      src="/img/logo360.png"/></a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="javascript:formSubmit()"><spring:message code="NAVBAR.LOG_OUT" /></a></li>
-            </ul>
-            <ul class="nav nav-tabs">
-                <li><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
-                </sec:authorize>
-                <li><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
-                <li class="active"><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
-            </ul>
-        </div>
-        <!--/.nav-collapse -->
-    </div>
-</div>
-
+<jsp:include page="include/navbar.jsp"></jsp:include>
 <div class="container">
     <div class="row well">
 
@@ -152,6 +122,7 @@
 
     $(document).ready(function() {
 
+        $('#slashsetari').addClass('active');
         $('#chShowPass').on('click', function(e){
             var pass = $('#chPasswordInput');
             var rpass = $('#chRepeatPasswordInput');

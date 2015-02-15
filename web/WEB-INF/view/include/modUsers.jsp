@@ -26,7 +26,7 @@
     </div>
     <div class="col-md-6">
         <span><spring:message code="MODUSER.ROLURI" /></span>
-        <select multiple data-placeholder="Alege un rol..."  class="chosen-select" id="adminInput">
+        <select multiple data-placeholder="Alege un rol..."  class="chosen-select-width" id="adminInput">
             <c:forEach items="${listaRoluri}" var="roluri">
                 <option value="${roluri.idRole}" label="${roluri.role}">${roluri.role}</option>
             </c:forEach>

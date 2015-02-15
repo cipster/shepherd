@@ -1,9 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sform" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,8 +20,8 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/cover.css" rel="stylesheet">
-
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -34,38 +32,7 @@
 
 <body>
 
-<!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/main"><img style="height:30px;"
-                                                      src="/img/logo360.png"/></a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/setari" data-toggle="tooltip" data-placement="bottom"
-                       title="<spring:message code="MAIN.ESTI_INREGISTRAT_CA" /> ${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a>
-                </li>
-                <li><a href="javascript:formSubmit()"><spring:message code="NAVBAR.LOG_OUT" /></a></li>
-            </ul>
-            <ul class="nav nav-tabs">
-                <li><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
-                <%--<li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>--%>
-                <li><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
-                <li><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
-                <li><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
-            </ul>
-        </div>
-        <!--/.nav-collapse -->
-    </div>
-</div>
-
+<jsp:include page="include/navbar.jsp"></jsp:include>
 <div class="cover-container">
 
     <div class="inner cover">
@@ -74,7 +41,7 @@
         <p class="lead"><spring:message code="ACCESS.NORIGHT" /></p>
 
         <p class="lead">
-            <a href="/main" class="btn btn-large btn-info"><i class="glyphicon glyphicon-home"></i> <spring:message code="ERROR.HOME" /></a>
+            <a href="/main" class="btn btn-large btn-info"><i class="fa fa-home"></i> <spring:message code="ERROR.HOME" /></a>
         </p>
     </div>
 
@@ -86,7 +53,6 @@
     </div>
 
 
-</div>
 </div>
 
 <!--/.container-->

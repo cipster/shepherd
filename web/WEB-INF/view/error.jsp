@@ -1,5 +1,8 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -9,16 +12,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-
     <title><spring:message code="ERROR.TITLE" /></title>
-
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
+    <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/cover.css" rel="stylesheet">
-
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -42,7 +43,7 @@
 
             <p class="lead">
                 <a href="/main" class="btn btn-large btn-primary">
-                    <i class="glyphicon glyphicon-home"></i>
+                    <i class="fa fa-home"></i>
                     <spring:message code="ERROR.HOME"/>
                 </a>
             </p>

@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sform" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -38,51 +39,22 @@
     </style>
 </head>
 <body>
-<!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/main"><img style="height:30px;"
-                                                      src="/img/logo360.png"/></a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/setari" data-toggle="tooltip" data-placement="bottom"
-                       title="<spring:message code="MAIN.ESTI_INREGISTRAT_CA" /> ${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a>
-                </li>
-                <li><a href="javascript:formSubmit()"><spring:message code="NAVBAR.LOG_OUT" /></a></li>
-            </ul>
-            <ul class="nav nav-tabs">
-                <li><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
-                <%--<li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>--%>
-                <li class="active"><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
-                <li><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
-                <li><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
-            </ul>
-        </div>
-        <!--/.nav-collapse -->
-    </div>
-</div>
-
+<jsp:include page="include/navbar.jsp"></jsp:include>
 <div class="container">
     <div class="jumbotron col-md-12" style="min-height: 500px;">
         <div class="list-group col-md-3">
-            <a href="#adauga" id="adauga" class="list-group-item">
-                <span class="fa fa-plus">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ" /></a>
-            <a href="#modifica" id="modifica" class="list-group-item">
-                <span class="fa fa-pencil">&nbsp;</span>
-                <spring:message code="ADMIN.MODPROJ" /></a>
-            <a href="#sterge" id="sterge" class="list-group-item">
-                <span class="fa fa-remove">&nbsp;</span>
-                <spring:message code="ADMIN.DELPROJ" /></a>
-            <a href="#clienti" id="clienti" class="list-group-item">
-                <span class="fa fa-briefcase">&nbsp;</span> <spring:message code="ADMIN.MODCLIENTI" /></a>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <a href="#adauga" id="adauga" class="list-group-item">
+                    <span class="fa fa-plus">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ" /></a>
+                <a href="#modifica" id="modifica" class="list-group-item">
+                    <span class="fa fa-pencil">&nbsp;</span>
+                    <spring:message code="ADMIN.MODPROJ" /></a>
+                <a href="#sterge" id="sterge" class="list-group-item">
+                    <span class="fa fa-remove">&nbsp;</span>
+                    <spring:message code="ADMIN.DELPROJ" /></a>
+                <a href="#clienti" id="clienti" class="list-group-item">
+                    <span class="fa fa-briefcase">&nbsp;</span> <spring:message code="ADMIN.MODCLIENTI" /></a>
+            </sec:authorize>
             <a href="#utilizatori" id="utilizatori" class="list-group-item">
                 <span class="fa fa-group">&nbsp;</span> <spring:message code="ADMIN.MODUSER" /></a>
         </div>
@@ -226,6 +198,7 @@
 
     $(document).ready(function () {
 
+        $('#slashadmin').addClass('active');
         $("#adminInput").chosen({
             width: "100%",
             search_contains: true,

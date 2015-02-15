@@ -60,7 +60,7 @@ public class ApiRestController {
     private RolesDAO rolesDAO;
 
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasRole('ROLE_INVENTAR')")
     @RequestMapping(value = "/getinventory", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Articole> getAllStoc() {
@@ -100,7 +100,7 @@ public class ApiRestController {
         return cod2DAO.getAllByCod1(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasRole('ROLE_INVENTAR')")
     @RequestMapping(value = "/persoane", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Persoana> getPersoane() {
@@ -108,7 +108,7 @@ public class ApiRestController {
         return persoanaDAO.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasRole('ROLE_INVENTAR')")
     @RequestMapping(value = "/locuri", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Loc> getLocuri() {
@@ -229,7 +229,7 @@ public class ApiRestController {
         return response;
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasRole('ROLE_INVENTAR')")
     @RequestMapping(value = "/evidentaiese", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String evidentaIese(HttpServletRequest request) {

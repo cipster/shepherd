@@ -25,7 +25,6 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
 
 
     private static final String CLIENTI = "SELECT * FROM clienti ";
-    private static final String FIND_CLIENTI_BY_ID = CLIENTI + " WHERE id_client=:id_client";
     private static final String DELETE_CLIENTI_BY_ID = "DELETE FROM clienti WHERE id_client=?";
     private static final String INSERT_INTO_CLIENTI = "INSERT INTO clienti(id_client, client)VALUES(?, ?)";
     private static final String UPDATE_CLIENTI = "UPDATE clienti SET client = ? WHERE id_client = ?";
@@ -118,6 +117,6 @@ public class ClientiJDBCDAO extends JdbcDaoSupport implements ClientDAO {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer deleteByID(Integer id) {
-        return getJdbcTemplate().update(DELETE_CLIENTI_BY_ID, new Object[]{id});
+        return getJdbcTemplate().update(DELETE_CLIENTI_BY_ID, id);
     }
 }
