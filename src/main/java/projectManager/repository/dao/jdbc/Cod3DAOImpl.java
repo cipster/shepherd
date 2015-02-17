@@ -61,10 +61,14 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
 
     @Override
     public Cod3 findByBarcode(String code) throws DataAccessException{
-        final String query = "SELECT * FROM proiecte.cod_3 WHERE barcode=" + code;
+        try {
+            final String query = "SELECT * FROM proiecte.cod_3 WHERE barcode='" + code +"'";
 
-        return getJdbcTemplate().queryForObject(query, rowMapper);
-
+            return getJdbcTemplate().queryForObject(query, rowMapper);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

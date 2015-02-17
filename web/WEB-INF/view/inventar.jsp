@@ -3,7 +3,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -726,7 +725,7 @@
         });
 
         //aduce valoarea articolului dupa ce a fost scanat
-        $('#iesebarcodeinput').on('keyup', function(e){
+        $('#iesebarcodeinput').on('keyup', function(e){debugger;
             if(e.keyCode == 13){
                 var code= $(this).val();
                 $(this).val('');

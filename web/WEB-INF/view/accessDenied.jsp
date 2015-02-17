@@ -52,9 +52,7 @@
         </div>
     </div>
 
-
 </div>
-
 <!--/.container-->
 
 <form action="/logout" method="post" id="logoutForm">

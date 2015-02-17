@@ -124,7 +124,7 @@ public class ApiRestController {
         try {
             cod3 = cod3DAO.findByBarcode(code);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return cod3;
     }
@@ -135,15 +135,12 @@ public class ApiRestController {
         File f = null;
         String code = articoleDAO.findByID(Integer.valueOf(id)).getBarcode();
         byte[] image;
-        try {
+        try (InputStream in = new FileInputStream(f)) {
             // creates temporary file
             f = File.createTempFile("tmp", ".jpg", new File("C:/"));
             Barcode.encode(f, code, BarcodeFormat.CODE_128);
             image = new byte[(int) f.length()];
-            InputStream in = null;
-            in = new FileInputStream(f);
             in.read(image);
-            in.close();
             f.delete();
         } catch (Exception ex) {
             ex.printStackTrace();
