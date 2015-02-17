@@ -27,12 +27,11 @@ import java.util.List;
 
 /**
  * Created by Ciprian on 12/14/2014.
- * Project Raindrop
+ * Project Shepherd
  */
 @Controller
 @RequestMapping(value = "/api")
 public class ApiRestController {
-
 
     @Autowired
     private Cod3DAO cod3DAO;
@@ -120,7 +119,6 @@ public class ApiRestController {
     @ResponseBody
     public Cod3 getArticol(@PathVariable String code) {
         Cod3 cod3 = null;
-
         try {
             cod3 = cod3DAO.findByBarcode(code);
         } catch (Exception e) {

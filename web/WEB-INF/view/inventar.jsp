@@ -725,7 +725,7 @@
         });
 
         //aduce valoarea articolului dupa ce a fost scanat
-        $('#iesebarcodeinput').on('keyup', function(e){debugger;
+        $('#iesebarcodeinput').on('keyup', function(e){
             if(e.keyCode == 13){
                 var code= $(this).val();
                 $(this).val('');
