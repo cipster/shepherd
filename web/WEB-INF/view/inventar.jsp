@@ -210,7 +210,7 @@
                 </div>
                 <div id="detalii-group" class="form-group">
                     <label for="detaliiiese">Detalii</label>
-                    <textarea id="detaliiiese" rows="3" cols="75" class="form-control"></textarea>
+                    <textarea id="detaliiiese" rows="3" cols="75" placeholder="adauga un motiv" style="max-width: 558px;" class="form-control"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -234,18 +234,20 @@
                 <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.INTRA" /></h4>
             </div>
             <div class="modal-body">
-
+                <div>
+                    <div id="intrabarcode" class="form-group">
+                        <h3>Scaneaza articolul</h3>
+                    </div>
+                    <input id="intrabarcodeinput">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
             </div>
             </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+        </div> <!-- /.modal-content -->
+    </div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
 
 <div id="alert" class="notifications"></div>
 
@@ -280,8 +282,6 @@
 <script src="/js/bootstrap.file-input.js"></script>
 <script src="/js/datatables.js"></script>
 <script src="/js/datatables.bootstrap.js"></script>
-<%--<script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>--%>
-<%--<script src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>--%>
 <script src="/js/chosen.jquery.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
 <script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
