@@ -55,7 +55,7 @@
         <br/>
         <br/>
         <sec:authorize access="hasRole('ROLE_SUPERUSER')">
-            <table id="inventory-table" class="table unselectable" width="100%">
+            <table id="inventory-table" class="table" width="100%">
                 <thead>
                 <tr>
                     <th>Nr</th>
@@ -802,13 +802,13 @@
                     $('#backiese').removeClass('pas2');
                     $('#backiese').hide();
                     $('#iesebarcode').hide();
-                    $('#ieseq').show();
+                    $('#ieseas').show();
                     $('#articolecautate').html('');
                     $('#closeiese').click();
                     table.ajax.reload();
                     setTimeout(function(){
                         drawDisponibil(table);
-                    },1000)
+                    },1000);
                     $("#alert").notify({
                         message: { text: 'Operatie cu succes!' },
                         type: 'success',
@@ -816,9 +816,15 @@
                         transition: 'fade',
                         fadeOut: { enabled: true, delay: 3500 }
                     }).show();
-
                 },
                 error: function(err){
+                    $("#alert").notify({
+                        message: { text: 'Operatie nereusita!' },
+                        type: 'danger',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 3500 }
+                    }).show();
                 }
             });
         });
