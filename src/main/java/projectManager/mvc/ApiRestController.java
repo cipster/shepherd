@@ -27,12 +27,11 @@ import java.util.List;
 
 /**
  * Created by Ciprian on 12/14/2014.
- * Project Raindrop
+ * Project Shepherd
  */
 @Controller
 @RequestMapping(value = "/api")
 public class ApiRestController {
-
 
     @Autowired
     private Cod3DAO cod3DAO;
@@ -120,11 +119,10 @@ public class ApiRestController {
     @ResponseBody
     public Cod3 getArticol(@PathVariable String code) {
         Cod3 cod3 = null;
-
         try {
             cod3 = cod3DAO.findByBarcode(code);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return cod3;
     }
@@ -135,15 +133,12 @@ public class ApiRestController {
         File f = null;
         String code = articoleDAO.findByID(Integer.valueOf(id)).getBarcode();
         byte[] image;
-        try {
+        try (InputStream in = new FileInputStream(f)) {
             // creates temporary file
             f = File.createTempFile("tmp", ".jpg", new File("C:/"));
             Barcode.encode(f, code, BarcodeFormat.CODE_128);
             image = new byte[(int) f.length()];
-            InputStream in = null;
-            in = new FileInputStream(f);
             in.read(image);
-            in.close();
             f.delete();
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Created by Ciprian on 12/14/2014.
- * Project Raindrop
+ * Project Shepherd
  */
 public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     private RowMapper<Cod3> rowMapper = new RowMapper<Cod3>() {
@@ -61,10 +61,13 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
 
     @Override
     public Cod3 findByBarcode(String code) throws DataAccessException{
-        final String query = "SELECT * FROM proiecte.cod_3 WHERE barcode=" + code;
-
-        return getJdbcTemplate().queryForObject(query, rowMapper);
-
+        final String query = "SELECT * FROM proiecte.cod_3 WHERE barcode='" + code + "'";
+        try {
+            return getJdbcTemplate().queryForObject(query, rowMapper);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -79,9 +82,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
                 PreparedStatement ps = con.prepareStatement(query);
 
                 ps.setInt(1, stare);
-
                 ps.setInt(2, id);
-
 
                 logger.debug(ps.toString());
                 return ps;
@@ -147,7 +148,6 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
                 ps.setString(5, entity.getPretAchizitie());
                 ps.setByte(6, entity.getStare());
                 ps.setInt(7, entity.getIdCod3());
-
 
                 logger.debug(ps.toString());
                 return ps;
