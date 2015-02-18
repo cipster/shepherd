@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.Bd;
 import projectManager.repository.dao.BdDAO;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class BdJDBCDAO extends JdbcDaoSupport implements BdDAO {
     };
 
     @Autowired
-    public BdJDBCDAO(DriverManagerDataSource driverManagerDataSource) {
+    public BdJDBCDAO(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

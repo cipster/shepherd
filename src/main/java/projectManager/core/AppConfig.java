@@ -1,18 +1,17 @@
 package projectManager.core;
 
 
+import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -33,9 +32,13 @@ import java.util.List;
 @Configuration
 @EnableTransactionManagement
 @EnableGlobalMethodSecurity(prePostEnabled=true)
+@PropertySource("classpath:jdbc.properties")
 @ComponentScan(basePackages = {"projectManager.mvc"})
 @Import({WebSecurityConfig.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    private Environment env;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -109,12 +112,14 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean(name = "dataSource")
-    public DriverManagerDataSource dataSource() {
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-        driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        driverManagerDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/proiecte");
-        driverManagerDataSource.setUsername("root");
-        driverManagerDataSource.setPassword("cucubau");
+    public BasicDataSource dataSource() {
+        BasicDataSource driverManagerDataSource = new BasicDataSource();
+        driverManagerDataSource.setDriverClassName(env.getProperty("database.driverClassName"));
+        driverManagerDataSource.setUrl(env.getProperty("database.databaseurl"));
+        driverManagerDataSource.setUsername(env.getProperty("database.username"));
+        driverManagerDataSource.setPassword(env.getProperty("database.password"));
+        driverManagerDataSource.setInitialSize(5);
+        driverManagerDataSource.setMaxActive(10);
         return driverManagerDataSource;
     }
 

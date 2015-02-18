@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.ChestionarFinal;
 import projectManager.repository.dao.ChestionarFinalDAO;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class ChestionarFinalJDBCDAO extends JdbcDaoSupport implements Chestionar
     };
 
     @Autowired
-    public ChestionarFinalJDBCDAO(DriverManagerDataSource driverManagerDataSource) {
+    public ChestionarFinalJDBCDAO(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

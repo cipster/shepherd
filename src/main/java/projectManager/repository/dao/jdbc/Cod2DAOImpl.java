@@ -7,12 +7,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import projectManager.repository.Cod2;
 import projectManager.repository.dao.Cod2DAO;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +39,7 @@ public class Cod2DAOImpl extends JdbcDaoSupport implements Cod2DAO {
     };
 
     @Autowired
-    public Cod2DAOImpl(DriverManagerDataSource driverManagerDataSource) {
+    public Cod2DAOImpl(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

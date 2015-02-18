@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.User;
 import projectManager.repository.dao.UserDAO;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,7 +47,7 @@ public class UserJDBCDAO extends JdbcDaoSupport implements UserDAO {
     private PasswordEncoder encoder;
 
     @Autowired
-    public UserJDBCDAO(DriverManagerDataSource driverManagerDataSource) {
+    public UserJDBCDAO(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

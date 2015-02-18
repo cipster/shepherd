@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.AlteMateriale;
 import projectManager.repository.dao.AlteMaterialeDAO;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class AlteMaterialeJDBCDAO extends JdbcDaoSupport implements AlteMaterial
     };
 
     @Autowired
-    public AlteMaterialeJDBCDAO(DriverManagerDataSource driverManagerDataSource) {
+    public AlteMaterialeJDBCDAO(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

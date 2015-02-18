@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.UserRoles;
 import projectManager.repository.dao.UserRolesDAO;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,7 +45,7 @@ public class UserRolesJDBCDAO extends JdbcDaoSupport implements UserRolesDAO {
     };
 
     @Autowired
-    public UserRolesJDBCDAO(DriverManagerDataSource driverManagerDataSource) {
+    public UserRolesJDBCDAO(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

@@ -7,12 +7,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import projectManager.repository.Persoana;
 import projectManager.repository.dao.PersoanaDAO;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +39,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
     };
 
     @Autowired
-    public PersoanaDAOImpl(DriverManagerDataSource driverManagerDataSource) {
+    public PersoanaDAOImpl(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

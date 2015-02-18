@@ -7,12 +7,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import projectManager.repository.EvidentaInventar;
 import projectManager.repository.dao.EvidentaInventarDAO;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,7 +41,7 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
     };
 
     @Autowired
-    public EvidentaInventarDAOImpl(DriverManagerDataSource driverManagerDataSource) {
+    public EvidentaInventarDAOImpl(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 
