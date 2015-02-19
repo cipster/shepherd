@@ -33,7 +33,10 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        input select {
+        input {
+            font-size: 13pt!important;
+        }
+        select {
             font-size: 13pt!important;
         }
     </style>

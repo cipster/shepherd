@@ -149,6 +149,11 @@
                 alert('Parolele nu se potrivesc!');
                 return;
             }
+
+            if(pass.length < 7){
+                alert('Parola trebuie sa aiba 8 sau mai multe caractere!');
+                return;
+            }
             data = 'user=' + user + '&password=' + pass;
             $.ajax({
                 type: 'post',
