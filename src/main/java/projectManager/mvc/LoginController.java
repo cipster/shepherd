@@ -16,11 +16,16 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView firstPage(@RequestParam(value = "error", required = false) String error,
-                                  @RequestParam(value = "logout", required = false) String logout) {
+                                  @RequestParam(value = "logout", required = false) String logout,
+                                  @RequestParam(value = "notActive", required = false) String notActive) {
 
         ModelAndView model = new ModelAndView();
         if (error != null) {
-            model.addObject("error", "Utilizator sau parola gresita");
+            model.addObject("error", "Utilizator sau parola gresita!");
+        }
+
+        if (notActive != null) {
+            model.addObject("notActive", "Utilizator este inactiv!");
         }
 
         if (logout != null) {
