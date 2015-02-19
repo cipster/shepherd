@@ -55,14 +55,19 @@
 <script type="application/javascript">
 
     function addProjAxajCall() {
-        if ($("#nrProiect").val() === '' || $("#anInput").val() <= 0 || $("#numeProiect").val() === '' || $("#idClient").val() <= 0) {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
 
+        if ($("#nrProiect").val() === '' || $("#anInput").val() <= 0 || $("#numeProiect").val() === '' || $("#idClient").val() <= 0) {
             alert("Asigurati-va ca ati completat toate campurile!");
             return;
         }
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/projAdmin/createProj',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'nrProiect=' + $("#nrProiect").val() + "&an=" + $("#anInput").val() + "&numeProiect=" + $("#numeProiect").val() + "&idClient=" + $("#idClient").val(),
             cache: false,
 

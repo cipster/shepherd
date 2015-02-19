@@ -16,4 +16,5 @@ public interface UserDAO extends GenericDAO<User, Integer> {
 
     Integer deleteByUsername(String username);
 
+    List<User> getAll(int i);
 }

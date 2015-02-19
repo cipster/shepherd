@@ -20,7 +20,7 @@
     <title>Shepherd</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
@@ -75,7 +75,7 @@
 
     </div>
 </div>
-<sec:authorize access="hasRole('ROLE_DOWNLOAD')">
+<sec:authorize access="hasAnyRole('ROLE_DOWNLOAD','ROLE_ADMIN')">
     <div id="childrcmenu" class="unselectable">
         <div class="menuItem" onclick="download();"><spring:message code="MAIN.DESCARCA" /></div>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -181,7 +181,7 @@
 </form>
 
 <input id="username" hidden="hidden" value="${pageContext.request.userPrincipal.name}"/>
-<sec:authorize access="hasRole('ROLE_DOWNLOAD')">
+<sec:authorize access="hasAnyRole('ROLE_DOWNLOAD','ROLE_ADMIN')">
     <input id="propDownloadString" hidden="hidden" value="1">
     <input id="chestDownloadString" hidden="hidden" value="1">
     <input id="rapDownloadString" hidden="hidden" value="1">
@@ -226,6 +226,12 @@
         default:
             appLang = "/fonts/ro_RO.txt";
             break;
+    }
+
+    function hideModal(){
+        $('.modal.in').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
     }
 
     function getUrlParameter(sParam) {
@@ -381,11 +387,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea baza de date!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
+                hideModal();
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'success',
@@ -451,10 +453,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea propunere!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
+                hideModal();
                 $("#alert").show();
                 $("#alert").notify({
                     message: { text: respContent},
@@ -521,10 +520,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea chestionar final!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
+                hideModal();
                 $("#alert").show();
                 $("#alert").notify({
                     message: { text: respContent + " "},
@@ -591,10 +587,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea raport final!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
+                hideModal();
                 $("#alert").show();
                 $("#alert").notify({
                     message: { text: respContent + " "},
@@ -661,10 +654,7 @@
                 row.child(format(tr.prop("id"))).show();
                 tr.next().addClass('copil');
                 $("#copil").children().addClass('copil');
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
+                hideModal();
                 $("#alert").show();
                 $("#alert").notify({
                     message: { text: respContent + " "},
@@ -717,11 +707,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
+                hideModal();
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'info',
@@ -776,11 +762,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
+                hideModal();
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'info',
@@ -836,11 +818,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
+                hideModal();
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'info',
@@ -895,11 +873,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
+                hideModal();
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'info',
@@ -955,13 +929,7 @@
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
-
-
+                hideModal();
                 $("#alert").notify({
                     message: { text: respContent},
                     type: 'info',
@@ -969,7 +937,6 @@
                     transition: 'fade',
                     fadeOut: { enabled: true, delay: 15000 }
                 }).show();
-
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
@@ -1209,15 +1176,12 @@
                     var id = $(this).closest('tr').attr('id');
                     $("input[name='idProiect']").val(id);
                 }
-
                 if (e.button == 2) {
                     $("#rcmenu").css('left', e.pageX + 5);
                     $("#rcmenu").css('top', e.pageY + 5);
                     $("#rcmenu").fadeIn(80);
                 }
             }
-
-
         });
 
         $('#tabelProiecte tbody').on('mousedown', 'tr', function (e) {

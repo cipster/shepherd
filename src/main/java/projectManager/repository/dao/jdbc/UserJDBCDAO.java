@@ -94,6 +94,19 @@ public class UserJDBCDAO extends JdbcDaoSupport implements UserDAO {
     }
 
     @Override
+    public List<User> getAll(int i) {
+        final String query = "SELECT * FROM proiecte.users WHERE username NOT IN (SELECT username FROM proiecte.user_roles WHERE role_type = '" + i + "' )";
+
+        try {
+            return getJdbcTemplate().query(query, userParameterizedRowMapper);
+        } catch (DataAccessException ex){
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public User findByID(Integer id) {
         return null;

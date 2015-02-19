@@ -34,8 +34,8 @@ public class DownloadRestController {
     @Autowired
     private AlteMaterialeDAO alteMaterialeJDBCDAO;
 
-    @RequestMapping(value = "/propunere/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    @RequestMapping(value = "/propunere/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     String propunereDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -60,8 +60,8 @@ public class DownloadRestController {
         return null;
     }
 
-    @RequestMapping(value = "/chestionar/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    @RequestMapping(value = "/chestionar/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     String chestionarDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -86,8 +86,8 @@ public class DownloadRestController {
         return null;
     }
 
-    @RequestMapping(value = "/raport/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    @RequestMapping(value = "/raport/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     String raportDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -111,8 +111,8 @@ public class DownloadRestController {
 
         return null;
     }
-    @RequestMapping(value = "/bd/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    @RequestMapping(value = "/bd/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     String bdDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -136,8 +136,8 @@ public class DownloadRestController {
 
         return null;
     }
-    @RequestMapping(value = "/altemateriale/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    @RequestMapping(value = "/altemateriale/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     String alteMaterialeDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

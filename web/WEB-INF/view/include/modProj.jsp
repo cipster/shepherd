@@ -92,9 +92,7 @@
             return;
         }
         if ($("#nrProiectInput").val() === '' || $("#anSelInput").val() <= 0 || $("#numeProiectInput").val() === '' || $("#idClientInput").val() <= 0) {
-            $('.modal.in').modal('hide');
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
+            hideModal();
             alert("Asigurati-va ca ati completat toate campurile!");
             return;
         }
@@ -117,7 +115,8 @@
     });
 
     function modProjAxajCall(type,url,contentType,data,async) {
-
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         if ($("#idProiectSelect").val() == 0) {
             $('.modal.in').modal('hide');
             $('body').removeClass('modal-open');
@@ -130,6 +129,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/projAdmin/modificaProj',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'nrProiect=' + $("#nrProiectInput").val() + "&an=" + $("#anSelInput").val() + "&numeProiect=" + $("#numeProiectInput").val() + "&idClient=" + $("#idClientInput").val() + "&idProiect=" + $("#idProiectSelect").val(),
             cache: false,
 

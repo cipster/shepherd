@@ -1,6 +1,7 @@
 package projectManager.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +29,7 @@ public class AdminRestController {
     @Autowired
     private UserRolesDAO userRolesJDBCDAO;
 
-
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/getrole", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -51,6 +52,7 @@ public class AdminRestController {
         return responseString;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/createProj", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -77,7 +79,7 @@ public class AdminRestController {
         return responseString;
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugaClient", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -94,7 +96,7 @@ public class AdminRestController {
         }
         return responseString;
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/deleteProj", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -112,7 +114,7 @@ public class AdminRestController {
         }
         return responseString;
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/modificaProj", method = RequestMethod.POST)
     public
     @ResponseBody

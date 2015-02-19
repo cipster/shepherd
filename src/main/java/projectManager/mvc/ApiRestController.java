@@ -8,12 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import projectManager.repository.*;
+import projectManager.repository.User;
 import projectManager.repository.dao.*;
 import projectManager.util.Barcode;
 
@@ -23,6 +28,7 @@ import javax.json.JsonObject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -59,7 +65,7 @@ public class ApiRestController {
     private RolesDAO rolesDAO;
 
 
-    @PreAuthorize("hasRole('ROLE_INVENTAR')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/getinventory", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Articole> getAllStoc() {
@@ -67,7 +73,7 @@ public class ApiRestController {
         return articoleDAO.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/clientlist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Client> getAllClienti() {
@@ -75,7 +81,7 @@ public class ApiRestController {
         return clientiDAO.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/proiectelist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ListaProiecte> getAllProiecte() {
@@ -83,15 +89,21 @@ public class ApiRestController {
         return listaProiecteDAO.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/userlist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<User> getAllUsers() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
 
-        return userDAO.getAll();
+        if(role.compareTo("ROLE_ADMIN") == 0) {
+            return userDAO.getAll();
+        } else {
+            return userDAO.getAll(2);
+        }
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/cod2list/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Cod2> getAllCod2ByCod1(@PathVariable int id) {
@@ -99,7 +111,7 @@ public class ApiRestController {
         return cod2DAO.getAllByCod1(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_INVENTAR')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/persoane", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Persoana> getPersoane() {
@@ -107,14 +119,14 @@ public class ApiRestController {
         return persoanaDAO.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_INVENTAR')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/locuri", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Loc> getLocuri() {
 
         return locDAO.getAll();
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/articol/{code}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Cod3 getArticol(@PathVariable String code) {
@@ -151,7 +163,7 @@ public class ApiRestController {
         return new ResponseEntity<byte[]>(image, headers, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugaarticol", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String addClient(@RequestBody Cod3 cod3) {
@@ -207,7 +219,7 @@ public class ApiRestController {
         return response;
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugapersoana", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String addPersoana(@RequestBody Persoana persoana) {
@@ -224,7 +236,7 @@ public class ApiRestController {
         return response;
     }
 
-    @PreAuthorize("hasRole('ROLE_INVENTAR')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/evidentaiese", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String evidentaIese(HttpServletRequest request) {
@@ -261,7 +273,7 @@ public class ApiRestController {
         return response;
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugaloc", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String addLoc(@RequestBody Loc loc) {
@@ -279,7 +291,7 @@ public class ApiRestController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR','ROLE_USER')")
     @RequestMapping(value = "/schimbaparola", method = RequestMethod.POST)
     @ResponseBody
     public String schimbaParola(HttpServletRequest request) {
@@ -296,7 +308,7 @@ public class ApiRestController {
         return response;
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/adaugauser", method = RequestMethod.POST)
     @ResponseBody
@@ -306,10 +318,12 @@ public class ApiRestController {
         String user = request.getParameter("username");
         String password = new BCryptPasswordEncoder(4).encode("qwerty");
         String[] roluri = request.getParameterValues("rol");
-        if((user != null &&user.length() == 0) || ( roluri != null && roluri.length == 0)){
+        if((user != null && user.isEmpty()) || ( roluri != null && roluri.length == 0)){
             response = "-1";
         } else {
             try {
+                if(userDAO.findByID(user) != null) return "-2";
+
                 User deCreat = new User();
                 deCreat.setPassword(password);
                 deCreat.setUsername(user);
@@ -319,7 +333,6 @@ public class ApiRestController {
                 userRoles.setUsername(user);
 
                 Roles roles = null;
-
                 userDAO.create(deCreat);
 
                 for(String rol : roluri){
@@ -339,7 +352,7 @@ public class ApiRestController {
         return response;
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/modificauser", method = RequestMethod.POST)
     @ResponseBody

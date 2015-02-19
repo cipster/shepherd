@@ -66,6 +66,8 @@
     }
 
     function delProjAjaxCall() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         if ($("#idProiect").val() == 0) {
             $('.modal.in').modal('hide');
             $('body').removeClass('modal-open');
@@ -77,6 +79,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/projAdmin/deleteProj',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'idProiect=' + $('#idProiect').val(),
             cache: false,
 

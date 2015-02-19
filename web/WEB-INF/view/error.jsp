@@ -15,7 +15,7 @@
     <title><spring:message code="ERROR.TITLE" /></title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">

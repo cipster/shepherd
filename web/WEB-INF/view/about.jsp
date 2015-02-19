@@ -16,7 +16,7 @@
     <title>Shepherd</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/octicons.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->

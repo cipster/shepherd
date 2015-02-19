@@ -24,10 +24,10 @@
             <ul class="nav nav-tabs nav-navbar">
                 <li id="slashmain"><a href="/main"><spring:message code="NAVBAR.PROIECTE" /></a></li>
                 <%--<li><a href="/about"><spring:message code="NAVBAR.DESPRE" /></a></li>--%>
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_SUPERUSER')">
                     <li id="slashadmin"><a href="/admin"><spring:message code="NAVBAR.ADMIN" /></a></li>
                 </sec:authorize>
-                <sec:authorize access="hasRole('ROLE_INVENTAR')">
+                <sec:authorize access="hasAnyRole('ROLE_INVENTAR','ROLE_ADMIN','ROLE_SUPERUSER')">
                     <li id="slashinventar"><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
                 </sec:authorize>
                 <li id="slashsetari"><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>

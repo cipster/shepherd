@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" value="<spring:message code="MODUSER.ADDUSER" />"/>
+                    <input type="submit" class="btn btn-success" value="<spring:message code="MODUSER.ADDUSER" />"/>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
                 </div>
             </form>
@@ -170,9 +170,7 @@
             return;
         }
         if ($("#usernameInput").text() === '' || $("#adminInput").val() <= 0 || $("#statusInput").val() < 0 ) {
-            $('.modal.in').modal('hide');
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
+            hideModal();
             alert("Asigurati-va ca ati completat toate campurile!");
             return;
         }
@@ -181,6 +179,11 @@
         $('#btnModUser').attr('data-target', '#estisiguruser');
     }
 
+    function hideModal(){
+        $('.modal.in').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+    }
     $(document).ready(function(){
 
         $('#chShowPass').on('click', function(e){
@@ -221,6 +224,7 @@
                 data: data,
                 success: function (response) {
                     if (response === '-1') {
+                        hideModal();
                         $("#alert").notify({
                             message: { text: 'Utilizatorul nu a fost adaugat!' },
                             type: 'danger',
@@ -230,15 +234,24 @@
                         }).show();
                         return;
                     }
+
+                    if (response === '-2') {
+                        hideModal();
+                        $("#alert").notify({
+                            message: { text: 'Utilizatorul cu numele ' + user + ' exista deja!' },
+                            type: 'warning',
+                            closeable: 'true',
+                            transition: 'fade',
+                            fadeOut: { enabled: true, delay: 15000 }
+                        }).show();
+                        return;
+                    }
                     $('#newUsernameInput').val('');
-                    $('#newRoluriInput').val('');
+                    $('#newRoluriInput').val(3);
                     $('#newRoluriInput').trigger('chosen:updated');
                     $("#utilizatori").click();
                     var respContent = 'Utilizatorul ' + user + ' a fost adaugat!';
-
-                    $('.modal.in').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
+                    hideModal();
                     $("#alert").notify({
                         message: { text: respContent},
                         type: 'success',
@@ -276,6 +289,7 @@
                 data: data,
                 success: function (response) {
                     if (response === '-1') {
+                        hideModal();
                         $("#alert").notify({
                             message: { text: 'Utilizatorul nu a fost modificat!' },
                             type: 'danger',
@@ -292,10 +306,7 @@
                     $('#adminInput').trigger('chosen:updated');
                     $("#utilizatori").click();
                     var respContent = 'Utilizatorul ' + user + ' a fost modificat!';
-
-                    $('.modal.in').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
+                    hideModal();
                     $("#alert").notify({
                         message: { text: respContent},
                         type: 'success',
@@ -335,6 +346,7 @@
                 data: data,
                 success: function (response) {
                     if (response === '-1') {
+                        hideModal();
                         $("#alert").notify({
                             message: { text: 'Parola nu a fost schimbata!' },
                             type: 'danger',
@@ -347,10 +359,7 @@
                     $('#chPasswordInput').val('');
                     $('#chRepeatPasswordInput').val('');
                     var respContent = 'Parola a fost actualizata!';
-
-                    $('.modal.in').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
+                    hideModal();
                     $("#alert").notify({
                         message: { text: respContent},
                         type: 'success',
@@ -366,6 +375,8 @@
         });
 
         $("#idUserSelect").on('change', function (evt, params) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
             var id = $("#idUserSelect").val();
             var user = document.getElementById(id);
             if (id != 0) {
@@ -383,6 +394,9 @@
             $.ajax({
                 type: 'post',
                 url: '${pageContext.request.contextPath}/projAdmin/getrole',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
                 data: 'username=' + username,
                 async: true,
                 cache: false,

@@ -207,6 +207,8 @@
     }
 
     function addClientAxajCall() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         if ($("#clientInput").val() == 0) {
             alert("Asigurati-va ca ati completat campul!");
             return;
@@ -214,6 +216,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/projAdmin/adaugaClient',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'client=' + $('#clientnumeInput').val(),
             cache: false,
             success: function (response) {

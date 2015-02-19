@@ -18,7 +18,7 @@
     <title>Shepherd</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
@@ -41,9 +41,9 @@
 
     <div class="btn-group" style="float:left; margin: 15px;">
         <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
-        <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Recuperare</button>
+        <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Intrare</button>
     </div>
-    <sec:authorize access="hasRole('ROLE_SUPERUSER')">
+    <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
         <div class="btn-group" style="float:right; margin: 15px;">
             <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; articol</button>
             <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; persoan&#259;</button>
@@ -54,7 +54,7 @@
     <div class="jumbotron">
         <br/>
         <br/>
-        <sec:authorize access="hasRole('ROLE_SUPERUSER')">
+        <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
             <table id="inventory-table" class="table" width="100%">
                 <thead>
                 <tr>
@@ -72,7 +72,7 @@
         </sec:authorize>
     </div>
 </div>
-
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
 <div class="modal fade" id="add-item-modal">
     <div class="modal-dialog ">
         <div class="modal-content">
@@ -102,7 +102,7 @@
                     </div>
                     <div class="form-group">
                         <label for="detalii">Detalii articol</label>
-                        <textarea id="detalii" name="detalii" title="" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
+                        <textarea id="detalii" name="detalii" title="" style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="pretachizitie">Pret achizitie</label>
@@ -120,7 +120,9 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+    </sec:authorize>
 
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
 <div class="modal fade" id="add-person-modal">
     <div class="modal-dialog ">
         <div class="modal-content">
@@ -156,6 +158,8 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+    </sec:authorize>
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
 <div class="modal fade" id="add-place-modal">
     <div class="modal-dialog ">
         <div class="modal-content">
@@ -182,7 +186,8 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
+</sec:authorize>
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
 <div class="modal fade" id="iese-modal">
     <div class="modal-dialog ">
         <div class="modal-content">
@@ -225,7 +230,8 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
+</sec:authorize>
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
 <div class="modal fade" id="intra-modal">
     <div class="modal-dialog ">
         <div class="modal-content">
@@ -248,7 +254,7 @@
         </div> <!-- /.modal-content -->
     </div> <!-- /.modal-dialog -->
 </div> <!-- /.modal -->
-
+</sec:authorize>
 <div id="alert" class="notifications"></div>
 
 <form action="/logout" method="post" id="logoutForm">
@@ -726,7 +732,8 @@
 
         //aduce valoarea articolului dupa ce a fost scanat
         $('#iesebarcodeinput').on('keyup', function(e){
-            if(e.keyCode == 13){
+            var code = e.keyCode ? e.keyCode : e.which;
+            if(code === 13){
                 var code= $(this).val();
                 $(this).val('');
                 var articolJSON = getArticol(code);
