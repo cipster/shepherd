@@ -26,7 +26,7 @@ public class ListaProiecteJDBCDAO extends JdbcDaoSupport implements ListaProiect
     private static final String FIND_LISTA_PROIECTE_BY_ID_CLIENT = LISTA_PROIECTE + " WHERE id_client=:id_client";
     private static final String FIND_LISTA_PROIECTE_BY_ID = "SELECT * FROM listaproiecte WHERE id_proiect=";
     private static final String DELETE_LISTA_PROIECTE_BY_ID = "DELETE FROM listaproiecte WHERE id_proiect=?";
-    private static final String INSERT_INTO_LISTA_PROIECTE = "INSERT INTO listaproiecte(id_proiect,nume_proiect,nr_proiect,an,id_client)VALUES(?,?,?,?,?)";
+    private static final String INSERT_INTO_LISTA_PROIECTE = "INSERT INTO listaproiecte(id_proiect,nume_proiect,nr_proiect,an,id_client,id_alte_materiale,id_propunere,id_bd,id_chestionar_final,id_raport_final)VALUES(?,?,?,?,?,'0','0','0','0','0')";
     private static final String UPDATE_LISTA_PROIECTE = "UPDATE listaproiecte SET nume_proiect = ?, nr_proiect = ?, an = ?, id_client = ?  WHERE id_proiect = ?";
     private static final String UPDATE_ID_PROPUNERE = "UPDATE listaproiecte SET id_propunere = ? WHERE id_proiect = ?";
     private static final String UPDATE_ID_CHESTIONAR_FINAL = "UPDATE listaproiecte SET id_chestionar_final = ? WHERE id_proiect = ?";
