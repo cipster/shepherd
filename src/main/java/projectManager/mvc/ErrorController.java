@@ -2,6 +2,7 @@ package projectManager.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,14 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ErrorController {
-
     @Autowired
     MessageSource messageSource;
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/error", method = RequestMethod.GET)
     public String proiecte() {
-
-
         return "error";
     }
 
@@ -29,7 +28,6 @@ public class ErrorController {
     public ModelAndView accesssDenied() {
 
         ModelAndView model = new ModelAndView();
-
         //check if user is login
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -37,12 +35,9 @@ public class ErrorController {
             System.out.println(userDetail);
 
             model.addObject("username", userDetail.getUsername());
-
         }
-
         model.setViewName("accessDenied");
         return model;
-
     }
 
     @RequestMapping(value = "/session-expired", method = RequestMethod.GET)
@@ -53,6 +48,4 @@ public class ErrorController {
         return model;
 
     }
-
-
 }

@@ -332,6 +332,8 @@
     }
 
     function bdAjaxCall() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectBd').val();
@@ -342,6 +344,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadBd',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: data,
             dataType: 'text',
             processData: false,
@@ -399,8 +404,9 @@
         });
     }
 
-
     function propunereAjaxCall() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectPropunere').val();
@@ -411,6 +417,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadPropunere',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: data,
             dataType: 'text',
             processData: false,
@@ -465,6 +474,8 @@
     }
 
     function chestionarAjaxCall() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectChestionar').val();
@@ -475,6 +486,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadChestionar',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: data,
             dataType: 'text',
             processData: false,
@@ -528,9 +542,10 @@
             }
         });
     }
-    ;
 
     function raportAjaxCall() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectRaport').val();
@@ -541,6 +556,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadRaport',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: data,
             dataType: 'text',
             processData: false,
@@ -595,8 +613,9 @@
         });
     }
 
-
     function alteMaterialeAjaxCall() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         ajaxLoaderShow();
         var data;
         var idProiect = $('#idProiectAlteMateriale').val();
@@ -607,6 +626,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadAlteMateriale',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: data,
             dataType: 'text',
             processData: false,
@@ -661,8 +683,10 @@
         });
     }
 
-
     function alteMaterialeDelete() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
         var idProiect = $('#idMaster').val();
         var idAM = $('#id').val() ;
         var fileName = $('#fileName').val();
@@ -670,6 +694,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/altemateriale',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'idProiect=' + idProiect + "&idAM=" + idAM,
             cache: false,
 
@@ -718,6 +745,8 @@
     }
 
     function propunereDelete() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         var idProiect = $('#idMaster').val();
         var idP = $('#id').val() ;
         var fileName = $('#fileName').val();
@@ -725,9 +754,11 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/propunere',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'idProiect=' + idProiect + "&idP=" + idP,
             cache: false,
-
             success: function (response) {
                 if (response == "error") {
                     $("#alert").notify({
@@ -749,7 +780,6 @@
                 $('.modal.in').modal('hide');
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
-
 
                 $("#alert").notify({
                     message: { text: respContent},
@@ -774,6 +804,8 @@
     }
 
     function chestionarDelete() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         var idProiect = $('#idMaster').val();
         var idC = $('#id').val() ;
         var fileName = $('#fileName').val();
@@ -781,6 +813,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/chestionar',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'idProiect=' + idProiect + "&idC=" + idC,
             cache: false,
 
@@ -829,6 +864,8 @@
     }
 
     function raportDelete() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         var idProiect = $('#idMaster').val();
         var idR = $('#id').val() ;
         var fileName = $('#fileName').val();
@@ -836,9 +873,11 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/raport',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'idProiect=' + idProiect + "&idR=" + idR,
             cache: false,
-
             success: function (response) {
                 if (response == "error") {
                     $("#alert").notify({
@@ -884,6 +923,8 @@
     }
 
     function bdDelete() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         var idProiect = $('#idMaster').val();
         var idB = $('#id').val() ;
         var fileName = $('#fileName').val();
@@ -891,6 +932,9 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/bd',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             data: 'idProiect=' + idProiect + "&idB=" + idB,
             cache: false,
 
@@ -952,10 +996,14 @@
         var rapString   = '<td style="vertical-align: top;">';
         var bdString    = '<td style="vertical-align: top;">';
         var amString    = '<td style="vertical-align: top;">';
-
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/files/' + idProj,
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
             async: false,
             cache: false,
 
@@ -1211,5 +1259,5 @@
                 $("#childrcmenu").fadeOut(40);
             }
         });
-    })
+    });
 </script>

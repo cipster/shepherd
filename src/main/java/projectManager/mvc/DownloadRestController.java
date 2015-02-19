@@ -23,8 +23,6 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "/download")
 public class DownloadRestController {
-
-
     @Autowired
     private PropunereDAO propunereJDBCDAO;
     @Autowired
@@ -36,9 +34,8 @@ public class DownloadRestController {
     @Autowired
     private AlteMaterialeDAO alteMaterialeJDBCDAO;
 
-
     @RequestMapping(value = "/propunere/{id}", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_DOWNLOAD')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
     public
     @ResponseBody
     String propunereDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -64,106 +61,106 @@ public class DownloadRestController {
     }
 
     @RequestMapping(value = "/chestionar/{id}", method = RequestMethod.GET)
-        @PreAuthorize("hasRole('ROLE_DOWNLOAD')")
-        public
-        @ResponseBody
-        String chestionarDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    public
+    @ResponseBody
+    String chestionarDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-            ChestionarFinal chestionarFinal = chestionarFinalJDBCDAO.findByID(id);
-            FileBean file = new FileBean();
-            File serverFile = new File(chestionarFinal.getChestionarFinal());
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-            byte[] bytes = new byte[(int) serverFile.length()];
-            stream.read(bytes);
-            file.setId(chestionarFinal.getIdChestionarFinal());
-            file.setFile(bytes);
-            file.setCreatDe(chestionarFinal.getCreat_de());
-            file.setCreatLa(chestionarFinal.getCreat_la());
-            file.setFilename(chestionarFinal.getNume());
+        ChestionarFinal chestionarFinal = chestionarFinalJDBCDAO.findByID(id);
+        FileBean file = new FileBean();
+        File serverFile = new File(chestionarFinal.getChestionarFinal());
+        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+        byte[] bytes = new byte[(int) serverFile.length()];
+        stream.read(bytes);
+        file.setId(chestionarFinal.getIdChestionarFinal());
+        file.setFile(bytes);
+        file.setCreatDe(chestionarFinal.getCreat_de());
+        file.setCreatLa(chestionarFinal.getCreat_la());
+        file.setFilename(chestionarFinal.getNume());
 
-            response.setContentLength(file.getFile().length);
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
+        response.setContentLength(file.getFile().length);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
 
-            FileCopyUtils.copy(file.getFile(), response.getOutputStream());
+        FileCopyUtils.copy(file.getFile(), response.getOutputStream());
 
-            return null;
-        }
+        return null;
+    }
 
     @RequestMapping(value = "/raport/{id}", method = RequestMethod.GET)
-        @PreAuthorize("hasRole('ROLE_DOWNLOAD')")
-        public
-        @ResponseBody
-        String raportDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    public
+    @ResponseBody
+    String raportDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-            RaportFinal raportFinal = raportFinalJDBCDAO.findByID(id);
-            FileBean file = new FileBean();
-            File serverFile = new File(raportFinal.getRaportFinal());
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-            byte[] bytes = new byte[(int) serverFile.length()];
-            stream.read(bytes);
-            file.setId(raportFinal.getIdRaportFinal());
-            file.setFile(bytes);
-            file.setCreatDe(raportFinal.getCreat_de());
-            file.setCreatLa(raportFinal.getCreat_la());
-            file.setFilename(raportFinal.getNume());
+        RaportFinal raportFinal = raportFinalJDBCDAO.findByID(id);
+        FileBean file = new FileBean();
+        File serverFile = new File(raportFinal.getRaportFinal());
+        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+        byte[] bytes = new byte[(int) serverFile.length()];
+        stream.read(bytes);
+        file.setId(raportFinal.getIdRaportFinal());
+        file.setFile(bytes);
+        file.setCreatDe(raportFinal.getCreat_de());
+        file.setCreatLa(raportFinal.getCreat_la());
+        file.setFilename(raportFinal.getNume());
 
-            response.setContentLength(file.getFile().length);
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
+        response.setContentLength(file.getFile().length);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
 
-            FileCopyUtils.copy(file.getFile(), response.getOutputStream());
+        FileCopyUtils.copy(file.getFile(), response.getOutputStream());
 
-            return null;
-        }
+        return null;
+    }
     @RequestMapping(value = "/bd/{id}", method = RequestMethod.GET)
-        @PreAuthorize("hasRole('ROLE_DOWNLOAD')")
-        public
-        @ResponseBody
-        String bdDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    public
+    @ResponseBody
+    String bdDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-            Bd bd = bdJDBCDAO.findByID(id);
-            File serverFile = new File(bd.getBd());
-            FileBean file = new FileBean();
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-            byte[] bytes = new byte[(int) serverFile.length()];
-            stream.read(bytes);
-            file.setId(bd.getIdBd());
-            file.setFile(bytes);
-            file.setCreatDe(bd.getCreat_de());
-            file.setCreatLa(bd.getCreat_la());
-            file.setFilename(bd.getNume());
+        Bd bd = bdJDBCDAO.findByID(id);
+        File serverFile = new File(bd.getBd());
+        FileBean file = new FileBean();
+        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+        byte[] bytes = new byte[(int) serverFile.length()];
+        stream.read(bytes);
+        file.setId(bd.getIdBd());
+        file.setFile(bytes);
+        file.setCreatDe(bd.getCreat_de());
+        file.setCreatLa(bd.getCreat_la());
+        file.setFilename(bd.getNume());
 
-            response.setContentLength(file.getFile().length);
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
+        response.setContentLength(file.getFile().length);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
 
-            FileCopyUtils.copy(file.getFile(), response.getOutputStream());
+        FileCopyUtils.copy(file.getFile(), response.getOutputStream());
 
-            return null;
-        }
+        return null;
+    }
     @RequestMapping(value = "/altemateriale/{id}", method = RequestMethod.GET)
-        @PreAuthorize("hasRole('ROLE_DOWNLOAD')")
-        public
-        @ResponseBody
-        String alteMaterialeDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    public
+    @ResponseBody
+    String alteMaterialeDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-            AlteMateriale alteMateriale = alteMaterialeJDBCDAO.findByID(id);
-            FileBean file = new FileBean();
-            File serverFile = new File(alteMateriale.getAltemateriale());
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-            byte[] bytes = new byte[(int) serverFile.length()];
-            stream.read(bytes);
-            file.setId(alteMateriale.getIdAlteMateriale());
-            file.setFile(bytes);
-            file.setCreatDe(alteMateriale.getCreat_de());
-            file.setCreatLa(alteMateriale.getCreat_la());
-            file.setFilename(alteMateriale.getNume());
+        AlteMateriale alteMateriale = alteMaterialeJDBCDAO.findByID(id);
+        FileBean file = new FileBean();
+        File serverFile = new File(alteMateriale.getAltemateriale());
+        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+        byte[] bytes = new byte[(int) serverFile.length()];
+        stream.read(bytes);
+        file.setId(alteMateriale.getIdAlteMateriale());
+        file.setFile(bytes);
+        file.setCreatDe(alteMateriale.getCreat_de());
+        file.setCreatLa(alteMateriale.getCreat_la());
+        file.setFilename(alteMateriale.getNume());
 
-            response.setContentLength(file.getFile().length);
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
+        response.setContentLength(file.getFile().length);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
 
-            FileCopyUtils.copy(file.getFile(), response.getOutputStream());
+        FileCopyUtils.copy(file.getFile(), response.getOutputStream());
 
-            return null;
-        }
+        return null;
+    }
 
 }
 

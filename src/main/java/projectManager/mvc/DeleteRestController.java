@@ -1,6 +1,7 @@
 package projectManager.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class DeleteRestController {
     @Autowired
     private BdDAO bdJDBCDAO;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/altemateriale", method = RequestMethod.POST)
     public
@@ -47,6 +49,7 @@ public class DeleteRestController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/propunere", method = RequestMethod.POST)
     public
@@ -63,6 +66,7 @@ public class DeleteRestController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/chestionar", method = RequestMethod.POST)
     public
@@ -79,6 +83,7 @@ public class DeleteRestController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/raport", method = RequestMethod.POST)
     public
@@ -95,6 +100,7 @@ public class DeleteRestController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @RequestMapping(value = "/bd", method = RequestMethod.POST)
     public

@@ -1,6 +1,7 @@
 package projectManager.mvc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +18,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/files")
 public class MainRestController {
-
-
     @Autowired
     private ListaProiecteDAO listaProiecteJDBCDAO;
     @Autowired
@@ -33,6 +32,7 @@ public class MainRestController {
     private AlteMaterialeDAO alteMaterialeJDBCDAO;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPERUSER','ROLE_USER')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
