@@ -43,7 +43,7 @@
     <!-- Main component -->
     <div class="jumbotron">
         <br/>
-        <table id="tabelProiecte" class="table unselectable" width="auto">
+        <table id="tabelProiecte" class="table unselectable" width="100%">
             <thead>
             <th hidden="hidden">Id</th>
             <th><spring:message code="MAIN.NR" /></th>
