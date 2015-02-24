@@ -1,7 +1,7 @@
 package projectManager.repository;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by Ciprian on 12/14/2014.
@@ -14,7 +14,8 @@ public class EvidentaInventar {
     private int idCod3;
     private int idPersoana;
     private int idLoc;
-    private Date dataPreluarii;
+    private String dataPreluarii;
+    private String dataRecuperarii;
     private String detalii;
 
     @Id
@@ -59,12 +60,22 @@ public class EvidentaInventar {
 
     @Basic
     @Column(name = "data_preluarii")
-    public Date getDataPreluarii() {
+    public String getDataPreluarii() {
         return dataPreluarii;
     }
 
-    public void setDataPreluarii(Date dataPreluarii) {
+    public void setDataPreluarii(String dataPreluarii) {
         this.dataPreluarii = dataPreluarii;
+    }
+
+    @Basic
+    @Column(name = "data_recuperarii")
+    public String getDataRecuperarii() {
+        return dataRecuperarii;
+    }
+
+    public void setDataRecuperarii(String dataRecuperarii) {
+        this.dataRecuperarii = dataRecuperarii;
     }
 
     @Basic

@@ -1,3 +1,4 @@
+<%@ page import="projectManager.enums.StareArticol" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -39,16 +40,21 @@
 <jsp:include page="include/navbar.jsp"></jsp:include>
 <div class="container" style="margin-bottom: 50px;">
 
-    <div class="btn-group" style="float:left; margin: 15px;">
-        <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
-        <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Intrare</button>
-    </div>
-    <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
-        <div class="btn-group" style="float:right; margin: 15px;">
-            <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; articol</button>
-            <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; persoan&#259;</button>
-            <button id="add-place" data-toggle="modal"  data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; loc</button>
+    <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
+        <div class="btn-group" style="float:left; margin: 15px;">
+            <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
+            <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+                <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Intrare</button>
+            </sec:authorize>
+            <button id="primire" data-toggle="modal" data-target="#primire-modal" class="btn btn-default"><span class="fa fa-flag-checkered">&nbsp;</span> Primire</button>
         </div>
+        <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+            <div class="btn-group" style="float:right; margin: 15px;">
+                <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; articol</button>
+                <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; persoan&#259;</button>
+                <button id="add-place" data-toggle="modal"  data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; loc</button>
+            </div>
+        </sec:authorize>
     </sec:authorize>
     <!-- Main component -->
     <div class="jumbotron">
@@ -58,6 +64,7 @@
             <table id="inventory-table" class="table" width="100%">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>Nr</th>
                     <th><spring:message code="INVENTAR.CATEGORIE" /></th>
                     <th><spring:message code="INVENTAR.TIP" /></th>
@@ -73,191 +80,204 @@
     </div>
 </div>
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
-<div class="modal fade" id="add-item-modal">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="DIALOG.ADDITEM" /></h4>
-            </div>
-            <form id="adaugaarticol" action="/api/adaugaarticol" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="selcod1">Alege cod 1</label><br/>
-                        <select id="selcod1" name="cod1" title="">
-                            <c:forEach items="${cod1}" var="codunu">
-                                <option value="${codunu.cod1}">${codunu.denumire1}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="selcod2">Alege cod 2</label><br/>
-                        <select id="selcod2" name="cod2" title="">
+    <div class="modal fade" id="add-item-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDITEM" /></h4>
+                </div>
+                <form id="adaugaarticol" action="${pageContext.request.contextPath}/api/adaugaarticol" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="selcod1">Alege cod 1</label><br/>
+                            <select id="selcod1" name="cod1" title="">
+                                <c:forEach items="${cod1}" var="codunu">
+                                    <option value="${codunu.cod1}">${codunu.denumire1}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selcod2">Alege cod 2</label><br/>
+                            <select id="selcod2" name="cod2" title="">
 
-                        </select>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="denumire3">Denumire articol</label>
+                            <input id="denumire3" name="denumire3" title="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="detalii">Detalii articol</label>
+                            <textarea id="detalii" name="detalii" title="" style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="pretachizitie">Pret achizitie</label>
+                            <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="denumire3">Denumire articol</label>
-                        <input id="denumire3" name="denumire3" title="" class="form-control">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                        <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
                     </div>
-                    <div class="form-group">
-                        <label for="detalii">Detalii articol</label>
-                        <textarea id="detalii" name="detalii" title="" style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="pretachizitie">Pret achizitie</label>
-                        <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                    <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
-                </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-    </sec:authorize>
+                </form>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+</sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
-<div class="modal fade" id="add-person-modal">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON" /></h4>
-            </div>
-            <form id="adaugapersoana" action="api/adaugapersoana" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nume">Nume</label>
-                        <input id="nume" name="nume" title="nume" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="cnp">CNP</label>
-                        <input id="cnp" name="cnp" title="cnp" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="functie">Functie</label>
-                        <input id="functie" name="functie" title="functie" class="form-control">
-                    </div>
-
+    <div class="modal fade" id="add-person-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON" /></h4>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                    <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                <form id="adaugapersoana" action="${pageContext.request.contextPath}/api/adaugapersoana" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nume">Nume</label>
+                            <input id="nume" name="nume" title="nume" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="cnp">CNP</label>
+                            <input id="cnp" name="cnp" title="cnp" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="functie">Functie</label>
+                            <input id="functie" name="functie" title="functie" class="form-control">
+                        </div>
 
-                </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-    </sec:authorize>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                        <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+
+                    </div>
+                </form>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+</sec:authorize>
+
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
-<div class="modal fade" id="add-place-modal">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="DIALOG.ADDPLACE" /></h4>
-            </div>
-            <form id="adaugaloc" action="/api/adaugaloc" method="post">
+    <div class="modal fade" id="add-place-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDPLACE" /></h4>
+                </div>
+                <form id="adaugaloc" action="${pageContext.request.contextPath}/api/adaugaloc" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="denumireLoc">Denumire loc</label>
+                            <input id="denumireLoc" name="denumireLoc" title="denumireLoc" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
+                        <button type="button" id="closeloc" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                    </div>
+                </form>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
+    <div class="modal fade" id="iese-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.IESE" /></h4>
+                </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="denumireLoc">Denumire loc</label>
-                        <input id="denumireLoc" name="denumireLoc" title="denumireLoc" class="form-control">
+                    <div id="ieseas" class="ieseas">
+                        <div class="form-group">
+                            <label for="ieseloc">Alege locul</label><br/>
+                            <select id="ieseloc"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="iesepers">Alege persoana</label><br/>
+                            <select id="iesepers"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="iesestare">Alege metoda de livrare</label><br/>
+                            <select id="iesestare">
+                                <option value="1">Personal&#259;</option>
+                                <option value="2">Curier</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <ol id="articolecautate"></ol>
+                        </div>
+                        <div id="iesebarcode" class="form-group">
+                            <h3 class="scan">Scaneaz&#259; articolul</h3>
+                        </div>
+                        <input id="iesebarcodeinput">
+                    </div>
+                    <div id="detalii-group" class="form-group">
+                        <label for="detaliiiese">Detalii</label>
+                        <textarea id="detaliiiese" rows="3" cols="75" placeholder="adauga un motiv" style="max-width: 558px;" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                    <button type="button" id="closeloc" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                    <button type="button" id="backiese" class="btn btn-default"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
+                    <button type="button" id="nextiese" class="btn btn-success ascuns"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT" /></button>
+                    <button type="button" id="atribuie-articole" class="btn btn-success ascuns"><span class="fa fa-thumb-tack">&nbsp;</span><spring:message code="DIALOG.ATRIBUIE" /></button>
+                    <button type="button" id="closeiese" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE" /></button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+</sec:authorize>
 
-                </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-</sec:authorize>
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
-<div class="modal fade" id="iese-modal">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.IESE" /></h4>
-            </div>
-            <div class="modal-body">
-                <div id="ieseas" class="ieseas">
-                    <div class="form-group">
-                        <label for="ieseloc">Alege locul</label><br/>
-                        <select id="ieseloc"></select>
-                    </div>
-                    <div class="form-group">
-                        <label for="iesepers">Alege persoana</label><br/>
-                        <select id="iesepers"></select>
-                    </div>
-                    <div class="form-group">
-                        <ol id="articolecautate"></ol>
-                    </div>
-                    <div id="iesebarcode" class="form-group">
-                        <h3>Scaneaza articolul</h3>
-                    </div>
-                    <input id="iesebarcodeinput">
+    <div class="modal fade" id="intra-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.INTRA" /></h4>
                 </div>
-                <div id="detalii-group" class="form-group">
-                    <label for="detaliiiese">Detalii</label>
-                    <textarea id="detaliiiese" rows="3" cols="75" placeholder="adauga un motiv" style="max-width: 558px;" class="form-control"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="backiese" class="btn btn-default"><span class="fa fa-">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
-                <button type="button" id="nextiese" class="btn btn-success ascuns"><span class="fa fa-">&nbsp;</span><spring:message code="DIALOG.NEXT" /></button>
-                <button type="button" id="atribuie-articole" class="btn btn-success ascuns"><span class="fa fa-">&nbsp;</span><spring:message code="DIALOG.ATRIBUIE" /></button>
-                <button type="button" id="closeiese" class="btn btn-default" data-dismiss="modal"><span class="fa fa-cross"></span><spring:message code="DIALOG.CLOSE" /></button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-</sec:authorize>
-<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
-<div class="modal fade" id="intra-modal">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.INTRA" /></h4>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <div id="intrabarcode" class="form-group">
-                        <h3>Scaneaza articolul</h3>
+                <div class="modal-body">
+                    <div id="intrascan">
+                        <div id="intrabarcode" class="form-group">
+                            <h3 class="scan">Scaneaz&#259; articolul</h3>
+                            <input id="intrabarcodeinput">
+                            <div class="form-group">
+                                <ol id="intraarticolecautate"></ol>
+                            </div>
+                        </div>
                     </div>
-                    <input id="intrabarcodeinput">
+                    <div id="intraalege" class="ascuns">
+                        <div class="form-group">
+                            <label for="intraloc">Alege locul</label><br/>
+                            Din <span id="intradinloc" style="color: #149bdf;"></span> in <select id="intraloc"></select>
+                        </div>
+                    </div>
+                    <div id="detaliiintra-group" class="form-group ascuns">
+                        <label for="detaliiintra">Detalii</label>
+                        <textarea id="detaliiintra" rows="3" cols="75" placeholder="adauga un motiv" style="max-width: 558px;" class="form-control"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
-            </div>
-            </form>
-        </div> <!-- /.modal-content -->
-    </div> <!-- /.modal-dialog -->
-</div> <!-- /.modal -->
+                <div class="modal-footer">
+                    <button type="button" id="backintra" class="btn btn-default ascuns"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
+                    <button type="button" id="nextintra" class="btn btn-success pas1"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT" /></button>
+                    <button type="button" id="intra-articole" class="btn btn-success ascuns"><span class="fa fa-cubes">&nbsp;</span><spring:message code="DIALOG.ATRIBUIE" /></button>
+                    <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE" /></button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+
 </sec:authorize>
 <div id="alert" class="notifications"></div>
 
-<form action="/logout" method="post" id="logoutForm">
+<form action="${pageContext.request.contextPath}/logout" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}"
            value="${_csrf.token}"/>
 </form>
@@ -295,6 +315,139 @@
     var table;
     var idArticol;
 
+    /* Formatting function for row details - modify as you need */
+    function format ( d ) {
+        var evidentaInventar;
+        var data;
+        var loc;
+        var stare;
+        var dataTitle;
+        var usePersoana = false;
+        var stareIcon;
+        var persoana;
+        // `d` is the original data object for the row
+        if(d && (d.stare == 1 || d.stare == 2)){
+
+        } else if(d &&d.stare == 3){
+            evidentaInventar = getTranzactie(d.idCod3);
+            loc = getLocById(evidentaInventar.idLoc).denumireLoc;
+            stare = '<%=StareArticol.IN_FOLOSINTA.getLabel()%>';
+            data = evidentaInventar.dataPreluarii;
+            dataTitle = 'Atribuit la:';
+            stareIcon = 'fa-thumb-tack';
+            persoana = getPersoanaById(evidentaInventar.idPersoana).nume;
+            if(persoana.length > 0){
+                usePersoana = true;
+            }
+        }
+
+        var retString = '<div class="well"><table class="table" width="60%" cellpadding="5" cellspacing="0" border="0" style="padding-left:100px;width: 60%!important;">'+
+                '<tr>'+
+                '<td><span class="fa fa-map-marker fa-fw">&nbsp;</span><b>Localizare:</b></td>'+
+                '<td>'+ loc +'</td>'+
+                '</tr>'+
+                '<tr>'+
+                '<td><span class="fa ' + stareIcon +' fa-fw">&nbsp;</span><b>Stare:</b></td>'+
+                '<td>'+ stare +'</td>'+
+                '</tr>'+
+                '<tr>'+
+                '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>'+
+                '<td>'+ data +'</td>'+
+                '</tr>'+
+                '<tr>';
+        if(usePersoana){
+            retString += '<td><span class="fa fa-user fa-fw">&nbsp;</span><b>Persoana:</b></td>'+
+            '<td>' + persoana + '</td>'+
+            '</tr>';
+        }
+
+        retString += '</table></div>';
+
+        return retString;
+    }
+
+    function getTranzactie(idArticol) {
+        var tranzactie;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/tranzactie/' + idArticol,
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    tranzactie = response;
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+
+        return tranzactie;
+    }
+
+    function getLocById(idLoc) {
+        var locsor;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/getLoc/' + idLoc,
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    locsor = response;
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+
+        return locsor;
+    }
+
+    function getPersoanaById(idPersoana) {
+        var persoana;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/getPersoana/' + idPersoana,
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    persoana = response;
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+
+        return persoana;
+    }
+
+    function validCNP( p_cnp ) {
+        var i=0 , year=0 , hashResult=0 , cnp=[] , hashTable=[2,7,9,1,4,6,3,5,8,2,7,9];
+        if( p_cnp.length !== 13 ) { return false; }
+        for( i=0 ; i<13 ; i++ ) {
+            cnp[i] = parseInt( p_cnp.charAt(i) , 10 );
+            if( isNaN( cnp[i] ) ) { return false; }
+            if( i < 12 ) { hashResult = hashResult + ( cnp[i] * hashTable[i] ); }
+        }
+        hashResult = hashResult % 11;
+        if( hashResult === 10 ) { hashResult = 1; }
+        year = (cnp[1]*10)+cnp[2];
+        switch( cnp[0] ) {
+            case 1  : case 2 : { year += 1900; } break;
+            case 3  : case 4 : { year += 1800; } break;
+            case 5  : case 6 : { year += 2000; } break;
+            case 7  : case 8 : case 9 : { year += 2000; if( year > ( parseInt( new Date().getYear() , 10 ) - 14 ) ) { year -= 100; } } break;
+            default : { return false; }
+        }
+        if( year < 1800 || year > 2099 ) { return false; }
+        return ( cnp[12] === hashResult );
+    }
+
     function formSubmit() {
         document.getElementById("logoutForm").submit();
     }
@@ -315,123 +468,6 @@
                 alert('Erroare la conexiune');
             }
         });
-    }
-
-    function format(idProj) {
-        var childString = '<div id="copil" class="well copil"><table class="table copil" style="width: 100%;font-size: 8pt;"><thead class="copil" style="margin-bottom:10px;"><tr class="copil"><th>Propunere</th><th>Chestionar final</th><th>Raport final</th><th>Baza de date</th><th>Alte materiale</th></tr></thead><tbody class="copil"><tr class="copil"> ';
-        var propString  = '<td style="vertical-align: top;">';
-        var chestString = '<td style="vertical-align: top;">';
-        var rapString   = '<td style="vertical-align: top;">';
-        var bdString    = '<td style="vertical-align: top;">';
-        var amString    = '<td style="vertical-align: top;">';
-
-        $.ajax({
-            type: 'get',
-            url: '${pageContext.request.contextPath}/files/' + idProj,
-            async: false,
-            cache: false,
-
-            success: function (response) {
-                var project = JSON.parse(response);
-
-                var propunere = project.propunere;
-                var chestionar = project.chestionar;
-                var raport = project.raport;
-                var bd = project.bd;
-                var alteMateriale = project.alteMateriale;
-
-                var propArr = propunere.toString().split(",");
-                var chestArr = chestionar.toString().split(",");
-                var rapArr = raport.toString().split(",");
-                var bdArr = bd.toString().split(",");
-                var amArr = alteMateriale.toString().split(",");
-
-                for (var i = 0; i < propArr.length; i++) {
-                    var arr = propArr[i];
-                    arr = arr.split("=");
-                    if (arr[0] != 0 || arr[1] != "null") {
-                        var id = '' + arr[0];
-                        id = id.replace(" ","");
-                        var downloadLink = '';
-                        if($("#propDownloadString") && $("#propDownloadString").val() == 1) {
-                            downloadLink = 'href="\/download\/propunere\/' + id + '" title="Click pentru download"';
-                        }
-                        propString += '<a class="download pr"' + downloadLink + ' id="prop' + id + '" data-idp="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
-                    }
-                }
-                for (var i = 0; i < chestArr.length; i++) {
-                    var arr = chestArr[i];
-                    arr = arr.split("=");
-                    if (arr[0] != 0 || arr[1] != "null") {
-                        var id = '' + arr[0];
-                        id = id.replace(" ","");
-                        var downloadLink = '';
-                        if($("#chestDownloadString") && $("#chestDownloadString").val() == 1) {
-                            downloadLink = 'href="\/download\/chestionar\/' + id + '" title="Click pentru download"';
-                        }
-                        chestString += '<a class="download ch" ' + downloadLink +' id="chest' + id + '" data-idc="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
-                    }
-                }
-                for (var i = 0; i < rapArr.length; i++) {
-                    var arr = rapArr[i];
-                    arr = arr.split("=");
-                    if (arr[0] != 0 || arr[1] != "null") {
-                        var id = '' + arr[0];
-                        id = id.replace(" ","");
-                        var downloadLink = '';
-                        if($("#rapDownloadString") && $("#rapDownloadString").val() == 1) {
-                            downloadLink = 'href="\/download\/raport\/' + id + '" title="Click pentru download"';
-                        }
-                        rapString += '<a class="download ra" ' + downloadLink + ' id="rap' + id + '" data-idr="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
-                    }
-                }
-                for (var i = 0; i < bdArr.length; i++) {
-                    var arr = bdArr[i];
-                    arr = arr.split("=");
-                    if (arr[0] != 0 || arr[1] != "null") {
-                        var id = '' + arr[0];
-                        id = id.replace(" ","");
-                        var downloadLink = '';
-                        if($("#bdDownloadString") && $("#bdDownloadString").val() == 1) {
-                            downloadLink = 'href="\/download\/bd\/' + id + '" title="Click pentru download"';
-                        }
-                        bdString += '<a class="download bd" ' + downloadLink + ' id="bd' + id + '" data-idb="' + id + '""> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
-                    }
-                }
-                for (var i = 0; i < amArr.length; i++) {
-                    var arr = amArr[i];
-                    arr = arr.split("=");
-                    if (arr[0] != 0 || arr[1] != "null") {
-                        var id = '' + arr[0];
-                        id = id.replace(" ","");
-                        var downloadLink = '';
-                        if($("#amDownloadString") && $("#amDownloadString").val() == 1) {
-                            downloadLink = 'href="\/download\/altemateriale\/' + id + '" title="Click pentru download"';
-                        }
-                        amString += '<a class="download am" ' + downloadLink + ' id="am' + id + '" data-ida="' + id + '"> &#9658; ' + arr[1] + '</a><br style="margin: 3px;"/>'
-                    }
-                }
-            },
-            error: function (e) {
-                alert("Nu sunt fisiere la acest proiect!");
-                return;
-            }
-        });
-        propString += '</td>';
-        chestString += '</td>';
-        rapString += '</td>';
-        bdString += '</td>';
-        amString += '</td>';
-        var buttonString =  '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="fa fa-upload "></span> Upload Propunere</a></td>' +
-                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="fa fa-upload "></span> Upload Chestionar</a></td>' +
-                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="fa fa-upload"></span> Upload Raport</a></td>' +
-                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="fa fa-upload "></span> Upload Baza de date</a></td>' +
-                '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadAlteMateriale"><span class="fa fa-upload "></span> Upload Alte Materiale</a></td></tr>';
-        childString += propString + chestString + rapString + bdString + amString + '</tr>';
-        childString += buttonString;
-        childString += '</tbody></table></div>';
-
-        return childString;
     }
 
     function getArticol(code){
@@ -475,7 +511,6 @@
         });
         cod2.val(-1);
         cod2.trigger('chosen:updated');
-
     }
 
     function getPersoane(){
@@ -498,7 +533,6 @@
         });
         $("#iesepers").val(-1);
         $("#iesepers").trigger("chosen:updated");
-
     }
 
     function getLoc(){
@@ -512,6 +546,7 @@
                 if(typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
                         $("#ieseloc").append($("<option>").val(response[i].idLoc).text(response[i].denumireLoc));
+                        $("#intraloc").append($("<option>").val(response[i].idLoc).text(response[i].denumireLoc));
                     }
                 }
             },
@@ -521,19 +556,24 @@
         });
         $("#ieseloc").val(-1);
         $("#ieseloc").trigger("chosen:updated");
-
+        $("#intraloc").val(-1);
+        $("#intraloc").trigger("chosen:updated");
     }
 
     function drawDisponibil(table){
         tableData = table.rows().nodes();
         for (var i = 0; i < tableData.length; i++) {
-            var td = $(tableData[i]).find("td:eq(6)");
+            var td = $(tableData[i]).find("td:eq(7)");
             td.css('text-align','center');
             var bul = td.text();
             if(bul == 1){
-                td.html('<div class="btn btn-success"><span class="fa fa-check"></span></div>');
+                td.html('<div class="btn btn-success"><span class="fa fa-cubes fa-fw"></span></div>');
+            } else if(bul == 4) {
+                td.html('<div class="btn btn-warning"><span class="fa fa-truck fa-fw"></span></div>');
+            } else if(bul == 3){
+                td.html('<div class="btn btn-primary"><span class="fa fa-thumb-tack fa-fw"></span></div>');
             } else {
-                td.html('<div class="btn btn-danger"><span class="fa fa-ban"></span></div>');
+                td.html('<div class="btn btn-success"><span class="fa fa-recycle fa-fw"></span></div>');
             }
         }
     }
@@ -543,7 +583,10 @@
         var selcod1 = $('#selcod1');
         var selcod2 = $('#selcod2');
         var iesepers = $('#iesepers');
+        var intrapers = $('#intrapers');
         var ieseloc = $('#ieseloc');
+        var intraloc = $('#intraloc');
+        var iesestare = $('#iesestare');
         var tableData;
         try{
             table = $('#inventory-table').DataTable( {
@@ -557,6 +600,12 @@
                 },
                 stateSave: true,
                 "columns": [
+                    {
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "data":           null,
+                        "defaultContent": ''
+                    },
                     { "data": "idCod3" },
                     { "data": "denumire1" },
                     { "data": "denumire2" },
@@ -567,7 +616,7 @@
                 ],
                 "columnDefs": [
                     {
-                        "targets": [ 0 ],
+                        "targets": [ 1 ],
                         "visible": true,
                         "searchable": false
                     }
@@ -608,16 +657,22 @@
                 }
             } );
 
+            $('#inventory-table tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
 
-            $('#inventory-table tbody').on( 'click', 'tr', function () {
-                if ( $(this).hasClass('selected') ) {
-                    $(this).removeClass('selected');
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
                 }
                 else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
+                    // Open this row
+                    row.child(format(row.data())).show();
+                    tr.addClass('shown');
                 }
-            } );
+            });
+
         } catch (err){
             console.log(err);
         }
@@ -627,6 +682,10 @@
         },3000);
 
         $("#iesebarcodeinput").css({
+            position: 'absolute',
+            top: '-700px'
+        });
+        $("#intrabarcodeinput").css({
             position: 'absolute',
             top: '-700px'
         });
@@ -667,7 +726,27 @@
             placeholder_text_single: 'Alege o optiune...',
             no_results_text: 'Nu a fost gasit...'
         });
+        intraloc.chosen({
+            width: "60%",
+            allow_single_deselect: true,
+            placeholder_text_single: 'Alege o optiune...',
+            no_results_text: 'Nu a fost gasit...'
+        });
         getLoc();
+
+        iesestare.chosen({
+            width: "60%",
+            allow_single_deselect: true,
+            disable_search: true,
+            placeholder_text_single: 'Alege o optiune...',
+            no_results_text: 'Nu a fost gasit...'
+        });
+        iesestare.val(-1);
+        iesestare.trigger('chosen:updated');
+
+        $('#intra-modal').on('shown.bs.modal', function (e) {
+            $('#intrabarcodeinput').focus();
+        });
 
         //butonul de scan la iese
         $('#scanbut').on('click', function(){
@@ -703,9 +782,39 @@
             }
         });
 
+        //butonul de back de la scanare iese
+        $('#backintra').on('click', function(){
+            if($(this).hasClass('pas3')){
+                $('#intraalege').removeClass('ascuns');
+                $('#detaliiintra-group').addClass('ascuns');
+                $('#intra-articole').addClass('ascuns');
+                $('#nextintra').removeClass('ascuns');
+                $(this).removeClass('pas3');
+                $(this).addClass('pas2');
+            } else if($(this).hasClass('pas2')){
+                $(this).removeClass('pas2');
+                $(this).addClass('ascuns');
+                $('#intraalege').addClass('ascuns');
+                $('#intrascan').show();
+                $('#nextintra').removeClass('pas2');
+                $('#nextintra').addClass('pas1');
+            }
+        });
+
+        //actiunea cand se schimba livrarea la scan iese
+        iesestare.on('change', function(){
+            if($(this).val() > 0 && ieseloc.val() > 0 && iesepers.val() > 0){
+                $('#iesebarcode').show();
+                setTimeout(function(){
+                    iesestare.removeClass('chosen-container-active');
+                    $('#iesebarcodeinput').focus();
+                }, 0);
+            }
+        });
+
         //actiunea cand se schimba persoana la scan iese
         iesepers.on('change', function(){
-            if($(this).val() > 0 && ieseloc.val() > 0){
+            if($(this).val() > 0 && ieseloc.val() > 0 && iesestare.val() > 0){
                 $('#iesebarcode').show();
                 setTimeout(function(){
                     iesepers.removeClass('chosen-container-active');
@@ -716,7 +825,7 @@
 
         //actiunea cand se schimba locul la scan iese
         ieseloc.on('change', function(){
-            if($(this).val() > 0 && iesepers.val() > 0){
+            if($(this).val() > 0 && iesepers.val() > 0 && iesestare.val() > 0){
                 $('#iesebarcode').show();
                 setTimeout(function(){
                     ieseloc.removeClass('chosen-container-active');
@@ -730,15 +839,25 @@
             $('#iesebarcodeinput').focus();
         });
 
+        //la click pe text se face focus pt scan
+        $('#intrabarcode').on('click', function(){
+            $('#intrabarcodeinput').focus();
+        });
+
         //aduce valoarea articolului dupa ce a fost scanat
         $('#iesebarcodeinput').on('keyup', function(e){
-            var code = e.keyCode ? e.keyCode : e.which;
-            if(code === 13){
+            var keyCode = e.keyCode ? e.keyCode : e.which;
+            if(keyCode === 13){
                 var code= $(this).val();
                 $(this).val('');
+                if(code === ''){
+                    return;
+                }
                 var articolJSON = getArticol(code);
                 if(typeof  articolJSON !== 'undefined') {
-                    if(articolJSON.stare != 0) {
+                    if(articolJSON.idCod3 == 0){
+                        alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
+                    } else if(articolJSON.stare == 1 || articolJSON.stare == 2 ) {
                         if($('#articolecautate').html().trim() === ''){
                             $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
 
@@ -749,12 +868,59 @@
                                 }
                             });
                         }
-
                         if($('#nextiese').hasClass('ascuns')){
                             $('#nextiese').removeClass('ascuns');
                         }
+                    } else if(articolJSON.stare == 4){
+                        alert('Articolul este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
                     } else {
-                        alert('Articolul este deja alocat! Daca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
+                        alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
+                    }
+
+                } else {
+                    alert('Articolul nu a fost gasit!');
+                }
+            }
+        });
+
+        $('#intrabarcodeinput').on('keyup', function(e){
+            var keyCode = e.keyCode ? e.keyCode : e.which;
+            if(keyCode === 13){
+                var code= $(this).val();
+                $(this).val('');
+                if(code === ''){
+                    return;
+                }
+                var articolJSON = getArticol(code);
+                var tranzactie;
+                if(typeof  articolJSON !== 'undefined') {
+                    if(articolJSON.idCod3 == 0){
+                        alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
+                    } else if(articolJSON.stare == 3) {
+                        var idArticol = articolJSON.cod3;
+                        tranzactie = getTranzactie(idArticol);
+                        if(!tranzactie || tranzactie.idEvidentaInventar == 0){
+                            alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
+                            return;
+                        }
+                        if($('#intraarticolecautate').html().trim() === ''){
+                            $('#intraarticolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit" data-evidenta="' + tranzactie.idEvidentaInventar + '" data-persoana="' + tranzactie.idPersoana + '" data-loc="' + tranzactie.idLoc + '" data-data="' + tranzactie.dataPreluarii + '">' + articolJSON.denumire3 + '</li></h3>');
+
+                        } else {
+                            $('#intraarticolecautate').find('li').each(function(){
+                                if($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
+                                    if($(this).attr('data-evidenta') == tranzactie.idPersoana && $(this).attr('data-loc') == tranzactie.idLoc && $(this).attr('data-data') == tranzactie.dataPreluarii) {
+                                        $('#intraarticolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit" data-evidenta="' + tranzactie.idEvidentaInventar + '" data-persoana="' + tranzactie.idPersoana + '" data-loc="' + tranzactie.idLoc + '"  data-data="' + tranzactie.dataPreluarii + '">' + articolJSON.denumire3 + '</li></h3>');
+                                    } else {
+                                        alert('Articolele nu sunt atribuite aceleasi persoane!');
+                                    }
+                                }
+                            });
+                        }
+                    } else if(articolJSON.stare == 4) {
+                        alert('Articolul este in tranzit!\nIntrati in meniul de primire mai intai');
+                    } else {
+                        alert('Articolul nu este alocat!\nDaca aceasta situatie nu corespunde cu realitatea, luati legatura cu managerul');
                     }
 
                 } else {
@@ -776,20 +942,87 @@
             $('#detalii-group').show();
         });
 
+        $('#nextintra').on('click', function() {
+            if($('#intraarticolecautate').find('li').length == 0){
+                alert('Scaneaza articole mai intai!');
+                $('#intrabarcodeinput').focus();
+                return;
+            }
+            if($(this).hasClass('pas1')){
+                var idLoc = $('#intraarticolecautate').find('li')[0].getAttribute('data-loc');
+                $('#intraloc').val(idLoc);
+                var loc = $('#intraloc').find(':selected').text();
+                $('#intraloc').val(-1);
+                $('#intradinloc').text(loc);
+                $('#backintra').removeClass('ascuns');
+                $('#backintra').addClass('pas2');
+                $('#intraalege').removeClass('ascuns');
+                $('#intrascan').hide();
+                $(this).removeClass('pas1');
+                $(this).addClass('pas2');
+            } else if($(this).hasClass('pas2')) {
+                if( $('#intraloc').val() <= 0){
+                    alert('Alege locul unde se recupereaza!');
+                    return;
+                }
+                $('#intraalege').addClass('ascuns');
+                $('#detaliiintra-group').removeClass('ascuns');
+                if ($('#intra-articole').hasClass('ascuns')) {
+                    $('#intra-articole').removeClass('ascuns');
+                    $('#backintra').addClass('pas3');
+                }
+                $('#nextintra').addClass('ascuns');
+            }
+
+        });
+
         //butonul care introduce datele in evidenta de inventar
         $('#atribuie-articole').on('click', function(){
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
-            var pers = iesepers.val();
-            var loc = ieseloc.val();
+            var pers = $(iesepers).val();
+            var loc = $(ieseloc).val();
+            var livrare = iesestare.val();
+            var stare;
+            switch (livrare){
+                case '1':
+                    stare =<%=StareArticol.IN_FOLOSINTA.getCode()%>;
+                    break;
+                case '2':
+                    stare =<%=StareArticol.TRANZIT.getCode()%>;
+                    break;
+                default:
+                    stare = 0;
+                    break;
+            }
             var articole = [];
             $('#articolecautate').find('li').each(function(){
                 if($(this).prop('id')) {
                     articole.push($(this).prop('id'));
                 }
             });
-            var detalii = $('#detaliiiese').val();
-            var data = { "idPersoana" : pers, "idLoc" : loc, "cod3": articole, "detalii": detalii, "stare": 0 };
+            var detalii = $('#detaliiiese').val().replace(/=/g , "-").replace(/:/g , "-");
+            if(pers <= 0){
+                alert('Alege o persoana!');
+                return;
+            }
+            if(loc <= 0){
+                alert('Alege un loc!');
+                return;
+            }
+            if(livrare <= 0){
+                alert('Alege o metoda de iesire!');
+                return;
+            }
+            if(detalii.length < 10){
+                alert('Insuficiente informatii!');
+                return;
+            }
+            if(stare == 0){
+                alert('Alege o metoda de iesire din lista!');
+                return;
+            }
+            var data = { "idPersoana" : pers, "idLoc" : loc, "cod3": articole, "detalii": detalii, "stare": stare };
             $.ajax({
                 type: 'post',
                 url: '${pageContext.request.contextPath}/api/evidentaiese',
@@ -798,10 +1031,14 @@
                 },
                 data: JSON.stringify(data),
                 success: function (response) {
+                    $('#closeiese').click();
                     ieseloc.val(-1);
                     ieseloc.trigger('chosen:updated');
                     iesepers.val(-1);
                     iesepers.trigger('chosen:updated');
+                    iesestare.val(-1);
+                    iesestare.trigger('chosen:updated');
+                    $('#detaliiiese').val('');
                     $('#iesebarcodeinput').val('');
                     $('#detalii-group').hide();
                     $('#nextiese').addClass('ascuns');
@@ -811,13 +1048,82 @@
                     $('#iesebarcode').hide();
                     $('#ieseas').show();
                     $('#articolecautate').html('');
-                    $('#closeiese').click();
                     table.ajax.reload();
                     setTimeout(function(){
                         drawDisponibil(table);
                     },1000);
                     $("#alert").notify({
-                        message: { text: 'Operatie cu succes!' },
+                        message: { text: 'Atribuire articole cu succes!' },
+                        type: 'success',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 3500 }
+                    }).show();
+                },
+                error: function(err){
+                    $("#alert").notify({
+                        message: { text: 'Operatie nereusita!' },
+                        type: 'danger',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 3500 }
+                    }).show();
+                }
+            });
+        });
+
+        //butonul care introduce datele in evidenta de inventar
+        $('#intra-articole').on('click', function(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var loc = intraloc.val();
+            var articole = [];
+            $('#intraarticolecautate').find('li').each(function(){
+                if($(this).prop('id')) {
+                    articole.push($(this).prop('id'));
+                }
+            });
+            var detalii = $('#detaliiintra').val();
+            if(loc <= 0){
+                alert('Alege un loc!');
+                return;
+            }
+            if(detalii.length < 10){
+                alert('Insuficiente informatii!');
+                return;
+            }
+            var data = { "idLoc" : loc, "cod3": articole, "detalii": detalii };
+            $.ajax({
+                type: 'post',
+                url: '${pageContext.request.contextPath}/api/evidentaintra',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $('#closeintra').click();
+                    intraloc.val(-1);
+                    intraloc.trigger('chosen:updated');
+                    $('#detaliiintra').val('');
+                    $('#intrabarcodeinput').val('');
+                    $('#detaliiintra-group').addClass('ascuns');
+                    $('#nextintra').removeClass('pas2');
+                    $('#nextintra').addClass('pas1');
+                    $('#nextintra').removeClass('ascuns');
+                    $('#backintra').removeClass('pas3');
+                    $('#backintra').addClass('ascuns');
+                    $('#intraalege').addClass('ascuns');
+                    $('#intra-articole').addClass('ascuns');
+                    $('#intrascan').show();
+
+                    $('#intraarticolecautate').html('');
+                    table.ajax.reload();
+                    setTimeout(function(){
+                        drawDisponibil(table);
+                    },1000);
+                    $("#alert").notify({
+                        message: { text: 'Recuperare cu succes!' },
                         type: 'success',
                         closeable: 'true',
                         transition: 'fade',
@@ -845,6 +1151,31 @@
             var denumire3 = $('#denumire3').val();
             var detalii = $('#detalii').val();
             var pret = $('#pretachizitie').val();
+            if(cod1 <= 0){
+                alert('Cod 1 este obligatoriu!');
+                return;
+            }
+            if(cod2 <= 0){
+                alert('Cod 2 este obligatoriu!');
+                return;
+            }
+            if(denumire3.length == 0){
+                alert('Denumirea este obligatorie!');
+                return;
+            }
+            if(denumire3.length < 5){
+                alert('Denumirea este prea scurta!');
+                return;
+            }
+            if(detalii.length < 10){
+                alert('Detaliile trebuie sa contina mai mult de 10 caractere!');
+                return;
+            }
+            if(pret.length == 0){
+                alert('Pretul este obligatoriu!');
+                return;
+            }
+
             var data = { "cod1" : cod1, "cod2" : cod2, "denumire3": denumire3,
                 "detalii": detalii, "pretAchizitie": pret};
             // will pass the form date using the jQuery serialize function
@@ -867,6 +1198,7 @@
                     $('#detalii').val('');
                     $('#pret').val('');
                     $('#closeart').click();
+                    table.ajax.reload();
                     $("#alert").notify({
                         message: { text: 'Articol adaugat cu succes!' },
                         type: 'success',
@@ -888,6 +1220,34 @@
             var nume = $('#nume').val();
             var cnp = $('#cnp').val();
             var functie = $('#functie').val();
+            if(nume.length < 7){
+                alert('Numele este prea scurt!');
+                return;
+            }
+            if(nume.length == 0){
+                alert('Numele este prea scurt!');
+                return;
+            }
+            if(cnp.length == 0){
+                alert('Cnp-ul este obligatoriu!');
+                return;
+            }
+            if(cnp.length != 13){
+                alert('Cnp-ul trebuie sa aiba 13 cifre!');
+                return;
+            }
+            if(!validCNP(cnp)){
+                alert('Cnp-ul nu este valid');
+                return;
+            }
+            if(functie.length == 0){
+                alert('Functia este obligatorie!');
+                return;
+            }
+            if(functie.length < 5){
+                alert('Functia este prea scurta!');
+                return;
+            }
             var data = { "nume" : nume, "cnp" : cnp, "functie": functie};
             // will pass the form date using the jQuery serialize function
             $.ajax({
@@ -926,6 +1286,14 @@
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
             var denumireloc = $('#denumireLoc').val();
+            if(denumireloc.length == 0){
+                alert('Denumirea este obligatorie!');
+                return;
+            }
+            if(denumireloc.length < 5){
+                alert('Denumirea este prea scurta!');
+                return;
+            }
             var data = { "denumireLoc" : denumireloc};
             // will pass the form date using the jQuery serialize function
             $.ajax({
@@ -959,5 +1327,6 @@
         document.getElementById("inventory-table").oncontextmenu = function () {
             return false;
         }
-    })
+    });
+
 </script>

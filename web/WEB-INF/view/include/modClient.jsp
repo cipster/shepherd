@@ -109,14 +109,12 @@
 <script type="application/javascript">
 
     function atribuieNumeModClient() {
-        $("#clientNumeMod").text($('#clientselect option:selected').text())
-        $("#clientNumeMod2").text($('#numeClient').val())
-
+        $("#clientNumeMod").text($('#clientselect option:selected').text());
+        $("#clientNumeMod2").text($('#numeClient').val());
     }
 
     function atribuieNumeDelClient() {
-        $("#clientNumeDel").text($('#clientselect option:selected').text())
-
+        $("#clientNumeDel").text($('#clientselect option:selected').text());
     }
 
     function delClientAxajCall(){
@@ -154,7 +152,6 @@
                 $("#newClientAdded").css('display', 'block');
                 $("#newClientAdded").fadeOut(6000);
                 $('#clienti').click();
-
             },
             error: function (xhr, err) {
                 alert("Eroare la conexiune!" + err);
@@ -203,7 +200,6 @@
                 alert("Eroare la conexiune!" + err);
             }
         });
-
     }
 
     function addClientAxajCall() {

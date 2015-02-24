@@ -144,7 +144,7 @@
                 <h4 class="modal-title"><spring:message code="MODUSER.TITLE" /></h4>
             </div>
             <div class="modal-body">
-                <h3><spring:message code="USER.ESTISIGURMOD" /> <span id="userNumeMod" style="color: #149bdf"></span>?</h3>
+                <h3><spring:message code="USER.ESTISIGURMOD" /> <span id="userNumeMod" style="color: #149bdf;"></span>?</h3>
             </div>
             <div class="modal-footer">
                 <button type="submit" id="modusersubmit" class="btn btn-primary" ><spring:message code="DIALOG.MOD" /></button>

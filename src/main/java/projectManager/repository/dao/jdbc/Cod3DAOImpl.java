@@ -71,7 +71,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     }
 
     @Override
-    public void setStare(final byte stare, final int id) {
+    public void setStare(final int stare, final int id) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         final String query = "UPDATE proiecte.cod_3 SET stare=? WHERE cod_3=?";
 

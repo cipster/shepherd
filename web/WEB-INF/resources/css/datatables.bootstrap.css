@@ -288,3 +288,10 @@ div.DTFC_LeftFootWrapper table {
 div.FixedHeader_Cloned table {
     margin: 0 !important
 }
+td.details-control {
+    background: url('../img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../img/details_close.png') no-repeat center center;
+}

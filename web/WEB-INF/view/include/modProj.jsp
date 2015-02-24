@@ -4,22 +4,15 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
 <h3><spring:message code="MODPROJ.TITLE" /></h3>
-
 <form method="post" id="modifica">
-
     <div class="input-group col-md-12">
-
         <div class="input-group col-md-12">
-
             <div class="col-md-12"><br/></div>
 
             <div class="col-md-12">
                 <span><spring:message code="MODPROJ.ALEGE" /></span>
-                <select id="idProiectSelect" data-placeholder="Alege un proiect..." class="chosen-select">
-
-                </select>
+                <select id="idProiectSelect" data-placeholder="Alege un proiect..." class="chosen-select"> </select>
             </div>
             <div class="col-md-12"><br/></div>
             <div class="col-md-12">

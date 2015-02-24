@@ -2,7 +2,9 @@ package projectManager.mvc;
 
 import com.google.zxing.BarcodeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +18,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import projectManager.enums.StareArticol;
 import projectManager.repository.*;
 import projectManager.repository.User;
 import projectManager.repository.dao.*;
@@ -28,6 +32,8 @@ import javax.json.JsonObject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,6 +70,12 @@ public class ApiRestController {
     @Autowired
     private RolesDAO rolesDAO;
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat sdf = new SimpleDateFormat("mm-dd-yyyy");
+        sdf.setLenient(true);
+        binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(sdf, true));
+    }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/getinventory", method = RequestMethod.GET, produces = "application/json")
@@ -133,10 +145,73 @@ public class ApiRestController {
         Cod3 cod3 = null;
         try {
             cod3 = cod3DAO.findByBarcode(code);
+            if(cod3 == null){
+                cod3 = new Cod3();
+                cod3.setIdCod3(0);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            cod3 = new Cod3();
+            cod3.setIdCod3(0);
         }
         return cod3;
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
+    @RequestMapping(value = "/tranzactie/{idArticol}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public EvidentaInventar getTranzactie(@PathVariable String idArticol) {
+        EvidentaInventar evidentaInventar = null;
+        try {
+            evidentaInventar = evidentaInventarDAO.findByIdArticol(idArticol);
+            if(evidentaInventar == null){
+                evidentaInventar = new EvidentaInventar();
+                evidentaInventar.setIdEvidentaInventar(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            evidentaInventar = new EvidentaInventar();
+            evidentaInventar.setIdEvidentaInventar(0);
+        }
+        return evidentaInventar;
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
+    @RequestMapping(value = "/getLoc/{idLoc}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Loc getLocById(@PathVariable int idLoc) {
+        Loc loc = null;
+        try {
+            loc = locDAO.findByID(idLoc);
+            if(loc == null){
+                loc = new Loc();
+                loc.setIdLoc(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            loc = new Loc();
+            loc.setIdLoc(0);
+        }
+        return loc;
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
+    @RequestMapping(value = "/getPersoana/{idPersoana}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Persoana getPersoanaById(@PathVariable int idPersoana) {
+        Persoana persoana = null;
+        try {
+            persoana = persoanaDAO.findByID(idPersoana);
+            if(persoana == null){
+                persoana = new Persoana();
+                persoana.setIdPersoana(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            persoana = new Persoana();
+            persoana.setIdPersoana(0);
+        }
+        return persoana;
     }
 
     @RequestMapping(value = "/generatebarcode/{id}", method = RequestMethod.GET)
@@ -260,8 +335,48 @@ public class ApiRestController {
                     Integer cod3Val = Integer.parseInt(cod3.getJsonString(i).getString());
                     evidentaInventar.setIdCod3(cod3Val);
                     try {
-                        cod3DAO.setStare((byte)stare, cod3Val);
+                        cod3DAO.setStare(stare, cod3Val);
                         evidentaInventarDAO.create(evidentaInventar);
+                        response = "1";
+                    } catch (DataAccessException ex) {
+                        ex.printStackTrace();
+                        response = "-1";
+                    }
+                }
+            }
+        }
+        return response;
+    }
+
+
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @RequestMapping(value = "/evidentaintra", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String evidentaIntra(HttpServletRequest request) {
+        EvidentaInventar evidentaInventar = new EvidentaInventar();
+        evidentaInventar.setIdEvidentaInventar(0);
+        String evidenta = request.getParameterNames().nextElement();
+        String response = "";
+        if(evidenta != null) {
+            JsonObject obj = Json.createReader(new StringReader(evidenta)).readObject();
+
+            if (obj != null) {
+                Integer idLoc = Integer.parseInt(obj.getString("idLoc"));
+                Integer idPersoana = 1;
+                String detalii = obj.getString("detalii");
+                int stare = StareArticol.RECUPERAT.getCode();
+
+                JsonArray cod3 = obj.getJsonArray("cod3");
+                for(int i = 0; i < cod3.size(); i ++){
+                    Integer cod3Val = Integer.parseInt(cod3.getJsonString(i).getString());
+                    try {
+                        evidentaInventar = evidentaInventarDAO.findByIdArticol("" + cod3Val);
+                        if(evidentaInventar.getIdEvidentaInventar() == 0 ) {
+                            throw new EmptyResultDataAccessException("Nu s-a gasit tranzactia in evidenta!", 1);
+                        }
+                        cod3DAO.setStare(stare, cod3Val);
+                        evidentaInventarDAO.update(evidentaInventar);
                         response = "1";
                     } catch (DataAccessException ex) {
                         ex.printStackTrace();

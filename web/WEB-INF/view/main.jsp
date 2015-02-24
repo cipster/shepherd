@@ -45,6 +45,7 @@
         <br/>
         <table id="tabelProiecte" class="table unselectable" width="100%">
             <thead>
+            <th></th>
             <th hidden="hidden">Id</th>
             <th><spring:message code="MAIN.NR" /></th>
             <th><spring:message code="MAIN.AN" /></th>
@@ -56,6 +57,7 @@
                 <tr id="${prj.idProiect}" class="idTabel" data-id="${prj.idProiect}" data-idBd="${prj.idBd}"
                     data-idPropunere="${prj.idPropunere}" data-idChestionarFinal="${prj.idChestionarFinal}"
                     data-idRaportFinal="${prj.idRaportFinal}" data-idAlteMateriale="${prj.idAlteMateriale}">
+                    <td class="details-control"></td>
                     <td hidden="hidden" class="id">${prj.idProiect}</td>
                     <td>${prj.nrProiect} </td>
                     <td>${prj.an}</td>
@@ -1089,6 +1091,9 @@
             "aoColumns": [{
                 "sWidth": "0px",
                 "bSortable": false
+            },{
+                "sWidth": "25px",
+                "bSortable": false
             }, {
                 "sWidth": "50px",
                 "sClass": "center"
@@ -1162,6 +1167,26 @@
                 }
             }
         });
+
+        $('#tabelProiecte tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+
+            if (!$(this).hasClass('copil')) {
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child(format(tr.prop("id"))).show();
+                    tr.next().addClass('copil');
+                    $("#copil").children().addClass('copil');
+                    tr.addClass('shown');
+                }
+            }
+        } );
 
         $('#tabelProiecte tbody').on('mousedown', 'tr', function (e) {
             var tr = $(this).closest('tr');

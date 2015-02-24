@@ -13,10 +13,7 @@ import projectManager.repository.EvidentaInventar;
 import projectManager.repository.dao.EvidentaInventarDAO;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 /**
@@ -33,7 +30,8 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
             evidentaInventar.setIdCod3(rs.getInt("id_cod_3"));
             evidentaInventar.setIdPersoana(rs.getInt("id_persoana"));
             evidentaInventar.setIdLoc(rs.getInt("id_loc"));
-            evidentaInventar.setDataPreluarii(rs.getDate("data_preluarii"));
+            evidentaInventar.setDataPreluarii(rs.getString("data_preluarii"));
+            evidentaInventar.setDataRecuperarii(rs.getString("data_recuperarii"));
             evidentaInventar.setDetalii(rs.getString("detalii"));
 
             return evidentaInventar;
@@ -52,6 +50,19 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
             return getJdbcTemplate().query(query, rowMapper);
         } catch (DataAccessException ex){
             ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public EvidentaInventar findByIdArticol(String idArticol) {
+        try {
+            String query = "SELECT * FROM proiecte.evidenta_inventar WHERE id_cod_3='"
+                    + idArticol
+                    + "' AND data_recuperarii IS NULL ORDER BY id_evidenta_inventar DESC LIMIT 1";
+            return getJdbcTemplate().queryForObject(query, rowMapper);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -97,7 +108,27 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
 
     @Override
     public Integer update(final EvidentaInventar entity) {
-        return null;
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        final String query = "UPDATE proiecte.evidenta_inventar SET id_cod_3=?, id_persoana=?, id_loc=?, data_recuperarii=CURDATE(), detalii=? WHERE id_evidenta_inventar=?";
+
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+                PreparedStatement ps = con.prepareStatement(query);
+
+                ps.setInt(1, entity.getIdCod3());
+                ps.setInt(2, entity.getIdPersoana());
+                ps.setInt(3, entity.getIdLoc());
+                ps.setString(4, entity.getDetalii());
+                ps.setLong(5, entity.getIdEvidentaInventar());
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc);
+        return 1;
     }
 
     @Override
