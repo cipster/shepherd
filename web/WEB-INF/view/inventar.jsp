@@ -273,8 +273,60 @@
             </div> <!-- /.modal-content -->
         </div> <!-- /.modal-dialog -->
     </div> <!-- /.modal -->
-
 </sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
+    <div class="modal fade" id="primire-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.PRIMIRE" /></h4>
+                </div>
+                <div class="modal-body">
+                    <div id="primire-info" class="text-center">
+                        <h3>Nu sunt articole &#238;n tranzit pentru tine</h3>
+                    </div>
+                    <div id="primire-board" class="ascuns">
+                        <table id="primire-articole-cautate" class="table table-responsive" cellspacing="0" cellpadding="3" style="font-size: 12pt;"></table>
+                    </div>
+                    <div id="primireq" class="text-center ascuns">
+                        <h3>Vrei s&#259; scanezi sau s&#259; introduci manual codurile?</h3>
+                        <br>
+                        <button id="scaneaza-primire" class="btn btn-success text-center" style="min-width: 100px;"><span class="fa fa-barcode">&nbsp;</span> Scan</button>
+                        <br><br>
+                        <button id="introdu-primire" class="btn btn-primary text-center" style="min-width: 100px;"><span class="fa fa-pencil">&nbsp;</span> Manual</button>
+                    </div>
+                    <div id="primire-scan-div" class="ascuns">
+                        <h3 class="scan text-center">Scaneaz&#259; articolul</h3>
+                        <input id="primirescanbarcodeinput">
+                        <div class="form-group">
+                            <ol id="articolescanateprimire"></ol>
+                        </div>
+                    </div>
+                    <div id="primire-manual-div" class="ascuns">
+                        <div class="text-center">
+                            <h3 class="scan text-center">Introduce&#355;i codul &#351;i apoi ap&#259;sa&#355;i enter</h3>
+                            <input id="primireintrodubarcodeinput" class="form-control"
+                                   style="width: 50%; margin-left: auto; margin-right: auto;">
+                        </div>
+                        <div class="form-group">
+                            <ol id="articoleintroduseprimire"></ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="backprimire" class="btn btn-default pas1 ascuns"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
+                    <button type="button" id="nextprimire" class="btn btn-success pas1 ascuns"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT" /></button>
+                    <button type="button" id="primire-scan-articole" class="btn btn-success ascuns"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.AMPRIMIT" /></button>
+                    <button type="button" id="primire-introdu-articole" class="btn btn-success ascuns"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.AMPRIMIT" /></button>
+                    <button type="button" id="closeprimire" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE" /></button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+</sec:authorize>
+
 <div id="alert" class="notifications"></div>
 
 <form action="${pageContext.request.contextPath}/logout" method="post" id="logoutForm">
@@ -315,6 +367,26 @@
     var table;
     var idArticol;
 
+
+
+    function golestePrimire(){
+        $('#primire-info').removeClass('ascuns');
+        $('#primire-board').addClass('ascuns');
+        $('#primireq').addClass('ascuns');
+        $('#backprimire').removeClass('pas2');
+        $('#backprimire').addClass('ascuns');
+        $('#backprimire').addClass('pas1');
+        $('#nextprimire').addClass('ascuns');
+        $('#primire-scan-div').addClass('ascuns');
+        $('#primire-manual-div').addClass('ascuns');
+        $('#primire-scan-articole').addClass('ascuns');
+        $('#primire-introdu-articole').addClass('ascuns');
+        $('#primireintrodubarcodeinput').val('');
+        $('#primirescanbarcodeinput').val('');
+        $('#articoleintroduseprimire').html('');
+        $('#articolescanateprimire').html('');
+    }
+
     function toJSDate (dateTime,ora) {
         var options = {
             weekday: "long",
@@ -339,7 +411,7 @@
 
     }
 
-    /* Formatting function for row details - modify as you need */
+    /* Formatting function for row details */
     function format ( d ) {
         var evidentaInventar;
         var data;
@@ -356,6 +428,7 @@
         var dataPrimire;
         var useUserRecuperat =false;
         var userRecuperat;
+        var primitPrinTranzit;
         // `d` is the original data object for the row
         switch (d.stare) {
             case 1:
@@ -363,7 +436,7 @@
                 stare = '<%=StareArticol.STOC.getLabel()%>';
                 stareIcon = 'fa-cubes';
                 data = toJSDate(d.dataAdaugare, 1);
-                dataTitle = 'Adaugat la:';
+                dataTitle = 'Ad&#259;ugat la:';
                 break;
             case 2:
                 loc = getLocById(d.idLoc).denumireLoc;
@@ -397,6 +470,21 @@
                     detaliiTitle = 'Detalii preluare';
                     useDetalii = true;
                 }
+                dataPrimire = d.dataPrimire;
+                if(dataPrimire) {
+                    dataPrimire = toJSDate(dataPrimire, 1);
+                    if (dataPrimire < data) {
+                        dataPrimire = undefined;
+
+                    }
+                }
+                if(dataPrimire) {
+                    usePrimire = true;
+                    primitPrinTranzit = 'Primit prin tranzit'
+
+                } else {
+                    dataPrimire = '&#206;nc&#259; nu a ajuns la destina&#355;ie';
+                }
 
                 break;
             case 4:
@@ -416,11 +504,18 @@
                     useDetalii = true;
                 }
                 dataPrimire = d.dataPrimire;
+                if(dataPrimire) {
+                    dataPrimire = toJSDate(dataPrimire, 1);
+                    if (dataPrimire < data) {
+                        dataPrimire = undefined;
+
+                    }
+                }
                 usePrimire = true;
                 if(dataPrimire) {
                     dataPrimire = toJSDate(dataPrimire, 1)
                 } else {
-                    dataPrimire = 'Inca nu a ajuns la destinatie';
+                    dataPrimire = '&#206;nc&#259; nu a ajuns la destina&#355;ie';
                 }
                 break;
             case 5:
@@ -446,33 +541,40 @@
                 '<tr>'+
                 '<td><span class="fa fa-map-marker fa-fw">&nbsp;</span><b>Localizare:</b></td>'+
                 '<td>'+ loc +'</td>'+
-                '</tr>'+
+                '</tr>' +
                 '<tr>'+
                 '<td><span class="fa ' + stareIcon +' fa-fw">&nbsp;</span><b>Stare:</b></td>'+
                 '<td>'+ stare +'</td>'+
-                '</tr>'+
-                '<tr>'+
-                '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>'+
-                '<td>'+ data +'</td>'+
-                '</tr>'+
-                '<tr>';
+                '</tr>';
+
         if(usePrimire){
-            retString += '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>Primit la:</b></td>'+
+            retString += '<tr>'+
+            '<td><span class="fa fa-truck fa-fw">&nbsp;</span><b>Stare anterioar&#259;:</b></td>'+
+            '<td>Tranzit</td>'+
+            '</tr>';
+        }
+
+        retString += '<tr>'+
+        '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>'+
+        '<td>'+ data +'</td>'+
+        '</tr>';
+        if(usePrimire){
+            retString += '<tr><td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>Primit la:</b></td>'+
             '<td>' + dataPrimire + '</td>'+
             '</tr>';
         }
         if(usePersoana){
-            retString += '<td><span class="fa fa-user fa-fw">&nbsp;</span><b>Persoana:</b></td>'+
+            retString += '<tr><td><span class="fa fa-user fa-fw">&nbsp;</span><b>Persoan&#259;:</b></td>'+
             '<td>' + persoana + '</td>'+
             '</tr>';
         }
         if(useUserRecuperat){
-            retString += '<td><span class="fa fa-user fa-fw">&nbsp;</span><b>Recuperat de:</b></td>'+
+            retString += '<tr><td><span class="fa fa-user fa-fw">&nbsp;</span><b>Recuperat de:</b></td>'+
             '<td>' + userRecuperat + '</td>'+
             '</tr>';
         }
         if(useDetalii){
-            retString += '<td><span class="fa fa-comment fa-fw">&nbsp;</span><b>' + detaliiTitle + ':</b></td>'+
+            retString += '<tr><td><span class="fa fa-comment fa-fw">&nbsp;</span><b>' + detaliiTitle + ':</b></td>'+
             '<td>' + detalii + '</td>'+
             '</tr>';
         }
@@ -604,6 +706,27 @@
         });
 
         return articolJSON;
+    }
+
+    function getArticolePrimire(){
+        var articoleJSON = [];
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/articoleprimire',
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    articoleJSON = response;
+
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+
+        return articoleJSON;
     }
 
     function getCod2ByCod1(idCod1){
@@ -832,11 +955,61 @@
             drawDisponibil(table);
         },3000);
 
+        function amPrimit(idContainer, useScan){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var articole = [];
+            var querySelector = '#' + idContainer;
+            $(querySelector).find('li').each(function(){
+                if($(this).prop('id')) {
+                    articole.push($(this).prop('id'));
+                }
+            });
+            var data = {"cod3": articole, "scan": useScan};
+            $.ajax({
+                type: 'post',
+                url: '${pageContext.request.contextPath}/api/amprimit',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $('#closeprimire').click();
+                    table.ajax.reload();
+                    setTimeout(function(){
+                        drawDisponibil(table);
+                    },1000);
+                    $("#alert").notify({
+                        message: { text: 'Ai confirmat primirea cu succes!' },
+                        type: 'success',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 3500 }
+                    }).show();
+                },
+                error: function(err){
+                    $("#alert").notify({
+                        message: { text: 'Operatie nereusita!' },
+                        type: 'danger',
+                        closeable: 'true',
+                        transition: 'fade',
+                        fadeOut: { enabled: true, delay: 3500 }
+                    }).show();
+                }
+            });
+        }
+
         $("#iesebarcodeinput").css({
             position: 'absolute',
             top: '-700px'
         });
         $("#intrabarcodeinput").css({
+            position: 'absolute',
+            top: '-700px'
+        });
+
+        $("#primirescanbarcodeinput").css({
             position: 'absolute',
             top: '-700px'
         });
@@ -899,11 +1072,168 @@
             $('#intrabarcodeinput').focus();
         });
 
-        //butonul de scan la iese
-        $('#scanbut').on('click', function(){
-//            $('#ieseq').hide();
-            $('#backiese').show();
-            $('#ieseas').show();
+        $('#primire-modal').on('show.bs.modal', function (e) {
+            var listaPrimire = $('#primire-articole-cautate');
+            listaPrimire.html('');
+            var count = 1;
+            var articolePrimire = getArticolePrimire();
+            if(articolePrimire && articolePrimire.length > 0){
+                $('#primire-info').addClass('ascuns');
+                $('#primire-board').removeClass('ascuns');
+                $('#nextprimire').removeClass('ascuns');
+                $.each(articolePrimire,function(i,articol){
+                    listaPrimire
+                            .append('<tr id="' + articol.cod3 + '" class="articolgasit" data-loc="' + articol.idLoc + '">' +
+                                //'<td><input type="checkbox" class="checkbox-inventar" id="bifa-primire" /></td>' +
+                            '<td>' + count + '</td>' +
+                            '<td>' + articol.denumire3 + '</td>' +
+                            '</tr>');
+                    count++;
+                });
+            }
+        });
+
+        $('#primire-modal').on('hidden.bs.modal', function (e) {
+            golestePrimire();
+        });
+
+        $('#nextprimire').on('click', function(){
+            $(this).addClass('ascuns');
+            if($('#primire-articole-cautate').html() != ''){
+                $('#primire-board').addClass('ascuns');
+                $('#primireq').removeClass('ascuns');
+                $('#backprimire').removeClass('ascuns');
+            } else {
+                $('#primire-info').removeClass('ascuns');
+                $('#primire-board').addClass('ascuns');
+            }
+        });
+
+        $('#backprimire').on('click', function(){
+            if($(this).hasClass('pas1')){
+                $('#nextprimire').removeClass('ascuns');
+                $('#primire-board').removeClass('ascuns');
+                $('#primireq').addClass('ascuns');
+                $('#backprimire').addClass('ascuns');
+            } else if($(this).hasClass('pas2')){
+                $(this).removeClass('pas2');
+                $(this).addClass('pas1');
+                $('#primireq').removeClass('ascuns');
+                $('#primire-scan-div').addClass('ascuns');
+                $('#primire-manual-div').addClass('ascuns');
+                $('#primire-scan-articole').addClass('ascuns');
+                $('#primire-introdu-articole').addClass('ascuns');
+                $('#primireintrodubarcodeinput').val('');
+                $('#primirescanbarcodeinput').val('');
+                $('#articoleintroduseprimire').html('');
+                $('#articolescanateprimire').html('');
+            }
+        });
+
+        //butonul de scan la primire
+        $('#scaneaza-primire').on('click', function(){
+            $('#primireq').addClass('ascuns');
+            $('#backprimire').removeClass('pas1');
+            $('#backprimire').addClass('pas2');
+            $('#primire-scan-div').removeClass('ascuns');
+            $('#primire-scan-articole').removeClass('ascuns');
+            $('#primirescanbarcodeinput').focus();
+        });
+
+        //butonul de manual la primire
+        $('#introdu-primire').on('click', function(){
+            $('#primireq').addClass('ascuns');
+            $('#backprimire').removeClass('pas1');
+            $('#backprimire').addClass('pas2');
+            $('#primire-manual-div').removeClass('ascuns');
+            $('#primire-introdu-articole').removeClass('ascuns');
+            $('#primireintrodubarcodeinput').focus();
+        });
+
+        $('#primirescanbarcodeinput').on('keyup', function(e){
+            var keyCode = e.keyCode ? e.keyCode : e.which;
+            if(keyCode === 13){
+                var code= $(this).val();
+                $(this).val('');
+                if(code === ''){
+                    return;
+                }
+                var articolJSON = getArticol(code);
+                var tranzactie;
+                if(typeof  articolJSON !== 'undefined') {
+                    if(articolJSON.idCod3 == 0){
+                        alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
+                    } else if(articolJSON.stare == 4 ) {
+                        var idArticol = articolJSON.cod3;
+                        tranzactie = getTranzactie(idArticol);
+                        if(!tranzactie || tranzactie.idEvidentaInventar == 0){
+                            alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
+                            return;
+                        }
+                        if($('#articolescanateprimire').html().trim() === ''){
+                            $('#articolescanateprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+
+                        } else {
+                            $('#articolescanateprimire').find('li').each(function(){
+                                if($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
+                                    $('#articolescanateprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                                }
+                            });
+                        }
+                    } else if(articolJSON.stare != 4){
+                        alert('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul');
+                    } else {
+                        alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
+                    }
+
+                } else {
+                    alert('Articolul nu a fost gasit!');
+                }
+                $(this).focus();
+            }
+        });
+
+        $('#primireintrodubarcodeinput').on('keyup', function(e){
+            var keyCode = e.keyCode ? e.keyCode : e.which;
+            if(keyCode === 13){
+                var code= $(this).val();
+                $(this).val('');
+                if(code === ''){
+                    return;
+                }
+                var articolJSON = getArticol(code);
+                var tranzactie;
+                if(typeof  articolJSON !== 'undefined') {
+                    if(articolJSON.idCod3 == 0){
+                        alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
+                    } else if(articolJSON.stare == 4 ) {
+                        var idArticol = articolJSON.cod3;
+                        tranzactie = getTranzactie(idArticol);
+                        if(!tranzactie || tranzactie.idEvidentaInventar == 0){
+                            alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
+                            return;
+                        }
+                        if($('#articoleintroduseprimire').html().trim() === ''){
+                            $('#articoleintroduseprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+
+                        } else {
+                            $('#articoleintroduseprimire').find('li').each(function(){
+                                if($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
+                                    $('#articoleintroduseprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                                }
+                            });
+                        }
+                    } else if(articolJSON.stare != 4){
+                        alert('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul');
+                    } else {
+                        alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
+                    }
+
+                } else {
+                    alert('Articolul nu a fost gasit!');
+                }
+                $(this).focus();
+            }
         });
 
         //butonul de back de la scanare iese
@@ -993,6 +1323,11 @@
         //la click pe text se face focus pt scan
         $('#intrabarcode').on('click', function(){
             $('#intrabarcodeinput').focus();
+        });
+
+        //la click pe text se face focus pt scan
+        $('#primire-scan-div').on('click', function(){
+            $('#articolescanateprimire').focus();
         });
 
         //aduce valoarea articolului dupa ce a fost scanat
@@ -1291,6 +1626,24 @@
                     }).show();
                 }
             });
+        });
+
+        $('#primire-introdu-articole').on('click', function(){
+            if($('#articoleintroduseprimire').find('li').length == 0){
+                alert('Trebuie sa scanezi articole inainte!');
+                $('#primireintrodubarcodeinput').focus();
+                return;
+            }
+            amPrimit('articoleintroduseprimire', 0);
+        });
+
+        $('#primire-scan-articole').on('click', function(){
+            if($('#articolescanateprimire').find('li').length == 0){
+                alert('Trebuie sa scanezi articole inainte!');
+                $('#primirescanbarcodeinput').focus();
+                return;
+            }
+            amPrimit('articolescanateprimire', 0);
         });
 
         $('#adaugaarticol').on('submit', function(e){

@@ -68,6 +68,19 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
     }
 
     @Override
+    public List<EvidentaInventar> findTranzitByIdPersoana(int idPersoana) {
+        final String query = "SELECT e.* FROM evidenta_inventar e " +
+                "JOIN cod_3 c ON e.id_cod_3=c.cod_3 AND c.stare=4 " +
+                "WHERE e.data_recuperarii IS NULL ANd e.id_persoana=" + idPersoana;
+        try {
+            return getJdbcTemplate().query(query, rowMapper);
+        } catch (DataAccessException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public EvidentaInventar findByID(Long id) {
         try {
             String query = "SELECT * FROM proiecte.evidenta_inventar WHERE id_evidenta_inventar=" + id;

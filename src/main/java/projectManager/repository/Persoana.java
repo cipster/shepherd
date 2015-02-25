@@ -15,6 +15,7 @@ public class Persoana {
     private String nume;
     private String cnp;
     private String functie;
+    private String username;
 
     @Id
     @Column(name = "id_persoana")
@@ -54,6 +55,16 @@ public class Persoana {
 
     public void setFunctie(String functie) {
         this.functie = functie;
+    }
+
+    @Basic
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

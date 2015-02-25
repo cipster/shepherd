@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -109,7 +110,6 @@ public class ApiRestController {
     @RequestMapping(value = "/userlist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<User> getAllUsers() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
 
         if(role.compareTo("ROLE_ADMIN") == 0) {
@@ -168,6 +168,30 @@ public class ApiRestController {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
+    @RequestMapping(value = "/articoleprimire", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<Cod3> getArticolePrimire() {
+        List<Cod3> articolePrimire = new ArrayList<>();
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername(); //get logged in username
+        List<EvidentaInventar> evidentaInventar = null;
+        Persoana persoana = null;
+        try {
+            persoana = persoanaDAO.findByUsername(username);
+            if(persoana == null) throw new RuntimeException("Persoana nu exista");
+            evidentaInventar = evidentaInventarDAO.findTranzitByIdPersoana(persoana.getIdPersoana());
+            for(EvidentaInventar x: evidentaInventar){
+               articolePrimire.add(cod3DAO.findByID(x.getIdCod3()));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return articolePrimire;
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/tranzactie/{idArticol}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public EvidentaInventar getTranzactie(@PathVariable String idArticol) {
@@ -214,6 +238,27 @@ public class ApiRestController {
         Persoana persoana = null;
         try {
             persoana = persoanaDAO.findByID(idPersoana);
+            if(persoana == null){
+                persoana = new Persoana();
+                persoana.setIdPersoana(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            persoana = new Persoana();
+            persoana.setIdPersoana(0);
+        }
+        return persoana;
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+    @RequestMapping(value = "/userlistpersoane/{username}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Persoana getPersoanaForUserlist(@PathVariable String username) {
+        username = username.replaceAll("-", ".");
+        Persoana persoana = null;
+        try {
+            persoana = persoanaDAO.findByUsername(username);
             if(persoana == null){
                 persoana = new Persoana();
                 persoana.setIdPersoana(0);
@@ -362,7 +407,7 @@ public class ApiRestController {
                         articol.setModificatDe(username);
                         articol.setIdLoc(idLoc);
                         articol.setStare(stare);
-
+                        articol.setDataPrimire(null);
                         cod3DAO.update(articol);
                         evidentaInventarDAO.create(evidentaInventar);
                         response = "1";
@@ -424,6 +469,51 @@ public class ApiRestController {
         return response;
     }
 
+
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @RequestMapping(value = "/amprimit", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String amPrimit(HttpServletRequest request) {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername(); //get logged in username
+        EvidentaInventar evidentaInventar = new EvidentaInventar();
+        evidentaInventar.setIdEvidentaInventar(0);
+        String evidenta = request.getParameterNames().nextElement();
+        String response = "";
+        if(evidenta != null) {
+            JsonObject obj = Json.createReader(new StringReader(evidenta)).readObject();
+
+            if (obj != null) {
+                int stare = StareArticol.IN_FOLOSINTA.getCode();
+
+                JsonArray cod3 = obj.getJsonArray("cod3");
+                for(int i = 0; i < cod3.size(); i ++){
+                    Integer cod3Val = Integer.parseInt(cod3.getJsonString(i).getString());
+                    try {
+                        evidentaInventar = evidentaInventarDAO.findByIdArticol("" + cod3Val);
+                        if(evidentaInventar.getIdEvidentaInventar() == 0 ) {
+                            throw new EmptyResultDataAccessException("Nu s-a gasit tranzactia in evidenta!", 1);
+                        }
+                        Cod3 articol = cod3DAO.findByID(cod3Val);
+                        if(articol == null){
+                            throw new EmptyResultDataAccessException("Nu s-a gasit articolul: " + cod3Val, 1);
+                        }
+                        articol.setStare(stare);
+                        articol.setModificatDe(username);
+                        cod3DAO.update(articol);
+                        cod3DAO.setPrimit(cod3Val);
+                        response = "1";
+                    } catch (DataAccessException ex) {
+                        ex.printStackTrace();
+                        response = "-1";
+                    }
+                }
+            }
+        }
+        return response;
+    }
+
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugaloc", method = RequestMethod.POST, produces = "application/json")
@@ -469,6 +559,7 @@ public class ApiRestController {
         String response = "";
         String user = request.getParameter("username");
         String password = new BCryptPasswordEncoder(4).encode("qwerty");
+        String persoana = request.getParameter("persoana");
         String[] roluri = request.getParameterValues("rol");
         if((user != null && user.isEmpty()) || ( roluri != null && roluri.length == 0)){
             response = "-1";
@@ -484,8 +575,12 @@ public class ApiRestController {
                 UserRoles userRoles = new UserRoles();
                 userRoles.setUsername(user);
 
+                Persoana pers = persoanaDAO.findByID(Integer.parseInt(persoana));
+                pers.setUsername(deCreat.getUsername());
+
                 Roles roles = null;
                 userDAO.create(deCreat);
+                persoanaDAO.update(pers);
 
                 for(String rol : roluri){
                     roles = rolesDAO.findByID(Integer.parseInt(rol));
@@ -513,13 +608,16 @@ public class ApiRestController {
         String response = "";
         String user = request.getParameter("username");
         String status = request.getParameter("status");
+        String persoana = request.getParameter("persoana");
         String[] roluri = request.getParameterValues("rol");
-        if((user != null &&user.length() == 0) || ( roluri != null && roluri.length == 0)){
+        if((user != null && user.isEmpty()) || ( roluri != null && roluri.length == 0)){
             response = "-1";
         } else {
             try {
                 User deModificat = userDAO.findByID(user);
                 deModificat.setEnabled(Integer.parseInt(status));
+                Persoana pers = persoanaDAO.findByID(Integer.parseInt(persoana));
+                pers.setUsername(deModificat.getUsername());
 
                 UserRoles userRoles = new UserRoles();
                 userRoles.setUsername(user);
@@ -527,6 +625,7 @@ public class ApiRestController {
                 Roles roles = null;
 
                 userDAO.update(deModificat);
+                persoanaDAO.update(pers);
                 userRolesDAO.deleteByUsername(user);
 
                 for(String rol : roluri){

@@ -6574,5 +6574,9 @@ div.dataTables_wrapper {
     filter: alpha(opacity=30); /* For IE8 and earlier */
 }
 
+.checkbox-inventar {
+    width: 17px;
+    height: 17px;
+}
 
 

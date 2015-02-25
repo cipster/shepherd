@@ -48,7 +48,6 @@ public class Roles {
         Roles that = (Roles) o;
 
         if (idRole != that.idRole) return false;
-        if (role != null ? !role.equals(that.role) : that.role != null) return false;
 
         return true;
     }

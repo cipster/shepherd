@@ -33,6 +33,15 @@
         </select>
     </div>
     <div class="col-md-12"><br/></div>
+    <div class="col-md-6">
+        <span><spring:message code="MODUSER.PERSOANA" /></span>
+        <select data-placeholder="Alege o persoana..."  class="chosen-select-width" id="persoana-select">
+            <c:forEach items="${listaPersoane}" var="persoane">
+                <option value="${persoane.idPersoana}" label="${persoane.nume}" data-username="${persoane.username}">${persoane.nume}</option>
+            </c:forEach>
+        </select>
+    </div>
+    <div class="col-md-12"><br/></div>
     <div class="col-md-12">
         <button type="button" class="btn btn-warning" id="btnChPass" data-toggle="modal" >
             <spring:message code="MODUSER.CHANGEPASS" />
@@ -66,6 +75,16 @@
                             <input id="newUsernameInput" class="form-control col-md-12"/>
                         </div>
 
+                        <div class="col-md-12"><br/></div>
+
+                        <div class="col-md-6">
+                            <span><spring:message code="MODUSER.PERSOANA" /></span>
+                            <select data-placeholder="Alege o persoana..."  class="chosen-select-width" id="persoana-select-new">
+                                <c:forEach items="${listaPersoane}" var="persoane">
+                                    <option value="${persoane.idPersoana}" label="${persoane.nume}" data-username="${persoane.username}">${persoane.nume}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                         <div class="col-md-12"><br/></div>
                         <div class="col-md-8">
                             <label for="newRoluriInput"><spring:message code="MODUSER.ROLURI" /></label>
@@ -209,6 +228,7 @@
 
             var user = $('#newUsernameInput').val();
             var rol = $('#newRoluriInput').val();
+            var persoana = $('#persoana-select-new').val();
             if(user.trim().length == 0 && rol.trim().length == 0 ){
                 return;
             }
@@ -216,7 +236,7 @@
             for(var i = 0; i < rol.length; i++){
                 roluri += '&rol=' + rol[i];
             }
-            data = 'username=' + user + roluri;
+            data = 'username=' + user + '&persoana=' + persoana + roluri;
             $.ajax({
                 type: 'post',
                 url: $(this).attr('action'),
@@ -249,6 +269,8 @@
                     $('#newUsernameInput').val('');
                     $('#newRoluriInput').val(3);
                     $('#newRoluriInput').trigger('chosen:updated');
+                    $('#persoana-select').val(-1);
+                    $('#persoana-select').trigger('chosen:updated');
                     $("#utilizatori").click();
                     var respContent = 'Utilizatorul ' + user + ' a fost adaugat!';
                     hideModal();
@@ -274,6 +296,7 @@
             var user = $('#usernameInput').text();
             var status = $('#statusInput').val();
             var rol = $('#adminInput').val();
+            var persoana = $('#persoana-select').val();
             if(user.trim().length == 0 && rol.trim().length == 0 ){
                 return;
             }
@@ -281,7 +304,7 @@
             for(var i = 0; i < rol.length; i++){
                 roluri += '&rol=' + rol[i];
             }
-            data = 'username=' + user + '&status=' + status + roluri;
+            data = 'username=' + user + '&status=' + status + '&persoana=' + persoana + roluri;
             $.ajax({
                 type: 'post',
                 url: $(this).attr('action'),
@@ -304,6 +327,8 @@
                     $('#statusInput').trigger('chosen:updated');
                     $('#adminInput').val(-1);
                     $('#adminInput').trigger('chosen:updated');
+                    $('#persoana-select').val(-1);
+                    $('#persoana-select').trigger('chosen:updated');
                     $("#utilizatori").click();
                     var respContent = 'Utilizatorul ' + user + ' a fost modificat!';
                     hideModal();
@@ -382,6 +407,8 @@
             if (id != 0) {
                 $("#usernameInput").text(user.getAttribute("data-username"));
                 $("#statusInput").val(user.getAttribute("data-status"));
+                $('#persoana-select').val(user.getAttribute("data-persoana"));
+                $('#persoana-select').trigger('chosen:updated');
                 $('#btnChPass').attr('data-target','#schimbaparola');
             } else {
                 $("#usernameInput").text("");

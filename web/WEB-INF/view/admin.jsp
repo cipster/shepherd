@@ -148,10 +148,25 @@
             contentType: "application/json",
             async: false,
             success: function (response) {
+                var idPersoana;
                 if(typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
+                        var username = response[i].username;
+                        username = username.replace(/\./g, '-');
+                        $.ajax({
+                            type: 'get',
+                            url: '${pageContext.request.contextPath}/api/userlistpersoane/' + username,
+                            contentType: "application/json",
+                            async: false,
+                            success: function (response) {
+                                idPersoana = response.idPersoana;
+                            },
+                            error: function (e) {
+                                alert("Connection error! Nu s-a gasit persoana pentru: " + response[i].username);
+                            }
+                        });
                         idUserSelect
-                                .append( $('<option id="' + response[i].username + '" data-username="' + response[i].username +'" data-password="' + response[i].password +'" data-status="' + response[i].enabled + '">')
+                                .append( $('<option id="' + response[i].username + '" data-username="' + response[i].username +'" data-password="' + response[i].password +'" data-status="' + response[i].enabled + '" data-persoana="' + idPersoana + '">')
                                         .val(response[i].username).text(response[i].username) );
                     }
                 }
@@ -160,6 +175,9 @@
                 alert("Connection error!");
             }
         });
+
+
+
         idUserSelect.val(-1);
         idUserSelect.trigger("chosen:updated");
     }
@@ -267,6 +285,24 @@
             disable_search: true,
             allow_single_deselect: true
         });
+
+        $("#persoana-select").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "Persoana nu exista!",
+            allow_single_deselect: true
+        });
+        $("#persoana-select").val(-1);
+        $("#persoana-select").trigger('chosen:updated');
+
+        $("#persoana-select-new").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "Persoana nu exista!",
+            allow_single_deselect: true
+        });
+        $("#persoana-select-new").val(-1);
+        $("#persoana-select-new").trigger('chosen:updated');
 
         getClients();
         getProjects();

@@ -33,6 +33,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
             persoana.setNume(rs.getString("nume"));
             persoana.setCnp(rs.getString("cnp"));
             persoana.setFunctie(rs.getString("functie"));
+            persoana.setUsername(rs.getString("username"));
 
             return persoana;
         }
@@ -55,6 +56,17 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
     }
 
     @Override
+    public Persoana findByUsername(String username) {
+        try {
+            String query = "SELECT * FROM proiecte.persoana WHERE username='" + username + "'";
+
+            return getJdbcTemplate().queryForObject(query, rowMapper);
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
     public Persoana findByID(Integer id) {
         try {
             String query = "SELECT * FROM proiecte.persoana WHERE id_persoana=" + id;
@@ -70,7 +82,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
     public Integer create(final Persoana entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        final String query = "INSERT INTO proiecte.persoana(id_persoana, nume,cnp, functie) VALUES (?,?,?,?)";
+        final String query = "INSERT INTO proiecte.persoana(id_persoana, nume,cnp, functie,username) VALUES (?,?,?,?,?)";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -81,6 +93,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
                 ps.setString(2, entity.getNume());
                 ps.setString(3, entity.getCnp());
                 ps.setString(4, entity.getFunctie());
+                ps.setString(5, entity.getUsername());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -94,7 +107,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
     @Override
     public Integer update(final Persoana entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        final String query = "UPDATE proiecte.persoana SET nume=?, cnp=?, functie=? WHERE id_persoana=?";
+        final String query = "UPDATE proiecte.persoana SET nume=?, cnp=?, functie=?, username=? WHERE id_persoana=?";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -105,7 +118,8 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
                 ps.setString(1, entity.getNume());
                 ps.setString(2, entity.getCnp());
                 ps.setString(3, entity.getFunctie());
-                ps.setInt(4, entity.getIdPersoana());
+                ps.setString(4, entity.getUsername());
+                ps.setInt(5, entity.getIdPersoana());
 
                 logger.debug(ps.toString());
                 return ps;
