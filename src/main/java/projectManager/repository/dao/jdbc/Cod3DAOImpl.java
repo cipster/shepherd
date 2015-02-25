@@ -1,6 +1,7 @@
 package projectManager.repository.dao.jdbc;
 
 import com.mysql.jdbc.Statement;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,6 +10,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import projectManager.repository.Cod3;
 import projectManager.repository.dao.Cod3DAO;
 
@@ -37,7 +40,15 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
             cod3.setBarcode(rs.getString("barcode"));
             cod3.setDetalii(rs.getString("detalii"));
             cod3.setPretAchizitie(rs.getString("pret_achizitie"));
-            cod3.setStare(rs.getByte("stare"));
+            cod3.setStare(rs.getInt("stare"));
+            cod3.setFactura(rs.getString("factura"));
+            cod3.setIdLoc(rs.getInt("id_loc"));
+            cod3.setDetaliiRecuperare(rs.getString("detalii_recuperare"));
+            cod3.setDataAdaugare(rs.getString("data_adaugare"));
+            cod3.setDataRecuperare(rs.getString("data_recuperare"));
+            cod3.setDataPrimire(rs.getString("data_primire"));
+            cod3.setCreatDe(rs.getString("creat_de"));
+            cod3.setModificatDe(rs.getString("modificat_de"));
 
             return cod3;
         }
@@ -71,6 +82,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void setStare(final int stare, final int id) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         final String query = "UPDATE proiecte.cod_3 SET stare=? WHERE cod_3=?";
@@ -92,9 +104,29 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     }
 
     @Override
+    public void setPrimit(final int id) {
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        final String query = "UPDATE proiecte.cod_3 SET data_primire=now() WHERE cod_3=?";
+
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+                PreparedStatement ps = con.prepareStatement(query);
+
+                ps.setInt(1, id);
+
+                logger.debug(ps.toString());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(psc);
+    }
+
+    @Override
     public Cod3 findByID(Integer id) {
         try {
-            final String query = "SELECT * FROM proiecte.cod_3 WHERE id_cod_3=" + id;
+            final String query = "SELECT * FROM proiecte.cod_3 WHERE cod_3=" + id;
 
             return getJdbcTemplate().queryForObject(query, rowMapper);
         } catch (DataAccessException e) {
@@ -107,7 +139,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     public Integer create(final Cod3 entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        final String query = "INSERT INTO proiecte.cod_3(id_cod_3, cod_1, cod_2, cod_3, denumire_3, barcode, detalii, pret_achizitie,stare) VALUES (?,?,?,getLastCode3(),?,uuid(),?,?,1)";
+        final String query = "INSERT INTO proiecte.cod_3(id_cod_3, cod_1, cod_2, cod_3, denumire_3, barcode, detalii, pret_achizitie,stare,creat_de,id_loc,factura) VALUES (?,?,?,getLastCode3(),?,uuid(),?,?,1,?,?,?)";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -120,6 +152,9 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
                 ps.setString(4, entity.getDenumire3());
                 ps.setString(5, entity.getDetalii());
                 ps.setString(6, entity.getPretAchizitie());
+                ps.setString(7, entity.getCreatDe());
+                ps.setInt(8, entity.getIdLoc());
+                ps.setString(9, entity.getFactura());
 
                 logger.debug(ps.toString());
                 return ps;
@@ -131,9 +166,17 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer update(final Cod3 entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, denumire_3=?, detalii=?, pret_achizitie=?, stare =? WHERE id_cod_3=?";
+        boolean now = false;
+        if(entity.getStare() == 2){
+            now = true;
+        }
+        final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, denumire_3=?, detalii=?, pret_achizitie=?," +
+                " stare =?, id_loc=?, detalii_recuperare=?,  modificat_de=? " +
+                (now?", data_recuperare=now()" : " ") +
+                " WHERE id_cod_3=?";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -146,8 +189,11 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
                 ps.setString(3, entity.getDenumire3());
                 ps.setString(4, entity.getDetalii());
                 ps.setString(5, entity.getPretAchizitie());
-                ps.setByte(6, entity.getStare());
-                ps.setInt(7, entity.getIdCod3());
+                ps.setInt(6, entity.getStare());
+                ps.setInt(7, entity.getIdLoc());
+                ps.setString(8, entity.getDetaliiRecuperare());
+                ps.setString(9, entity.getModificatDe());
+                ps.setInt(10, entity.getIdCod3());
 
                 logger.debug(ps.toString());
                 return ps;

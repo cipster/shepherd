@@ -1,5 +1,7 @@
 package projectManager.repository;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.*;
 
 /**
@@ -17,7 +19,83 @@ public class Cod3 {
     private String barcode;
     private String detalii;
     private String pretAchizitie;
-    private byte stare;
+    private int stare;
+    private String factura;
+    private String detaliiRecuperare;
+    private int idLoc;
+    private String dataAdaugare;
+    private String dataRecuperare;
+    private String dataPrimire;
+    private String creatDe;
+    private String modificatDe;
+
+    @Basic
+    @Column(name = "factura")
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
+    }
+    @Basic
+    @Column(name = "detalii_recuperare")
+    public String getDetaliiRecuperare() {
+        return detaliiRecuperare;
+    }
+
+    public void setDetaliiRecuperare(String detaliiRecuperare) {
+        this.detaliiRecuperare = detaliiRecuperare;
+    }
+    @Basic
+    @Column(name = "id_loc")
+    public int getIdLoc() {
+        return idLoc;
+    }
+
+    public void setIdLoc(int idLoc) {
+        this.idLoc = idLoc;
+    }
+
+    @Basic
+    @Column(name = "data_adaugare")
+    public String getDataAdaugare() {
+        return dataAdaugare;
+    }
+
+    public void setDataAdaugare(String dataAdaugare) {
+        this.dataAdaugare = dataAdaugare;
+    }
+
+    @Basic
+    @Column(name = "data_recuperare")
+    public String getDataRecuperare() {
+        return dataRecuperare;
+    }
+
+    public void setDataRecuperare(String dataRecuperare) {
+        this.dataRecuperare = dataRecuperare;
+    }
+
+    @Basic
+    @Column(name = "creat_de")
+    public String getCreatDe() {
+        return creatDe;
+    }
+
+    public void setCreatDe(String creatDe) {
+        this.creatDe = creatDe;
+    }
+
+    @Basic
+    @Column(name = "modificat_de")
+    public String getModificatDe() {
+        return modificatDe;
+    }
+
+    public void setModificatDe(String modificatDe) {
+        this.modificatDe = modificatDe;
+    }
 
     @Id
     @Column(name = "id_cod_3")
@@ -90,23 +168,33 @@ public class Cod3 {
     }
 
     @Basic
+    @Column(name ="stare")
+    public int getStare() {
+        return stare;
+    }
+
+    public void setStare(int stare) {
+        this.stare = stare;
+    }
+
+    @Basic
     @Column(name = "pret_achizitie")
     public String getPretAchizitie() {
         return pretAchizitie;
     }
 
-    @Basic
-    @Column(name ="stare")
-    public byte getStare() {
-        return stare;
-    }
-
-    public void setStare(byte stare) {
-        this.stare = stare;
-    }
-
     public void setPretAchizitie(String pretAchizitie) {
         this.pretAchizitie = pretAchizitie;
+    }
+
+    @Basic
+    @Column(name = "data_primire")
+    public String getDataPrimire() {
+        return dataPrimire;
+    }
+
+    public void setDataPrimire(String dataPrimire) {
+        this.dataPrimire = dataPrimire;
     }
 
     @Override

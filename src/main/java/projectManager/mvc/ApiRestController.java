@@ -77,6 +77,7 @@ public class ApiRestController {
         binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(sdf, true));
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/getinventory", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -85,6 +86,7 @@ public class ApiRestController {
         return articoleDAO.getAll();
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/clientlist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -93,6 +95,7 @@ public class ApiRestController {
         return clientiDAO.getAll();
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/proiectelist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -101,6 +104,7 @@ public class ApiRestController {
         return listaProiecteDAO.getAll();
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/userlist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -115,6 +119,7 @@ public class ApiRestController {
         }
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/cod2list/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -123,6 +128,7 @@ public class ApiRestController {
         return cod2DAO.getAllByCod1(id);
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/persoane", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -131,6 +137,7 @@ public class ApiRestController {
         return persoanaDAO.getAll();
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/locuri", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -138,6 +145,8 @@ public class ApiRestController {
 
         return locDAO.getAll();
     }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/articol/{code}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -157,6 +166,7 @@ public class ApiRestController {
         return cod3;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/tranzactie/{idArticol}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -176,6 +186,7 @@ public class ApiRestController {
         return evidentaInventar;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/getLoc/{idLoc}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -195,6 +206,7 @@ public class ApiRestController {
         return loc;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/getPersoana/{idPersoana}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -213,6 +225,7 @@ public class ApiRestController {
         }
         return persoana;
     }
+
 
     @RequestMapping(value = "/generatebarcode/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -238,11 +251,14 @@ public class ApiRestController {
         return new ResponseEntity<byte[]>(image, headers, HttpStatus.OK);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugaarticol", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String addClient(@RequestBody Cod3 cod3) {
-
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername(); //get logged in username
+        cod3.setCreatDe(username);
         String response = "";
         try {
             cod3DAO.create(cod3);
@@ -255,6 +271,7 @@ public class ApiRestController {
         return response;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/modificaclient", method = RequestMethod.POST)
     @ResponseBody
@@ -275,6 +292,7 @@ public class ApiRestController {
         return response;
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/stergeclient", method = RequestMethod.POST)
     @ResponseBody
@@ -294,6 +312,7 @@ public class ApiRestController {
         return response;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugapersoana", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -312,9 +331,12 @@ public class ApiRestController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @RequestMapping(value = "/evidentaiese", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String evidentaIese(HttpServletRequest request) {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername(); //get logged in username
         EvidentaInventar evidentaInventar = new EvidentaInventar();
         String evidenta = request.getParameterNames().nextElement();
         String response = "";
@@ -335,7 +357,13 @@ public class ApiRestController {
                     Integer cod3Val = Integer.parseInt(cod3.getJsonString(i).getString());
                     evidentaInventar.setIdCod3(cod3Val);
                     try {
-                        cod3DAO.setStare(stare, cod3Val);
+                        //cod3DAO.setStare(stare, cod3Val);
+                        Cod3 articol = cod3DAO.findByID(cod3Val);
+                        articol.setModificatDe(username);
+                        articol.setIdLoc(idLoc);
+                        articol.setStare(stare);
+
+                        cod3DAO.update(articol);
                         evidentaInventarDAO.create(evidentaInventar);
                         response = "1";
                     } catch (DataAccessException ex) {
@@ -350,10 +378,12 @@ public class ApiRestController {
 
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @RequestMapping(value = "/evidentaintra", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String evidentaIntra(HttpServletRequest request) {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername(); //get logged in username
         EvidentaInventar evidentaInventar = new EvidentaInventar();
         evidentaInventar.setIdEvidentaInventar(0);
         String evidenta = request.getParameterNames().nextElement();
@@ -375,7 +405,13 @@ public class ApiRestController {
                         if(evidentaInventar.getIdEvidentaInventar() == 0 ) {
                             throw new EmptyResultDataAccessException("Nu s-a gasit tranzactia in evidenta!", 1);
                         }
-                        cod3DAO.setStare(stare, cod3Val);
+                        Cod3 articol = cod3DAO.findByID(cod3Val);
+                        articol.setStare(stare);
+                        articol.setIdLoc(idLoc);
+                        articol.setModificatDe(username);
+                        articol.setDetaliiRecuperare(detalii);
+                        cod3DAO.update(articol);
+//                        cod3DAO.setStare(stare, cod3Val);
                         evidentaInventarDAO.update(evidentaInventar);
                         response = "1";
                     } catch (DataAccessException ex) {
@@ -388,6 +424,7 @@ public class ApiRestController {
         return response;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugaloc", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -405,7 +442,7 @@ public class ApiRestController {
         return response;
     }
 
-
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR','ROLE_USER')")
     @RequestMapping(value = "/schimbaparola", method = RequestMethod.POST)
     @ResponseBody
@@ -468,7 +505,7 @@ public class ApiRestController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @RequestMapping(value = "/modificauser", method = RequestMethod.POST)
     @ResponseBody
     public String modificaUser(HttpServletRequest request) {

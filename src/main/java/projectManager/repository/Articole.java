@@ -1,5 +1,7 @@
 package projectManager.repository;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +20,13 @@ public class Articole {
     private String barcode;
     private String detalii;
     private String pretAchizitie;
-    private byte stare;
+    private int stare;
+    private int idLoc;
+    private String dataAdaugare;
+    private String dataRecuperare;
+    private String dataPrimire;
+    private String detaliiRecuperare;
+    private String modificatDe;
 
     @Id
     @Column(name = "id_cod_3")
@@ -92,12 +100,72 @@ public class Articole {
 
     @Basic
     @Column(name = "stare")
-    public byte getStare() {
+    public int getStare() {
         return stare;
     }
 
-    public void setStare(byte stare) {
+    public void setStare(int stare) {
         this.stare = stare;
+    }
+
+    @Basic
+    @Column(name = "id_loc")
+    public int getIdLoc() {
+        return idLoc;
+    }
+
+    public void setIdLoc(int idLoc) {
+        this.idLoc = idLoc;
+    }
+
+    @Basic
+    @Column(name = "data_adaugare")
+    public String getDataAdaugare() {
+        return dataAdaugare;
+    }
+
+    public void setDataAdaugare(String dataAdaugare) {
+        this.dataAdaugare = dataAdaugare;
+    }
+
+    @Basic
+    @Column(name = "data_recuperare")
+    public String getDataRecuperare() {
+        return dataRecuperare;
+    }
+
+    public void setDataRecuperare(String dataRecuperare) {
+        this.dataRecuperare = dataRecuperare;
+    }
+
+    @Basic
+    @Column(name = "detalii_recuperare")
+    public String getDetaliiRecuperare() {
+        return detaliiRecuperare;
+    }
+
+    public void setDetaliiRecuperare(String detaliiRecuperare) {
+        this.detaliiRecuperare = detaliiRecuperare;
+    }
+
+    @Basic
+    @Column(name = "data_primire")
+    public String getDataPrimire() {
+        return dataPrimire;
+    }
+
+    public void setDataPrimire(String dataPrimire) {
+        this.dataPrimire = dataPrimire;
+    }
+
+    @Basic
+    @Column(name = "modificat_de")
+    public String getModificatDe() {
+        return modificatDe;
+    }
+
+    public void setModificatDe(String modificatDe) {
+        this.modificatDe = modificatDe;
     }
 
     @Override

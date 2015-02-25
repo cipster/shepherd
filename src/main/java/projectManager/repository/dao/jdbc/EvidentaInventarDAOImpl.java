@@ -109,7 +109,7 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
     @Override
     public Integer update(final EvidentaInventar entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        final String query = "UPDATE proiecte.evidenta_inventar SET id_cod_3=?, id_persoana=?, id_loc=?, data_recuperarii=CURDATE(), detalii=? WHERE id_evidenta_inventar=?";
+        final String query = "UPDATE proiecte.evidenta_inventar SET id_cod_3=?, id_persoana=?, id_loc=?, data_recuperarii=NOW(), detalii=? WHERE id_evidenta_inventar=?";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override

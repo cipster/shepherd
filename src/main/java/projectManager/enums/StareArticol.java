@@ -11,7 +11,11 @@ public enum StareArticol {
     STOC(1,"Stoc"),
     RECUPERAT(2,"Recuperat"),
     IN_FOLOSINTA(3,"In folosinta"),
-    TRANZIT(4,"Tranzit");
+    TRANZIT(4,"Tranzit"),
+    DETERIORAT(5,"Deteriorat"),
+    SERVICE(6,"Service"),
+    DISPARUT(7,"Disparut"),
+    CASAT(8,"Casat");
 
     private int code;
     private String label;

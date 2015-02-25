@@ -12,4 +12,6 @@ public interface Cod3DAO extends GenericDAO<Cod3, Integer> {
     Cod3 findByBarcode(String code);
 
     void setStare(int stare, int id);
+
+    void setPrimit(int id);
 }

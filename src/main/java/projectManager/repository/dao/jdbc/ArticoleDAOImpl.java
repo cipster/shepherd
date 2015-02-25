@@ -1,5 +1,6 @@
 package projectManager.repository.dao.jdbc;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -31,7 +32,13 @@ public class ArticoleDAOImpl extends JdbcDaoSupport implements ArticoleDAO {
             articole.setBarcode(rs.getString("barcode"));
             articole.setDetalii(rs.getString("detalii"));
             articole.setPretAchizitie(rs.getString("pret_achizitie"));
-            articole.setStare(rs.getByte("stare"));
+            articole.setStare(rs.getInt("stare"));
+            articole.setIdLoc(rs.getInt("id_loc"));
+            articole.setDataAdaugare(rs.getString("data_adaugare"));
+            articole.setDataRecuperare(rs.getString("data_recuperare"));
+            articole.setDataPrimire(rs.getString("data_primire"));
+            articole.setModificatDe(rs.getString("modificat_de"));
+            articole.setDetaliiRecuperare(rs.getString("detalii_recuperare"));
 
             return articole;
         }
