@@ -3,6 +3,8 @@ package projectManager.mvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +32,7 @@ public class AdminRestController {
     private UserRolesDAO userRolesJDBCDAO;
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/getrole", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -88,15 +91,18 @@ public class AdminRestController {
         String numeClient = request.getParameter("client");
         client.setClient(numeClient);
         String responseString = null;
+        int ok;
         try {
-            clientiJDBCDAO.create(client);
+            ok = clientiJDBCDAO.create(client);
+            if (ok > 0)
             responseString = "{\"client\":\"" + numeClient + "\"}";
         } catch(Exception e) {
-            responseString = "-1";
+            responseString = "";
         }
         return responseString;
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @RequestMapping(value = "/deleteProj", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -115,6 +121,7 @@ public class AdminRestController {
         return responseString;
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @RequestMapping(value = "/modificaProj", method = RequestMethod.POST)
     public
     @ResponseBody

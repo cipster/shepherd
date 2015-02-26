@@ -119,8 +119,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         driverManagerDataSource.setUsername(env.getProperty("database.username"));
         driverManagerDataSource.setPassword(env.getProperty("database.password"));
         driverManagerDataSource.setTestOnBorrow(true);
+        driverManagerDataSource.setRemoveAbandoned(true);
         driverManagerDataSource.setInitialSize(5);
         driverManagerDataSource.setMaxActive(10);
+        driverManagerDataSource.setMaxIdle(1800);
         return driverManagerDataSource;
     }
 

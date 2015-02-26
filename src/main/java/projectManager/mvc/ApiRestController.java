@@ -575,12 +575,13 @@ public class ApiRestController {
                 UserRoles userRoles = new UserRoles();
                 userRoles.setUsername(user);
 
-                Persoana pers = persoanaDAO.findByID(Integer.parseInt(persoana));
-                pers.setUsername(deCreat.getUsername());
-
+                if(persoana != null && !persoana.isEmpty() && !persoana.equalsIgnoreCase("null")) {
+                    Persoana pers = persoanaDAO.findByID(Integer.parseInt(persoana));
+                    pers.setUsername(deCreat.getUsername());
+                    persoanaDAO.update(pers);
+                }
                 Roles roles = null;
                 userDAO.create(deCreat);
-                persoanaDAO.update(pers);
 
                 for(String rol : roluri){
                     roles = rolesDAO.findByID(Integer.parseInt(rol));
@@ -616,16 +617,18 @@ public class ApiRestController {
             try {
                 User deModificat = userDAO.findByID(user);
                 deModificat.setEnabled(Integer.parseInt(status));
-                Persoana pers = persoanaDAO.findByID(Integer.parseInt(persoana));
-                pers.setUsername(deModificat.getUsername());
 
                 UserRoles userRoles = new UserRoles();
                 userRoles.setUsername(user);
 
                 Roles roles = null;
 
+                if(persoana != null && !persoana.isEmpty() && !persoana.equalsIgnoreCase("null")) {
+                    Persoana pers = persoanaDAO.findByID(Integer.parseInt(persoana));
+                    pers.setUsername(deModificat.getUsername());
+                    persoanaDAO.update(pers);
+                }
                 userDAO.update(deModificat);
-                persoanaDAO.update(pers);
                 userRolesDAO.deleteByUsername(user);
 
                 for(String rol : roluri){

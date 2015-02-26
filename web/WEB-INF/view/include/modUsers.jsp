@@ -76,10 +76,15 @@
                         </div>
 
                         <div class="col-md-12"><br/></div>
+                        <div class="col-md-7  well" style="margin-left: 23px;">
+                            <span>Parola provizorie este <code>qwerty</code></span>
+                        </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12"><br/></div>
+
+                        <div class="col-md-8">
                             <span><spring:message code="MODUSER.PERSOANA" /></span>
-                            <select data-placeholder="Alege o persoana..."  class="chosen-select-width" id="persoana-select-new">
+                            <select data-placeholder="Alege o persoana..."  class="chosen-select" id="persoana-select-new">
                                 <c:forEach items="${listaPersoane}" var="persoane">
                                     <option value="${persoane.idPersoana}" label="${persoane.nume}" data-username="${persoane.username}">${persoane.nume}</option>
                                 </c:forEach>
@@ -87,7 +92,7 @@
                         </div>
                         <div class="col-md-12"><br/></div>
                         <div class="col-md-8">
-                            <label for="newRoluriInput"><spring:message code="MODUSER.ROLURI" /></label>
+                            <span><spring:message code="MODUSER.ROLURI" /></span>
                             <select multiple data-placeholder="Alege un rol..."  class="chosen-select" id="newRoluriInput">
                                 <c:forEach items="${listaRoluri}" var="roluri">
                                     <c:choose>
@@ -106,7 +111,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-success" value="<spring:message code="MODUSER.ADDUSER" />"/>
+                    <button type="submit" class="btn btn-success"><spring:message code="MODUSER.ADDUSER" /></button>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
                 </div>
             </form>
