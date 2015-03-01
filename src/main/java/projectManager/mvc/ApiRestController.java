@@ -3,6 +3,8 @@ package projectManager.mvc;
 import com.google.zxing.BarcodeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -70,6 +72,8 @@ public class ApiRestController {
     private UserRolesDAO userRolesDAO;
     @Autowired
     private RolesDAO rolesDAO;
+    @Autowired
+    private ApplicationContext appContext;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -271,29 +275,36 @@ public class ApiRestController {
         return persoana;
     }
 
-
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/generatebarcode/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<byte[]> generateBarcode(@PathVariable String id) throws IOException {
+    public String generateBarcode(@PathVariable String id) throws IOException {
         File f = null;
-        String code = articoleDAO.findByID(Integer.valueOf(id)).getBarcode();
+        String code = id;
         byte[] image;
-        try (InputStream in = new FileInputStream(f)) {
-            // creates temporary file
-            f = File.createTempFile("tmp", ".jpg", new File("C:/"));
+        try {
+            // creates file
+            String dirPath = File.separator + "WEB-INF" + File.separator + "resources" + File.separator + "barcode";
+            String contextDirName = this.servletContext.getRealPath(dirPath);
+            File dir = new File(contextDirName);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            String filename = dir + File.separator + id + ".png";
+            // Create the file on server
+            f = new File(filename);
+            if(!f.exists()){
+            f.createNewFile();
+            }
             Barcode.encode(f, code, BarcodeFormat.CODE_128);
-            image = new byte[(int) f.length()];
-            in.read(image);
-            f.delete();
+
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG); //or what ever type it is
-        headers.setContentLength(image.length);
-        return new ResponseEntity<byte[]>(image, headers, HttpStatus.OK);
+        return f.getAbsolutePath() ;
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -421,7 +432,6 @@ public class ApiRestController {
         return response;
     }
 
-
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @RequestMapping(value = "/evidentaintra", method = RequestMethod.POST, produces = "application/json")
@@ -468,7 +478,6 @@ public class ApiRestController {
         }
         return response;
     }
-
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @Transactional(isolation = Isolation.SERIALIZABLE)

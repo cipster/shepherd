@@ -39,7 +39,6 @@
 <body>
 <jsp:include page="include/navbar.jsp"></jsp:include>
 <div class="container" style="margin-bottom: 50px;">
-
     <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
         <div class="btn-group" style="float:left; margin: 15px;">
             <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
@@ -367,8 +366,6 @@
     var table;
     var idArticol;
 
-
-
     function golestePrimire(){
         $('#primire-info').removeClass('ascuns');
         $('#primire-board').addClass('ascuns');
@@ -411,6 +408,13 @@
 
     }
 
+    function drawBarcode(id){
+        var canvas = document.getElementById('barcode' + id);
+        if (canvas.getContext){
+            var ctx = canvas.getContext('2d');
+        }
+    }
+
     /* Formatting function for row details */
     function format ( d ) {
         var evidentaInventar;
@@ -429,6 +433,8 @@
         var useUserRecuperat =false;
         var userRecuperat;
         var primitPrinTranzit;
+        var barcode = d.barcode;
+        generateBarcode(barcode);
         // `d` is the original data object for the row
         switch (d.stare) {
             case 1:
@@ -537,10 +543,14 @@
             default:
                 return;
         }
-        var retString = '<div class="well"><table class="table" width="60%" cellpadding="5" cellspacing="0" border="0" style="padding-left:100px;width: 60%!important;">'+
+        var retString = '<div class="well"><table class="table" cellpadding="5" cellspacing="0" border="0" style="margin-left:auto;margin-right: auto ;padding-left:100px;width: 90%!important;">'+
                 '<tr>'+
-                '<td><span class="fa fa-map-marker fa-fw">&nbsp;</span><b>Localizare:</b></td>'+
-                '<td>'+ loc +'</td>'+
+                '<td width="200px;"><span class="fa fa-map-marker fa-fw">&nbsp;</span><b>Localizare:</b></td>'+
+                '<td width="350px;">'+ loc +'</td>'+
+                '<td rowspan="10" style="vertical-align: middle; text-align: center"><div>' +
+                '<img  width="200" height="100"  src="/barcode/' + barcode + '.png" alt="Inca nu s-a generat">' +
+                '<br><span class="text-center">' + barcode + '</span></div>' +
+                '</td>' +
                 '</tr>' +
                 '<tr>'+
                 '<td><span class="fa ' + stareIcon +' fa-fw">&nbsp;</span><b>Stare:</b></td>'+
@@ -578,7 +588,7 @@
             '<td>' + detalii + '</td>'+
             '</tr>';
         }
-
+        retString += '<tr><td colspan="2"><button class="btn btn-default"><span class="fa fa-print"> &nbsp;</span> Print cod de bare</button></td></tr>';
         retString += '</table></div>';
 
         return retString;
@@ -670,17 +680,13 @@
         document.getElementById("logoutForm").submit();
     }
 
-    function showBarcode(idArticol){
+    function generateBarcode(barcode){
         $.ajax({
             type: 'get',
-            url: '${pageContext.request.contextPath}/api/generatebarcode/' + idArticol,
-            datatype:"image/jpeg",
+            url: '${pageContext.request.contextPath}/api/generatebarcode/' + barcode,
             cache: false,
             success: function (response) {
-                var $img = $('#barcode');
-                $img.empty();
-                var encodedData = window.btoa(response);
-                $img.html('<img src="data:image/jpeg;base64,'+ encodedData + '" />');
+
             },
             error: function(err){
                 alert('Erroare la conexiune');
@@ -740,7 +746,7 @@
             success: function (response) {
                 if(typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
-                        cod2.append($("<option>").val(response[i].idCod2).text(response[i].denumire2));
+                        cod2.append($("<option>").val(response[i].cod2).text(response[i].denumire2));
                     }
                 }
             },
@@ -799,6 +805,7 @@
         $("#intraloc").trigger("chosen:updated");
     }
 
+    //nu se mai foloseste
     function drawDisponibil(table){
         tableData = table.rows().nodes();
         for (var i = 0; i < tableData.length; i++) {
@@ -860,7 +867,8 @@
                         "className":      'details-control',
                         "orderable":      false,
                         "data":           null,
-                        "defaultContent": ''
+                        "defaultContent": '',
+                        "searchable": false
                     },
                     { "data": "idCod3" },
                     { "data": "denumire1" },
@@ -893,6 +901,39 @@
                         "targets": [ 1 ],
                         "visible": true,
                         "searchable": false
+                    },
+                    {
+                        "targets": [ 7 ],
+                        "bUseRendered": true,
+                        "visible": true,
+                        "fnCreatedCell": function (nTd, sData, oData, i) {
+                            switch (sData) {
+                                case 1:
+                                    $(nTd).html('<div class="btn btn-success"><span class="fa fa-cubes fa-fw"></span></div>');
+                                    break;
+                                case 2:
+                                    $(nTd).html('<div class="btn btn-success"><span class="fa fa-recycle fa-fw"></span></div>');
+                                    break;
+                                case 3:
+                                    $(nTd).html('<div class="btn btn-primary"><span class="fa fa-thumb-tack fa-fw"></span></div>');
+                                    break;
+                                case 4:
+                                    $(nTd).html('<div class="btn btn-warning"><span class="fa fa-truck fa-fw"></span></div>');
+                                    break;
+                                case 5:
+                                    $(nTd).html('<div class="btn btn-danger"><span class="fa fa-bug fa-fw"></span></div>');
+                                    break;
+                                case 6:
+                                    $(nTd).html('<div class="btn btn-danger"><span class="fa fa-wrench fa-fw"></span></div>');
+                                    break;
+                                case 7:
+                                    $(nTd).html('<div class="btn btn-danger"><span class="fa fa-exclamation-triangle fa-fw"></span></div>');
+                                    break;
+                                case 8:
+                                    $(nTd).html('<div class="btn btn-danger"><span class="fa fa-trash fa-fw"></span></div>');
+                                    break;
+                            }
+                        }
                     }
                 ],
                 dom: 'T<"clear"><"break-row">lfrtip<"break-row-lg">',
@@ -951,10 +992,6 @@
             console.log(err);
         }
 
-        setTimeout(function() {
-            drawDisponibil(table);
-        },3000);
-
         function amPrimit(idContainer, useScan){
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -977,9 +1014,6 @@
                 success: function (response) {
                     $('#closeprimire').click();
                     table.ajax.reload();
-                    setTimeout(function(){
-                        drawDisponibil(table);
-                    },1000);
                     $("#alert").notify({
                         message: { text: 'Ai confirmat primirea cu succes!' },
                         type: 'success',
@@ -1535,9 +1569,6 @@
                     $('#ieseas').show();
                     $('#articolecautate').html('');
                     table.ajax.reload();
-                    setTimeout(function(){
-                        drawDisponibil(table);
-                    },1000);
                     $("#alert").notify({
                         message: { text: 'Atribuire articole cu succes!' },
                         type: 'success',
@@ -1605,9 +1636,6 @@
 
                     $('#intraarticolecautate').html('');
                     table.ajax.reload();
-                    setTimeout(function(){
-                        drawDisponibil(table);
-                    },1000);
                     $("#alert").notify({
                         message: { text: 'Recuperare cu succes!' },
                         type: 'success',
