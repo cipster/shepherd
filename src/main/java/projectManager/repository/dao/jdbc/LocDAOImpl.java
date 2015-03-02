@@ -54,6 +54,7 @@ public class LocDAOImpl extends JdbcDaoSupport implements LocDAO {
 
     @Override
     public Loc findByID(Integer id) {
+        if(id == 0) return null;
         try {
             String query = "SELECT * FROM proiecte.loc WHERE id_loc=" + id;
 

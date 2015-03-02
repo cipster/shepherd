@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import projectManager.enums.Response;
 import projectManager.repository.Client;
 import projectManager.repository.ListaProiecte;
 import projectManager.repository.UserRoles;
@@ -36,13 +38,12 @@ public class AdminRestController {
     @RequestMapping(value = "/getrole", method = RequestMethod.POST)
     public
     @ResponseBody
-    String getRole(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String username = request.getParameter("username");
+    String getRole(@RequestParam String username) throws Exception {
         String responseString;
         String roleString = "";
         try {
             List<UserRoles> userRoles = userRolesJDBCDAO.findByID(username);
-            if(userRoles != null && userRoles.size() > 0) {
+            if(userRoles != null && !userRoles.isEmpty()) {
                 for (UserRoles s : userRoles) {
                     roleString += s.getRoleType() + "=";
                 }
@@ -59,18 +60,16 @@ public class AdminRestController {
     @RequestMapping(value = "/createProj", method = RequestMethod.POST)
     public
     @ResponseBody
-    String createProiect(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ListaProiecte proiect = new ListaProiecte();
+    String createProiect(@RequestParam String numeProiect,
+                         @RequestParam String nrProiect,
+                         @RequestParam String an,
+                         @RequestParam String idClient) throws Exception {
 
-        String numeProiect = request.getParameter("numeProiect").trim();
-        String nrProiect = request.getParameter("nrProiect").trim();
-        String an = request.getParameter("an").trim();
-        String idClient = request.getParameter("idClient").trim();
-
-        if(numeProiect.length() == 0 || nrProiect.length() == 0 || an.length() == 0 || idClient.length() == 0 ){
-            return "-1";
+        if(numeProiect.isEmpty() || nrProiect.isEmpty() || an.isEmpty() || idClient.isEmpty()){
+            return Response.ERROR.getLabel();
         }
 
+        ListaProiecte proiect = new ListaProiecte();
         proiect.setNumeProiect(numeProiect);
         proiect.setNrProiect(nrProiect);
         proiect.setAn(an);
@@ -86,7 +85,7 @@ public class AdminRestController {
     @RequestMapping(value = "/adaugaClient", method = RequestMethod.POST)
     public
     @ResponseBody
-    String createClient(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    String createClient(HttpServletRequest request) throws Exception {
         Client client = new Client();
         String numeClient = request.getParameter("client");
         client.setClient(numeClient);
@@ -97,7 +96,7 @@ public class AdminRestController {
             if (ok > 0)
             responseString = "{\"client\":\"" + numeClient + "\"}";
         } catch(Exception e) {
-            responseString = "";
+            responseString = Response.EMPTY.getLabel();
         }
         return responseString;
     }
@@ -127,7 +126,7 @@ public class AdminRestController {
     @ResponseBody
     String modProiect(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ListaProiecte proiect = new ListaProiecte();
-        String responseString = null;
+        String responseString;
 
         String idProiect = request.getParameter("idProiect").trim();
         String numeProiect = request.getParameter("numeProiect").trim();
@@ -135,8 +134,8 @@ public class AdminRestController {
         String an = request.getParameter("an").trim();
         String idClient = request.getParameter("idClient").trim();
 
-        if(idProiect.length() == 0 || numeProiect.length() == 0 || nrProiect.length() == 0 || an.length() == 0 || idClient.length() == 0 ){
-            return "-1";
+        if(idProiect.isEmpty() || numeProiect.isEmpty() || nrProiect.isEmpty() || an.isEmpty() || idClient.isEmpty()){
+            return Response.ERROR.getLabel();
         }
 
         proiect.setIdProiect(Integer.parseInt(idProiect));

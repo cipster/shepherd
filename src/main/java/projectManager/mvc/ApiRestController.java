@@ -3,25 +3,17 @@ package projectManager.mvc;
 import com.google.zxing.BarcodeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import projectManager.enums.Response;
 import projectManager.enums.StareArticol;
 import projectManager.repository.*;
 import projectManager.repository.User;
@@ -34,10 +26,8 @@ import javax.json.JsonObject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -72,8 +62,6 @@ public class ApiRestController {
     private UserRolesDAO userRolesDAO;
     @Autowired
     private RolesDAO rolesDAO;
-    @Autowired
-    private ApplicationContext appContext;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -185,9 +173,8 @@ public class ApiRestController {
             if(persoana == null) throw new RuntimeException("Persoana nu exista");
             evidentaInventar = evidentaInventarDAO.findTranzitByIdPersoana(persoana.getIdPersoana());
             for(EvidentaInventar x: evidentaInventar){
-               articolePrimire.add(cod3DAO.findByID(x.getIdCod3()));
+                articolePrimire.add(cod3DAO.findByID(x.getIdCod3()));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -282,9 +269,7 @@ public class ApiRestController {
     public String generateBarcode(@PathVariable String id) throws IOException {
         File f = null;
         String code = id;
-        byte[] image;
         try {
-            // creates file
             String dirPath = File.separator + "WEB-INF" + File.separator + "resources" + File.separator + "barcode";
             String contextDirName = this.servletContext.getRealPath(dirPath);
             File dir = new File(contextDirName);
@@ -292,10 +277,9 @@ public class ApiRestController {
                 dir.mkdirs();
             }
             String filename = dir + File.separator + id + ".png";
-            // Create the file on server
             f = new File(filename);
             if(!f.exists()){
-            f.createNewFile();
+                f.createNewFile();
             }
             Barcode.encode(f, code, BarcodeFormat.CODE_128);
 
@@ -315,13 +299,12 @@ public class ApiRestController {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername(); //get logged in username
         cod3.setCreatDe(username);
-        String response = "";
+        String response = Response.ERROR.getLabel();
         try {
             cod3DAO.create(cod3);
-            response = "1";
+            response = Response.SUCCESS.getLabel();
         } catch (DataAccessException ex) {
             ex.printStackTrace();
-            response = "-1";
         }
 
         return response;
@@ -332,19 +315,17 @@ public class ApiRestController {
     @RequestMapping(value = "/modificaclient", method = RequestMethod.POST)
     @ResponseBody
     public String modificaClient(@RequestBody Client client) {
-        String response = "";
+        String response = Response.ERROR.getLabel();
         Client deModificat = clientiDAO.findByID(client.getIdClient());
         if(deModificat != null) {
             try {
                 deModificat.setClient(client.getClient());
                 clientiDAO.update(deModificat);
-                response = "1";
+                response = Response.SUCCESS.getLabel();
             } catch (DataAccessException ex) {
                 ex.printStackTrace();
-                response = "-1";
             }
         }
-
         return response;
     }
 
@@ -353,18 +334,16 @@ public class ApiRestController {
     @RequestMapping(value = "/stergeclient", method = RequestMethod.POST)
     @ResponseBody
     public String stergeClient(@RequestBody Client client) {
-        String response = "";
+        String response = Response.ERROR.getLabel();
         Client deSters = clientiDAO.findByID(client.getIdClient());
         if(deSters != null) {
             try {
                 clientiDAO.deleteByID(deSters.getIdClient());
-                response = "1";
+                response = Response.SUCCESS.getLabel();
             } catch (DataAccessException ex) {
                 ex.printStackTrace();
-                response = "-1";
             }
         }
-
         return response;
     }
 
@@ -374,15 +353,13 @@ public class ApiRestController {
     @ResponseBody
     public String addPersoana(@RequestBody Persoana persoana) {
 
-        String response = "";
+        String response = Response.ERROR.getLabel();
         try {
             persoanaDAO.create(persoana);
-            response = "1";
+            response = Response.SUCCESS.getLabel();
         } catch (DataAccessException ex) {
             ex.printStackTrace();
-            response = "-1";
         }
-
         return response;
     }
 
@@ -395,7 +372,7 @@ public class ApiRestController {
         String username = user.getUsername(); //get logged in username
         EvidentaInventar evidentaInventar = new EvidentaInventar();
         String evidenta = request.getParameterNames().nextElement();
-        String response = "";
+        String response = Response.ERROR.getLabel();
         if(evidenta != null) {
             JsonObject obj = Json.createReader(new StringReader(evidenta)).readObject();
 
@@ -413,7 +390,6 @@ public class ApiRestController {
                     Integer cod3Val = Integer.parseInt(cod3.getJsonString(i).getString());
                     evidentaInventar.setIdCod3(cod3Val);
                     try {
-                        //cod3DAO.setStare(stare, cod3Val);
                         Cod3 articol = cod3DAO.findByID(cod3Val);
                         articol.setModificatDe(username);
                         articol.setIdLoc(idLoc);
@@ -421,10 +397,10 @@ public class ApiRestController {
                         articol.setDataPrimire(null);
                         cod3DAO.update(articol);
                         evidentaInventarDAO.create(evidentaInventar);
-                        response = "1";
+                        response = Response.SUCCESS.getLabel();
                     } catch (DataAccessException ex) {
                         ex.printStackTrace();
-                        response = "-1";
+                        response = Response.ERROR.getLabel();
                     }
                 }
             }
@@ -442,13 +418,12 @@ public class ApiRestController {
         EvidentaInventar evidentaInventar = new EvidentaInventar();
         evidentaInventar.setIdEvidentaInventar(0);
         String evidenta = request.getParameterNames().nextElement();
-        String response = "";
+        String response = Response.ERROR.getLabel();
         if(evidenta != null) {
             JsonObject obj = Json.createReader(new StringReader(evidenta)).readObject();
 
             if (obj != null) {
                 Integer idLoc = Integer.parseInt(obj.getString("idLoc"));
-                Integer idPersoana = 1;
                 String detalii = obj.getString("detalii");
                 int stare = StareArticol.RECUPERAT.getCode();
 
@@ -466,12 +441,11 @@ public class ApiRestController {
                         articol.setModificatDe(username);
                         articol.setDetaliiRecuperare(detalii);
                         cod3DAO.update(articol);
-//                        cod3DAO.setStare(stare, cod3Val);
                         evidentaInventarDAO.update(evidentaInventar);
-                        response = "1";
+                        response = Response.SUCCESS.getLabel();
                     } catch (DataAccessException ex) {
                         ex.printStackTrace();
-                        response = "-1";
+                        response = Response.ERROR.getLabel();
                     }
                 }
             }
@@ -512,10 +486,10 @@ public class ApiRestController {
                         articol.setModificatDe(username);
                         cod3DAO.update(articol);
                         cod3DAO.setPrimit(cod3Val);
-                        response = "1";
+                        response = Response.SUCCESS.getLabel();
                     } catch (DataAccessException ex) {
                         ex.printStackTrace();
-                        response = "-1";
+                        response = Response.ERROR.getLabel();
                     }
                 }
             }
@@ -529,13 +503,13 @@ public class ApiRestController {
     @ResponseBody
     public String addLoc(@RequestBody Loc loc) {
 
-        String response = "";
+        String response;
         try {
             locDAO.create(loc);
-            response = "1";
+            response = Response.SUCCESS.getLabel();
         } catch (DataAccessException ex) {
             ex.printStackTrace();
-            response = "-1";
+            response = Response.ERROR.getLabel();
         }
 
         return response;
@@ -547,13 +521,13 @@ public class ApiRestController {
     @ResponseBody
     public String schimbaParola(HttpServletRequest request) {
 
-        String response = "";
+        String response;
         try {
             userDAO.updatePassword(request.getParameter("user"),request.getParameter("password"));
-            response = "1";
+            response = Response.SUCCESS.getLabel();
         } catch (DataAccessException ex) {
             ex.printStackTrace();
-            response = "-1";
+            response = Response.ERROR.getLabel();
         }
 
         return response;
@@ -565,16 +539,16 @@ public class ApiRestController {
     @ResponseBody
     public String adaugaUser(HttpServletRequest request) {
 
-        String response = "";
+        String response;
         String user = request.getParameter("username");
         String password = new BCryptPasswordEncoder(4).encode("qwerty");
         String persoana = request.getParameter("persoana");
         String[] roluri = request.getParameterValues("rol");
         if((user != null && user.isEmpty()) || ( roluri != null && roluri.length == 0)){
-            response = "-1";
+            response = Response.ERROR.getLabel();
         } else {
             try {
-                if(userDAO.findByID(user) != null) return "-2";
+                if(userDAO.findByID(user) != null) return Response.EXISTS.getLabel();
 
                 User deCreat = new User();
                 deCreat.setPassword(password);
@@ -600,10 +574,10 @@ public class ApiRestController {
                         userRolesDAO.create(userRoles);
                     }
                 }
-                response = "1";
+                response = Response.SUCCESS.getLabel();
             } catch (DataAccessException ex) {
                 ex.printStackTrace();
-                response = "-1";
+                response = Response.ERROR.getLabel();
             }
         }
         return response;
@@ -615,13 +589,13 @@ public class ApiRestController {
     @ResponseBody
     public String modificaUser(HttpServletRequest request) {
 
-        String response = "";
+        String response;
         String user = request.getParameter("username");
         String status = request.getParameter("status");
         String persoana = request.getParameter("persoana");
         String[] roluri = request.getParameterValues("rol");
         if((user != null && user.isEmpty()) || ( roluri != null && roluri.length == 0)){
-            response = "-1";
+            response = Response.ERROR.getLabel();
         } else {
             try {
                 User deModificat = userDAO.findByID(user);
@@ -648,10 +622,10 @@ public class ApiRestController {
                         userRolesDAO.create(userRoles);
                     }
                 }
-                response = "1";
+                response = Response.SUCCESS.getLabel();
             } catch (DataAccessException ex) {
                 ex.printStackTrace();
-                response = "-1";
+                response = Response.ERROR.getLabel();
             }
         }
         return response;

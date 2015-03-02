@@ -57,7 +57,7 @@
                 <tr id="${prj.idProiect}" class="idTabel" data-id="${prj.idProiect}" data-idBd="${prj.idBd}"
                     data-idPropunere="${prj.idPropunere}" data-idChestionarFinal="${prj.idChestionarFinal}"
                     data-idRaportFinal="${prj.idRaportFinal}" data-idAlteMateriale="${prj.idAlteMateriale}">
-                    <td class="details-control"></td>
+                    <td class="details-control" title="Apasa pentru detalii"></td>
                     <td hidden="hidden" class="id">${prj.idProiect}</td>
                     <td>${prj.nrProiect} </td>
                     <td>${prj.an}</td>
@@ -1090,7 +1090,8 @@
             stateSave: true,
             "aoColumns": [{
                 "sWidth": "0px",
-                "bSortable": false
+                "bSortable": false,
+                "orderable": false
             },{
                 "sWidth": "25px",
                 "bSortable": false

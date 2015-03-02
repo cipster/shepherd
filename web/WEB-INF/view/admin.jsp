@@ -47,19 +47,21 @@
     <div class="jumbotron col-md-12" style="min-height: 500px;">
         <div class="list-group col-md-3">
             <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <a href="#adauga" id="adauga" class="list-group-item">
-                    <span class="fa fa-plus">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ" /></a>
-                <a href="#modifica" id="modifica" class="list-group-item">
-                    <span class="fa fa-pencil">&nbsp;</span>
+                <a id="adauga" class="list-group-item">
+                    <span class="fa fa-plus fa-fw">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ" /></a>
+                <a id="modifica" class="list-group-item">
+                    <span class="fa fa-pencil fa-fw">&nbsp;</span>
                     <spring:message code="ADMIN.MODPROJ" /></a>
-                <a href="#sterge" id="sterge" class="list-group-item">
-                    <span class="fa fa-remove">&nbsp;</span>
+                <a id="sterge" class="list-group-item">
+                    <span class="fa fa-remove fa-fw">&nbsp;</span>
                     <spring:message code="ADMIN.DELPROJ" /></a>
-                <a href="#clienti" id="clienti" class="list-group-item">
-                    <span class="fa fa-briefcase">&nbsp;</span> <spring:message code="ADMIN.MODCLIENTI" /></a>
+                <a id="clienti" class="list-group-item">
+                    <span class="fa fa-briefcase fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODCLIENTI" /></a>
             </sec:authorize>
-            <a href="#utilizatori" id="utilizatori" class="list-group-item">
-                <span class="fa fa-group">&nbsp;</span> <spring:message code="ADMIN.MODUSER" /></a>
+            <a id="utilizatori" class="list-group-item">
+                <span class="fa fa-group fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODUSER" /></a>
+            <a id="inventar" class="list-group-item">
+                <span class="fa fa-cubes fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODINVENTAR" /></a>
         </div>
         <div class="well col-md-9 col-md-offset-0" id="continut">
 
@@ -79,6 +81,9 @@
             </div>
             <div id="modUsers" style="display: none">
                 <c:import url="include/modUsers.jsp"></c:import>
+            </div>
+            <div id="modInventar" style="display: none">
+                <c:import url="include/modInventar.jsp"></c:import>
             </div>
         </div>
     </div>
@@ -104,6 +109,7 @@
 <script src="/js/chosen.jquery.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
 <script type="text/javascript">
+    var unselect = -1;
     function formSubmit() {
         document.getElementById("logoutForm").submit();
     }
@@ -130,11 +136,11 @@
                 alert("Connection error!");
             }
         });
-        $("#clientselect").val(-1);
+        $("#clientselect").val(unselect);
         $("#clientselect").trigger("chosen:updated");
-        $("#idClientInput").val(-1);
+        $("#idClientInput").val(unselect);
         $("#idClientInput").trigger("chosen:updated");
-        $("#idClient").val(-1);
+        $("#idClient").val(unselect);
         $("#idClient").trigger("chosen:updated");
 
     }
@@ -178,7 +184,7 @@
 
 
 
-        idUserSelect.val(-1);
+        idUserSelect.val(unselect);
         idUserSelect.trigger("chosen:updated");
     }
 
@@ -210,9 +216,9 @@
                 alert("Connection error!");
             }
         });
-        idProiectSelect.val(-1);
+        idProiectSelect.val(unselect);
         idProiectSelect.trigger("chosen:updated");
-        idProiect.val(-1);
+        idProiect.val(unselect);
         idProiect.trigger("chosen:updated");
 
     }
@@ -292,8 +298,35 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#persoana-select").val(-1);
+        $("#persoana-select").val(unselect);
         $("#persoana-select").trigger('chosen:updated');
+
+        $("#persoana-mod-select").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "Persoana nu exista!",
+            allow_single_deselect: true
+        });
+        $("#persoana-mod-select").val(unselect);
+        $("#persoana-mod-select").trigger('chosen:updated');
+
+        $("#loc-mod-select").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "Persoana nu exista!",
+            allow_single_deselect: true
+        });
+        $("#loc-mod-select").val(unselect);
+        $("#loc-mod-select").trigger('chosen:updated');
+
+        $("#articol-mod-select").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "Persoana nu exista!",
+            allow_single_deselect: true
+        });
+        $("#articol-mod-select").val(unselect);
+        $("#articol-mod-select").trigger('chosen:updated');
 
         $("#persoana-select-new").chosen({
             width: "100%",
@@ -301,13 +334,13 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#persoana-select-new").val(-1);
+        $("#persoana-select-new").val(unselect);
         $("#persoana-select-new").trigger('chosen:updated');
 
         getClients();
         getProjects();
 
-        $("#anSelInput").val(-1);
+        $("#anSelInput").val(unselect);
         $("#anSelInput").trigger("chosen:updated");
         $("#idProiect").val([]);
         $("#idProiect").trigger("chosen:updated");
@@ -323,15 +356,19 @@
         $("#delProj").css('display', "none");
         $("#modUsers").css('display', "none");
         $("#modClienti").css('display', "none");
+        $("#modInventar").css('display', "none");
+
 
         $("#adauga").click(function () {
             $("#adauga").prop('class', "list-group-item active");
+            $("#inventar").prop('class', "list-group-item");
             $("#modifica").prop('class', "list-group-item");
             $("#sterge").prop('class', "list-group-item");
             $("#utilizatori").prop('class', "list-group-item");
             $("#clienti").prop('class', "list-group-item");
             $("#addProj").css('display', "block");
             $("#modProj").css('display', "none");
+            $("#modInventar").css('display', "none");
             $("#delProj").css('display', "none");
             $("#modUsers").css('display', "none");
             $("#modClienti").css('display', "none");
@@ -342,12 +379,14 @@
 
         $("#modifica").click(function () {
             $("#modifica").prop('class', "list-group-item  active");
+            $("#inventar").prop('class', "list-group-item");
             $("#adauga").prop('class', "list-group-item");
             $("#sterge").prop('class', "list-group-item");
             $("#utilizatori").prop('class', "list-group-item");
             $("#clienti").prop('class', "list-group-item");
             $("#addProj").css('display', "none");
             $("#modProj").css('display', "block");
+            $("#modInventar").css('display', "none");
             $("#delProj").css('display', "none");
             $("#modUsers").css('display', "none");
             $("#modClienti").css('display', "none");
@@ -360,6 +399,7 @@
 
         $("#sterge").click(function () {
             $("#sterge").prop('class', "list-group-item  active");
+            $("#inventar").prop('class', "list-group-item");
             $("#adauga").prop('class', "list-group-item");
             $("#modifica").prop('class', "list-group-item");
             $("#utilizatori").prop('class', "list-group-item");
@@ -367,6 +407,7 @@
             $("#addProj").css('display', "none");
             $("#modProj").css('display', "none");
             $("#delProj").css('display', "block");
+            $("#modInventar").css('display', "none");
             $("#modUsers").css('display', "none");
             $("#modClienti").css('display', "none");
             $("#sfat").css('display', "none");
@@ -377,12 +418,14 @@
 
         $("#clienti").click(function () {
             $("#utilizatori").prop('class', "list-group-item");
+            $("#inventar").prop('class', "list-group-item");
             $("#adauga").prop('class', "list-group-item");
             $("#modifica").prop('class', "list-group-item");
             $("#sterge").prop('class', "list-group-item");
             $("#clienti").prop('class', "list-group-item active");
             $("#addProj").css('display', "none");
             $("#modProj").css('display', "none");
+            $("#modInventar").css('display', "none");
             $("#delProj").css('display', "none");
             $("#modUsers").css('display', "none");
             $("#modClienti").css('display', "block");
@@ -396,6 +439,7 @@
 
         $("#utilizatori").click(function () {
             $("#utilizatori").prop('class', "list-group-item active");
+            $("#inventar").prop('class', "list-group-item");
             $("#adauga").prop('class', "list-group-item");
             $("#modifica").prop('class', "list-group-item");
             $("#sterge").prop('class', "list-group-item");
@@ -403,12 +447,31 @@
             $("#addProj").css('display', "none");
             $("#modProj").css('display', "none");
             $("#delProj").css('display', "none");
+            $("#modInventar").css('display', "none");
             $("#modUsers").css('display', "block");
             $("#modClienti").css('display', "none");
             $("#sfat").css('display', "none");
             getUsers();
             $('#btnChPass').attr('data-target','');
             $('#btnModUser').attr('data-target','');
+
+        });
+
+        $("#inventar").click(function () {
+            $("#inventar").prop('class', "list-group-item active");
+            $("#utilizatori").prop('class', "list-group-item");
+            $("#adauga").prop('class', "list-group-item");
+            $("#modifica").prop('class', "list-group-item");
+            $("#sterge").prop('class', "list-group-item");
+            $("#clienti").prop('class', "list-group-item");
+            $("#addProj").css('display', "none");
+            $("#modProj").css('display', "none");
+            $("#delProj").css('display', "none");
+            $("#modInventar").css('display', "block");
+            $("#modUsers").css('display', "none");
+            $("#modClienti").css('display', "none");
+            $("#sfat").css('display', "none");
+
 
         });
     });

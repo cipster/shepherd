@@ -4805,7 +4805,8 @@ a.badge:hover, a.badge:focus {
 
 a.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
     color: #428bca;
-    background-color: #fff
+    background-color: #fff;
+    cursor: pointer!important;
 }
 
 .nav-pills > li > a > .badge {
@@ -5127,7 +5128,8 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     padding: 10px 15px;
     margin-bottom: -1px;
     background-color: #fff;
-    border: 1px solid #ddd
+    border: 1px solid #ddd;
+    cursor: pointer!important;
 }
 
 .list-group-item:first-child {
