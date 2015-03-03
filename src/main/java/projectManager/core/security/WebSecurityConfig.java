@@ -17,6 +17,9 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebMvcSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    
+    private static final String USERS_QUERY = "SELECT username, password, enabled FROM users WHERE username=?";
+    private static final String ROLES_QUERY = "SELECT username, role FROM user_roles WHERE username=?";
 
     @Autowired
     DataSource dataSource;
@@ -27,8 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery("select username,password, enabled from users where username=?")
-                .authoritiesByUsernameQuery("select username, role from user_roles where username=?")
+                .usersByUsernameQuery(USERS_QUERY)
+                .authoritiesByUsernameQuery(ROLES_QUERY)
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -43,11 +46,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(4);
     }
 
-
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery("select username,password, enabled from users where username=?").authoritiesByUsernameQuery("select username, role from user_roles where username=?");
+        auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery(USERS_QUERY).authoritiesByUsernameQuery(ROLES_QUERY);
     }
 
     @Override
@@ -57,10 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.formLogin().loginPage("/login").failureUrl("/login?error").defaultSuccessUrl("/main", true).usernameParameter("username").passwordParameter("password").permitAll(true).and().csrf().and().sessionManagement().maximumSessions(1).expiredUrl("/session-expired").and().and().logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout").permitAll(true);
-        http.authorizeRequests().antMatchers("/download/**").hasAnyRole("DOWNLOAD","ADMIN").and().exceptionHandling().accessDeniedPage("/403");
-        http.authorizeRequests().antMatchers("/admin").hasAnyRole("ADMIN","SUPERUSER").anyRequest().hasAnyRole("USER","ADMIN").and().exceptionHandling().accessDeniedPage("/403");
+        http.authorizeRequests().antMatchers("/download/**").hasAnyRole(RoleType.ROLE_DOWNLOAD.getLabel(),RoleType.ROLE_ADMIN.getLabel()).and().exceptionHandling().accessDeniedPage("/403");
+        http.authorizeRequests().antMatchers("/admin").hasAnyRole(RoleType.ROLE_ADMIN.getLabel(), RoleType.ROLE_SUPERUSER.getLabel()).anyRequest().hasAnyRole(RoleType.ROLE_USER.getLabel(),RoleType.ROLE_ADMIN.getLabel()).and().exceptionHandling().accessDeniedPage("/403");
     }
 
 }
