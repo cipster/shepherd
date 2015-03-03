@@ -1,19 +1,14 @@
 package projectManager.core;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
@@ -27,15 +22,11 @@ import java.util.List;
 
 @EnableWebMvc
 @Configuration
-@EnableTransactionManagement
 @EnableGlobalMethodSecurity(prePostEnabled=true)
-@PropertySource("classpath:jdbc.properties")
 @ComponentScan(basePackages = {"projectManager.mvc"})
-@Import({WebSecurityConfig.class, BeanDef.class})
+@Import({WebSecurityConfig.class, BeanDef.class, Datasource.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
 
-    @Autowired
-    private Environment env;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -54,11 +45,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
-    }
-
-    @Bean
-    public PlatformTransactionManager txManager() {
-        return new DataSourceTransactionManager(dataSource());
     }
 
     @Bean
@@ -107,21 +93,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MappingJackson2HttpMessageConverter jackson2Converter() {
         return new MappingJackson2HttpMessageConverter();
-    }
-
-    @Bean(name = "dataSource")
-    public BasicDataSource dataSource() {
-        BasicDataSource driverManagerDataSource = new BasicDataSource();
-        driverManagerDataSource.setDriverClassName(env.getProperty("database.driverClassName"));
-        driverManagerDataSource.setUrl(env.getProperty("database.databaseurl"));
-        driverManagerDataSource.setUsername(env.getProperty("database.username"));
-        driverManagerDataSource.setPassword(env.getProperty("database.password"));
-        driverManagerDataSource.setTestOnBorrow(true);
-        driverManagerDataSource.setRemoveAbandoned(true);
-        driverManagerDataSource.setInitialSize(5);
-        driverManagerDataSource.setMaxActive(10);
-        driverManagerDataSource.setMaxIdle(1800);
-        return driverManagerDataSource;
     }
 
     @Bean
