@@ -1,6 +1,5 @@
 package projectManager.core;
 
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -23,8 +22,6 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import projectManager.core.security.WebSecurityConfig;
-import projectManager.repository.dao.*;
-import projectManager.repository.dao.jdbc.*;
 
 import java.util.List;
 
@@ -34,7 +31,7 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 @PropertySource("classpath:jdbc.properties")
 @ComponentScan(basePackages = {"projectManager.mvc"})
-@Import({WebSecurityConfig.class})
+@Import({WebSecurityConfig.class, BeanDef.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
@@ -132,90 +129,5 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(-1);
         return multipartResolver;
-    }
-
-    @Bean
-    public ListaProiecteDAO listaProiecteDAO() {
-        return new ListaProiecteJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public AlteMaterialeDAO alteMaterialeDAO() {
-        return new AlteMaterialeJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public BdDAO bdDAO() {
-        return new BdJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public ChestionarFinalDAO chestionarFinalDAO() {
-        return new ChestionarFinalJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public ClientDAO clientiDAO() {
-        return new ClientiJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public PropunereDAO propunereDAO() {
-        return new PropunereJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public RaportFinalJDBCDAO raportFinalJDBCDAO() {
-        return new RaportFinalJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public UserDAO userDAO() {
-        return new UserJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public UserRolesDAO userRolesDAO() {
-        return new UserRolesJDBCDAO(dataSource());
-    }
-
-    @Bean
-    public RolesDAO rolesJDBCDAO() {
-        return new RolesDAOImpl(dataSource());
-    }
-
-    @Bean
-    public Cod1DAO cod1DAO() {
-        return new Cod1DAOImpl(dataSource());
-    }
-
-    @Bean
-    public Cod2DAO cod2DAO() {
-        return new Cod2DAOImpl(dataSource());
-    }
-
-    @Bean
-    public Cod3DAO cod3DAO() {
-        return new Cod3DAOImpl(dataSource());
-    }
-
-    @Bean
-    public LocDAO locDAO() {
-        return new LocDAOImpl(dataSource());
-    }
-
-    @Bean
-    public PersoanaDAO persoanaDAO() {
-            return new PersoanaDAOImpl(dataSource());
-        }
-
-    @Bean
-    public EvidentaInventarDAO evidentaInventarDAO() {
-        return new EvidentaInventarDAOImpl(dataSource());
-    }
-
-    @Bean
-    public ArticoleDAO articoleDAO() {
-        return new ArticoleDAOImpl(dataSource());
     }
 }
