@@ -4,6 +4,7 @@ import projectManager.repository.dao.*;
 import projectManager.repository.dao.jdbc.*;
 import org.springframework.context.annotation.*;
 
+@Configuration
 public class BeanDef {
     @Bean
     public ListaProiecteDAO listaProiecteDAO() {
