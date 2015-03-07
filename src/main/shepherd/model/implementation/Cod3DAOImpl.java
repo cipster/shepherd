@@ -1,7 +1,7 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dao.Cod3;
+import model.dto.Cod3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import model.interfaces.Cod3DAO;
+import model.dao.Cod3DAO;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -240,6 +240,8 @@
     function getPersoane(){
         var modPersoanaSelect = $("#persoana-mod-select");
         var newPersoanaSelect = $("#persoana-select-new");
+        var persoanaSelect = $("#persoana-select");
+        persoanaSelect.html("");
         modPersoanaSelect.html("");
         newPersoanaSelect.html("");
 
@@ -265,6 +267,7 @@
                         ' data-cnp="' + cnp + '" data-functie="' + functie +'">').val(idPersoana).text(nume));
                         newPersoanaSelect.append($('<option id="artpersoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +
                         ' data-cnp="' + cnp + '" data-functie="' + functie +'">').val(idPersoana).text(nume));
+                        persoanaSelect.append($('<option label="' + nume + '">').val(idPersoana).text(nume));
                     }
                 }
             },

@@ -1,8 +1,8 @@
 package controllers;
 
 import com.google.zxing.BarcodeFormat;
+import model.dto.*;
 import model.dao.*;
-import model.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import enums.Response;
-import enums.StareArticol;
+import util.enums.Response;
+import util.enums.StareArticol;
 import util.Barcode;
 
 import javax.json.Json;
@@ -41,7 +41,7 @@ public class ApiRestController {
     @Autowired
     private Cod3DAO cod3DAO;
     @Autowired
-    private ArticoleDAO articoleDAO;
+    private ArticolDAO articolDAO;
     @Autowired
     ServletContext servletContext;
     @Autowired
@@ -53,15 +53,15 @@ public class ApiRestController {
     @Autowired
     private ClientDAO clientiDAO;
     @Autowired
-    private ListaProiecteDAO listaProiecteDAO;
+    private ProiectDAO proiectDAO;
     @Autowired
     private Cod2DAO cod2DAO;
     @Autowired
     private UserDAO userDAO;
     @Autowired
-    private UserRolesDAO userRolesDAO;
+    private UserRoleDAO userRoleDAO;
     @Autowired
-    private RolesDAO rolesDAO;
+    private RoleDAO roleDAO;
     @Qualifier("cod1DAO")
     @Autowired
     private Cod1DAO cod1DAO;
@@ -78,9 +78,9 @@ public class ApiRestController {
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/getinventory", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<Articole> getAllStoc() {
+    public List<Articol> getAllStoc() {
 
-        return articoleDAO.getAll();
+        return articolDAO.getAll();
     }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
@@ -96,9 +96,9 @@ public class ApiRestController {
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/proiectelist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ListaProiecte> getAllProiecte() {
+    public List<Proiect> getAllProiecte() {
 
-        return listaProiecteDAO.getAll();
+        return proiectDAO.getAll();
     }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
@@ -123,9 +123,9 @@ public class ApiRestController {
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/articolelist", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<Articole> getAllArticole() {
+    public List<Articol> getAllArticole() {
 
-        return articoleDAO.getAll();
+        return articolDAO.getAll();
     }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
@@ -595,23 +595,23 @@ public class ApiRestController {
                 deCreat.setUsername(user);
                 deCreat.setEnabled(1);
 
-                UserRoles userRoles = new UserRoles();
-                userRoles.setUsername(user);
+                UserRole userRole = new UserRole();
+                userRole.setUsername(user);
 
                 if(persoana != null && !persoana.isEmpty() && !persoana.equalsIgnoreCase("null")) {
                     Persoana pers = persoanaDAO.findByID(Integer.parseInt(persoana));
                     pers.setUsername(deCreat.getUsername());
                     persoanaDAO.update(pers);
                 }
-                Roles roles = null;
+                Role role = null;
                 userDAO.create(deCreat);
 
                 for(String rol : roluri){
-                    roles = rolesDAO.findByID(Integer.parseInt(rol));
-                    if(roles != null) {
-                        userRoles.setRole(roles.getRoleValue());
-                        userRoles.setRoleType(roles.getIdRole());
-                        userRolesDAO.create(userRoles);
+                    role = roleDAO.findByID(Integer.parseInt(rol));
+                    if(role != null) {
+                        userRole.setRole(role.getRoleValue());
+                        userRole.setRoleType(role.getIdRole());
+                        userRoleDAO.create(userRole);
                     }
                 }
                 response = Response.SUCCESS.getLabel();
@@ -641,10 +641,10 @@ public class ApiRestController {
                 User deModificat = userDAO.findByID(user);
                 deModificat.setEnabled(Integer.parseInt(status));
 
-                UserRoles userRoles = new UserRoles();
-                userRoles.setUsername(user);
+                UserRole userRole = new UserRole();
+                userRole.setUsername(user);
 
-                Roles roles = null;
+                Role role = null;
 
                 if(persoana != null && !persoana.isEmpty() && !persoana.equalsIgnoreCase("null")) {
                     Persoana pers = persoanaDAO.findByID(Integer.parseInt(persoana));
@@ -652,14 +652,14 @@ public class ApiRestController {
                     persoanaDAO.update(pers);
                 }
                 userDAO.update(deModificat);
-                userRolesDAO.deleteByUsername(user);
+                userRoleDAO.deleteByUsername(user);
 
                 for(String rol : roluri){
-                    roles = rolesDAO.findByID(Integer.parseInt(rol));
-                    if(roles != null) {
-                        userRoles.setRole(roles.getRoleValue());
-                        userRoles.setRoleType(roles.getIdRole());
-                        userRolesDAO.create(userRoles);
+                    role = roleDAO.findByID(Integer.parseInt(rol));
+                    if(role != null) {
+                        userRole.setRole(role.getRoleValue());
+                        userRole.setRoleType(role.getIdRole());
+                        userRoleDAO.create(userRole);
                     }
                 }
                 response = Response.SUCCESS.getLabel();

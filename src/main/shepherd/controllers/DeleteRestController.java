@@ -1,6 +1,6 @@
 package controllers;
 
-import model.interfaces.*;
+import model.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class DeleteRestController {
 
     @Autowired
-    private ListaProiecteDAO proiecteJDBCDAO;
+    private ProiectDAO proiecteJDBCDAO;
     @Autowired
     private AlteMaterialeDAO alteMaterialeJDBCDAO;
     @Autowired

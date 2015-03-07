@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import enums.Response;
-import model.dao.Client;
-import model.dao.ListaProiecte;
-import model.dao.UserRoles;
-import model.interfaces.ClientDAO;
-import model.interfaces.ListaProiecteDAO;
-import model.interfaces.UserRolesDAO;
+import util.enums.Response;
+import model.dto.Client;
+import model.dto.Proiect;
+import model.dto.UserRole;
+import model.dao.ClientDAO;
+import model.dao.ProiectDAO;
+import model.dao.UserRoleDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,11 +27,11 @@ public class AdminRestController {
 
 
     @Autowired
-    private ListaProiecteDAO listaProiecteJDBCDAO;
+    private ProiectDAO listaProiecteJDBCDAO;
     @Autowired
     private ClientDAO clientiJDBCDAO;
     @Autowired
-    private UserRolesDAO userRolesJDBCDAO;
+    private UserRoleDAO userRolesJDBCDAO;
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -42,9 +42,9 @@ public class AdminRestController {
         String responseString;
         String roleString = "";
         try {
-            List<UserRoles> userRoles = userRolesJDBCDAO.findByID(username);
+            List<UserRole> userRoles = userRolesJDBCDAO.findByID(username);
             if(userRoles != null && !userRoles.isEmpty()) {
-                for (UserRoles s : userRoles) {
+                for (UserRole s : userRoles) {
                     roleString += s.getRoleType() + "=";
                 }
             }
@@ -69,7 +69,7 @@ public class AdminRestController {
             return Response.ERROR.getLabel();
         }
 
-        ListaProiecte proiect = new ListaProiecte();
+        Proiect proiect = new Proiect();
         proiect.setNumeProiect(numeProiect);
         proiect.setNrProiect(nrProiect);
         proiect.setAn(an);
@@ -125,7 +125,7 @@ public class AdminRestController {
     public
     @ResponseBody
     String modProiect(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ListaProiecte proiect = new ListaProiecte();
+        Proiect proiect = new Proiect();
         String responseString;
 
         String idProiect = request.getParameter("idProiect").trim();

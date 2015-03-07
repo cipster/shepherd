@@ -1,7 +1,7 @@
 package controllers;
 
+import model.dto.*;
 import model.dao.*;
-import model.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
@@ -36,7 +36,7 @@ public class UploadRestController {
     @Autowired
     private ChestionarFinalDAO chestionarFinalJDBCDAO;
     @Autowired
-    private ListaProiecteDAO proiecteJDBCDAO;
+    private ProiectDAO proiecteJDBCDAO;
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @RequestMapping(value = "/uploadBd", method = RequestMethod.POST)

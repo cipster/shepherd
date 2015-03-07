@@ -1,7 +1,7 @@
 package controllers;
 
+import model.dto.*;
 import model.dao.*;
-import model.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import java.util.Map;
 @RequestMapping(value = "/files")
 public class MainRestController {
     @Autowired
-    private ListaProiecteDAO listaProiecteJDBCDAO;
+    private ProiectDAO listaProiecteJDBCDAO;
     @Autowired
     private PropunereDAO propunereJDBCDAO;
     @Autowired
@@ -38,7 +38,7 @@ public class MainRestController {
     @ResponseBody
     String createProiect(@PathVariable int id) throws Exception {
 
-        ListaProiecte proiect = listaProiecteJDBCDAO.findByID(id);
+        Proiect proiect = listaProiecteJDBCDAO.findByID(id);
         String idPropunere = proiect.getIdPropunere();
         String idChestionar = proiect.getIdChestionarFinal();
         String idRaport = proiect.getIdRaportFinal();

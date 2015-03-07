@@ -1,8 +1,8 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dao.Loc;
-import model.interfaces.LocDAO;
+import model.dto.Loc;
+import model.dao.LocDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

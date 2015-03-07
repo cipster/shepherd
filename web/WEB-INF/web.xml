@@ -9,7 +9,7 @@
     <filter>
         <filter-name>headisget</filter-name>
         <filter-class>
-            filters.HttpHeadFilter
+            configuration.filters.HttpHeadFilter
         </filter-class>
     </filter>
 
@@ -30,7 +30,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>core.AppConfig</param-value>
+            <param-value>configuration.AppConfig</param-value>
         </init-param>
     </servlet>
 

@@ -2,7 +2,7 @@ package model.implementation;
 
 
 import com.mysql.jdbc.Statement;
-import model.dao.ChestionarFinal;
+import model.dto.ChestionarFinal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -12,7 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import model.interfaces.ChestionarFinalDAO;
+import model.dao.ChestionarFinalDAO;
 
 import javax.sql.DataSource;
 import java.sql.*;

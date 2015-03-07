@@ -1,8 +1,8 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dao.Persoana;
-import model.interfaces.PersoanaDAO;
+import model.dto.Persoana;
+import model.dao.PersoanaDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

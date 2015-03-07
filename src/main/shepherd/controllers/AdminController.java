@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import model.dao.Roles;
-import model.interfaces.RolesDAO;
+import model.dto.Role;
+import model.dao.RoleDAO;
 
 import java.util.List;
 
@@ -15,23 +15,23 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private RolesDAO rolesDAO;
+    private RoleDAO roleDAO;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String proiecte(ModelMap map) {
-        Roles admin = new Roles();
+        Role admin = new Role();
         admin.setIdRole(2);
-        Roles superuser = new Roles();
+        Role superuser = new Role();
         superuser.setIdRole(8);
-        List<Roles> rolesList = rolesDAO.getAll();
+        List<Role> roleList = roleDAO.getAll();
 
         String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
 
         if(role.compareTo("ROLE_ADMIN") != 0) {
-            rolesList.remove(admin);
-            rolesList.remove(superuser);
+            roleList.remove(admin);
+            roleList.remove(superuser);
         }
-        map.addAttribute("listaRoluri", rolesList);
+        map.addAttribute("listaRoluri", roleList);
         return "admin";
     }
 }

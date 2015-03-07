@@ -2,7 +2,7 @@ package model.implementation;
 
 
 import com.mysql.jdbc.Statement;
-import model.dao.User;
+import model.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,7 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import model.interfaces.UserDAO;
+import model.dao.UserDAO;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-<%@ page import="enums.StareArticol" %>
+<%@ page import="util.enums.StareArticol" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sform" uri="http://www.springframework.org/tags/form" %>
@@ -100,14 +100,14 @@
                 <div class="col-md-6">
                     <span>Stare</span>
                     <select data-placeholder="Alege o stare..." class="chosen-select form-control" id="stare-articol">
-                        <option value="<%=enums.StareArticol.STOC.getCode()%>"><%=enums.StareArticol.STOC.getLabel()%></option>
-                        <option value="<%=enums.StareArticol.RECUPERAT.getCode()%>"><%=enums.StareArticol.RECUPERAT.getLabel()%></option>
-                        <option value="<%=enums.StareArticol.IN_FOLOSINTA.getCode()%>"><%=enums.StareArticol.IN_FOLOSINTA.getLabel()%></option>
-                        <option value="<%=enums.StareArticol.TRANZIT.getCode()%>"><%=enums.StareArticol.TRANZIT.getLabel()%></option>
-                        <option value="<%=enums.StareArticol.DETERIORAT.getCode()%>"><%=enums.StareArticol.DETERIORAT.getLabel()%></option>
-                        <option value="<%=enums.StareArticol.SERVICE.getCode()%>"><%=enums.StareArticol.SERVICE.getLabel()%></option>
-                        <option value="<%=enums.StareArticol.DISPARUT.getCode()%>"><%=enums.StareArticol.DISPARUT.getLabel()%></option>
-                        <option value="<%=enums.StareArticol.CASAT.getCode()%>"><%=enums.StareArticol.CASAT.getLabel()%></option>
+                        <option value="<%=util.enums.StareArticol.STOC.getCode()%>"><%=util.enums.StareArticol.STOC.getLabel()%></option>
+                        <option value="<%=util.enums.StareArticol.RECUPERAT.getCode()%>"><%=util.enums.StareArticol.RECUPERAT.getLabel()%></option>
+                        <option value="<%=util.enums.StareArticol.IN_FOLOSINTA.getCode()%>"><%=util.enums.StareArticol.IN_FOLOSINTA.getLabel()%></option>
+                        <option value="<%=util.enums.StareArticol.TRANZIT.getCode()%>"><%=util.enums.StareArticol.TRANZIT.getLabel()%></option>
+                        <option value="<%=util.enums.StareArticol.DETERIORAT.getCode()%>"><%=util.enums.StareArticol.DETERIORAT.getLabel()%></option>
+                        <option value="<%=util.enums.StareArticol.SERVICE.getCode()%>"><%=util.enums.StareArticol.SERVICE.getLabel()%></option>
+                        <option value="<%=util.enums.StareArticol.DISPARUT.getCode()%>"><%=util.enums.StareArticol.DISPARUT.getLabel()%></option>
+                        <option value="<%=util.enums.StareArticol.CASAT.getCode()%>"><%=util.enums.StareArticol.CASAT.getLabel()%></option>
                     </select>
                 </div>
                 <div class="col-md-6">

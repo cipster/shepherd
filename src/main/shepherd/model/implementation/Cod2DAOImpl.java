@@ -1,8 +1,8 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dao.Cod2;
-import model.interfaces.Cod2DAO;
+import model.dto.Cod2;
+import model.dao.Cod2DAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

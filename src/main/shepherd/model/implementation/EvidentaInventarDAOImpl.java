@@ -1,8 +1,8 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dao.EvidentaInventar;
-import model.interfaces.EvidentaInventarDAO;
+import model.dto.EvidentaInventar;
+import model.dao.EvidentaInventarDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
