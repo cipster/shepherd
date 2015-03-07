@@ -1,4 +1,4 @@
-<%@ page import="projectManager.enums.StareArticol" %>
+<%@ page import="enums.StareArticol" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -944,7 +944,7 @@
                             "sExtends": "csv",
                             "sButtonClass": "btn btn-default",
                             "sButtonText": '<span class="fa fa-file-o">&nbsp;&nbsp;</span><span>CSV</span>',
-                            "mColumns": [0, 1, 2, 3, 4,5 ,6],
+                            "mColumns": [ 1, 2, 3, 4, 5 ,6, 7],
                             "oSelectorOpts": {
                                 page: 'current'
                             }
@@ -954,7 +954,7 @@
                             "sButtonClass": "btn btn-default",
                             "sCharSet": "utf16le",
                             "sButtonText": '<span class="fa fa-file-excel-o">&nbsp;&nbsp;</span><span>XLS</span>',
-                            "mColumns": [0, 1, 2, 3, 4,5 ,6],
+                            "mColumns": [1, 2, 3, 4,5 ,6, 7],
                             "oSelectorOpts": {
                                 page: 'current'
                             }
@@ -963,7 +963,7 @@
                             "sExtends": "pdf",
                             "sButtonClass": "btn btn-default",
                             "sButtonText": '<span class="fa fa-file-pdf-o">&nbsp;&nbsp;</span><span>PDF</span>',
-                            "mColumns": [0, 1, 2, 3, 4,5 ,6],
+                            "mColumns": [1, 2, 3, 4,5 ,6, 7],
                             "oSelectorOpts": {
                                 page: 'current'
                             }

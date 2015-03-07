@@ -24,7 +24,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
-    <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/chosen.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -112,6 +112,170 @@
     var unselect = -1;
     function formSubmit() {
         document.getElementById("logoutForm").submit();
+    }
+
+    function getAllCod1(){
+        var cod1 = $("#cod1-mod-select");
+        cod1.html("");
+
+        var idCod1;
+        var denumire1;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/cod1list',
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        idCod1 =  response[i].cod1;
+                        denumire1 = response[i].denumire1;
+                        cod1.append($('<option id="cod1-' + idCod1 + '" label="' + denumire1 +'">').val(idCod1).text(denumire1));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        cod1.val(unselect);
+        cod1.trigger("chosen:updated");
+    }
+
+    function getCod2ByCod1(idCod1){
+        var cod2 = $('#cod2-mod-select');
+        cod2.html('');
+        var idCod2;
+        var denumire2;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/cod2list/' + idCod1,
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        idCod2 =  response[i].cod2;
+                        denumire2 = response[i].denumire2;
+                        cod2.append($('<option id="cod2-' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        cod2.val(unselect);
+        cod2.trigger('chosen:updated');
+    }
+
+    function getArticole(){
+        var modArticoleSelect = $("#articol-mod-select");
+        modArticoleSelect.html("");
+
+        var idCod3;
+        var denumire3;
+        var stare;
+        var idLoc;
+        var dataAdaugare;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/articolelist',
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        idCod3 =  response[i].idCod3;
+                        denumire3 = response[i].denumire3;
+                        stare = response[i].stare;
+                        idLoc = response[i].idLoc;
+                        dataAdaugare = response[i].dataAdaugare;
+                        modArticoleSelect.append($('<option id="articol' + idCod3 + '" label="' + denumire3 + '" data-stare="' + stare + '"' +
+                        ' data-loc="' + idLoc + '" data-data="' + dataAdaugare +'">').val(idCod3).text(denumire3));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        modArticoleSelect.val(unselect);
+        modArticoleSelect.trigger("chosen:updated");
+    }
+
+    function getLocuri(){
+        var modLocSelect = $("#loc-mod-select");
+        var locSelect = $("#loc-articol");
+        modLocSelect.html("");
+        locSelect.html("");
+
+        var idLoc;
+        var denumireLoc;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/locurilist',
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        idLoc =  response[i].idLoc;
+                        denumireLoc = response[i].denumireLoc;
+                        modLocSelect.append($('<option id="loc' + idLoc + '" label="' + denumireLoc + '">').val(idLoc).text(denumireLoc));
+                        locSelect.append($('<option id="artloc' + idLoc + '" label="' + denumireLoc + '">').val(idLoc).text(denumireLoc));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        modLocSelect.val(unselect);
+        modLocSelect.trigger("chosen:updated");
+        locSelect.val(unselect);
+        locSelect.trigger("chosen:updated");
+    }
+
+    function getPersoane(){
+        var modPersoanaSelect = $("#persoana-mod-select");
+        var newPersoanaSelect = $("#persoana-select-new");
+        modPersoanaSelect.html("");
+        newPersoanaSelect.html("");
+
+        var idPersoana;
+        var nume;
+        var username;
+        var cnp;
+        var functie;
+        $.ajax({
+            type: 'get',
+            url: '${pageContext.request.contextPath}/api/persoanelist',
+            contentType: "application/json",
+            async: false,
+            success: function (response) {
+                if(typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        idPersoana =  response[i].idPersoana;
+                        nume = response[i].nume;
+                        username = response[i].username;
+                        cnp = response[i].cnp;
+                        functie = response[i].functie;
+                        modPersoanaSelect.append($('<option id="persoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +
+                        ' data-cnp="' + cnp + '" data-functie="' + functie +'">').val(idPersoana).text(nume));
+                        newPersoanaSelect.append($('<option id="artpersoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +
+                        ' data-cnp="' + cnp + '" data-functie="' + functie +'">').val(idPersoana).text(nume));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            }
+        });
+        modPersoanaSelect.val(unselect);
+        modPersoanaSelect.trigger("chosen:updated");
+        newPersoanaSelect.val(unselect);
+        newPersoanaSelect.trigger("chosen:updated");
     }
 
     function getClients(){
@@ -292,6 +456,14 @@
             allow_single_deselect: true
         });
 
+        $("#stare-articol").chosen({
+            width: "100%",
+            disable_search: true,
+            allow_single_deselect: true
+        });
+        $("#stare-articol").val(unselect);
+        $("#stare-articol").trigger('chosen:updated');
+
         $("#persoana-select").chosen({
             width: "100%",
             search_contains: true,
@@ -336,6 +508,33 @@
         });
         $("#persoana-select-new").val(unselect);
         $("#persoana-select-new").trigger('chosen:updated');
+
+        $("#loc-articol").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "Locul nu exista!",
+            allow_single_deselect: true
+        });
+        $("#loc-articol").val(unselect);
+        $("#loc-articol").trigger('chosen:updated');
+
+        $("#cod1-mod-select").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "Locul nu exista!",
+            allow_single_deselect: true
+        });
+        $("#cod1-mod-select").val(unselect);
+        $("#cod1-mod-select").trigger('chosen:updated');
+
+        $("#cod2-mod-select").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "Locul nu exista!",
+            allow_single_deselect: true
+        });
+        $("#cod2-mod-select").val(unselect);
+        $("#cod2-mod-select").trigger('chosen:updated');
 
         getClients();
         getProjects();
@@ -452,6 +651,7 @@
             $("#modClienti").css('display', "none");
             $("#sfat").css('display', "none");
             getUsers();
+            getPersoane();
             $('#btnChPass').attr('data-target','');
             $('#btnModUser').attr('data-target','');
 
@@ -471,7 +671,10 @@
             $("#modUsers").css('display', "none");
             $("#modClienti").css('display', "none");
             $("#sfat").css('display', "none");
-
+            getPersoane();
+            getLocuri();
+            getArticole();
+            getAllCod1();
 
         });
     });

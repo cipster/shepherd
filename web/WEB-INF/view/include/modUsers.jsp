@@ -85,9 +85,6 @@
                         <div class="col-md-8">
                             <span><spring:message code="MODUSER.PERSOANA" /></span>
                             <select data-placeholder="Alege o persoana..."  class="chosen-select" id="persoana-select-new">
-                                <c:forEach items="${listaPersoane}" var="persoane">
-                                    <option value="${persoane.idPersoana}" label="${persoane.nume}" data-username="${persoane.username}">${persoane.nume}</option>
-                                </c:forEach>
                             </select>
                         </div>
                         <div class="col-md-12"><br/></div>

@@ -2,6 +2,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="html" tagdir="/WEB-INF/tags" %>
 
 
 <!DOCTYPE html>
@@ -39,7 +40,6 @@
 <jsp:include page="include/navbar.jsp"></jsp:include>
 
 <div class="container" style="margin-bottom: 50px;">
-
     <!-- Main component -->
     <div class="jumbotron">
         <br/>
@@ -1150,30 +1150,19 @@
         });
 
         // Add event listener for opening and closing details
-        $('#tabelProiecte tbody').on('dblclick', 'tr', function () {
-            var tr = $(this).closest('tr');
-            var row = table.row(tr);
-            if (!$(this).hasClass('copil')) {
-                if (row.child.isShown()) {
-                    // This row is already open - close it
-                    row.child.hide();
-                    tr.removeClass('shown');
-                }
-                else {
-                    // Open this row
-                    row.child(format(tr.prop("id"))).show();
-                    tr.next().addClass('copil');
-                    $("#copil").children().addClass('copil');
-                    tr.addClass('shown');
-                }
-            }
-        });
+        $('#tabelProiecte tbody').on('dblclick', 'tr', function(){ showChildRow($(this))});
 
-        $('#tabelProiecte tbody').on('click', 'td.details-control', function () {
-            var tr = $(this).closest('tr');
+        $('#tabelProiecte tbody').on('click', 'td.details-control', function(){ showChildRow($(this))});
+
+        function showChildRow(elem) {
+            var tr = elem.closest('tr');
             var row = table.row( tr );
-
-            if (!$(this).hasClass('copil')) {
+            var id;
+            if (!elem.hasClass('copil')) {
+                if (event.button == 0) {
+                    tr.addClass('selected');
+                    tr.siblings().removeClass('selected');
+                }
                 if (row.child.isShown()) {
                     // This row is already open - close it
                     row.child.hide();
@@ -1185,56 +1174,49 @@
                     tr.next().addClass('copil');
                     $("#copil").children().addClass('copil');
                     tr.addClass('shown');
-                }
-            }
-        } );
-
-        $('#tabelProiecte tbody').on('mousedown', 'tr', function (e) {
-            var tr = $(this).closest('tr');
-            if (!tr.hasClass('copil')) {
-                if ($(this).hasClass('selected')) {
-                    var id = $(this).closest('tr').attr('id');
+                    id = elem.closest('tr').attr('id');
                     $("input[name='idProiect']").val(id);
                     $("#idMaster").val(id);
-                } else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                    var id = $(this).closest('tr').attr('id');
-                    $("input[name='idProiect']").val(id);
-                }
-                if (e.button == 2) {
-                    $("#rcmenu").css('left', e.pageX + 5);
-                    $("#rcmenu").css('top', e.pageY + 5);
-                    $("#rcmenu").fadeIn(80);
                 }
             }
-        });
+        }
+
 
         $('#tabelProiecte tbody').on('mousedown', 'tr', function (e) {
-            var elem = $(event.target).closest("a");
-            if (elem.hasClass('download')) {
+            var aElem = $(event.target).closest("a");
+            if (aElem.hasClass('download')) {
                 if (e.button == 2) {
-                    $("#download").val(elem.attr('href'));
-                    if(elem.hasClass('am')) {
-                        $("#id").val(elem.data('ida'));
+                    $("#download").val(aElem.attr('href'));
+                    if(aElem.hasClass('am')) {
+                        $("#id").val(aElem.data('ida'));
                         $("#category").val("am");
-                    } else if(elem.hasClass('pr')) {
-                        $("#id").val(elem.data('idp'));
+                    } else if(aElem.hasClass('pr')) {
+                        $("#id").val(aElem.data('idp'));
                         $("#category").val("p");
-                    } else if(elem.hasClass('ch')) {
-                        $("#id").val(elem.data('idc'));
+                    } else if(aElem.hasClass('ch')) {
+                        $("#id").val(aElem.data('idc'));
                         $("#category").val("c");
-                    } else if(elem.hasClass('ra')) {
-                        $("#id").val(elem.data('idr'));
+                    } else if(aElem.hasClass('ra')) {
+                        $("#id").val(aElem.data('idr'));
                         $("#category").val("r");
                     } else {
-                        $("#id").val(elem.data('idb'));
+                        $("#id").val(aElem.data('idb'));
                         $("#category").val("bd");
                     }
-                    $('#fileName').val(elem.text());
+                    $('#fileName').val(aElem.text());
                     $("#childrcmenu").css('left', e.pageX + 5);
                     $("#childrcmenu").css('top', e.pageY + 5);
                     $("#childrcmenu").fadeIn(80);
+                }
+            } else if (!$(this).hasClass('copil')) {
+                if (event.button == 0) {
+                    $(this).addClass('selected');
+                    $(this).siblings().removeClass('selected');
+                }
+                if (event.button == 2) {
+                    $("#rcmenu").css('left', e.pageX + 5);
+                    $("#rcmenu").css('top', e.pageY + 5);
+                    $("#rcmenu").fadeIn(80);
                 }
             }
         });

@@ -1,3 +1,4 @@
+<%@ page import="enums.StareArticol" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sform" uri="http://www.springframework.org/tags/form" %>
@@ -23,12 +24,7 @@
                 <div class="col-md-6">
                     <span><spring:message code="MODUSER.PERSOANA" /></span>
                     <select data-placeholder="Alege o persoana..."  class="chosen-select" id="persoana-mod-select">
-                        <c:forEach items="${listaPersoane}" var="persoane">
-                            <option id="persoana${persoane.idPersoana}" value="${persoane.idPersoana}" label="${persoane.nume}"
-                                    data-username="${persoane.username}"
-                                    data-cnp="${persoane.cnp}"
-                                    data-functie="${persoane.functie}">${persoane.nume}</option>
-                        </c:forEach>
+
                     </select>
                 </div>
 
@@ -64,12 +60,7 @@
                 </div>
                 <div class="col-md-6">
                     <span><spring:message code="MODUSER.PERSOANA" /></span>
-                    <select data-placeholder="Alege un loc..."  class="chosen-select" id="loc-mod-select">
-                        <c:forEach items="${listaLocuri}" var="locuri">
-                            <option id="loc${locuri.idLoc}" value="${locuri.idLoc}" label="${locuri.denumireLoc}"
-                                    >${locuri.denumireLoc}</option>
-                        </c:forEach>
-                    </select>
+                    <select data-placeholder="Alege un loc..."  class="chosen-select" id="loc-mod-select"> </select>
                 </div>
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-6">
@@ -94,14 +85,11 @@
                 </div>
                 <div class="col-md-6">
                     <span><spring:message code="MODUSER.ARTICOL" /></span>
-                    <select data-placeholder="Alege un articol..."  class="chosen-select" id="articol-mod-select">
-                        <c:forEach items="${listaArticole}" var="articole">
-                            <option id="articol${articole.idCod3}" value="${articole.idCod3}" label="${articole.denumire3}"
-                                    data-stare="${articole.stare}"
-                                    data-loc="${articole.idLoc}"
-                                    data-data="${articole.dataAdaugare}">${articole.denumire3}</option>
-                        </c:forEach>
-                    </select>
+                    <select data-placeholder="Alege un articol..." class="chosen-select form-control" id="articol-mod-select"> </select>
+                </div>
+                <div class="col-md-6">
+                    <span>Dat&#259; ad&#259;ugare</span>
+                    <input disabled type="text" class="form-control" id="data-articol">
                 </div>
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-6">
@@ -111,17 +99,22 @@
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-6">
                     <span>Stare</span>
-                    <input type="text" class="form-control" id="stare-articol">
+                    <select data-placeholder="Alege o stare..." class="chosen-select form-control" id="stare-articol">
+                        <option value="<%=enums.StareArticol.STOC.getCode()%>"><%=enums.StareArticol.STOC.getLabel()%></option>
+                        <option value="<%=enums.StareArticol.RECUPERAT.getCode()%>"><%=enums.StareArticol.RECUPERAT.getLabel()%></option>
+                        <option value="<%=enums.StareArticol.IN_FOLOSINTA.getCode()%>"><%=enums.StareArticol.IN_FOLOSINTA.getLabel()%></option>
+                        <option value="<%=enums.StareArticol.TRANZIT.getCode()%>"><%=enums.StareArticol.TRANZIT.getLabel()%></option>
+                        <option value="<%=enums.StareArticol.DETERIORAT.getCode()%>"><%=enums.StareArticol.DETERIORAT.getLabel()%></option>
+                        <option value="<%=enums.StareArticol.SERVICE.getCode()%>"><%=enums.StareArticol.SERVICE.getLabel()%></option>
+                        <option value="<%=enums.StareArticol.DISPARUT.getCode()%>"><%=enums.StareArticol.DISPARUT.getLabel()%></option>
+                        <option value="<%=enums.StareArticol.CASAT.getCode()%>"><%=enums.StareArticol.CASAT.getLabel()%></option>
+                    </select>
                 </div>
-
                 <div class="col-md-6">
                     <span>Loc</span>
-                    <input type="text" class="form-control" id="loc-articol">
+                    <select data-placeholder="Alege un loc..." class="form-control" id="loc-articol"></select>
                 </div>
-                <div class="col-md-6">
-                    <span>Dat&#259; ad&#259;ugare</span>
-                    <input type="text" class="form-control" id="data-articol">
-                </div>
+
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-12">
                     <button type="button" class="btn btn-primary" id="btnModArticol" data-toggle="modal" onclick="atribuieArticolMod()">
@@ -131,8 +124,51 @@
                         <span class="fa fa-times">&nbsp;</span><spring:message code="MODART.DELART" />
                     </button>
                 </div>
-            </form></div>
-        <div role="tabpanel" class="tab-pane fade" id="catarticole">...</div>
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="catarticole">
+            <div class="well-sm">
+                <p>Modific&#259; categorii articole</p>
+            </div>
+            <div class="col-md-5 jumbotron">
+                <div class="col-md-12">
+                    <span>Cod1</span>
+                    <select data-placeholder="Alege un articol..." class="chosen-select form-control" id="cod1-mod-select"> </select>
+                </div>
+
+                <div class="col-md-12"><br/></div>
+                <div class="col-md-12">
+                    <span>Denumire</span>
+                    <input type="text" class="form-control" id="nume-cod1">
+                </div>
+                <div class="col-md-12"><br/></div>
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" id="btnModCod1" data-toggle="modal" onclick="atribuieArticolMod()">
+                        <span class="fa fa-edit">&nbsp;</span>Modifică </button>
+                    <button type="button" class="btn btn-danger" id="btnDelCod1" data-toggle="modal" onclick="atribuieArticolMod()">
+                        <span class="fa fa-times">&nbsp;</span>&#x218;terge</button>
+                </div>
+            </div>
+            <div class="col-md-5 col-md-offset-1 jumbotron">
+                <div class="col-md-12 ">
+                    <span>Cod2</span>
+                    <select data-placeholder="Alege un articol..." class="chosen-select form-control" id="cod2-mod-select"> </select>
+                </div>
+                <div class="col-md-12"><br/></div>
+                <div class="col-md-12">
+                    <span>Denumire</span>
+                    <input type="text" class="form-control" id="nume-cod2">
+                </div>
+                <div class="col-md-12"><br/></div>
+
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" id="btnModCod2" data-toggle="modal" onclick="atribuieArticolMod()">
+                        <span class="fa fa-edit">&nbsp;</span>Modifică</button>
+                    <button type="button" class="btn btn-danger" id="btnDelCod2" data-toggle="modal" onclick="atribuieArticolMod()">
+                        <span class="fa fa-times">&nbsp;</span>&#x218;terge</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -163,7 +199,9 @@
             if (articol) {
                 $('#nume-articol').val(articol.getAttribute("label"));
                 $('#stare-articol').val(articol.getAttribute("data-stare"));
+                $('#stare-articol').trigger('chosen:updated');
                 $('#loc-articol').val(articol.getAttribute("data-loc"));
+                $('#loc-articol').trigger('chosen:updated');
                 $('#data-articol').val(articol.getAttribute("data-data"));
             } else {
                 $('#nume-articol').val('');
@@ -180,6 +218,27 @@
                 $('#nume-loc').val(loc.getAttribute("label"));
             } else {
                 $('#nume-loc').val('');
+            }
+        });
+
+        $('#cod1-mod-select').on('change', function(){
+            var id = 'cod1-' + $(this).val();
+            getCod2ByCod1($(this).val());
+            var cod1 = document.getElementById(id);
+            if (cod1) {
+                $('#nume-cod1').val(cod1.getAttribute("label"));
+            } else {
+                $('#nume-cod1').val('');
+            }
+        });
+
+        $('#cod2-mod-select').on('change', function(){
+            var id = 'cod2-' + $(this).val();
+            var cod2 = document.getElementById(id);
+            if (cod2) {
+                $('#nume-cod2').val(cod2.getAttribute("label"));
+            } else {
+                $('#nume-cod2').val('');
             }
         });
     });
