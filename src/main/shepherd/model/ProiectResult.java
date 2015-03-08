@@ -1,0 +1,36 @@
+package model;
+
+import org.springframework.http.HttpStatus;
+
+/**
+ * Created by Ciprian on 3/8/2015.
+ * Project Raindrop
+ */
+public class ProiectResult {
+    private int httpStatus;
+    private String message;
+
+    public ProiectResult() {
+    }
+
+    public ProiectResult(int httpStatus, String message) {
+        this.httpStatus = httpStatus;
+        this.message = message;
+    }
+
+    public int getHttpStatus() {
+        return httpStatus;
+    }
+
+    public void setHttpStatus(int httpStatus) {
+        this.httpStatus = httpStatus;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}

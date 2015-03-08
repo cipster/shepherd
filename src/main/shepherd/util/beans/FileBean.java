@@ -1,4 +1,4 @@
-package util.bean;
+package util.beans;
 
 
 import java.sql.Timestamp;

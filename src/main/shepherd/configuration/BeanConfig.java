@@ -5,6 +5,8 @@ import model.dao.*;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import services.ProiectService;
+import services.ProiectServiceImpl;
 
 @Configuration
 public class BeanConfig {
@@ -13,7 +15,7 @@ public class BeanConfig {
     private BasicDataSource dataSource;
 
     @Bean
-    public ProiectDAO listaProiecteDAO() {
+    public ProiectDAO proiectDAO() {
         return new ProiectDAOImpl(dataSource);
     }
 
@@ -33,8 +35,8 @@ public class BeanConfig {
     }
 
     @Bean
-    public ClientDAO clientiDAO() {
-        return new ClientiDAOImpl(dataSource);
+    public ClientDAO clientDAO() {
+        return new ClientDAOImpl(dataSource);
     }
 
     @Bean
@@ -43,7 +45,7 @@ public class BeanConfig {
     }
 
     @Bean
-    public RaportFinalDAOImpl raportFinalJDBCDAO() {
+    public RaportFinalDAOImpl raportFinalDAO() {
         return new RaportFinalDAOImpl(dataSource);
     }
 
@@ -53,12 +55,12 @@ public class BeanConfig {
     }
 
     @Bean
-    public UserRoleDAO userRolesDAO() {
+    public UserRoleDAO userRoleDAO() {
         return new UserRoleDAOImpl(dataSource);
     }
 
     @Bean
-    public RoleDAO rolesJDBCDAO() {
+    public RoleDAO roleDAO() {
         return new RoleDAOImpl(dataSource);
     }
 
@@ -93,7 +95,12 @@ public class BeanConfig {
     }
 
     @Bean
-    public ArticolDAO articoleDAO() {
+    public ArticolDAO articolDAO() {
         return new ArticolDAOImpl(dataSource);
+    }
+
+    @Bean
+    public ProiectService proiectService(){
+        return new ProiectServiceImpl();
     }
 }

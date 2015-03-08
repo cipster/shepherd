@@ -115,10 +115,8 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
+<script src="/js/common.js"></script>
 <script>
-    function formSubmit() {
-        document.getElementById("logoutForm").submit();
-    }
 
     $(document).ready(function() {
 

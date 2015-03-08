@@ -210,6 +210,7 @@
 <script src="/js/datatables.bootstrap.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
 <script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
+<script src="/js/common.js"></script>
 <script type="text/javascript">
     var table;
     var appLangCode = getUrlParameter("lang");
@@ -230,22 +231,6 @@
             break;
     }
 
-    function hideModal(){
-        $('.modal.in').modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop').remove();
-    }
-
-    function getUrlParameter(sParam) {
-        var sPageURL = window.location.search.substring(1);
-        var sURLVariables = sPageURL.split('&');
-        for (var i=0; i < sURLVariables.length; i++){
-            var sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] == sParam) {
-                return sParameterName[1];
-            }
-        }
-    }
     function deleteFile(){
         var category = $("#category").val();
         switch(category) {
@@ -322,10 +307,6 @@
         }
     }
 
-    function formSubmit() {
-        document.getElementById("logoutForm").submit();
-    }
-
     $('input[type=file]').bootstrapFileInput();
     $('.file-inputs').bootstrapFileInput();
 
@@ -390,13 +371,7 @@
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea baza de date!  ";
                 hideModal();
-                $("#alert").notify({
-                    message: { text: respContent},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
-                }).show();
+                //ToDo: show notif here
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);

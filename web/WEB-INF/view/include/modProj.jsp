@@ -4,68 +4,60 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<h3><spring:message code="MODPROJ.TITLE" /></h3>
-<form method="post" id="modifica">
-    <div class="input-group col-md-12">
-        <div class="input-group col-md-12">
-            <div class="col-md-12"><br/></div>
-
-            <div class="col-md-12">
-                <span><spring:message code="MODPROJ.ALEGE" /></span>
-                <select id="idProiectSelect" data-placeholder="Alege un proiect..." class="chosen-select"> </select>
-            </div>
-            <div class="col-md-12"><br/></div>
-            <div class="col-md-12">
-
-                <span><spring:message code="FORM.NUME" /></span>
-                <input id="numeProiectInput" class="form-control input-sm"
-                       required="required" />
-            </div>
-            <div class="col-md-12"><br/></div>
-            <div class="col-md-6">
-                <span><spring:message code="FORM.NR" /></span>
-                <input id="nrProiectInput" class="form-control input-sm"/>
-            </div>
-            <div class="col-md-6">
-                <span><spring:message code="FORM.AN" /></span>
-                <select id="anSelInput" data-placeholder="Alege un an..." class="chosen-select">
-                    <c:forEach var="ani" begin="2008" end="2030">
-                        <option value="${ani}" label="${ani}">${ani}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="col-md-12"><br/></div>
-            <div class="col-md-12">
-                <span><spring:message code="FORM.CLIENT" /></span>
-                <select id="idClientInput" data-placeholder="Alege un client..." class="chosen-select">
-
-                </select>
-            </div>
-            <div class="col-md-12"><br/></div>
-            <div class="col-md-12">
-                <button type="button" class="btn btn-primary col-md-2" id="btnMod" data-toggle="modal" onclick="atribuieNumeMod();">
-                    <spring:message code="DIALOG.MOD" />
-                </button>
-                <div id="updatedProj"></div>
-            </div>
+<div class="container">
+    <div class="page-header">
+        <h2><spring:message code="MODPROJ.TITLE"/></h2>
+    </div>
+    <div class="form-group col-md-12">
+        <label for="idProiectSelect"><spring:message code="MODPROJ.ALEGE"/></label>
+        <select id="idProiectSelect" data-placeholder="Alege un proiect..." class="chosen-select"> </select>
+    </div>
+    <div class="form-group col-md-12">
+        <label for="numeProiectInput"><spring:message code="FORM.NUME"/></label>
+        <input id="numeProiectInput" class="form-control input-sm"/>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="nrProiectInput"><spring:message code="FORM.NR"/></label>
+        <input id="nrProiectInput" class="form-control input-sm"/>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="anSelInput"><spring:message code="FORM.AN"/></label>
+        <select id="anSelInput" data-placeholder="Alege un an..." class="chosen-select form-control">
+            <c:forEach var="ani" begin="2008" end="2030">
+                <option value="${ani}" label="${ani}">${ani}</option>
+            </c:forEach>
+        </select>
+    </div>
+    <div class="form-group col-md-12">
+        <label for="idClientInput"><spring:message code="FORM.CLIENT"/></label>
+        <select id="idClientInput" data-placeholder="Alege un client..." class="chosen-select form-control"> </select>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10">
+            <button type="button" class="btn btn-primary" id="btnMod" data-toggle="modal" onclick="atribuieNumeMod();">
+                <span class="fa fa-edit">&nbsp;</span><spring:message code="DIALOG.MOD"/>
+            </button>
         </div>
     </div>
-</form>
+</div>
 
 <div class="modal fade" id="estiSigurProiect">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="MODPROJ.TITLE" /></h4>
+                <h4 class="modal-title"><spring:message code="MODPROJ.TITLE"/></h4>
             </div>
             <div class="modal-body">
-                <h3><spring:message code="DIALOG.ESTISIGURMOD" /> <span id="projNumeMod" style="color: #149bdf"></span>?</h3>
+                <h3><spring:message code="DIALOG.ESTISIGURMOD"/> <span id="projNumeMod" style="color: #149bdf"></span>?</h3>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="modProjAxajCall();"><spring:message code="DIALOG.MOD" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="NU" /></button>
-
+                <button type="button" class="btn btn-primary" onclick="modifyProiect();">
+                    <span class="fa fa-edit">&nbsp;</span>
+                    Da
+                </button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -80,13 +72,13 @@
 <script type="text/javascript">
 
     function atribuieNumeMod() {
-        if($("#idProiectSelect").val() <= 0){
+        if ($("#idProiectSelect").val() <= ZERO) {
             alert("Alege un proiect din lista!");
             return;
         }
-        if ($("#nrProiectInput").val() === '' || $("#anSelInput").val() <= 0 || $("#numeProiectInput").val() === '' || $("#idClientInput").val() <= 0) {
+        if ($("#nrProiectInput").val() === '' || $("#anSelInput").val() <= ZERO || $("#numeProiectInput").val() === '' || $("#idClientInput").val() <= ZERO) {
             hideModal();
-            alert("Asigurati-va ca ati completat toate campurile!");
+            alert("Asigurati-vă că ati completat toate cmpurile!");
             return;
         }
 
@@ -94,72 +86,70 @@
         $('#btnMod').attr('data-target', '#estiSigurProiect');
     }
 
-    $(document).ready(function(){
-        $("#idProiectSelect").on('change', function(evt, params) {
+    function modifyProiect() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var nrProiect = $("#nrProiectInput").val();
+        var anInput = $("#anSelInput").val();
+        var numeProiect = $("#numeProiectInput").val();
+        var idClient = $("#idClientInput").val();
+        var idProiect = $("#idProiectSelect").val();
+
+        if (idProiect <= ZERO) {
+            hideModal();
+            alert("Alege un proiect din lista!");
+            return;
+        }
+        var data = {
+            "nrProiect": nrProiect,
+            "an": anInput,
+            "numeProiect": numeProiect,
+            "idClient": idClient,
+            "idProiect": idProiect
+        };
+        $.ajax({
+            type: 'post',
+            url: '${pageContext.request.contextPath}/apis/v1/admin/project/modifyproject',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                if (response && response.httpStatus == 500) {
+                    showNotification(response.message, DANGER);
+                    return;
+                }
+                $('#nrProiectInput').val(EMPTY);
+                $('#numeProiectInput').val(EMPTY);
+                chosenUnselect("#idProiectSelect");
+                chosenUnselect('#anSelInput');
+                chosenUnselect("#idClientInput");
+                hideModal();
+                showNotification(response.message);
+                $('#modifica').click();
+            },
+            error: function (xhr, e) {
+                alert("Eroare la conexiune!" + e);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#idProiectSelect").on('change', function (evt, params) {
             var id = $("#idProiectSelect").val();
             var proiect = document.getElementById(id);
             $("#numeProiectInput").val(proiect.getAttribute("data-nume"));
             $("#nrProiectInput").val(proiect.getAttribute("data-nr"));
             $("#anSelInput").val(proiect.getAttribute("data-an"));
-            $("#anSelInput").trigger('chosen:updated');
+            $("#anSelInput").trigger(chosenUpdated);
             $("#idClientInput").val(proiect.getAttribute("data-idClient"));
-            $("#idClientInput").trigger('chosen:updated');
+            $("#idClientInput").trigger(chosenUpdated);
         });
     });
-
-    function modProjAxajCall(type,url,contentType,data,async) {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        if ($("#idProiectSelect").val() == 0) {
-            $('.modal.in').modal('hide');
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
-            alert("Alege un proiect din lista!");
-            return;
-        }
-
-
-        $.ajax({
-            type: 'post',
-            url: '${pageContext.request.contextPath}/projAdmin/modificaProj',
-            beforeSend: function(xhr){
-                xhr.setRequestHeader(header, token);
-            },
-            data: 'nrProiect=' + $("#nrProiectInput").val() + "&an=" + $("#anSelInput").val() + "&numeProiect=" + $("#numeProiectInput").val() + "&idClient=" + $("#idClientInput").val() + "&idProiect=" + $("#idProiectSelect").val(),
-            cache: false,
-
-            success: function (response) {
-                if(response && response == '-1'){
-                    alert('Eroare la salvare!');
-                    return;
-                }
-                $("#updatedProj").html("");
-                $("#idProiectSelect").val("0");
-                $('#nrProiectInput').val("");
-                $('#anSelInput').val("0");
-                $('#numeProiectInput').val("");
-                $("#idClientInput").val("0");
-
-                var respContent = "";
-                var project = JSON.parse(response);
-                respContent += "<label class='label-success'>Proiectul ";
-                respContent += project.nrProiect + " / ";
-                respContent += project.numeProiect +
-                        " a fost modificat cu succes!</label>";
-
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $("#updatedProj").html(respContent);
-                $("#updatedProj").css('display', 'block');
-                $("#updatedProj").fadeOut(6000);
-                $('#modifica').click();
-            },
-            error: function (xhr,e) {
-                alert("Eroare la conexiune!" + e);
-            }
-        });
-    }
 
 </script>
 

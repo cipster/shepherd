@@ -362,7 +362,9 @@
 <script src="/js/chosen.jquery.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
 <script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
+<script src="/js/common.js"></script>
 <script type="text/javascript">
+
     var table;
     var idArticol;
 
@@ -654,32 +656,6 @@
         return persoana;
     }
 
-    function validCNP( p_cnp ) {
-        var i=0 , year=0 , hashResult=0 , cnp=[] , hashTable=[2,7,9,1,4,6,3,5,8,2,7,9];
-        if( p_cnp.length !== 13 ) { return false; }
-        for( i=0 ; i<13 ; i++ ) {
-            cnp[i] = parseInt( p_cnp.charAt(i) , 10 );
-            if( isNaN( cnp[i] ) ) { return false; }
-            if( i < 12 ) { hashResult = hashResult + ( cnp[i] * hashTable[i] ); }
-        }
-        hashResult = hashResult % 11;
-        if( hashResult === 10 ) { hashResult = 1; }
-        year = (cnp[1]*10)+cnp[2];
-        switch( cnp[0] ) {
-            case 1  : case 2 : { year += 1900; } break;
-            case 3  : case 4 : { year += 1800; } break;
-            case 5  : case 6 : { year += 2000; } break;
-            case 7  : case 8 : case 9 : { year += 2000; if( year > ( parseInt( new Date().getYear() , 10 ) - 14 ) ) { year -= 100; } } break;
-            default : { return false; }
-        }
-        if( year < 1800 || year > 2099 ) { return false; }
-        return ( cnp[12] === hashResult );
-    }
-
-    function formSubmit() {
-        document.getElementById("logoutForm").submit();
-    }
-
     function generateBarcode(barcode){
         $.ajax({
             type: 'get',
@@ -803,42 +779,6 @@
         $("#ieseloc").trigger("chosen:updated");
         $("#intraloc").val(-1);
         $("#intraloc").trigger("chosen:updated");
-    }
-
-    //nu se mai foloseste
-    function drawDisponibil(table){
-        tableData = table.rows().nodes();
-        for (var i = 0; i < tableData.length; i++) {
-            var td = $(tableData[i]).find("td:eq(7)");
-            td.css('text-align','center');
-            var bul = td.text();
-            switch (bul) {
-                case '1':
-                    td.html('<div class="btn btn-success"><span class="fa fa-cubes fa-fw"></span></div>');
-                    break;
-                case '2':
-                    td.html('<div class="btn btn-success"><span class="fa fa-recycle fa-fw"></span></div>');
-                    break;
-                case '3':
-                    td.html('<div class="btn btn-primary"><span class="fa fa-thumb-tack fa-fw"></span></div>');
-                    break;
-                case '4':
-                    td.html('<div class="btn btn-warning"><span class="fa fa-truck fa-fw"></span></div>');
-                    break;
-                case '5':
-                    td.html('<div class="btn btn-danger"><span class="fa fa-bug fa-fw"></span></div>');
-                    break;
-                case '6':
-                    td.html('<div class="btn btn-danger"><span class="fa fa-wrench fa-fw"></span></div>');
-                    break;
-                case '7':
-                    td.html('<div class="btn btn-danger"><span class="fa fa-exclamation-triangle fa-fw"></span></div>');
-                    break;
-                case '8':
-                    td.html('<div class="btn btn-danger"><span class="fa fa-trash fa-fw"></span></div>');
-                    break;
-            }
-        }
     }
 
     $(document).ready(function () {
@@ -1620,10 +1560,10 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     $('#closeintra').click();
-                    intraloc.val(-1);
-                    intraloc.trigger('chosen:updated');
-                    $('#detaliiintra').val('');
-                    $('#intrabarcodeinput').val('');
+                    intraloc.val(UNSELECT);
+                    intraloc.trigger(chosenUpdated);
+                    $('#detaliiintra').val(EMPTY);
+                    $('#intrabarcodeinput').val(EMPTY);
                     $('#detaliiintra-group').addClass('ascuns');
                     $('#nextintra').removeClass('pas2');
                     $('#nextintra').addClass('pas1');
@@ -1634,15 +1574,9 @@
                     $('#intra-articole').addClass('ascuns');
                     $('#intrascan').show();
 
-                    $('#intraarticolecautate').html('');
+                    $('#intraarticolecautate').html(EMPTY);
                     table.ajax.reload();
-                    $("#alert").notify({
-                        message: { text: 'Recuperare cu succes!' },
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
-                    }).show();
+                    showNotification('Recuperare cu succes!');
                 },
                 error: function(err){
                     $("#alert").notify({

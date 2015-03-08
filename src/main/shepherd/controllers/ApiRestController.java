@@ -62,7 +62,6 @@ public class ApiRestController {
     private UserRoleDAO userRoleDAO;
     @Autowired
     private RoleDAO roleDAO;
-    @Qualifier("cod1DAO")
     @Autowired
     private Cod1DAO cod1DAO;
 

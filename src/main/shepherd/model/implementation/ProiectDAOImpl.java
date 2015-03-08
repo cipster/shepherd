@@ -72,8 +72,8 @@ public class ProiectDAOImpl extends JdbcDaoSupport implements ProiectDAO {
     }
 
     @Override
-    @Transactional
-    public Integer create(final Proiect entity) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public Integer create(final Proiect entity)  {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

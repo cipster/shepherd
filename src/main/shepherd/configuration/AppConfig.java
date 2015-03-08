@@ -3,26 +3,32 @@ package configuration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.accept.ContentNegotiationManagerFactoryBean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import configuration.security.WebSecurityConfig;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.util.Arrays;
 import java.util.List;
 
 @EnableWebMvc
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled=true)
-@ComponentScan(basePackages = {"controllers"})
+@ComponentScan(basePackages = {"controllers","services"})
 @Import({WebSecurityConfig.class, BeanConfig.class, DatasourceConfig.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
 
@@ -70,6 +76,16 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         // # -1 : never reload, 0 always reload
         messageSource.setCacheSeconds(0);
         return messageSource;
+    }
+
+    @Bean
+    public ContentNegotiatingViewResolver contentViewResolver() throws Exception {
+        ContentNegotiatingViewResolver contentViewResolver = new ContentNegotiatingViewResolver();
+        ContentNegotiationManagerFactoryBean contentNegotiationManager = new ContentNegotiationManagerFactoryBean();
+        contentNegotiationManager.addMediaType("json", MediaType.APPLICATION_JSON);
+        contentViewResolver.setContentNegotiationManager(contentNegotiationManager.getObject());
+        contentViewResolver.setDefaultViews(Arrays.<View>asList(new MappingJackson2JsonView()));
+        return contentViewResolver;
     }
 
     @Bean

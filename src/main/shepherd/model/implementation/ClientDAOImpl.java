@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ClientiDAOImpl extends JdbcDaoSupport implements ClientDAO {
+public class ClientDAOImpl extends JdbcDaoSupport implements ClientDAO {
 
 
     private static final String CLIENTI = "SELECT * FROM clienti ";
@@ -42,7 +42,7 @@ public class ClientiDAOImpl extends JdbcDaoSupport implements ClientDAO {
     };
 
     @Autowired
-    public ClientiDAOImpl(DataSource driverManagerDataSource) {
+    public ClientDAOImpl(DataSource driverManagerDataSource) {
         setDataSource(driverManagerDataSource);
     }
 

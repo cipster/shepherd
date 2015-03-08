@@ -44,7 +44,7 @@
 <body>
 <jsp:include page="include/navbar.jsp"></jsp:include>
 <div class="container">
-    <div class="jumbotron col-md-12" style="min-height: 500px;">
+    <div class="jumbotron col-md-12" style="min-height: 550px;">
         <div class="list-group col-md-3">
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <a id="adauga" class="list-group-item">
@@ -108,11 +108,8 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/chosen.jquery.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
+<script src="/js/common.js"></script>
 <script type="text/javascript">
-    var unselect = -1;
-    function formSubmit() {
-        document.getElementById("logoutForm").submit();
-    }
 
     function getAllCod1(){
         var cod1 = $("#cod1-mod-select");
@@ -138,7 +135,7 @@
                 alert("Connection error!");
             }
         });
-        cod1.val(unselect);
+        cod1.val(UNSELECT);
         cod1.trigger("chosen:updated");
     }
 
@@ -165,7 +162,7 @@
                 alert("Connection error!");
             }
         });
-        cod2.val(unselect);
+        cod2.val(UNSELECT);
         cod2.trigger('chosen:updated');
     }
 
@@ -200,7 +197,7 @@
                 alert("Connection error!");
             }
         });
-        modArticoleSelect.val(unselect);
+        modArticoleSelect.val(UNSELECT);
         modArticoleSelect.trigger("chosen:updated");
     }
 
@@ -231,9 +228,9 @@
                 alert("Connection error!");
             }
         });
-        modLocSelect.val(unselect);
+        modLocSelect.val(UNSELECT);
         modLocSelect.trigger("chosen:updated");
-        locSelect.val(unselect);
+        locSelect.val(UNSELECT);
         locSelect.trigger("chosen:updated");
     }
 
@@ -275,9 +272,9 @@
                 alert("Connection error!");
             }
         });
-        modPersoanaSelect.val(unselect);
+        modPersoanaSelect.val(UNSELECT);
         modPersoanaSelect.trigger("chosen:updated");
-        newPersoanaSelect.val(unselect);
+        newPersoanaSelect.val(UNSELECT);
         newPersoanaSelect.trigger("chosen:updated");
     }
 
@@ -303,11 +300,11 @@
                 alert("Connection error!");
             }
         });
-        $("#clientselect").val(unselect);
+        $("#clientselect").val(UNSELECT);
         $("#clientselect").trigger("chosen:updated");
-        $("#idClientInput").val(unselect);
+        $("#idClientInput").val(UNSELECT);
         $("#idClientInput").trigger("chosen:updated");
-        $("#idClient").val(unselect);
+        $("#idClient").val(UNSELECT);
         $("#idClient").trigger("chosen:updated");
 
     }
@@ -351,7 +348,7 @@
 
 
 
-        idUserSelect.val(unselect);
+        idUserSelect.val(UNSELECT);
         idUserSelect.trigger("chosen:updated");
     }
 
@@ -383,9 +380,9 @@
                 alert("Connection error!");
             }
         });
-        idProiectSelect.val(unselect);
+        idProiectSelect.val(UNSELECT);
         idProiectSelect.trigger("chosen:updated");
-        idProiect.val(unselect);
+        idProiect.val(UNSELECT);
         idProiect.trigger("chosen:updated");
 
     }
@@ -464,7 +461,7 @@
             disable_search: true,
             allow_single_deselect: true
         });
-        $("#stare-articol").val(unselect);
+        $("#stare-articol").val(UNSELECT);
         $("#stare-articol").trigger('chosen:updated');
 
         $("#persoana-select").chosen({
@@ -473,7 +470,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#persoana-select").val(unselect);
+        $("#persoana-select").val(UNSELECT);
         $("#persoana-select").trigger('chosen:updated');
 
         $("#persoana-mod-select").chosen({
@@ -482,7 +479,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#persoana-mod-select").val(unselect);
+        $("#persoana-mod-select").val(UNSELECT);
         $("#persoana-mod-select").trigger('chosen:updated');
 
         $("#loc-mod-select").chosen({
@@ -491,7 +488,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#loc-mod-select").val(unselect);
+        $("#loc-mod-select").val(UNSELECT);
         $("#loc-mod-select").trigger('chosen:updated');
 
         $("#articol-mod-select").chosen({
@@ -500,7 +497,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#articol-mod-select").val(unselect);
+        $("#articol-mod-select").val(UNSELECT);
         $("#articol-mod-select").trigger('chosen:updated');
 
         $("#persoana-select-new").chosen({
@@ -509,7 +506,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#persoana-select-new").val(unselect);
+        $("#persoana-select-new").val(UNSELECT);
         $("#persoana-select-new").trigger('chosen:updated');
 
         $("#loc-articol").chosen({
@@ -518,7 +515,7 @@
             no_results_text: "Locul nu exista!",
             allow_single_deselect: true
         });
-        $("#loc-articol").val(unselect);
+        $("#loc-articol").val(UNSELECT);
         $("#loc-articol").trigger('chosen:updated');
 
         $("#cod1-mod-select").chosen({
@@ -527,7 +524,7 @@
             no_results_text: "Locul nu exista!",
             allow_single_deselect: true
         });
-        $("#cod1-mod-select").val(unselect);
+        $("#cod1-mod-select").val(UNSELECT);
         $("#cod1-mod-select").trigger('chosen:updated');
 
         $("#cod2-mod-select").chosen({
@@ -536,13 +533,13 @@
             no_results_text: "Locul nu exista!",
             allow_single_deselect: true
         });
-        $("#cod2-mod-select").val(unselect);
+        $("#cod2-mod-select").val(UNSELECT);
         $("#cod2-mod-select").trigger('chosen:updated');
 
         getClients();
         getProjects();
 
-        $("#anSelInput").val(unselect);
+        $("#anSelInput").val(UNSELECT);
         $("#anSelInput").trigger("chosen:updated");
         $("#idProiect").val([]);
         $("#idProiect").trigger("chosen:updated");
