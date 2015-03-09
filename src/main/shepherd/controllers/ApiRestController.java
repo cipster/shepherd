@@ -334,7 +334,7 @@ public class ApiRestController {
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/adaugaarticol", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String addClient(@RequestBody Cod3 cod3) {
+    public String addArticol(@RequestBody Cod3 cod3) {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername(); //get logged in username
         cod3.setCreatDe(username);
@@ -346,43 +346,6 @@ public class ApiRestController {
             ex.printStackTrace();
         }
 
-        return response;
-    }
-
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/modificaclient", method = RequestMethod.POST)
-    @ResponseBody
-    public String modificaClient(@RequestBody Client client) {
-        String response = Response.ERROR.getLabel();
-        Client deModificat = clientiDAO.findByID(client.getIdClient());
-        if(deModificat != null) {
-            try {
-                deModificat.setClient(client.getClient());
-                clientiDAO.update(deModificat);
-                response = Response.SUCCESS.getLabel();
-            } catch (DataAccessException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return response;
-    }
-
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/stergeclient", method = RequestMethod.POST)
-    @ResponseBody
-    public String stergeClient(@RequestBody Client client) {
-        String response = Response.ERROR.getLabel();
-        Client deSters = clientiDAO.findByID(client.getIdClient());
-        if(deSters != null) {
-            try {
-                clientiDAO.deleteByID(deSters.getIdClient());
-                response = Response.SUCCESS.getLabel();
-            } catch (DataAccessException ex) {
-                ex.printStackTrace();
-            }
-        }
         return response;
     }
 

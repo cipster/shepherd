@@ -6,14 +6,14 @@ import org.springframework.http.HttpStatus;
  * Created by Ciprian on 3/8/2015.
  * Project Raindrop
  */
-public class ProiectResult {
+public class ControllerResult {
     private int httpStatus;
     private String message;
 
-    public ProiectResult() {
+    public ControllerResult() {
     }
 
-    public ProiectResult(int httpStatus, String message) {
+    public ControllerResult(int httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }

@@ -349,19 +349,12 @@
                 tr.next().addClass('copil');
                 $("#copil").children().addClass('copil');
 
-                $("#uploadAlert").html("");
-                $("#bdFile").val("");
+                $("#uploadAlert").html(EMPTY);
+                $("#bdFile").val(EMPTY);
                 $("#filebdFile").text("Click aici pentru a selecta o baza de date");
 
-
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
-                    }).show();
+                    showNotification('Fisierul este gol!', DANGER, 15000);
                     return;
                 }
                 var respContent = "";
@@ -371,7 +364,7 @@
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea baza de date!  ";
                 hideModal();
-                //ToDo: show notif here
+                showNotification(respContent)
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);

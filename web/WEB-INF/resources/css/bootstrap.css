@@ -1952,7 +1952,7 @@ input[type=date] {
 
 .radio, .checkbox {
     display: block;
-    min-height: 30px;
+    min-height: 40px;
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 20px

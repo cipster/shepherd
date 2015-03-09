@@ -12,8 +12,8 @@
         <h5 style="color:red; font-weight: bolder;"><spring:message code="DELPROJ.MSG"/></h5>
         <h5><spring:message code="DELPROJ.MSG2"/></h5>
     </div>
-    <div class="form-group col-md-12">
-        <label for="idProiect">Proiect</label>
+    <div class="form-group col-md-7">
+        <label for="idProiect">Alege un proiect</label>
         <select id="idProiect" data-placeholder="Alege un proiect..." class="chosen-select form-control"> </select>
     </div>
     <div class="col-md-12"><br/></div>

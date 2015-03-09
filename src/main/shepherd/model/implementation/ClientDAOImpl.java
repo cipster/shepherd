@@ -2,9 +2,11 @@ package model.implementation;
 
 
 import com.mysql.jdbc.Statement;
+import exceptions.DAOException;
 import model.dto.Client;
 import model.dao.ClientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -58,13 +60,23 @@ public class ClientDAOImpl extends JdbcDaoSupport implements ClientDAO {
         }
     }
 
-    @Override
+	@Override
+	public Client findClientByName(String name) {
+		try {
+			String findProiect = "SELECT * FROM clienti WHERE client='" + name + "'";
+			return getJdbcTemplate().queryForObject(findProiect, clientiParameterizedRowMapper);
+		} catch (DataAccessException e) {
+			return null;
+		}
+	}
+
+	@Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Client findByID(Integer id) {
         try {
             String findProiect = "SELECT * FROM clienti WHERE id_client=" + id;
             return getJdbcTemplate().queryForObject(findProiect, clientiParameterizedRowMapper);
-        } catch (Exception e) {
+        } catch (DataAccessException e) {
             return null;
         }
     }
@@ -75,42 +87,51 @@ public class ClientDAOImpl extends JdbcDaoSupport implements ClientDAO {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(INSERT_INTO_CLIENTI, Statement.RETURN_GENERATED_KEYS);
+		try {
+			PreparedStatementCreator psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+					PreparedStatement ps = con.prepareStatement(INSERT_INTO_CLIENTI, Statement.RETURN_GENERATED_KEYS);
 
-                ps.setInt(1, entity.getIdClient());
+					ps.setInt(1, entity.getIdClient());
 
-                ps.setString(2, entity.getClient());
+					ps.setString(2, entity.getClient());
 
-                logger.debug(ps.toString());
-                return ps;
-            }
-        };
-        jdbcTemplate.update(psc, keyHolder);
+					logger.debug(ps.toString());
+					return ps;
+				}
+			};
+			jdbcTemplate.update(psc, keyHolder);
+		} catch (DataAccessException e) {
+			throw e;
+		}
 
-        return keyHolder.getKey().intValue();
+		return keyHolder.getKey().intValue();
     }
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer update(final Client entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(UPDATE_CLIENTI);
+		try {
+			PreparedStatementCreator psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+					PreparedStatement ps = con.prepareStatement(UPDATE_CLIENTI);
 
-                ps.setString(1, entity.getClient());
-                ps.setInt(2, entity.getIdClient());
-                logger.debug(ps.toString());
-                return ps;
+					ps.setString(1, entity.getClient());
+					ps.setInt(2, entity.getIdClient());
+					logger.debug(ps.toString());
+					return ps;
 
-            }
-        };
-        jdbcTemplate.update(psc);
-        return entity.getIdClient();
+				}
+			};
+			jdbcTemplate.update(psc);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+			throw new DAOException(e.getMessage());
+		}
+		return entity.getIdClient();
 
     }
 

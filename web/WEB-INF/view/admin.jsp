@@ -36,6 +36,9 @@
         input {
             font-size: 13pt!important;
         }
+        .list-group-item {
+            font-size: 13pt!important;
+        }
         select {
             font-size: 13pt!important;
         }

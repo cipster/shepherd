@@ -4,34 +4,31 @@
 <%@ taglib prefix="sform" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<h3><spring:message code="MODCLIENT.CLIENTTITLE" /></h3>
-
-<div class="input-group col-md-12">
-    <div class="col-md-12">
-        <span><spring:message code="MODCLIENT.ALEGE" /></span>
-        <select id="clientselect" data-placeholder="Alege un client..." class="chosen-select">
-
-        </select>
-        <br>
-        <br>
-        <br>
-        <span><spring:message code="FORM.CLIENT" /></span>
-        <input id="numeClient" class="form-control input-sm"/>
-
-
+<div class="container">
+    <div class="page-header">
+        <h2><spring:message code="MODCLIENT.CLIENTTITLE"/></h2>
     </div>
-</div>
-<div class="col-md-12"><br/></div>
-<button type="button" class="btn btn-primary col-md-2" id="btnModClient" onclick="atribuieNumeModClient();">
-    <spring:message code="ADDPROJ.MODCLIENT" />
-</button>
-<button type="button" class="btn btn-success col-md-2 col-md-offset-1" id="btnAddClient" data-toggle="modal" data-target="#addclientmodal" >
-    <spring:message code="ADDPROJ.ADDCLIENT" />
-</button>
-<button type="button" class="btn btn-danger col-md-2 col-md-offset-1" id="btnDelClient" data-toggle="modal" onclick="atribuieNumeDelClient();">
-    <spring:message code="ADDPROJ.DELCLIENT" />
-</button>
-<div id="newClientAdded">
+    <div class="form-group col-md-6">
+        <label for="clientselect"><spring:message code="MODCLIENT.ALEGE"/></label>
+        <select id="clientselect" data-placeholder="Alege un client..." class="chosen-select"> </select>
+    </div>
+    <div class="col-md-12"></div>
+    <div class="form-group col-md-6">
+        <label for="numeClient"><spring:message code="FORM.CLIENT"/></label>
+        <input id="numeClient" class="form-control input-sm"/>
+    </div>
+    <div class="col-md-12"><br/></div>
+    <div class="form-group col-md-12">
+        <button type="button" class="btn btn-primary" id="btnModClient" onclick="atribuieNumeModClient();">
+            <span class="fa fa-plus fa-fw">&nbsp;</span><spring:message code="ADDPROJ.MODCLIENT"/>
+        </button>
+        <button type="button" class="btn btn-success" id="btnAddClient" data-toggle="modal" data-target="#addclientmodal">
+            <span class="fa fa-edit fa-fw">&nbsp;</span>Adaugă
+        </button>
+        <button type="button" class="btn btn-danger" id="btnDelClient" data-toggle="modal" onclick="atribuieNumeDelClient();">
+            <span class="fa fa-times fa-fw">&nbsp;</span><spring:message code="ADDPROJ.DELCLIENT"/>
+        </button>
+    </div>
 </div>
 
 <div class="modal fade" id="addclientmodal">
@@ -40,19 +37,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="ADDPROJ.ADDCLIENT" /></h4>
+                <h4 class="modal-title"><spring:message code="ADDPROJ.ADDCLIENT"/></h4>
             </div>
             <div class="modal-body">
-                <div class="input-group col-md-12">
-                    <div class="col-md-12">
-                        <label for="clientnumeInput">Nume Client</label>
-                        <input id="clientnumeInput" required="true" class="form-control input-sm"/>
-                    </div>
+                <div class="container">
+                <div class="form-group col-md-6">
+                    <label for="clientnumeInput">Nume Client</label>
+                    <input id="clientnumeInput" class="form-control input-sm"/>
+                </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="addClientAxajCall();"><spring:message code="ADDPROJ.ADDCLIENT" /></button>
-                <button type="button" id="closeaddclient" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                <button type="button" class="btn btn-success" onclick="addClient();">
+                    <span class="fa fa-plus fa-fw">&nbsp;</span><spring:message code="ADDPROJ.ADDCLIENT"/>
+                </button>
+                <button type="button" id="closeaddclient" class="btn btn-danger" data-dismiss="modal">
+                    <span class="fa fa-times fa-fw">&nbsp;</span><spring:message code="DIALOG.CLOSE"/>
+                </button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -65,15 +66,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="MODCLIENT.CLIENTTITLE" /></h4>
+                <h4 class="modal-title"><spring:message code="MODCLIENT.CLIENTTITLE"/></h4>
             </div>
             <div class="modal-body">
-                <h3><spring:message code="DIALOG.ESTISIGURCLIENTMOD" /> <span id="clientNumeMod" style="color: #149bdf"></span> in <span id="clientNumeMod2" style="color: #149bdf"></span>?</h3>
+                <h3><spring:message code="DIALOG.ESTISIGURCLIENTMOD"/> <span id="clientNumeMod" style="color: #149bdf"></span> in <span id="clientNumeMod2" style="color: #149bdf"></span>?</h3>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="modClientAxajCall();"><spring:message code="DIALOG.MOD" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="NU" /></button>
-
+                <button type="button" class="btn btn-primary" onclick="modifyClient();">
+                    <span class="fa fa-edit fa-fw">&nbsp;</span><spring:message code="DIALOG.MOD"/>
+                </button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <span class="fa fa-times fa-fw">&nbsp;</span><spring:message code="DIALOG.CLOSE"/>
+                </button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -87,15 +91,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="MODCLIENT.DELCLIENT" /></h4>
+                <h4 class="modal-title"><spring:message code="MODCLIENT.DELCLIENT"/></h4>
             </div>
             <div class="modal-body">
-                <h3><spring:message code="DIALOG.ESTISIGURCLIENTDEL" /> <span id="clientNumeDel" style="color: #149bdf"></span>?</h3>
+                <h3><spring:message code="DIALOG.ESTISIGURCLIENTDEL"/> <span id="clientNumeDel" style="color: #149bdf"></span>?</h3>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="delClientAxajCall();"><spring:message code="ADDPROJ.DELCLIENT" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="NU" /></button>
-
+                <button type="button" class="btn btn-danger" onclick="deleteClient();">
+                    <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.DEL"/>
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <span class="fa fa-reply">&nbsp;</span><spring:message code="DIALOG.CLOSE"/>
+                </button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -117,7 +124,7 @@
         $("#clientNumeDel").text($('#clientselect option:selected').text());
     }
 
-    function delClientAxajCall(){
+    function deleteClient() {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var numeClient = $('#numeClient').val();
@@ -125,8 +132,8 @@
         var data = {"idClient": idClient, "client": numeClient};
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/api/stergeclient',
-            beforeSend: function(xhr){
+            url: '${pageContext.request.contextPath}/apis/v1/admin/client/deleteclient',
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             dataType: 'json',
@@ -134,41 +141,36 @@
             mimeType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {
-                var respContent = "";
-                $("#newClientAdded").html("");
-                if (response === 'undefined' || response === '') {
-                    respContent = "<label class='label-danger'>Clientul exista deja!</label>";
-                } else {
-                    $('#numeClient').val('');
-                    $('#clientselect').val(-1);
-                    $('#clientselect').trigger('chosen:updated');
-                    $('.modal.in').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
-                    respContent = '<label class="label-success">Clientul a fost sters!</label>';
+                if (response && response.httpStatus == 500) {
+                    hideModal();
+                    showNotification(response.message, DANGER);
+                    return;
                 }
-
-                $("#newClientAdded").html(respContent);
-                $("#newClientAdded").css('display', 'block');
-                $("#newClientAdded").fadeOut(6000);
+                $('#numeClient').val(EMPTY);
+                chosenUnselect('#clientselect');
+                hideModal();
+                showNotification(response.message);
                 $('#clienti').click();
             },
             error: function (xhr, err) {
-                alert("Eroare la conexiune!" + err);
+                alert("Eroare la conexiune!" + err.message);
             }
         });
     }
 
-    function modClientAxajCall(){
+    function modifyClient() {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var numeClient = $('#numeClient').val();
         var idClient = $('#clientselect').val();
-        var data = {"idClient": idClient, "client": numeClient};
+        var data = {
+            "idClient": idClient,
+            "client": numeClient
+        };
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/api/modificaclient',
-            beforeSend: function(xhr){
+            url: '${pageContext.request.contextPath}/apis/v1/admin/client/modifyclient',
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             dataType: 'json',
@@ -176,23 +178,15 @@
             mimeType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {
-                var respContent = "";
-                $("#newClientAdded").html("");
-                if (response === 'undefined' || response === '') {
-                    respContent = "<label class='label-danger'>Clientul exista deja!</label>";
-                } else {
-                    $('#numeClient').val('');
-                    $('#clientselect').val(-1);
-                    $('#clientselect').trigger('chosen:updated');
-                    $('.modal.in').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
-                    respContent = '<label class="label-success">Clientul a fost modificat!</label>';
+                if (response && response.httpStatus == 500) {
+                    hideModal();
+                    showNotification(response.message, DANGER);
+                    return;
                 }
-
-                $("#newClientAdded").html(respContent);
-                $("#newClientAdded").css('display', 'block');
-                $("#newClientAdded").fadeOut(6000);
+                $('#numeClient').val(EMPTY);
+                chosenUnselect('#clientselect');
+                hideModal();
+                showNotification(response.message);
                 $('#clienti').click();
 
             },
@@ -202,38 +196,37 @@
         });
     }
 
-    function addClientAxajCall() {
+    function addClient() {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
-        if ($("#clientInput").val() == 0) {
-            alert("Asigurati-va ca ati completat campul!");
+        var client = $('#clientnumeInput').val();
+
+        if (client === EMPTY) {
+            alert("Asigurati-vă că ati completat campul!");
             return;
         }
+        var data = {
+            "client": client
+        };
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/projAdmin/adaugaClient',
-            beforeSend: function(xhr){
+            url: '${pageContext.request.contextPath}/apis/v1/admin/client/addclient',
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
-            data: 'client=' + $('#clientnumeInput').val(),
-            cache: false,
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            data: JSON.stringify(data),
             success: function (response) {
-                var respContent = "";
-                $("#newClientAdded").html("");
-                if (response === 'undefined' || response === '') {
-                    respContent = "<label class='label-danger'>Clientul exista deja!</label>";
-                } else {
-                    $('#clientnumeInput').val('');
-                    var client = JSON.parse(response);
-                    respContent += "<label class='label-success'>Clientul ";
-                    respContent += client.client + " a fost creat!</label>";
+                if (response && response.httpStatus == 500) {
+                    hideModal();
+                    showNotification(response.message, DANGER);
+                    return;
                 }
-                $('.modal.in').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $("#newClientAdded").html(respContent);
-                $("#newClientAdded").css('display', 'block');
-                $("#newClientAdded").fadeOut(6000);
+                $('#clientnumeInput').val(EMPTY);
+                hideModal();
+                showNotification(response.message);
                 $('#clienti').click();
             },
             error: function (xhr, err) {
@@ -242,10 +235,10 @@
         });
     }
 
-    $(document).ready(function(){
-        $('#clientselect').on('change', function(){
+    $(document).ready(function () {
+        $('#clientselect').on('change', function () {
             $('#numeClient').val($('#clientselect option:selected').text());
-            if($(this).val() > 0) {
+            if ($(this).val() > ZERO) {
                 $('#btnModClient').attr('data-toggle', 'modal');
                 $('#btnModClient').attr('data-target', '#estiSigurClientMod');
                 $('#btnDelClient').attr('data-target', '#delclientmodal');
