@@ -47,9 +47,8 @@ public class Cod1DAOImpl extends JdbcDaoSupport implements Cod1DAO {
         final String query = "SELECT * FROM proiecte.cod_1";
         try {
             return getJdbcTemplate().query(query, rowMapper);
-        } catch (DataAccessException ex){
-            ex.printStackTrace();
-            return null;
+        } catch (DataAccessException e){
+            throw e;
         }
     }
 

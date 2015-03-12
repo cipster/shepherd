@@ -39,6 +39,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import services.ClientService;
 import services.ClientServiceImpl;
+import services.Cod1Service;
+import services.Cod1ServiceImpl;
+import services.PersoanaService;
+import services.PersoanaServiceImpl;
 import services.ProiectService;
 import services.ProiectServiceImpl;
 import services.UserService;
@@ -148,5 +152,15 @@ public class BeanConfig {
 	@Bean
 	public UserService userService() {
 		return new UserServiceImpl();
+	}
+
+	@Bean
+	public Cod1Service cod1Service() {
+		return new Cod1ServiceImpl();
+	}
+
+	@Bean
+	public PersoanaService persoanaService() {
+		return new PersoanaServiceImpl();
 	}
 }

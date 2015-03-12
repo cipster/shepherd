@@ -73,7 +73,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="modifyClient();">
-                    <span class="fa fa-edit fa-fw">&nbsp;</span><spring:message code="DIALOG.MOD"/>
+                    <span class="fa fa-edit fa-fw">&nbsp;</span><spring:message code="DIALOG.MODCLIENT"/>
                 </button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">
                     <span class="fa fa-times fa-fw">&nbsp;</span><spring:message code="DIALOG.CLOSE"/>
@@ -132,7 +132,7 @@
         var data = {"idClient": idClient, "client": numeClient};
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/apis/v1/admin/client/deleteclient',
+            url: '${pageContext.request.contextPath}/global/admin/client/deleteclient',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
@@ -169,7 +169,7 @@
         };
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/apis/v1/admin/client/modifyclient',
+            url: '${pageContext.request.contextPath}/global/admin/client/modifyclient',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
@@ -210,7 +210,7 @@
         };
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/apis/v1/admin/client/addclient',
+            url: '${pageContext.request.contextPath}/global/admin/client/addclient',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },

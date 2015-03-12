@@ -34,13 +34,15 @@
     <![endif]-->
     <style>
         input {
-            font-size: 13pt!important;
+            font-size: 13pt !important;
         }
+
         .list-group-item {
-            font-size: 13pt!important;
+            font-size: 13pt !important;
         }
+
         select {
-            font-size: 13pt!important;
+            font-size: 13pt !important;
         }
     </style>
 </head>
@@ -51,24 +53,24 @@
         <div class="list-group col-md-3">
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <a id="adauga" class="list-group-item">
-                    <span class="fa fa-plus fa-fw">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ" /></a>
+                    <span class="fa fa-plus fa-fw">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ"/></a>
                 <a id="modifica" class="list-group-item">
                     <span class="fa fa-pencil fa-fw">&nbsp;</span>
-                    <spring:message code="ADMIN.MODPROJ" /></a>
+                    <spring:message code="ADMIN.MODPROJ"/></a>
                 <a id="sterge" class="list-group-item">
                     <span class="fa fa-remove fa-fw">&nbsp;</span>
-                    <spring:message code="ADMIN.DELPROJ" /></a>
+                    <spring:message code="ADMIN.DELPROJ"/></a>
                 <a id="clienti" class="list-group-item">
-                    <span class="fa fa-briefcase fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODCLIENTI" /></a>
+                    <span class="fa fa-briefcase fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODCLIENTI"/></a>
             </sec:authorize>
             <a id="utilizatori" class="list-group-item">
-                <span class="fa fa-group fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODUSER" /></a>
+                <span class="fa fa-group fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODUSER"/></a>
             <a id="inventar" class="list-group-item">
-                <span class="fa fa-cubes fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODINVENTAR" /></a>
+                <span class="fa fa-cubes fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODINVENTAR"/></a>
         </div>
         <div class="well col-md-9 col-md-offset-0" id="continut">
 
-            <h3 style="text-align: center;" id="sfat"><spring:message code="ADMIN.PLACEHOLDER" /></h3>
+            <h3 style="text-align: center;" id="sfat"><spring:message code="ADMIN.PLACEHOLDER"/></h3>
 
             <div id="addProj" style="display: none">
                 <c:import url="include/addProj.jsp"></c:import>
@@ -90,7 +92,8 @@
             </div>
         </div>
     </div>
-</div><!--/.container-->
+</div>
+<!--/.container-->
 
 <div id="alert" class="notifications"></div>
 
@@ -114,7 +117,7 @@
 <script src="/js/common.js"></script>
 <script type="text/javascript">
 
-    function getAllCod1(){
+    function getAllCod1() {
         var cod1 = $("#cod1-mod-select");
         cod1.html("");
 
@@ -122,15 +125,15 @@
         var denumire1;
         $.ajax({
             type: 'get',
-            url: '${pageContext.request.contextPath}/api/cod1list',
+            url: '${pageContext.request.contextPath}/global/admin/inventar/cod1list',
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
-                        idCod1 =  response[i].cod1;
+                        idCod1 = response[i].cod1;
                         denumire1 = response[i].denumire1;
-                        cod1.append($('<option id="cod1-' + idCod1 + '" label="' + denumire1 +'">').val(idCod1).text(denumire1));
+                        cod1.append($('<option id="cod1-' + idCod1 + '" label="' + denumire1 + '">').val(idCod1).text(denumire1));
                     }
                 }
             },
@@ -142,7 +145,7 @@
         cod1.trigger("chosen:updated");
     }
 
-    function getCod2ByCod1(idCod1){
+    function getCod2ByCod1(idCod1) {
         var cod2 = $('#cod2-mod-select');
         cod2.html('');
         var idCod2;
@@ -153,9 +156,9 @@
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
-                        idCod2 =  response[i].cod2;
+                        idCod2 = response[i].cod2;
                         denumire2 = response[i].denumire2;
                         cod2.append($('<option id="cod2-' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
                     }
@@ -169,7 +172,7 @@
         cod2.trigger('chosen:updated');
     }
 
-    function getArticole(){
+    function getArticole() {
         var modArticoleSelect = $("#articol-mod-select");
         modArticoleSelect.html("");
 
@@ -184,15 +187,15 @@
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
-                        idCod3 =  response[i].idCod3;
+                        idCod3 = response[i].idCod3;
                         denumire3 = response[i].denumire3;
                         stare = response[i].stare;
                         idLoc = response[i].idLoc;
                         dataAdaugare = response[i].dataAdaugare;
                         modArticoleSelect.append($('<option id="articol' + idCod3 + '" label="' + denumire3 + '" data-stare="' + stare + '"' +
-                        ' data-loc="' + idLoc + '" data-data="' + dataAdaugare +'">').val(idCod3).text(denumire3));
+                        ' data-loc="' + idLoc + '" data-data="' + dataAdaugare + '">').val(idCod3).text(denumire3));
                     }
                 }
             },
@@ -204,7 +207,7 @@
         modArticoleSelect.trigger("chosen:updated");
     }
 
-    function getLocuri(){
+    function getLocuri() {
         var modLocSelect = $("#loc-mod-select");
         var locSelect = $("#loc-articol");
         modLocSelect.html("");
@@ -218,9 +221,9 @@
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
-                        idLoc =  response[i].idLoc;
+                        idLoc = response[i].idLoc;
                         denumireLoc = response[i].denumireLoc;
                         modLocSelect.append($('<option id="loc' + idLoc + '" label="' + denumireLoc + '">').val(idLoc).text(denumireLoc));
                         locSelect.append($('<option id="artloc' + idLoc + '" label="' + denumireLoc + '">').val(idLoc).text(denumireLoc));
@@ -237,7 +240,7 @@
         locSelect.trigger("chosen:updated");
     }
 
-    function getPersoane(){
+    function getPersoane() {
         var modPersoanaSelect = $("#persoana-mod-select");
         var newPersoanaSelect = $("#persoana-select-new");
         var persoanaSelect = $("#persoana-select");
@@ -252,21 +255,21 @@
         var functie;
         $.ajax({
             type: 'get',
-            url: '${pageContext.request.contextPath}/api/persoanelist',
+            url: '${pageContext.request.contextPath}/global/admin/inventar/persoanelist',
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
-                        idPersoana =  response[i].idPersoana;
+                        idPersoana = response[i].idPersoana;
                         nume = response[i].nume;
                         username = response[i].username;
                         cnp = response[i].cnp;
                         functie = response[i].functie;
                         modPersoanaSelect.append($('<option id="persoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +
-                        ' data-cnp="' + cnp + '" data-functie="' + functie +'">').val(idPersoana).text(nume));
+                        ' data-cnp="' + cnp + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
                         newPersoanaSelect.append($('<option id="artpersoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +
-                        ' data-cnp="' + cnp + '" data-functie="' + functie +'">').val(idPersoana).text(nume));
+                        ' data-cnp="' + cnp + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
                         persoanaSelect.append($('<option label="' + nume + '">').val(idPersoana).text(nume));
                     }
                 }
@@ -281,7 +284,7 @@
         newPersoanaSelect.trigger("chosen:updated");
     }
 
-    function getClients(){
+    function getClients() {
         $("#clientselect").html("");
         $("#idClient").html("");
         $("#idClientInput").html("");
@@ -291,7 +294,7 @@
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
                         $("#clientselect").append($("<option>").val(response[i].idClient).text(response[i].client));
                         $("#idClientInput").append($("<option>").val(response[i].idClient).text(response[i].client));
@@ -312,17 +315,17 @@
 
     }
 
-    function getUsers(){
+    function getUsers() {
         var idUserSelect = $("#idUserSelect");
         idUserSelect.html("");
         $.ajax({
             type: 'get',
-            url: '${pageContext.request.contextPath}/api/userlist',
+            url: '${pageContext.request.contextPath}/global/admin/user/userlist',
             contentType: "application/json",
             async: false,
             success: function (response) {
                 var idPersoana;
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
                         var username = response[i].username;
                         username = username.replace(/\./g, '-');
@@ -339,8 +342,9 @@
                             }
                         });
                         idUserSelect
-                                .append( $('<option id="' + response[i].username + '" data-username="' + response[i].username +'" data-password="' + response[i].password +'" data-status="' + response[i].enabled + '" data-persoana="' + idPersoana + '">')
-                                        .val(response[i].username).text(response[i].username) );
+                                .append($('<option id="user-' + response[i].username + '" data-username="' + response[i].username + '" data-password="' + response[i].password + '" data-status="' +
+                                response[i].enabled + '" data-persoana="' + idPersoana + '">')
+                                        .val('user-' + response[i].username).text(response[i].username));
                     }
                 }
             },
@@ -350,12 +354,11 @@
         });
 
 
-
         idUserSelect.val(UNSELECT);
         idUserSelect.trigger("chosen:updated");
     }
 
-    function getProjects(){
+    function getProjects() {
         var idProiectSelect = $("#idProiectSelect");
         var idProiect = $("#idProiect");
         idProiectSelect.html("");
@@ -366,13 +369,13 @@
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
                         idProiectSelect
-                                .append($('<option id="' + response[i].idProiect + '" data-nume="' + response[i].numeProiect +'" data-nr="' + response[i].nrProiect +'" data-an="' + response[i].an + '" data-idClient="' + response[i].idClient +'">')
+                                .append($('<option id="' + response[i].idProiect + '" data-nume="' + response[i].numeProiect + '" data-nr="' + response[i].nrProiect + '" data-an="' + response[i].an + '" data-idClient="' + response[i].idClient + '">')
                                         .val(response[i].idProiect).text(response[i].nrProiect + ' ' + response[i].numeProiect + ' ' + response[i].an));
                         idProiect
-                                .append($('<option id="' + response[i].idProiect + '" data-nume="' + response[i].numeProiect +'" data-nr="' + response[i].nrProiect +'" data-an="' + response[i].an + '" data-idClient="' + response[i].idClient +'">')
+                                .append($('<option id="' + response[i].idProiect + '" data-nume="' + response[i].numeProiect + '" data-nr="' + response[i].nrProiect + '" data-an="' + response[i].an + '" data-idClient="' + response[i].idClient + '">')
                                         .val(response[i].idProiect).text(response[i].nrProiect + ' ' + response[i].numeProiect + ' ' + response[i].an));
 
 
@@ -655,8 +658,12 @@
             $("#sfat").css('display', "none");
             getUsers();
             getPersoane();
-            $('#btnChPass').attr('data-target','');
-            $('#btnModUser').attr('data-target','');
+            $('#usernameInput').val(EMPTY);
+            chosenUnselect('#adminInput');
+            chosenUnselect('#statusInput');
+            chosenUnselect('#persoana-select');
+            $('#btnChPass').attr('data-target', '');
+            $('#btnModUser').attr('data-target', '');
 
         });
 

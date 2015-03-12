@@ -183,7 +183,7 @@
             alert("Alege un utilizator din lista!");
             return;
         }
-        if ($("#usernameInput").text() === '' || $("#adminInput").val() <= 0 || $("#statusInput").val() < 0) {
+        if ($("#usernameInput").val() === '' || $("#adminInput").val() <= 0 || $("#statusInput").val() < 0) {
             hideModal();
             alert("Asigurati-va ca ati completat toate campurile!");
             return;
@@ -415,7 +415,7 @@
 
                 $.ajax({
                     type: 'post',
-                    url: '${pageContext.request.contextPath}/apis/v1/admin/user/getrolesforusername',
+                    url: '${pageContext.request.contextPath}/global/admin/user/getrolesforusername',
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader(header, token);
                     },
@@ -423,7 +423,7 @@
                     cache: false,
                     success: function (response) {
                         if (response && response.roles.length == ZERO) {
-                            showNotification('Utilizatorul nu are roluri', DANGER, 15000);
+                            showNotification('Utilizatorul ' + username + ' nu are roluri', DANGER, 15000);
                             return;
                         }
                         $("#adminInput").val(response.roles);

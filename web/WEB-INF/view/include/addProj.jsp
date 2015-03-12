@@ -73,7 +73,7 @@
         };
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/apis/v1/admin/project/addproject',
+            url: '${pageContext.request.contextPath}/global/admin/project/addproject',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },

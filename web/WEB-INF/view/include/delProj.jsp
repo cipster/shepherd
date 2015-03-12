@@ -77,7 +77,7 @@
         var data = 'idProiect=' + idProiect;
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/apis/v1/admin/project/deleteproject',
+            url: '${pageContext.request.contextPath}/global/admin/project/deleteproject',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },

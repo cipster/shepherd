@@ -111,7 +111,7 @@
         };
         $.ajax({
             type: 'post',
-            url: '${pageContext.request.contextPath}/apis/v1/admin/project/modifyproject',
+            url: '${pageContext.request.contextPath}/global/admin/project/modifyproject',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },

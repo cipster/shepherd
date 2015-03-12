@@ -100,24 +100,6 @@ public class ApiRestController {
         return proiectDAO.getAll();
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
-    @RequestMapping(value = "/cod1list", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<Cod1> getAllCod1() {
-
-        return cod1DAO.getAll();
-    }
-
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
-    @RequestMapping(value = "/persoanelist", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<Persoana> getAllPersoane() {
-
-        return persoanaDAO.getAll();
-    }
-
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
     @RequestMapping(value = "/articolelist", method = RequestMethod.GET, produces = "application/json")
@@ -134,20 +116,6 @@ public class ApiRestController {
     public List<Loc> getAllLocuri() {
 
         return locDAO.getAll();
-    }
-
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
-    @RequestMapping(value = "/userlist", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<User> getAllUsers() {
-        String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
-
-        if(role.compareTo("ROLE_ADMIN") == 0) {
-            return userDAO.getAll();
-        } else {
-            return userDAO.getAll(2);
-        }
     }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)

@@ -24,7 +24,7 @@ import util.enums.Response;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/apis/v1/admin/client")
+@RequestMapping(value = "/global/admin/client")
 public class AdminClientRestController {
 	@Autowired
 	private UserRoleDAO userRoleDAO;

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import services.ProiectService;
 
 @Controller
-@RequestMapping(value = "/apis/v1/admin/project")
+@RequestMapping(value = "/global/admin/project")
 public class AdminProjectRestController {
 	@Autowired
 	private ProiectService proiectService;
