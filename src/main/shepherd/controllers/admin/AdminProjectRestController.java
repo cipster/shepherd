@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import exceptions.ProjectHasFilesException;
 import model.ControllerResult;
 import model.dto.Proiect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,10 @@ public class AdminProjectRestController {
 		ControllerResult controllerResult;
 
 		try {
-			proiectService.deleteProject(idProiect);
-			controllerResult = new ControllerResult(HttpStatus.OK.value(), "Proiectul a fost sters cu succes!");
+            proiectService.deleteProject(idProiect);
+            controllerResult = new ControllerResult(HttpStatus.OK.value(), "Proiectul a fost sters cu succes!");
+        } catch (ProjectHasFilesException e){
+            controllerResult = new ControllerResult(HttpStatus.INTERNAL_SERVER_ERROR.value(),e.getMessage());
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			controllerResult = new ControllerResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "A apărut o eroare, proiectul nu a fost sters!");

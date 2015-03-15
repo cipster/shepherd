@@ -2274,31 +2274,32 @@ textarea.input-lg, select[multiple].input-lg {
 .btn-default .badge {
     color: #fff;
     background-color: #333
+
 }
 
 .btn-primary {
-    color: #fff!important;
-    background-color: #428bca!important;
-    border-color: #357ebd!important;
-}
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: #3276b1;
-    border-color: #285e8e
+    background-color: #337ab7;
+    border-color: #2e6da4
 }
 
-.btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+.btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open > .dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #286090;
+    border-color: #204d74
+}
+
+.btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
     background-image: none
 }
 
-.btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active {
-    background-color: #428bca;
-    border-color: #357ebd
+.btn-primary.disabled, .btn-primary.disabled.active, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled:focus, .btn-primary.disabled:hover, .btn-primary[disabled], .btn-primary[disabled].active, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled]:focus, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary.active, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:hover {
+    background-color: #337ab7;
+    border-color: #2e6da4
 }
 
 .btn-primary .badge {
-    color: #428bca;
+    color: #337ab7;
     background-color: #fff
 }
 
@@ -6604,4 +6605,16 @@ div.dataTables_wrapper {
     left: 50%;
     right: 50%;
     z-index: 5000;
+}
+
+#scrollUp {
+    background-image:url(../img/top_grey.png);
+    bottom: 10%;
+    right: 15%;
+    width: 38px;
+    height: 38px;
+}
+
+#scrollUp:hover {
+    background-image:url(../img/top_grey-hover.png);
 }

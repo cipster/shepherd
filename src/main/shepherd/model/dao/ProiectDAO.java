@@ -29,4 +29,6 @@ public interface ProiectDAO extends GenericDAO<Proiect, Integer> {
     Integer stergeRaport(final Integer id_raport, final Integer id_proiect);
 
     Integer stergeBd(final Integer id_bd, final Integer id_proiect);
+
+    boolean hasFiles(int id);
 }

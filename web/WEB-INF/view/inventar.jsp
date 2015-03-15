@@ -346,12 +346,6 @@
 </sec:authorize>
 
 <div id="alert" class="notifications"></div>
-
-<form action="${pageContext.request.contextPath}/logout" method="post" id="logoutForm">
-    <input type="hidden" name="${_csrf.parameterName}"
-           value="${_csrf.token}"/>
-</form>
-
 <input id="username" hidden="hidden" value="${pageContext.request.userPrincipal.name}"/>
 <sec:authorize access="hasRole('ROLE_DOWNLOAD')">
     <input id="propDownloadString" hidden="hidden" value="1">
@@ -362,11 +356,10 @@
     <input id="download" hidden="hidden">
 </sec:authorize>
 <input hidden="hidden" id="appLangCode" value="">
+
+<jsp:include page="include/footer.jsp"></jsp:include>
 </body>
-<footer class="panel-footer">
-    <p class="pull-right"><a href="#top"><spring:message code="NAVBAR.BACKTOTOP"/></a></p>
-    <p>&copy; fieldcover 2014 <a href="#"></a> &middot; <a href="#">Shepherd</a></p>
-</footer>
+
 </html>
 
 <!-- Bootstrap core JavaScript
@@ -800,6 +793,8 @@
                 stateSave: true,
                 "columns": [
                     {
+                        "sWidth": "15px",
+                        "bSortable": false,
                         "className": 'details-control',
                         "orderable": false,
                         "data": null,

@@ -177,11 +177,6 @@
 <div id="alert" class="notifications"></div>
 
 
-<form action="/logout" method="post" id="logoutForm">
-    <input type="hidden" name="${_csrf.parameterName}"
-           value="${_csrf.token}"/>
-</form>
-
 <input id="username" hidden="hidden" value="${pageContext.request.userPrincipal.name}"/>
 <sec:authorize access="hasAnyRole('ROLE_DOWNLOAD','ROLE_ADMIN')">
     <input id="propDownloadString" hidden="hidden" value="1">
@@ -192,12 +187,8 @@
     <input id="download" hidden="hidden">
 </sec:authorize>
 <input hidden="hidden" id="appLangCode" value="">
+<jsp:include page="include/footer.jsp"></jsp:include>
 </body>
-<footer class="panel-footer">
-    <p class="pull-right"><a href="#"><spring:message code="NAVBAR.BACKTOTOP"/></a></p>
-
-    <p>&copy; fieldcover 2014 <a href="#top"></a> &middot; <a href="#">Shepherd</a></p>
-</footer>
 </html>
 
 <!-- Bootstrap core JavaScript
@@ -1055,6 +1046,33 @@
         return childString;
     }
 
+    function showChildRow(elem) {
+        var tr = elem.closest('tr');
+        var row = table.row(tr);
+        var id;
+        if (!elem.hasClass('copil')) {
+            if (event.button == 0) {
+                tr.addClass('selected');
+                tr.siblings().removeClass('selected');
+            }
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child(format(tr.prop("id"))).show();
+                tr.next().addClass('copil');
+                $("#copil").children().addClass('copil');
+                tr.addClass('shown');
+                id = elem.closest('tr').attr('id');
+                $("input[name='idProiect']").val(id);
+                $("#idMaster").val(id);
+            }
+        }
+    }
+
     $(document).ready(function () {
         $('#slashmain').addClass('active');
 
@@ -1134,42 +1152,15 @@
             showChildRow($(this))
         });
 
-        function showChildRow(elem) {
-            var tr = elem.closest('tr');
-            var row = table.row(tr);
-            var id;
-            if (!elem.hasClass('copil')) {
-                if (event.button == 0) {
-                    tr.addClass('selected');
-                    tr.siblings().removeClass('selected');
-                }
-                if (row.child.isShown()) {
-                    // This row is already open - close it
-                    row.child.hide();
-                    tr.removeClass('shown');
-                }
-                else {
-                    // Open this row
-                    row.child(format(tr.prop("id"))).show();
-                    tr.next().addClass('copil');
-                    $("#copil").children().addClass('copil');
-                    tr.addClass('shown');
-                    id = elem.closest('tr').attr('id');
-                    $("input[name='idProiect']").val(id);
-                    $("#idMaster").val(id);
-                }
-            }
-        }
-
         $('#tabelProiecte tbody').on('mousedown', 'tr', function (e) {
             var id;
             var div;
             var tr = $(event.target).closest('tr');
-            if($(tr).hasClass('copil')){
+            if ($(tr).hasClass('copil')) {
                 div = $(this).closest('div').attr('id');
-                if(div === 'tabelProiecte_wrapper'){
+                if (div === 'tabelProiecte_wrapper') {
                     div = tr.find('div.copil');
-                    id =+ $(div).attr('id').replace('copil-', '');
+                    id = +$(div).attr('id').replace('copil-', '');
                 } else {
                     id = div.replace('copil-', '');
                 }
@@ -1225,16 +1216,16 @@
         });
 
 
-    document.getElementById("tabelProiecte").oncontextmenu = function () {
-        return false;
-    }
-
-    $(document).click(function (e) {
-        if (e.button == 0 || e.button == 1) {
-            $("#rcmenu").fadeOut(40);
-            $("#childrcmenu").fadeOut(40);
+        document.getElementById("tabelProiecte").oncontextmenu = function () {
+            return false;
         }
-    });
+
+        $(document).click(function (e) {
+            if (e.button == 0 || e.button == 1) {
+                $("#rcmenu").fadeOut(40);
+                $("#childrcmenu").fadeOut(40);
+            }
+        });
     })
     ;
 </script>

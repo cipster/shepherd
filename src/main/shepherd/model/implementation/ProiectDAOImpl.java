@@ -1,7 +1,10 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
+import model.dao.ProiectDAO;
+import model.dto.Proiect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,8 +13,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import model.dto.Proiect;
-import model.dao.ProiectDAO;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -66,14 +67,14 @@ public class ProiectDAOImpl extends JdbcDaoSupport implements ProiectDAO {
             String query = FIND_LISTA_PROIECTE_BY_ID + id;
 
             return getJdbcTemplate().queryForObject(query, listaProiecteParameterizedRowMapper);
-        } catch (Exception e) {
-            return null;
+        } catch (DataAccessException e) {
+            throw e;
         }
     }
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Integer create(final Proiect entity)  {
+    public Integer create(final Proiect entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -301,7 +302,7 @@ public class ProiectDAOImpl extends JdbcDaoSupport implements ProiectDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 String idAM = findByID(id_proiect).getIdAlteMateriale();
-                idAM = idAM.replace("," + id_alte_materiale.toString() , ",");
+                idAM = idAM.replace("," + id_alte_materiale.toString(), ",");
                 PreparedStatement ps = con.prepareStatement(UPDATE_ID_ALTE_MATERIALE);
 
                 if (id_alte_materiale <= 0 || id_alte_materiale.equals(null)) {
@@ -322,104 +323,117 @@ public class ProiectDAOImpl extends JdbcDaoSupport implements ProiectDAO {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergePropunere(final Integer id_propunere, final Integer id_proiect) {
-            JdbcTemplate jdbcTemplate = getJdbcTemplate();
-            PreparedStatementCreator psc = new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                    String idP = findByID(id_proiect).getIdPropunere();
-                    idP = idP.replace("," + id_propunere.toString(), ",");
-                    PreparedStatement ps = con.prepareStatement(UPDATE_ID_PROPUNERE);
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                String idP = findByID(id_proiect).getIdPropunere();
+                idP = idP.replace("," + id_propunere.toString(), ",");
+                PreparedStatement ps = con.prepareStatement(UPDATE_ID_PROPUNERE);
 
-                    if (id_propunere <= 0 || id_propunere.equals(null)) {
-                        ps.setNull(1, Types.NULL);
-                    } else {
-                        ps.setString(1, idP);
-                    }
-                    ps.setInt(2, id_proiect);
-                    logger.debug(ps.toString());
-                    return ps;
-
+                if (id_propunere <= 0 || id_propunere.equals(null)) {
+                    ps.setNull(1, Types.NULL);
+                } else {
+                    ps.setString(1, idP);
                 }
-            };
-            jdbcTemplate.update(psc);
-            return id_proiect;
-     }
+                ps.setInt(2, id_proiect);
+                logger.debug(ps.toString());
+                return ps;
+
+            }
+        };
+        jdbcTemplate.update(psc);
+        return id_proiect;
+    }
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergeChestionar(final Integer id_chestionar, final Integer id_proiect) {
-            JdbcTemplate jdbcTemplate = getJdbcTemplate();
-            PreparedStatementCreator psc = new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                    String idC = findByID(id_proiect).getIdChestionarFinal();
-                    idC = idC.replace("," + id_chestionar.toString(), ",");
-                    PreparedStatement ps = con.prepareStatement(UPDATE_ID_CHESTIONAR_FINAL);
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                String idC = findByID(id_proiect).getIdChestionarFinal();
+                idC = idC.replace("," + id_chestionar.toString(), ",");
+                PreparedStatement ps = con.prepareStatement(UPDATE_ID_CHESTIONAR_FINAL);
 
-                    if (id_chestionar <= 0 || id_chestionar.equals(null)) {
-                        ps.setNull(1, Types.NULL);
-                    } else {
-                        ps.setString(1, idC);
-                    }
-                    ps.setInt(2, id_proiect);
-                    logger.debug(ps.toString());
-                    return ps;
-
+                if (id_chestionar <= 0 || id_chestionar.equals(null)) {
+                    ps.setNull(1, Types.NULL);
+                } else {
+                    ps.setString(1, idC);
                 }
-            };
-            jdbcTemplate.update(psc);
-            return id_proiect;
-     }
+                ps.setInt(2, id_proiect);
+                logger.debug(ps.toString());
+                return ps;
+
+            }
+        };
+        jdbcTemplate.update(psc);
+        return id_proiect;
+    }
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergeRaport(final Integer id_raport, final Integer id_proiect) {
-            JdbcTemplate jdbcTemplate = getJdbcTemplate();
-            PreparedStatementCreator psc = new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                    String idR = findByID(id_proiect).getIdRaportFinal();
-                    idR = idR.replace("," + id_raport.toString(), ",");
-                    PreparedStatement ps = con.prepareStatement(UPDATE_ID_RAPORT_FINAL);
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                String idR = findByID(id_proiect).getIdRaportFinal();
+                idR = idR.replace("," + id_raport.toString(), ",");
+                PreparedStatement ps = con.prepareStatement(UPDATE_ID_RAPORT_FINAL);
 
-                    if (id_raport <= 0 || id_raport.equals(null)) {
-                        ps.setNull(1, Types.NULL);
-                    } else {
-                        ps.setString(1, idR);
-                    }
-                    ps.setInt(2, id_proiect);
-                    logger.debug(ps.toString());
-                    return ps;
-
+                if (id_raport <= 0 || id_raport.equals(null)) {
+                    ps.setNull(1, Types.NULL);
+                } else {
+                    ps.setString(1, idR);
                 }
-            };
-            jdbcTemplate.update(psc);
-            return id_proiect;
-     }
+                ps.setInt(2, id_proiect);
+                logger.debug(ps.toString());
+                return ps;
+
+            }
+        };
+        jdbcTemplate.update(psc);
+        return id_proiect;
+    }
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer stergeBd(final Integer id_bd, final Integer id_proiect) {
-            JdbcTemplate jdbcTemplate = getJdbcTemplate();
-            PreparedStatementCreator psc = new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                    String idP = findByID(id_proiect).getIdBd();
-                    idP = idP.replace("," + id_bd.toString(), ",");
-                    PreparedStatement ps = con.prepareStatement(UPDATE_ID_BD);
+        JdbcTemplate jdbcTemplate = getJdbcTemplate();
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                String idP = findByID(id_proiect).getIdBd();
+                idP = idP.replace("," + id_bd.toString(), ",");
+                PreparedStatement ps = con.prepareStatement(UPDATE_ID_BD);
 
-                    if (id_bd <= 0 || id_bd.equals(null)) {
-                        ps.setNull(1, Types.NULL);
-                    } else {
-                        ps.setString(1, idP);
-                    }
-                    ps.setInt(2, id_proiect);
-                    logger.debug(ps.toString());
-                    return ps;
-
+                if (id_bd <= 0 || id_bd.equals(null)) {
+                    ps.setNull(1, Types.NULL);
+                } else {
+                    ps.setString(1, idP);
                 }
-            };
-            jdbcTemplate.update(psc);
-            return id_proiect;
-     }
+                ps.setInt(2, id_proiect);
+                logger.debug(ps.toString());
+                return ps;
+
+            }
+        };
+        jdbcTemplate.update(psc);
+        return id_proiect;
+    }
+
+    @Override
+    public boolean hasFiles(int id) {
+        try {
+            final String query = "SELECT * FROM proiecte.listaproiecte p WHERE p.id_proiect='" + id + "' AND p.id_alte_materiale REGEXP '^[A-Za-z1-9]+$' OR p.id_propunere REGEXP '^[A-Za-z1-9]+$'" +
+                    " OR p.id_chestionar_final REGEXP '^[A-Za-z1-9]+$' OR p.id_raport_final REGEXP '^[A-Za-z1-9]+$' OR p.id_bd REGEXP '^[A-Za-z1-9]+$'";
+
+            List<Proiect> proiectList = getJdbcTemplate().query(query, listaProiecteParameterizedRowMapper);
+            return !proiectList.isEmpty();
+        } catch (DataAccessException e) {
+            throw e;
+        }
+    }
 }

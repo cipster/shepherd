@@ -1,6 +1,7 @@
 package services;
 
 import exceptions.DAOException;
+import exceptions.ProjectHasFilesException;
 import model.dao.ProiectDAO;
 import model.dto.Proiect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,20 +40,17 @@ public class ProiectServiceImpl implements ProiectService {
 	@Override
 	public boolean deleteProject(String idProiect) throws RuntimeException {
 		int id = Integer.parseInt(idProiect);
-		if(isInvalidParam(id))
-			throw new IllegalArgumentException("Project ID cannot be null!");
-		else
-		if(proiectDAO.deleteByID(id) > DAOResult.ZERO)
-			return true;
-		else
-			return false;
+		if(isInvalidParam(id)) {
+            throw new IllegalArgumentException("Project ID cannot be null!");
+        } else if(projectHasFiles(id)){
+            throw new ProjectHasFilesException("Proiectul are fisiere salvate. Stergeti mai intai fisierele si apoi proiectul!");
+        } else {
+            return proiectDAO.deleteByID(id) > DAOResult.ZERO;
+        }
 	}
 
 	private boolean paramsAreEmpty(Proiect proiect) {
-        if (proiect.getNumeProiect().isEmpty() || proiect.getNrProiect().isEmpty() || proiect.getAn().isEmpty() || proiect.getIdClient() == 0) {
-            return true;
-        }
-        return false;
+        return proiect.getNumeProiect().isEmpty() || proiect.getNrProiect().isEmpty() || proiect.getAn().isEmpty() || proiect.getIdClient() == 0;
     }
 
     private boolean paramsAreEmpty(Proiect proiect, boolean creating) {
@@ -63,9 +61,10 @@ public class ProiectServiceImpl implements ProiectService {
     }
 
 	private boolean isInvalidParam(int param){
-		if ( param == 0 )
-			return true;
-		else
-			return false;
+        return param <= 0;
 	}
+
+    private boolean projectHasFiles(int id){
+        return proiectDAO.hasFiles(id);
+    }
 }

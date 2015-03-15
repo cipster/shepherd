@@ -158,9 +158,15 @@ function toJSDate(dateTime, ora) {
         time = dateTime[1].split(":");
         return new Date(date[0], date[1], date[2], time[0], time[1], time[2], 0).toLocaleString('ro', options);
     }
-
-
-//(year, month, day, hours, minutes, seconds, milliseconds)
+    //(year, month, day, hours, minutes, seconds, milliseconds)
     return new Date(date[0], date[1], date[2]).toLocaleString('ro', options);
 
 }
+
+$(window).scroll(function(){
+    if($(document).scrollTop() > 0){
+        $('#scrollUp').fadeIn(400)
+    }else{
+        $('#scrollUp').fadeOut(400);
+    }
+});

@@ -85,6 +85,7 @@
             cache: false,
             success: function (response) {
                 if (response && response.httpStatus == 500) {
+                    hideModal();
                     showNotification(response.message, DANGER);
                     return;
                 }

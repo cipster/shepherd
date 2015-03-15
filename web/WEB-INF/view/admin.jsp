@@ -98,13 +98,7 @@
 
 <div id="alert" class="notifications"></div>
 
-<form action="/logout" method="post" id="logoutForm">
-    <input type="hidden" name="${_csrf.parameterName}"
-           value="${_csrf.token}"/>
-</form>
-<footer class="panel-footer">
-    <p>&copy; fieldcover 2014 <a href="#"></a> &middot; <a href="#">Shepherd</a></p>
-</footer>
+<jsp:include page="include/footer.jsp"></jsp:include>
 </body>
 </html>
 

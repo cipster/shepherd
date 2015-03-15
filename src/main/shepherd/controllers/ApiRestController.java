@@ -277,7 +277,7 @@ public class ApiRestController {
         File f = null;
         String code = id;
         try {
-            String dirPath = File.separator + "WEB-INF" + File.separator + "resources" + File.separator + "barcode";
+            String dirPath = "/WEB-INF" + File.separatorChar + "resources" + File.separatorChar + "barcode";
             String contextDirName = this.servletContext.getRealPath(dirPath);
             File dir = new File(contextDirName);
             if (!dir.exists()) {

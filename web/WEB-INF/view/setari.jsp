@@ -103,11 +103,8 @@
 </form>
 
 <div id="alert" class="notifications"></div>
-
+<jsp:include page="include/footer.jsp"></jsp:include>
 </body>
-<footer class="panel-footer">
-    <p>&copy; fieldcover 2014 <a href="#"></a> &middot; <a href="#">Shepherd</a></p>
-</footer>
 </html>
 <!-- Bootstrap core JavaScript
 ================================================== -->
