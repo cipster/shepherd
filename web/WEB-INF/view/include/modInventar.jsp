@@ -71,7 +71,7 @@
                         <span class="fa fa-edit">&nbsp;</span><spring:message code="MODLOC.MODLOC"/>
                     </button>
                     <button type="button" class="btn btn-success" id="btnAddLoc" data-toggle="modal">
-                        <span class="fa fa-edit">&nbsp;</span><spring:message code="MODLOC.ADDLOC"/>
+                        <span class="fa fa-plus">&nbsp;</span><spring:message code="MODLOC.ADDLOC"/>
                     </button>
                     <button type="button" class="btn btn-danger" id="btnDelLoc" data-toggle="modal" onclick="atribuieLocMod()">
                         <span class="fa fa-times">&nbsp;</span><spring:message code="MODLOC.DELLOC"/>
@@ -128,7 +128,7 @@
                         <span class="fa fa-edit">&nbsp;</span><spring:message code="MODART.MODART"/>
                     </button>
                     <button type="button" class="btn btn-success" id="btnAddArticol" data-toggle="modal">
-                        <span class="fa fa-edit">&nbsp;</span><spring:message code="MODART.MODART"/>
+                        <span class="fa fa-plus">&nbsp;</span><spring:message code="MODART.ADDART"/>
                     </button>
                     <button type="button" class="btn btn-danger" id="btnDelArticol" data-toggle="modal" onclick="atribuieArticolMod()">
                         <span class="fa fa-times">&nbsp;</span><spring:message code="MODART.DELART"/>
