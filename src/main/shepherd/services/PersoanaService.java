@@ -1,5 +1,7 @@
 package services;
 
+import exceptions.DAOException;
+import model.ControllerResult;
 import model.dto.Persoana;
 import org.springframework.stereotype.Service;
 
@@ -7,10 +9,12 @@ import java.util.List;
 
 /**
  * Created by Ciprian on 3/12/2015.
- * Project Raindrop
+ * Project Shepherd
  */
 @Service
 public interface PersoanaService {
 
-	public List<Persoana> fetchAllPersoane();
+	List<Persoana> fetchAllPersoane();
+
+	ControllerResult addPersoana(Persoana persoana) throws DAOException;
 }

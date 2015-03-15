@@ -5685,6 +5685,22 @@ button.close {
     filter: alpha(opacity=50)
 }
 
+.modal-backdrop-white {
+
+    z-index: 1040;
+    background-color: #f5f5f5;
+}
+
+.modal-backdrop-white.fade {
+    opacity: 0;
+    filter: alpha(opacity=0)
+}
+
+.modal-backdrop-white.in {
+    opacity: .5;
+    filter: alpha(opacity=50)
+}
+
 .modal-header {
     padding: 15px;
     border-bottom: 1px solid #e5e5e5;
@@ -6567,7 +6583,7 @@ div.dataTables_wrapper {
     left: 0;
     right: 0;
     z-index: 66666;
-    background: url("/img/ajax-loader.gif") 50% 50% no-repeat;
+    background: url("../img/ajax-loader.gif") 50% 50% no-repeat;
     opacity: 1;
 }
 
@@ -6582,3 +6598,10 @@ div.dataTables_wrapper {
 }
 
 
+.spinner {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    right: 50%;
+    z-index: 5000;
+}

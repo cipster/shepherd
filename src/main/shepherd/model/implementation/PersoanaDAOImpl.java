@@ -84,24 +84,28 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         final String query = "INSERT INTO proiecte.persoana(id_persoana, nume,cnp, functie,username) VALUES (?,?,?,?,?)";
 
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		try {
+			PreparedStatementCreator psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+					PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
-                ps.setInt(1, entity.getIdPersoana());
-                ps.setString(2, entity.getNume());
-                ps.setString(3, entity.getCnp());
-                ps.setString(4, entity.getFunctie());
-                ps.setString(5, entity.getUsername());
+					ps.setInt(1, entity.getIdPersoana());
+					ps.setString(2, entity.getNume());
+					ps.setString(3, entity.getCnp());
+					ps.setString(4, entity.getFunctie());
+					ps.setString(5, entity.getUsername());
 
-                logger.debug(ps.toString());
-                return ps;
-            }
-        };
-        jdbcTemplate.update(psc, keyHolder);
+					logger.debug(ps.toString());
+					return ps;
+				}
+			};
+			jdbcTemplate.update(psc, keyHolder);
+		} catch (DataAccessException e) {
+			throw e;
+		}
 
-        return keyHolder.getKey().intValue();
+		return keyHolder.getKey().intValue();
     }
 
     @Override
@@ -109,24 +113,28 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         final String query = "UPDATE proiecte.persoana SET nume=?, cnp=?, functie=?, username=? WHERE id_persoana=?";
 
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+		try {
+			PreparedStatementCreator psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 
-                PreparedStatement ps = con.prepareStatement(query);
+					PreparedStatement ps = con.prepareStatement(query);
 
-                ps.setString(1, entity.getNume());
-                ps.setString(2, entity.getCnp());
-                ps.setString(3, entity.getFunctie());
-                ps.setString(4, entity.getUsername());
-                ps.setInt(5, entity.getIdPersoana());
+					ps.setString(1, entity.getNume());
+					ps.setString(2, entity.getCnp());
+					ps.setString(3, entity.getFunctie());
+					ps.setString(4, entity.getUsername());
+					ps.setInt(5, entity.getIdPersoana());
 
-                logger.debug(ps.toString());
-                return ps;
-            }
-        };
-        jdbcTemplate.update(psc);
-        return entity.getIdPersoana();
+					logger.debug(ps.toString());
+					return ps;
+				}
+			};
+			jdbcTemplate.update(psc);
+		} catch (DataAccessException e) {
+			throw e;
+		}
+		return entity.getIdPersoana();
     }
 
     @Override

@@ -21,7 +21,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRoleDAO userRoleDAO;
-	@Qualifier("userDAO")
 	@Autowired
 	private UserDAO userDAO;
 

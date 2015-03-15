@@ -317,22 +317,6 @@ public class ApiRestController {
         return response;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
-    @RequestMapping(value = "/adaugapersoana", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public String addPersoana(@RequestBody Persoana persoana) {
-
-        String response = Response.ERROR.getLabel();
-        try {
-            persoanaDAO.create(persoana);
-            response = Response.SUCCESS.getLabel();
-        } catch (DataAccessException ex) {
-            ex.printStackTrace();
-        }
-        return response;
-    }
-
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @RequestMapping(value = "/evidentaiese", method = RequestMethod.POST, produces = "application/json")

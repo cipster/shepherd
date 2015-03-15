@@ -49,7 +49,8 @@
 <body>
 <jsp:include page="include/navbar.jsp"></jsp:include>
 <div class="container">
-    <div class="jumbotron col-md-12" style="min-height: 550px;">
+    <div id="spinner-container" class="jumbotron col-md-12" style="min-height: 550px;">
+        <img id="spinner" src="/img/spinner.gif" class="spinner" style="display: none;">
         <div class="list-group col-md-3">
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <a id="adauga" class="list-group-item">
@@ -127,7 +128,6 @@
             type: 'get',
             url: '${pageContext.request.contextPath}/global/admin/inventar/cod1list',
             contentType: "application/json",
-            async: false,
             success: function (response) {
                 if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
@@ -139,10 +139,13 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                cod1.val(UNSELECT);
+                cod1.trigger("chosen:updated");
             }
         });
-        cod1.val(UNSELECT);
-        cod1.trigger("chosen:updated");
+
     }
 
     function getCod2ByCod1(idCod1) {
@@ -154,7 +157,6 @@
             type: 'get',
             url: '${pageContext.request.contextPath}/api/cod2list/' + idCod1,
             contentType: "application/json",
-            async: false,
             success: function (response) {
                 if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
@@ -166,10 +168,12 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                cod2.val(UNSELECT);
+                cod2.trigger('chosen:updated');
             }
         });
-        cod2.val(UNSELECT);
-        cod2.trigger('chosen:updated');
     }
 
     function getArticole() {
@@ -185,7 +189,6 @@
             type: 'get',
             url: '${pageContext.request.contextPath}/api/articolelist',
             contentType: "application/json",
-            async: false,
             success: function (response) {
                 if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
@@ -201,10 +204,13 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                modArticoleSelect.val(UNSELECT);
+                modArticoleSelect.trigger("chosen:updated");
             }
         });
-        modArticoleSelect.val(UNSELECT);
-        modArticoleSelect.trigger("chosen:updated");
+
     }
 
     function getLocuri() {
@@ -219,7 +225,6 @@
             type: 'get',
             url: '${pageContext.request.contextPath}/api/locurilist',
             contentType: "application/json",
-            async: false,
             success: function (response) {
                 if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
@@ -232,12 +237,15 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                modLocSelect.val(UNSELECT);
+                modLocSelect.trigger("chosen:updated");
+                locSelect.val(UNSELECT);
+                locSelect.trigger("chosen:updated");
             }
         });
-        modLocSelect.val(UNSELECT);
-        modLocSelect.trigger("chosen:updated");
-        locSelect.val(UNSELECT);
-        locSelect.trigger("chosen:updated");
+
     }
 
     function getPersoane() {
@@ -257,7 +265,6 @@
             type: 'get',
             url: '${pageContext.request.contextPath}/global/admin/inventar/persoanelist',
             contentType: "application/json",
-            async: false,
             success: function (response) {
                 if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
@@ -276,12 +283,15 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                modPersoanaSelect.val(UNSELECT);
+                modPersoanaSelect.trigger("chosen:updated");
+                newPersoanaSelect.val(UNSELECT);
+                newPersoanaSelect.trigger("chosen:updated");
             }
         });
-        modPersoanaSelect.val(UNSELECT);
-        modPersoanaSelect.trigger("chosen:updated");
-        newPersoanaSelect.val(UNSELECT);
-        newPersoanaSelect.trigger("chosen:updated");
+
     }
 
     function getClients() {
@@ -292,7 +302,6 @@
             type: 'get',
             url: '${pageContext.request.contextPath}/api/clientlist',
             contentType: "application/json",
-            async: false,
             success: function (response) {
                 if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
@@ -304,14 +313,14 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                chosenUnselect("#idClientInput");
+                chosenUnselect("#idClient");
+                chosenUnselect("#clientselect");
             }
         });
-        $("#clientselect").val(UNSELECT);
-        $("#clientselect").trigger("chosen:updated");
-        $("#idClientInput").val(UNSELECT);
-        $("#idClientInput").trigger("chosen:updated");
-        $("#idClient").val(UNSELECT);
-        $("#idClient").trigger("chosen:updated");
+
 
     }
 
@@ -322,7 +331,6 @@
             type: 'get',
             url: '${pageContext.request.contextPath}/global/admin/user/userlist',
             contentType: "application/json",
-            async: false,
             success: function (response) {
                 var idPersoana;
                 if (typeof response !== 'undefined') {
@@ -331,9 +339,9 @@
                         username = username.replace(/\./g, '-');
                         $.ajax({
                             type: 'get',
+                            async: false,
                             url: '${pageContext.request.contextPath}/api/userlistpersoane/' + username,
                             contentType: "application/json",
-                            async: false,
                             success: function (response) {
                                 idPersoana = response.idPersoana;
                             },
@@ -350,12 +358,14 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                idUserSelect.val(UNSELECT);
+                idUserSelect.trigger("chosen:updated");
             }
         });
 
 
-        idUserSelect.val(UNSELECT);
-        idUserSelect.trigger("chosen:updated");
     }
 
     function getProjects() {
@@ -367,7 +377,6 @@
             type: 'get',
             url: '${pageContext.request.contextPath}/api/proiectelist',
             contentType: "application/json",
-            async: false,
             success: function (response) {
                 if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
@@ -384,12 +393,15 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function(e) {
+                idProiectSelect.val(UNSELECT);
+                idProiectSelect.trigger("chosen:updated");
+                idProiect.val(UNSELECT);
+                idProiect.trigger("chosen:updated");
             }
         });
-        idProiectSelect.val(UNSELECT);
-        idProiectSelect.trigger("chosen:updated");
-        idProiect.val(UNSELECT);
-        idProiect.trigger("chosen:updated");
+
 
     }
 
@@ -467,8 +479,7 @@
             disable_search: true,
             allow_single_deselect: true
         });
-        $("#stare-articol").val(UNSELECT);
-        $("#stare-articol").trigger('chosen:updated');
+        chosenUnselect("#stare-articol");
 
         $("#persoana-select").chosen({
             width: "100%",
@@ -476,8 +487,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#persoana-select").val(UNSELECT);
-        $("#persoana-select").trigger('chosen:updated');
+        chosenUnselect("#persoana-select");
 
         $("#persoana-mod-select").chosen({
             width: "100%",
@@ -485,8 +495,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#persoana-mod-select").val(UNSELECT);
-        $("#persoana-mod-select").trigger('chosen:updated');
+        chosenUnselect("#persoana-mod-select");
 
         $("#loc-mod-select").chosen({
             width: "100%",
@@ -494,8 +503,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#loc-mod-select").val(UNSELECT);
-        $("#loc-mod-select").trigger('chosen:updated');
+        chosenUnselect("#loc-mod-select");
 
         $("#articol-mod-select").chosen({
             width: "100%",
@@ -542,9 +550,6 @@
         $("#cod2-mod-select").val(UNSELECT);
         $("#cod2-mod-select").trigger('chosen:updated');
 
-        getClients();
-        getProjects();
-
         $("#anSelInput").val(UNSELECT);
         $("#anSelInput").trigger("chosen:updated");
         $("#idProiect").val([]);
@@ -563,7 +568,6 @@
         $("#modClienti").css('display', "none");
         $("#modInventar").css('display', "none");
 
-
         $("#adauga").click(function () {
             $("#adauga").prop('class', "list-group-item active");
             $("#inventar").prop('class', "list-group-item");
@@ -578,8 +582,7 @@
             $("#modUsers").css('display', "none");
             $("#modClienti").css('display', "none");
             $("#sfat").css('display', "none");
-
-
+            getClients();
         });
 
         $("#modifica").click(function () {

@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +38,8 @@
 
 <body>
 <jsp:include page="include/navbar.jsp"></jsp:include>
-<div class="container" style="margin-bottom: 50px;">
+<div id="spinner-container" class="container" style="margin-bottom: 50px;">
+    <img id="spinner" src="/img/spinner.gif" class="spinner" style="display: none;">
     <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
         <div class="btn-group" style="float:left; margin: 15px;">
             <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
@@ -51,7 +52,7 @@
             <div class="btn-group" style="float:right; margin: 15px;">
                 <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; articol</button>
                 <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; persoan&#259;</button>
-                <button id="add-place" data-toggle="modal"  data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; loc</button>
+                <button id="add-place" data-toggle="modal" data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; loc</button>
             </div>
         </sec:authorize>
     </sec:authorize>
@@ -65,12 +66,12 @@
                 <tr>
                     <th></th>
                     <th>Nr</th>
-                    <th><spring:message code="INVENTAR.CATEGORIE" /></th>
-                    <th><spring:message code="INVENTAR.TIP" /></th>
-                    <th><spring:message code="INVENTAR.ARTICOL" /></th>
-                    <th><spring:message code="INVENTAR.COD" /></th>
-                    <th><spring:message code="INVENTAR.DETALII" /></th>
-                    <th><spring:message code="INVENTAR.ALOCAT" /></th>
+                    <th><spring:message code="INVENTAR.CATEGORIE"/></th>
+                    <th><spring:message code="INVENTAR.TIP"/></th>
+                    <th><spring:message code="INVENTAR.ARTICOL"/></th>
+                    <th><spring:message code="INVENTAR.COD"/></th>
+                    <th><spring:message code="INVENTAR.DETALII"/></th>
+                    <th><spring:message code="INVENTAR.ALOCAT"/></th>
                 </tr>
                 </thead>
 
@@ -84,7 +85,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><spring:message code="DIALOG.ADDITEM" /></h4>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDITEM"/></h4>
                 </div>
                 <form id="adaugaarticol" action="${pageContext.request.contextPath}/api/adaugaarticol" method="post">
                     <div class="modal-body">
@@ -116,13 +117,16 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                        <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD"/></button>
+                        <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE"/></button>
                     </div>
                 </form>
-            </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-dialog -->
-    </div> <!-- /.modal -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
@@ -131,9 +135,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON" /></h4>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON"/></h4>
                 </div>
-                <form id="adaugapersoana" action="${pageContext.request.contextPath}/api/adaugapersoana" method="post">
+                <form id="adaugapersoana" action="${pageContext.request.contextPath}/global/admin/inventar/adaugapersoana" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nume">Nume</label>
@@ -150,14 +154,17 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                        <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD"/></button>
+                        <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE"/></button>
 
                     </div>
                 </form>
-            </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-dialog -->
-    </div> <!-- /.modal -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
@@ -166,7 +173,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><spring:message code="DIALOG.ADDPLACE" /></h4>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDPLACE"/></h4>
                 </div>
                 <form id="adaugaloc" action="${pageContext.request.contextPath}/api/adaugaloc" method="post">
                     <div class="modal-body">
@@ -176,13 +183,16 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD" /></button>
-                        <button type="button" id="closeloc" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                        <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD"/></button>
+                        <button type="button" id="closeloc" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE"/></button>
                     </div>
                 </form>
-            </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-dialog -->
-    </div> <!-- /.modal -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
@@ -191,7 +201,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.IESE" /></h4>
+                    <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.IESE"/></h4>
                 </div>
                 <div class="modal-body">
                     <div id="ieseas" class="ieseas">
@@ -224,14 +234,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="backiese" class="btn btn-default"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
-                    <button type="button" id="nextiese" class="btn btn-success ascuns"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT" /></button>
-                    <button type="button" id="atribuie-articole" class="btn btn-success ascuns"><span class="fa fa-thumb-tack">&nbsp;</span><spring:message code="DIALOG.ATRIBUIE" /></button>
-                    <button type="button" id="closeiese" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE" /></button>
+                    <button type="button" id="backiese" class="btn btn-default"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK"/></button>
+                    <button type="button" id="nextiese" class="btn btn-success ascuns"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT"/></button>
+                    <button type="button" id="atribuie-articole" class="btn btn-success ascuns"><span class="fa fa-thumb-tack">&nbsp;</span><spring:message code="DIALOG.ATRIBUIE"/></button>
+                    <button type="button" id="closeiese" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
                 </div>
-            </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-dialog -->
-    </div> <!-- /.modal -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
@@ -240,7 +253,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.INTRA" /></h4>
+                    <h4 class="modal-title"><span class="fa fa-barcode">&nbsp;</span><spring:message code="DIALOG.INTRA"/></h4>
                 </div>
                 <div class="modal-body">
                     <div id="intrascan">
@@ -264,14 +277,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="backintra" class="btn btn-default ascuns"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
-                    <button type="button" id="nextintra" class="btn btn-success pas1"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT" /></button>
-                    <button type="button" id="intra-articole" class="btn btn-success ascuns"><span class="fa fa-cubes">&nbsp;</span><spring:message code="DIALOG.ATRIBUIE" /></button>
-                    <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE" /></button>
+                    <button type="button" id="backintra" class="btn btn-default ascuns"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK"/></button>
+                    <button type="button" id="nextintra" class="btn btn-success pas1"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT"/></button>
+                    <button type="button" id="intra-articole" class="btn btn-success ascuns"><span class="fa fa-cubes">&nbsp;</span><spring:message code="DIALOG.ATRIBUIE"/></button>
+                    <button type="button" id="closeintra" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
                 </div>
-            </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-dialog -->
-    </div> <!-- /.modal -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
@@ -280,7 +296,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.PRIMIRE" /></h4>
+                    <h4 class="modal-title"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.PRIMIRE"/></h4>
                 </div>
                 <div class="modal-body">
                     <div id="primire-info" class="text-center">
@@ -315,15 +331,18 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="backprimire" class="btn btn-default pas1 ascuns"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK" /></button>
-                    <button type="button" id="nextprimire" class="btn btn-success pas1 ascuns"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT" /></button>
-                    <button type="button" id="primire-scan-articole" class="btn btn-success ascuns"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.AMPRIMIT" /></button>
-                    <button type="button" id="primire-introdu-articole" class="btn btn-success ascuns"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.AMPRIMIT" /></button>
-                    <button type="button" id="closeprimire" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE" /></button>
+                    <button type="button" id="backprimire" class="btn btn-default pas1 ascuns"><span class="fa fa-arrow-left">&nbsp;</span><spring:message code="DIALOG.BACK"/></button>
+                    <button type="button" id="nextprimire" class="btn btn-success pas1 ascuns"><span class="fa fa-arrow-right">&nbsp;</span><spring:message code="DIALOG.NEXT"/></button>
+                    <button type="button" id="primire-scan-articole" class="btn btn-success ascuns"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.AMPRIMIT"/></button>
+                    <button type="button" id="primire-introdu-articole" class="btn btn-success ascuns"><span class="fa fa-flag-checkered">&nbsp;</span><spring:message code="DIALOG.AMPRIMIT"/></button>
+                    <button type="button" id="closeprimire" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
                 </div>
-            </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-dialog -->
-    </div> <!-- /.modal -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </sec:authorize>
 
 <div id="alert" class="notifications"></div>
@@ -345,7 +364,7 @@
 <input hidden="hidden" id="appLangCode" value="">
 </body>
 <footer class="panel-footer">
-    <p class="pull-right"><a href="#top"><spring:message code="NAVBAR.BACKTOTOP" /></a></p>
+    <p class="pull-right"><a href="#top"><spring:message code="NAVBAR.BACKTOTOP"/></a></p>
     <p>&copy; fieldcover 2014 <a href="#"></a> &middot; <a href="#">Shepherd</a></p>
 </footer>
 </html>
@@ -364,11 +383,10 @@
 <script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 <script src="/js/common.js"></script>
 <script type="text/javascript">
-
     var table;
     var idArticol;
 
-    function golestePrimire(){
+    function golestePrimire() {
         $('#primire-info').removeClass('ascuns');
         $('#primire-board').addClass('ascuns');
         $('#primireq').addClass('ascuns');
@@ -386,39 +404,15 @@
         $('#articolescanateprimire').html('');
     }
 
-    function toJSDate (dateTime,ora) {
-        var options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            "second":"2-digit",
-            "minute":"2-digit",
-            "hour":"2-digit"
-        };
-        var dateTime = dateTime.split(" ");//dateTime[0] = date, dateTime[1] = time
-        var time;
-        var date = dateTime[0].split("-");
-        if(ora && ora == 1){
-            time = dateTime[1].split(":");
-            return new Date(date[0], date[1], date[2], time[0], time[1], time[2], 0).toLocaleString('ro', options);
-        }
-
-
-//(year, month, day, hours, minutes, seconds, milliseconds)
-        return new Date(date[0], date[1], date[2]).toLocaleString('ro', options);
-
-    }
-
-    function drawBarcode(id){
+    function drawBarcode(id) {
         var canvas = document.getElementById('barcode' + id);
-        if (canvas.getContext){
+        if (canvas.getContext) {
             var ctx = canvas.getContext('2d');
         }
     }
 
     /* Formatting function for row details */
-    function format ( d ) {
+    function format(d) {
         var evidentaInventar;
         var data;
         var loc;
@@ -432,7 +426,7 @@
         var detaliiTitle;
         var usePrimire = false;
         var dataPrimire;
-        var useUserRecuperat =false;
+        var useUserRecuperat = false;
         var userRecuperat;
         var primitPrinTranzit;
         var barcode = d.barcode;
@@ -458,7 +452,7 @@
                     useDetalii = true;
                 }
                 userRecuperat = d.modificatDe;
-                if(userRecuperat && userRecuperat.length > 0){
+                if (userRecuperat && userRecuperat.length > 0) {
                     useUserRecuperat = true;
                 }
                 break;
@@ -466,7 +460,7 @@
                 evidentaInventar = getTranzactie(d.idCod3);
                 loc = getLocById(evidentaInventar.idLoc).denumireLoc;
                 stare = '<%=StareArticol.IN_FOLOSINTA.getLabel()%>';
-                data = toJSDate(evidentaInventar.dataPreluarii,1);
+                data = toJSDate(evidentaInventar.dataPreluarii, 1);
                 dataTitle = 'Atribuit la:';
                 stareIcon = 'fa-thumb-tack';
                 persoana = getPersoanaById(evidentaInventar.idPersoana).nume;
@@ -479,14 +473,14 @@
                     useDetalii = true;
                 }
                 dataPrimire = d.dataPrimire;
-                if(dataPrimire) {
+                if (dataPrimire) {
                     dataPrimire = toJSDate(dataPrimire, 1);
                     if (dataPrimire < data) {
                         dataPrimire = undefined;
 
                     }
                 }
-                if(dataPrimire) {
+                if (dataPrimire) {
                     usePrimire = true;
                     primitPrinTranzit = 'Primit prin tranzit'
 
@@ -501,7 +495,7 @@
                 stare = '<%=StareArticol.TRANZIT.getLabel()%>';
                 stareIcon = 'fa-truck';
                 detalii = evidentaInventar.detalii;
-                data = toJSDate(evidentaInventar.dataPreluarii,1);
+                data = toJSDate(evidentaInventar.dataPreluarii, 1);
                 dataTitle = 'Plecat la:';
                 persoana = getPersoanaById(evidentaInventar.idPersoana).nume;
                 if (persoana.length > 0) {
@@ -512,7 +506,7 @@
                     useDetalii = true;
                 }
                 dataPrimire = d.dataPrimire;
-                if(dataPrimire) {
+                if (dataPrimire) {
                     dataPrimire = toJSDate(dataPrimire, 1);
                     if (dataPrimire < data) {
                         dataPrimire = undefined;
@@ -520,7 +514,7 @@
                     }
                 }
                 usePrimire = true;
-                if(dataPrimire) {
+                if (dataPrimire) {
                     dataPrimire = toJSDate(dataPrimire, 1)
                 } else {
                     dataPrimire = '&#206;nc&#259; nu a ajuns la destina&#355;ie';
@@ -545,49 +539,49 @@
             default:
                 return;
         }
-        var retString = '<div class="well"><table class="table" cellpadding="5" cellspacing="0" border="0" style="margin-left:auto;margin-right: auto ;padding-left:100px;width: 90%!important;">'+
-                '<tr>'+
-                '<td width="200px;"><span class="fa fa-map-marker fa-fw">&nbsp;</span><b>Localizare:</b></td>'+
-                '<td width="350px;">'+ loc +'</td>'+
+        var retString = '<div class="well"><table class="table" cellpadding="5" cellspacing="0" border="0" style="margin-left:auto;margin-right: auto ;padding-left:100px;width: 90%!important;">' +
+                '<tr>' +
+                '<td width="200px;"><span class="fa fa-map-marker fa-fw">&nbsp;</span><b>Localizare:</b></td>' +
+                '<td width="350px;">' + loc + '</td>' +
                 '<td rowspan="10" style="vertical-align: middle; text-align: center"><div>' +
                 '<img  width="200" height="100"  src="/barcode/' + barcode + '.png" alt="Inca nu s-a generat">' +
                 '<br><span class="text-center">' + barcode + '</span></div>' +
                 '</td>' +
                 '</tr>' +
-                '<tr>'+
-                '<td><span class="fa ' + stareIcon +' fa-fw">&nbsp;</span><b>Stare:</b></td>'+
-                '<td>'+ stare +'</td>'+
+                '<tr>' +
+                '<td><span class="fa ' + stareIcon + ' fa-fw">&nbsp;</span><b>Stare:</b></td>' +
+                '<td>' + stare + '</td>' +
                 '</tr>';
 
-        if(usePrimire){
-            retString += '<tr>'+
-            '<td><span class="fa fa-truck fa-fw">&nbsp;</span><b>Stare anterioar&#259;:</b></td>'+
-            '<td>Tranzit</td>'+
+        if (usePrimire) {
+            retString += '<tr>' +
+            '<td><span class="fa fa-truck fa-fw">&nbsp;</span><b>Stare anterioar&#259;:</b></td>' +
+            '<td>Tranzit</td>' +
             '</tr>';
         }
 
-        retString += '<tr>'+
-        '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>'+
-        '<td>'+ data +'</td>'+
+        retString += '<tr>' +
+        '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>' +
+        '<td>' + data + '</td>' +
         '</tr>';
-        if(usePrimire){
-            retString += '<tr><td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>Primit la:</b></td>'+
-            '<td>' + dataPrimire + '</td>'+
+        if (usePrimire) {
+            retString += '<tr><td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>Primit la:</b></td>' +
+            '<td>' + dataPrimire + '</td>' +
             '</tr>';
         }
-        if(usePersoana){
-            retString += '<tr><td><span class="fa fa-user fa-fw">&nbsp;</span><b>Persoan&#259;:</b></td>'+
-            '<td>' + persoana + '</td>'+
+        if (usePersoana) {
+            retString += '<tr><td><span class="fa fa-user fa-fw">&nbsp;</span><b>Persoan&#259;:</b></td>' +
+            '<td>' + persoana + '</td>' +
             '</tr>';
         }
-        if(useUserRecuperat){
-            retString += '<tr><td><span class="fa fa-user fa-fw">&nbsp;</span><b>Recuperat de:</b></td>'+
-            '<td>' + userRecuperat + '</td>'+
+        if (useUserRecuperat) {
+            retString += '<tr><td><span class="fa fa-user fa-fw">&nbsp;</span><b>Recuperat de:</b></td>' +
+            '<td>' + userRecuperat + '</td>' +
             '</tr>';
         }
-        if(useDetalii){
-            retString += '<tr><td><span class="fa fa-comment fa-fw">&nbsp;</span><b>' + detaliiTitle + ':</b></td>'+
-            '<td>' + detalii + '</td>'+
+        if (useDetalii) {
+            retString += '<tr><td><span class="fa fa-comment fa-fw">&nbsp;</span><b>' + detaliiTitle + ':</b></td>' +
+            '<td>' + detalii + '</td>' +
             '</tr>';
         }
         retString += '<tr><td colspan="2"><button class="btn btn-default"><span class="fa fa-print"> &nbsp;</span> Print cod de bare</button></td></tr>';
@@ -600,11 +594,11 @@
         var tranzactie;
         $.ajax({
             type: 'get',
+            async: false,
             url: '${pageContext.request.contextPath}/api/tranzactie/' + idArticol,
             contentType: "application/json",
-            async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     tranzactie = response;
                 }
             },
@@ -620,11 +614,11 @@
         var locsor;
         $.ajax({
             type: 'get',
+            async: false,
             url: '${pageContext.request.contextPath}/api/getLoc/' + idLoc,
             contentType: "application/json",
-            async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     locsor = response;
                 }
             },
@@ -640,11 +634,11 @@
         var persoana;
         $.ajax({
             type: 'get',
+            async: false,
             url: '${pageContext.request.contextPath}/api/getPersoana/' + idPersoana,
             contentType: "application/json",
-            async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     persoana = response;
                 }
             },
@@ -656,29 +650,30 @@
         return persoana;
     }
 
-    function generateBarcode(barcode){
+    function generateBarcode(barcode) {
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/api/generatebarcode/' + barcode,
             cache: false,
+            async: false,
             success: function (response) {
 
             },
-            error: function(err){
+            error: function (err) {
                 alert('Erroare la conexiune');
             }
         });
     }
 
-    function getArticol(code){
+    function getArticol(code) {
         var articolJSON;
         $.ajax({
             type: 'get',
+            async: false,
             url: '${pageContext.request.contextPath}/api/articol/' + code,
             contentType: "application/json",
-            async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     articolJSON = response;
                 }
             },
@@ -686,11 +681,10 @@
                 alert("Connection error!");
             }
         });
-
         return articolJSON;
     }
 
-    function getArticolePrimire(){
+    function getArticolePrimire() {
         var articoleJSON = [];
         $.ajax({
             type: 'get',
@@ -698,9 +692,8 @@
             contentType: "application/json",
             async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     articoleJSON = response;
-
                 }
             },
             error: function (e) {
@@ -711,16 +704,15 @@
         return articoleJSON;
     }
 
-    function getCod2ByCod1(idCod1){
+    function getCod2ByCod1(idCod1) {
         var cod2 = $('#selcod2');
         cod2.html('');
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/api/cod2list/' + idCod1,
             contentType: "application/json",
-            async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
                         cod2.append($("<option>").val(response[i].cod2).text(response[i].denumire2));
                     }
@@ -728,21 +720,23 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                cod2.val(UNSELECT);
+                cod2.trigger(chosenUpdated);
             }
         });
-        cod2.val(-1);
-        cod2.trigger('chosen:updated');
+
     }
 
-    function getPersoane(){
+    function getPersoane() {
         $("#iesepers").html("");
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/api/persoane',
             contentType: "application/json",
-            async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
                         $("#iesepers").append($("<option>").val(response[i].idPersoana).text(response[i].nume + '  ' + response[i].cnp));
                     }
@@ -750,21 +744,22 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                chosenUnselect("#iesepers")
             }
         });
-        $("#iesepers").val(-1);
-        $("#iesepers").trigger("chosen:updated");
+        ;
     }
 
-    function getLoc(){
+    function getLoc() {
         $("#ieseloc").html("");
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/api/locuri',
             contentType: "application/json",
-            async: false,
             success: function (response) {
-                if(typeof response !== 'undefined') {
+                if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
                         $("#ieseloc").append($("<option>").val(response[i].idLoc).text(response[i].denumireLoc));
                         $("#intraloc").append($("<option>").val(response[i].idLoc).text(response[i].denumireLoc));
@@ -773,12 +768,13 @@
             },
             error: function (e) {
                 alert("Connection error!");
+            },
+            complete: function (e) {
+                chosenUnselect("#ieseloc");
+                chosenUnselect("#intraloc");
             }
         });
-        $("#ieseloc").val(-1);
-        $("#ieseloc").trigger("chosen:updated");
-        $("#intraloc").val(-1);
-        $("#intraloc").trigger("chosen:updated");
+
     }
 
     $(document).ready(function () {
@@ -791,59 +787,71 @@
         var intraloc = $('#intraloc');
         var iesestare = $('#iesestare');
         var tableData;
-        try{
-            table = $('#inventory-table').DataTable( {
+        try {
+            table = $('#inventory-table').DataTable({
                 "ajax": {
                     "url": '${pageContext.request.contextPath}/api/getinventory',
                     "dataSrc": ""
                 },
-                "aLengthMenu": [[10, 25, 50, 100,-1], [10, 25, 50, 100, "Toate"]],
+                "aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Toate"]],
                 "language": {
                     "url": '/fonts/ro_RO.txt'
                 },
                 stateSave: true,
                 "columns": [
                     {
-                        "className":      'details-control',
-                        "orderable":      false,
-                        "data":           null,
+                        "className": 'details-control',
+                        "orderable": false,
+                        "data": null,
                         "defaultContent": '',
                         "searchable": false
                     },
-                    { "data": "idCod3" },
-                    { "data": "denumire1" },
-                    { "data": "denumire2" },
-                    { "data": "denumire3" },
-                    { "data": "barcode" },
-                    { "data": "detalii" },
-                    { "data": "stare" },
-                    { "data": "idLoc",
+                    {"data": "idCod3"},
+                    {"data": "denumire1"},
+                    {"data": "denumire2"},
+                    {"data": "denumire3"},
+                    {"data": "barcode"},
+                    {"data": "detalii"},
+                    {"data": "stare"},
+                    {
+                        "data": "idLoc",
                         "visible": false,
-                        "searchable": false },
-                    { "data": "dataAdaugare",
+                        "searchable": false
+                    },
+                    {
+                        "data": "dataAdaugare",
                         "visible": false,
-                        "searchable": false },
-                    { "data": "dataRecuperare",
+                        "searchable": false
+                    },
+                    {
+                        "data": "dataRecuperare",
                         "visible": false,
-                        "searchable": false },
-                    { "data": "detaliiRecuperare",
+                        "searchable": false
+                    },
+                    {
+                        "data": "detaliiRecuperare",
                         "visible": false,
-                        "searchable": false },
-                    { "data": "dataPrimire",
+                        "searchable": false
+                    },
+                    {
+                        "data": "dataPrimire",
                         "visible": false,
-                        "searchable": false },
-                    { "data": "modificatDe",
+                        "searchable": false
+                    },
+                    {
+                        "data": "modificatDe",
                         "visible": false,
-                        "searchable": false }
+                        "searchable": false
+                    }
                 ],
                 "columnDefs": [
                     {
-                        "targets": [ 1 ],
+                        "targets": [1],
                         "visible": true,
                         "searchable": false
                     },
                     {
-                        "targets": [ 7 ],
+                        "targets": [7],
                         "bUseRendered": true,
                         "visible": true,
                         "fnCreatedCell": function (nTd, sData, oData, i) {
@@ -884,7 +892,7 @@
                             "sExtends": "csv",
                             "sButtonClass": "btn btn-default",
                             "sButtonText": '<span class="fa fa-file-o">&nbsp;&nbsp;</span><span>CSV</span>',
-                            "mColumns": [ 1, 2, 3, 4, 5 ,6, 7],
+                            "mColumns": [1, 2, 3, 4, 5, 6, 7],
                             "oSelectorOpts": {
                                 page: 'current'
                             }
@@ -894,7 +902,7 @@
                             "sButtonClass": "btn btn-default",
                             "sCharSet": "utf16le",
                             "sButtonText": '<span class="fa fa-file-excel-o">&nbsp;&nbsp;</span><span>XLS</span>',
-                            "mColumns": [1, 2, 3, 4,5 ,6, 7],
+                            "mColumns": [1, 2, 3, 4, 5, 6, 7],
                             "oSelectorOpts": {
                                 page: 'current'
                             }
@@ -903,14 +911,14 @@
                             "sExtends": "pdf",
                             "sButtonClass": "btn btn-default",
                             "sButtonText": '<span class="fa fa-file-pdf-o">&nbsp;&nbsp;</span><span>PDF</span>',
-                            "mColumns": [1, 2, 3, 4,5 ,6, 7],
+                            "mColumns": [1, 2, 3, 4, 5, 6, 7],
                             "oSelectorOpts": {
                                 page: 'current'
                             }
                         }
                     ]
                 }
-            } );
+            });
 
             $('#inventory-table tbody').on('click', 'td.details-control', function () {
                 var tr = $(this).closest('tr');
@@ -928,18 +936,18 @@
                 }
             });
 
-        } catch (err){
+        } catch (err) {
             console.log(err);
         }
 
-        function amPrimit(idContainer, useScan){
+        function amPrimit(idContainer, useScan) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
             var articole = [];
             var querySelector = '#' + idContainer;
-            $(querySelector).find('li').each(function(){
-                if($(this).prop('id')) {
+            $(querySelector).find('li').each(function () {
+                if ($(this).prop('id')) {
                     articole.push($(this).prop('id'));
                 }
             });
@@ -947,7 +955,7 @@
             $.ajax({
                 type: 'post',
                 url: '${pageContext.request.contextPath}/api/amprimit',
-                beforeSend: function(xhr){
+                beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 data: JSON.stringify(data),
@@ -955,20 +963,20 @@
                     $('#closeprimire').click();
                     table.ajax.reload();
                     $("#alert").notify({
-                        message: { text: 'Ai confirmat primirea cu succes!' },
+                        message: {text: 'Ai confirmat primirea cu succes!'},
                         type: 'success',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
+                        fadeOut: {enabled: true, delay: 3500}
                     }).show();
                 },
-                error: function(err){
+                error: function (err) {
                     $("#alert").notify({
-                        message: { text: 'Operatie nereusita!' },
+                        message: {text: 'Operatie nereusita!'},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
+                        fadeOut: {enabled: true, delay: 3500}
                     }).show();
                 }
             });
@@ -1006,7 +1014,7 @@
         selcod2.val(-1);
         selcod2.trigger('chosen:updated');
 
-        selcod1.on('change', function(){
+        selcod1.on('change', function () {
             getCod2ByCod1(selcod1.val());
         });
 
@@ -1039,7 +1047,7 @@
             placeholder_text_single: 'Alege o optiune...',
             no_results_text: 'Nu a fost gasit...'
         });
-        iesestare.val(-1);
+        iesestare.val(UNSELECT);
         iesestare.trigger('chosen:updated');
 
         $('#intra-modal').on('shown.bs.modal', function (e) {
@@ -1051,11 +1059,11 @@
             listaPrimire.html('');
             var count = 1;
             var articolePrimire = getArticolePrimire();
-            if(articolePrimire && articolePrimire.length > 0){
+            if (articolePrimire && articolePrimire.length > 0) {
                 $('#primire-info').addClass('ascuns');
                 $('#primire-board').removeClass('ascuns');
                 $('#nextprimire').removeClass('ascuns');
-                $.each(articolePrimire,function(i,articol){
+                $.each(articolePrimire, function (i, articol) {
                     listaPrimire
                             .append('<tr id="' + articol.cod3 + '" class="articolgasit" data-loc="' + articol.idLoc + '">' +
                                 //'<td><input type="checkbox" class="checkbox-inventar" id="bifa-primire" /></td>' +
@@ -1071,9 +1079,9 @@
             golestePrimire();
         });
 
-        $('#nextprimire').on('click', function(){
+        $('#nextprimire').on('click', function () {
             $(this).addClass('ascuns');
-            if($('#primire-articole-cautate').html() != ''){
+            if ($('#primire-articole-cautate').html() != '') {
                 $('#primire-board').addClass('ascuns');
                 $('#primireq').removeClass('ascuns');
                 $('#backprimire').removeClass('ascuns');
@@ -1083,13 +1091,13 @@
             }
         });
 
-        $('#backprimire').on('click', function(){
-            if($(this).hasClass('pas1')){
+        $('#backprimire').on('click', function () {
+            if ($(this).hasClass('pas1')) {
                 $('#nextprimire').removeClass('ascuns');
                 $('#primire-board').removeClass('ascuns');
                 $('#primireq').addClass('ascuns');
                 $('#backprimire').addClass('ascuns');
-            } else if($(this).hasClass('pas2')){
+            } else if ($(this).hasClass('pas2')) {
                 $(this).removeClass('pas2');
                 $(this).addClass('pas1');
                 $('#primireq').removeClass('ascuns');
@@ -1105,7 +1113,7 @@
         });
 
         //butonul de scan la primire
-        $('#scaneaza-primire').on('click', function(){
+        $('#scaneaza-primire').on('click', function () {
             $('#primireq').addClass('ascuns');
             $('#backprimire').removeClass('pas1');
             $('#backprimire').addClass('pas2');
@@ -1115,7 +1123,7 @@
         });
 
         //butonul de manual la primire
-        $('#introdu-primire').on('click', function(){
+        $('#introdu-primire').on('click', function () {
             $('#primireq').addClass('ascuns');
             $('#backprimire').removeClass('pas1');
             $('#backprimire').addClass('pas2');
@@ -1124,37 +1132,37 @@
             $('#primireintrodubarcodeinput').focus();
         });
 
-        $('#primirescanbarcodeinput').on('keyup', function(e){
+        $('#primirescanbarcodeinput').on('keyup', function (e) {
             var keyCode = e.keyCode ? e.keyCode : e.which;
-            if(keyCode === 13){
-                var code= $(this).val();
+            if (keyCode === 13) {
+                var code = $(this).val();
                 $(this).val('');
-                if(code === ''){
+                if (code === '') {
                     return;
                 }
                 var articolJSON = getArticol(code);
                 var tranzactie;
-                if(typeof  articolJSON !== 'undefined') {
-                    if(articolJSON.idCod3 == 0){
+                if (typeof  articolJSON !== 'undefined') {
+                    if (articolJSON.idCod3 == 0) {
                         alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
-                    } else if(articolJSON.stare == 4 ) {
+                    } else if (articolJSON.stare == 4) {
                         var idArticol = articolJSON.cod3;
                         tranzactie = getTranzactie(idArticol);
-                        if(!tranzactie || tranzactie.idEvidentaInventar == 0){
+                        if (!tranzactie || tranzactie.idEvidentaInventar == 0) {
                             alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
                             return;
                         }
-                        if($('#articolescanateprimire').html().trim() === ''){
+                        if ($('#articolescanateprimire').html().trim() === '') {
                             $('#articolescanateprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
 
                         } else {
-                            $('#articolescanateprimire').find('li').each(function(){
-                                if($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
+                            $('#articolescanateprimire').find('li').each(function () {
+                                if ($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
                                     $('#articolescanateprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
                                 }
                             });
                         }
-                    } else if(articolJSON.stare != 4){
+                    } else if (articolJSON.stare != 4) {
                         alert('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul');
                     } else {
                         alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
@@ -1167,37 +1175,37 @@
             }
         });
 
-        $('#primireintrodubarcodeinput').on('keyup', function(e){
+        $('#primireintrodubarcodeinput').on('keyup', function (e) {
             var keyCode = e.keyCode ? e.keyCode : e.which;
-            if(keyCode === 13){
-                var code= $(this).val();
+            if (keyCode === 13) {
+                var code = $(this).val();
                 $(this).val('');
-                if(code === ''){
+                if (code === '') {
                     return;
                 }
                 var articolJSON = getArticol(code);
                 var tranzactie;
-                if(typeof  articolJSON !== 'undefined') {
-                    if(articolJSON.idCod3 == 0){
+                if (typeof  articolJSON !== 'undefined') {
+                    if (articolJSON.idCod3 == 0) {
                         alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
-                    } else if(articolJSON.stare == 4 ) {
+                    } else if (articolJSON.stare == 4) {
                         var idArticol = articolJSON.cod3;
                         tranzactie = getTranzactie(idArticol);
-                        if(!tranzactie || tranzactie.idEvidentaInventar == 0){
+                        if (!tranzactie || tranzactie.idEvidentaInventar == 0) {
                             alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
                             return;
                         }
-                        if($('#articoleintroduseprimire').html().trim() === ''){
+                        if ($('#articoleintroduseprimire').html().trim() === '') {
                             $('#articoleintroduseprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
 
                         } else {
-                            $('#articoleintroduseprimire').find('li').each(function(){
-                                if($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
+                            $('#articoleintroduseprimire').find('li').each(function () {
+                                if ($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
                                     $('#articoleintroduseprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
                                 }
                             });
                         }
-                    } else if(articolJSON.stare != 4){
+                    } else if (articolJSON.stare != 4) {
                         alert('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul');
                     } else {
                         alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
@@ -1211,8 +1219,8 @@
         });
 
         //butonul de back de la scanare iese
-        $('#backiese').on('click', function(){
-            if($(this).hasClass('pas2')){
+        $('#backiese').on('click', function () {
+            if ($(this).hasClass('pas2')) {
                 $('#backiese').hide();
                 $('#ieseas').show();
                 $('#detalii-group').hide();
@@ -1238,15 +1246,15 @@
         });
 
         //butonul de back de la scanare iese
-        $('#backintra').on('click', function(){
-            if($(this).hasClass('pas3')){
+        $('#backintra').on('click', function () {
+            if ($(this).hasClass('pas3')) {
                 $('#intraalege').removeClass('ascuns');
                 $('#detaliiintra-group').addClass('ascuns');
                 $('#intra-articole').addClass('ascuns');
                 $('#nextintra').removeClass('ascuns');
                 $(this).removeClass('pas3');
                 $(this).addClass('pas2');
-            } else if($(this).hasClass('pas2')){
+            } else if ($(this).hasClass('pas2')) {
                 $(this).removeClass('pas2');
                 $(this).addClass('ascuns');
                 $('#intraalege').addClass('ascuns');
@@ -1257,10 +1265,10 @@
         });
 
         //actiunea cand se schimba livrarea la scan iese
-        iesestare.on('change', function(){
-            if($(this).val() > 0 && ieseloc.val() > 0 && iesepers.val() > 0){
+        iesestare.on('change', function () {
+            if ($(this).val() > 0 && ieseloc.val() > 0 && iesepers.val() > 0) {
                 $('#iesebarcode').show();
-                setTimeout(function(){
+                setTimeout(function () {
                     iesestare.removeClass('chosen-container-active');
                     $('#iesebarcodeinput').focus();
                 }, 0);
@@ -1268,10 +1276,10 @@
         });
 
         //actiunea cand se schimba persoana la scan iese
-        iesepers.on('change', function(){
-            if($(this).val() > 0 && ieseloc.val() > 0 && iesestare.val() > 0){
+        iesepers.on('change', function () {
+            if ($(this).val() > 0 && ieseloc.val() > 0 && iesestare.val() > 0) {
                 $('#iesebarcode').show();
-                setTimeout(function(){
+                setTimeout(function () {
                     iesepers.removeClass('chosen-container-active');
                     $('#iesebarcodeinput').focus();
                 }, 0);
@@ -1279,10 +1287,10 @@
         });
 
         //actiunea cand se schimba locul la scan iese
-        ieseloc.on('change', function(){
-            if($(this).val() > 0 && iesepers.val() > 0 && iesestare.val() > 0){
+        ieseloc.on('change', function () {
+            if ($(this).val() > 0 && iesepers.val() > 0 && iesestare.val() > 0) {
                 $('#iesebarcode').show();
-                setTimeout(function(){
+                setTimeout(function () {
                     ieseloc.removeClass('chosen-container-active');
                     $('#iesebarcodeinput').focus();
                 }, 0);
@@ -1290,48 +1298,48 @@
         });
 
         //la click pe text se face focus pt scan
-        $('#iesebarcode').on('click', function(){
+        $('#iesebarcode').on('click', function () {
             $('#iesebarcodeinput').focus();
         });
 
         //la click pe text se face focus pt scan
-        $('#intrabarcode').on('click', function(){
+        $('#intrabarcode').on('click', function () {
             $('#intrabarcodeinput').focus();
         });
 
         //la click pe text se face focus pt scan
-        $('#primire-scan-div').on('click', function(){
+        $('#primire-scan-div').on('click', function () {
             $('#articolescanateprimire').focus();
         });
 
         //aduce valoarea articolului dupa ce a fost scanat
-        $('#iesebarcodeinput').on('keyup', function(e){
+        $('#iesebarcodeinput').on('keyup', function (e) {
             var keyCode = e.keyCode ? e.keyCode : e.which;
-            if(keyCode === 13){
-                var code= $(this).val();
+            if (keyCode === 13) {
+                var code = $(this).val();
                 $(this).val('');
-                if(code === ''){
+                if (code === '') {
                     return;
                 }
                 var articolJSON = getArticol(code);
-                if(typeof  articolJSON !== 'undefined') {
-                    if(articolJSON.idCod3 == 0){
+                if (typeof  articolJSON !== 'undefined') {
+                    if (articolJSON.idCod3 == 0) {
                         alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
-                    } else if(articolJSON.stare == 1 || articolJSON.stare == 2 ) {
-                        if($('#articolecautate').html().trim() === ''){
+                    } else if (articolJSON.stare == 1 || articolJSON.stare == 2) {
+                        if ($('#articolecautate').html().trim() === '') {
                             $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
 
                         } else {
-                            $('#articolecautate').find('li').each(function(){
-                                if($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
+                            $('#articolecautate').find('li').each(function () {
+                                if ($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
                                     $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
                                 }
                             });
                         }
-                        if($('#nextiese').hasClass('ascuns')){
+                        if ($('#nextiese').hasClass('ascuns')) {
                             $('#nextiese').removeClass('ascuns');
                         }
-                    } else if(articolJSON.stare == 4){
+                    } else if (articolJSON.stare == 4) {
                         alert('Articolul este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
                     } else {
                         alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
@@ -1343,33 +1351,33 @@
             }
         });
 
-        $('#intrabarcodeinput').on('keyup', function(e){
+        $('#intrabarcodeinput').on('keyup', function (e) {
             var keyCode = e.keyCode ? e.keyCode : e.which;
-            if(keyCode === 13){
-                var code= $(this).val();
+            if (keyCode === 13) {
+                var code = $(this).val();
                 $(this).val('');
-                if(code === ''){
+                if (code === '') {
                     return;
                 }
                 var articolJSON = getArticol(code);
                 var tranzactie;
-                if(typeof  articolJSON !== 'undefined') {
-                    if(articolJSON.idCod3 == 0){
+                if (typeof  articolJSON !== 'undefined') {
+                    if (articolJSON.idCod3 == 0) {
                         alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
-                    } else if(articolJSON.stare == 3) {
+                    } else if (articolJSON.stare == 3) {
                         var idArticol = articolJSON.cod3;
                         tranzactie = getTranzactie(idArticol);
-                        if(!tranzactie || tranzactie.idEvidentaInventar == 0){
+                        if (!tranzactie || tranzactie.idEvidentaInventar == 0) {
                             alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
                             return;
                         }
-                        if($('#intraarticolecautate').html().trim() === ''){
+                        if ($('#intraarticolecautate').html().trim() === '') {
                             $('#intraarticolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit" data-evidenta="' + tranzactie.idEvidentaInventar + '" data-persoana="' + tranzactie.idPersoana + '" data-loc="' + tranzactie.idLoc + '" data-data="' + tranzactie.dataPreluarii + '">' + articolJSON.denumire3 + '</li></h3>');
 
                         } else {
-                            $('#intraarticolecautate').find('li').each(function(){
-                                if($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
-                                    if($(this).attr('data-evidenta') == tranzactie.idPersoana && $(this).attr('data-loc') == tranzactie.idLoc && $(this).attr('data-data') == tranzactie.dataPreluarii) {
+                            $('#intraarticolecautate').find('li').each(function () {
+                                if ($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
+                                    if ($(this).attr('data-evidenta') == tranzactie.idPersoana && $(this).attr('data-loc') == tranzactie.idLoc && $(this).attr('data-data') == tranzactie.dataPreluarii) {
                                         $('#intraarticolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit" data-evidenta="' + tranzactie.idEvidentaInventar + '" data-persoana="' + tranzactie.idPersoana + '" data-loc="' + tranzactie.idLoc + '"  data-data="' + tranzactie.dataPreluarii + '">' + articolJSON.denumire3 + '</li></h3>');
                                     } else {
                                         alert('Articolele nu sunt atribuite aceleasi persoane!');
@@ -1377,7 +1385,7 @@
                                 }
                             });
                         }
-                    } else if(articolJSON.stare == 4) {
+                    } else if (articolJSON.stare == 4) {
                         alert('Articolul este in tranzit!\nIntrati in meniul de primire mai intai');
                     } else {
                         alert('Articolul nu este alocat!\nDaca aceasta situatie nu corespunde cu realitatea, luati legatura cu managerul');
@@ -1391,7 +1399,7 @@
 
         //butonul de next
         //la apasarea next se afiseaza detaliile si apare butonul de final
-        $('#nextiese').on('click', function() {
+        $('#nextiese').on('click', function () {
             $('#backiese').show();
             $('#ieseas').hide();
             if ($('#atribuie-articole').hasClass('ascuns')) {
@@ -1402,13 +1410,13 @@
             $('#detalii-group').show();
         });
 
-        $('#nextintra').on('click', function() {
-            if($('#intraarticolecautate').find('li').length == 0){
+        $('#nextintra').on('click', function () {
+            if ($('#intraarticolecautate').find('li').length == 0) {
                 alert('Scaneaza articole mai intai!');
                 $('#intrabarcodeinput').focus();
                 return;
             }
-            if($(this).hasClass('pas1')){
+            if ($(this).hasClass('pas1')) {
                 var idLoc = $('#intraarticolecautate').find('li')[0].getAttribute('data-loc');
                 $('#intraloc').val(idLoc);
                 var loc = $('#intraloc').find(':selected').text();
@@ -1420,8 +1428,8 @@
                 $('#intrascan').hide();
                 $(this).removeClass('pas1');
                 $(this).addClass('pas2');
-            } else if($(this).hasClass('pas2')) {
-                if( $('#intraloc').val() <= 0){
+            } else if ($(this).hasClass('pas2')) {
+                if ($('#intraloc').val() <= 0) {
                     alert('Alege locul unde se recupereaza!');
                     return;
                 }
@@ -1437,14 +1445,14 @@
         });
 
         //butonul care introduce datele in evidenta de inventar
-        $('#atribuie-articole').on('click', function(){
+        $('#atribuie-articole').on('click', function () {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
             var pers = $(iesepers).val();
             var loc = $(ieseloc).val();
             var livrare = iesestare.val();
             var stare;
-            switch (livrare){
+            switch (livrare) {
                 case '1':
                     stare =<%=StareArticol.IN_FOLOSINTA.getCode()%>;
                     break;
@@ -1456,37 +1464,37 @@
                     break;
             }
             var articole = [];
-            $('#articolecautate').find('li').each(function(){
-                if($(this).prop('id')) {
+            $('#articolecautate').find('li').each(function () {
+                if ($(this).prop('id')) {
                     articole.push($(this).prop('id'));
                 }
             });
-            var detalii = $('#detaliiiese').val().replace(/=/g , "-").replace(/:/g , "-");
-            if(pers <= 0){
+            var detalii = $('#detaliiiese').val().replace(/=/g, "-").replace(/:/g, "-");
+            if (pers <= 0) {
                 alert('Alege o persoana!');
                 return;
             }
-            if(loc <= 0){
+            if (loc <= 0) {
                 alert('Alege un loc!');
                 return;
             }
-            if(livrare <= 0){
+            if (livrare <= 0) {
                 alert('Alege o metoda de iesire!');
                 return;
             }
-            if(detalii.length < 10){
+            if (detalii.length < 10) {
                 alert('Insuficiente informatii!');
                 return;
             }
-            if(stare == 0){
+            if (stare == 0) {
                 alert('Alege o metoda de iesire din lista!');
                 return;
             }
-            var data = { "idPersoana" : pers, "idLoc" : loc, "cod3": articole, "detalii": detalii, "stare": stare };
+            var data = {"idPersoana": pers, "idLoc": loc, "cod3": articole, "detalii": detalii, "stare": stare};
             $.ajax({
                 type: 'post',
                 url: '${pageContext.request.contextPath}/api/evidentaiese',
-                beforeSend: function(xhr){
+                beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 data: JSON.stringify(data),
@@ -1510,51 +1518,51 @@
                     $('#articolecautate').html('');
                     table.ajax.reload();
                     $("#alert").notify({
-                        message: { text: 'Atribuire articole cu succes!' },
+                        message: {text: 'Atribuire articole cu succes!'},
                         type: 'success',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
+                        fadeOut: {enabled: true, delay: 3500}
                     }).show();
                 },
-                error: function(err){
+                error: function (err) {
                     $("#alert").notify({
-                        message: { text: 'Operatie nereusita!' },
+                        message: {text: 'Operatie nereusita!'},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
+                        fadeOut: {enabled: true, delay: 3500}
                     }).show();
                 }
             });
         });
 
         //butonul care introduce datele in evidenta de inventar
-        $('#intra-articole').on('click', function(){
+        $('#intra-articole').on('click', function () {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
             var loc = intraloc.val();
             var articole = [];
-            $('#intraarticolecautate').find('li').each(function(){
-                if($(this).prop('id')) {
+            $('#intraarticolecautate').find('li').each(function () {
+                if ($(this).prop('id')) {
                     articole.push($(this).prop('id'));
                 }
             });
             var detalii = $('#detaliiintra').val();
-            if(loc <= 0){
+            if (loc <= 0) {
                 alert('Alege un loc!');
                 return;
             }
-            if(detalii.length < 10){
+            if (detalii.length < 10) {
                 alert('Insuficiente informatii!');
                 return;
             }
-            var data = { "idLoc" : loc, "cod3": articole, "detalii": detalii };
+            var data = {"idLoc": loc, "cod3": articole, "detalii": detalii};
             $.ajax({
                 type: 'post',
                 url: '${pageContext.request.contextPath}/api/evidentaintra',
-                beforeSend: function(xhr){
+                beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 data: JSON.stringify(data),
@@ -1578,20 +1586,20 @@
                     table.ajax.reload();
                     showNotification('Recuperare cu succes!');
                 },
-                error: function(err){
+                error: function (err) {
                     $("#alert").notify({
-                        message: { text: 'Operatie nereusita!' },
+                        message: {text: 'Operatie nereusita!'},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
+                        fadeOut: {enabled: true, delay: 3500}
                     }).show();
                 }
             });
         });
 
-        $('#primire-introdu-articole').on('click', function(){
-            if($('#articoleintroduseprimire').find('li').length == 0){
+        $('#primire-introdu-articole').on('click', function () {
+            if ($('#articoleintroduseprimire').find('li').length == 0) {
                 alert('Trebuie sa scanezi articole inainte!');
                 $('#primireintrodubarcodeinput').focus();
                 return;
@@ -1599,8 +1607,8 @@
             amPrimit('articoleintroduseprimire', 0);
         });
 
-        $('#primire-scan-articole').on('click', function(){
-            if($('#articolescanateprimire').find('li').length == 0){
+        $('#primire-scan-articole').on('click', function () {
+            if ($('#articolescanateprimire').find('li').length == 0) {
                 alert('Trebuie sa scanezi articole inainte!');
                 $('#primirescanbarcodeinput').focus();
                 return;
@@ -1608,7 +1616,7 @@
             amPrimit('articolescanateprimire', 0);
         });
 
-        $('#adaugaarticol').on('submit', function(e){
+        $('#adaugaarticol').on('submit', function (e) {
             e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -1617,38 +1625,40 @@
             var denumire3 = $('#denumire3').val();
             var detalii = $('#detalii').val();
             var pret = $('#pretachizitie').val();
-            if(cod1 <= 0){
+            if (cod1 <= 0) {
                 alert('Cod 1 este obligatoriu!');
                 return;
             }
-            if(cod2 <= 0){
+            if (cod2 <= 0) {
                 alert('Cod 2 este obligatoriu!');
                 return;
             }
-            if(denumire3.length == 0){
+            if (denumire3.length == 0) {
                 alert('Denumirea este obligatorie!');
                 return;
             }
-            if(denumire3.length < 5){
+            if (denumire3.length < 5) {
                 alert('Denumirea este prea scurta!');
                 return;
             }
-            if(detalii.length < 10){
+            if (detalii.length < 10) {
                 alert('Detaliile trebuie sa contina mai mult de 10 caractere!');
                 return;
             }
-            if(pret.length == 0){
+            if (pret.length == 0) {
                 alert('Pretul este obligatoriu!');
                 return;
             }
 
-            var data = { "cod1" : cod1, "cod2" : cod2, "denumire3": denumire3,
-                "detalii": detalii, "pretAchizitie": pret};
+            var data = {
+                "cod1": cod1, "cod2": cod2, "denumire3": denumire3,
+                "detalii": detalii, "pretAchizitie": pret
+            };
             // will pass the form date using the jQuery serialize function
             $.ajax({
                 type: 'post',
                 url: $(this).attr('action'),
-                beforeSend: function(xhr){
+                beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 dataType: 'json',
@@ -1666,60 +1676,60 @@
                     $('#closeart').click();
                     table.ajax.reload();
                     $("#alert").notify({
-                        message: { text: 'Articol adaugat cu succes!' },
+                        message: {text: 'Articol adaugat cu succes!'},
                         type: 'success',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
+                        fadeOut: {enabled: true, delay: 3500}
                     }).show();
                 },
-                error: function(err){
+                error: function (err) {
                     alert('Eroare la conexiune!');
                 }
             });
         });
 
-        $('#adaugapersoana').on('submit', function(e){
+        $('#adaugapersoana').on('submit', function (e) {
             e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
             var nume = $('#nume').val();
             var cnp = $('#cnp').val();
             var functie = $('#functie').val();
-            if(nume.length < 7){
+            if (nume.length < 7) {
                 alert('Numele este prea scurt!');
                 return;
             }
-            if(nume.length == 0){
+            if (nume.length == 0) {
                 alert('Numele este prea scurt!');
                 return;
             }
-            if(cnp.length == 0){
+            if (cnp.length == 0) {
                 alert('Cnp-ul este obligatoriu!');
                 return;
             }
-            if(cnp.length != 13){
+            if (cnp.length != 13) {
                 alert('Cnp-ul trebuie sa aiba 13 cifre!');
                 return;
             }
-            if(!validCNP(cnp)){
+            if (!validCNP(cnp)) {
                 alert('Cnp-ul nu este valid');
                 return;
             }
-            if(functie.length == 0){
+            if (functie.length == 0) {
                 alert('Functia este obligatorie!');
                 return;
             }
-            if(functie.length < 5){
+            if (functie.length < 5) {
                 alert('Functia este prea scurta!');
                 return;
             }
-            var data = { "nume" : nume, "cnp" : cnp, "functie": functie};
+            var data = {"nume": nume, "cnp": cnp, "functie": functie};
             // will pass the form date using the jQuery serialize function
             $.ajax({
                 type: 'post',
                 url: $(this).attr('action'),
-                beforeSend: function(xhr){
+                beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 dataType: 'json',
@@ -1727,45 +1737,39 @@
                 mimeType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (response) {
-                    $('#nume').val('');
-                    $('#cnp').val('');
-                    $('#functie').val('');
+                    $('#nume').val(EMPTY);
+                    $('#cnp').val(EMPTY);
+                    $('#functie').val(EMPTY);
                     $('#closepers').click();
                     getPersoane();
-                    $("#alert").notify({
-                        message: { text: 'Persoana adaugata cu succes!' },
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
-                    }).show()
+                    showNotification(response.message)
                 },
-                error: function(err){
+                error: function (err) {
                     alert('Eroare la conexiune!');
                 }
             });
 
         });
 
-        $('#adaugaloc').on('submit', function(e){
+        $('#adaugaloc').on('submit', function (e) {
             e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
             var denumireloc = $('#denumireLoc').val();
-            if(denumireloc.length == 0){
+            if (denumireloc.length == 0) {
                 alert('Denumirea este obligatorie!');
                 return;
             }
-            if(denumireloc.length < 5){
+            if (denumireloc.length < 5) {
                 alert('Denumirea este prea scurta!');
                 return;
             }
-            var data = { "denumireLoc" : denumireloc};
+            var data = {"denumireLoc": denumireloc};
             // will pass the form date using the jQuery serialize function
             $.ajax({
                 type: 'post',
                 url: $(this).attr('action'),
-                beforeSend: function(xhr){
+                beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 dataType: 'json',
@@ -1777,14 +1781,14 @@
                     $('#closeloc').click();
                     getLoc();
                     $("#alert").notify({
-                        message: { text: 'Loc adaugat cu succes!' },
+                        message: {text: 'Loc adaugat cu succes!'},
                         type: 'success',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 3500 }
+                        fadeOut: {enabled: true, delay: 3500}
                     }).show()
                 },
-                error: function(err){
+                error: function (err) {
                     alert('Eroare la conexiune!');
                 }
             });

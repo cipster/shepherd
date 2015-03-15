@@ -32,7 +32,6 @@ public class AdminUserRestController {
 		} catch (RuntimeException e) {
 			return new UserAndRolesResult(username, new int[]{});
 		}
-
 	}
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)

@@ -9,7 +9,7 @@
     <div class="page-header">
         <h2><spring:message code="MODUSER.TITLE"/></h2>
     </div>
-    <form method="post" id="modificauserform"  class="form-group" action="${pageContext.request.contextPath}/api/modificauser">
+    <form method="post" id="modificauserform" class="form-group" action="${pageContext.request.contextPath}/api/modificauser">
         <div class="form-group col-md-6">
             <label for="idUserSelect"><spring:message code="MODUSER.ALEGE"/></label>
             <select id="idUserSelect" data-placeholder="Alege un utilizator..." class="chosen-select"></select>
@@ -68,7 +68,7 @@
             <form id="adduserform" method="POST" action="${pageContext.request.contextPath}/api/adaugauser">
                 <div class="modal-body">
                     <div class="container">
-                    <div class="form-group col-md-8">
+                        <div class="form-group col-md-8">
                             <label for="newUsernameInput"><spring:message code="USER"/></label>
                             <input id="newUsernameInput" class="form-control col-md-12"/>
                         </div>
@@ -129,11 +129,12 @@
                             <label for="chRepeatPasswordInput"><spring:message code="MODUSER.REPETAPAROLA"/></label>
                             <input type="password" id="chRepeatPasswordInput" class="form-control input-sm"/>
                         </div>
-                        <div class="col-md-12"></div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" id="chShowPass"/> <spring:message code="MODUSER.ARATAPAROLA"/>
-                            </label>
+                        <div class="col-md-12">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="chShowPass"/> <spring:message code="MODUSER.ARATAPAROLA"/>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>

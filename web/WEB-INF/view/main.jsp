@@ -1,9 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="html" tagdir="/WEB-INF/tags" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,16 +39,17 @@
 
 <div class="container" style="margin-bottom: 50px;">
     <!-- Main component -->
-    <div class="jumbotron">
+    <div id="spinner-container" class="jumbotron">
+        <img id="spinner" src="/img/spinner.gif" class="spinner" style="display: none;">
         <br/>
         <table id="tabelProiecte" class="table unselectable" width="100%">
             <thead>
             <th></th>
             <th hidden="hidden">Id</th>
-            <th><spring:message code="MAIN.NR" /></th>
-            <th><spring:message code="MAIN.AN" /></th>
-            <th><spring:message code="MAIN.NUME" /></th>
-            <th><spring:message code="MAIN.CLIENT" /></th>
+            <th><spring:message code="MAIN.NR"/></th>
+            <th><spring:message code="MAIN.AN"/></th>
+            <th><spring:message code="MAIN.NUME"/></th>
+            <th><spring:message code="MAIN.CLIENT"/></th>
             </thead>
             <tbody>
             <c:forEach items="${listaProiecte}" var="prj">
@@ -79,24 +78,25 @@
 </div>
 <sec:authorize access="hasAnyRole('ROLE_DOWNLOAD','ROLE_ADMIN')">
     <div id="childrcmenu" class="unselectable">
-        <div class="menuItem" onclick="download();"><spring:message code="MAIN.DESCARCA" /></div>
+        <div class="menuItem" onclick="download();"><spring:message code="MAIN.DESCARCA"/></div>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <input id="idMaster" hidden="hidden"/>
             <input id="id" hidden="hidden"/>
             <input id="category" hidden="hidden"/>
             <input id="fileName" hidden="hidden"/>
+
             <div class="menuItem" data-toggle="modal"
-                 data-target="#estiSigurFile" onclick="atribuieNumeFile();"><spring:message code="MAIN.DELETE" /></div>
+                 data-target="#estiSigurFile" onclick="atribuieNumeFile();"><spring:message code="MAIN.DELETE"/></div>
         </sec:authorize>
     </div>
 </sec:authorize>
 <div id="rcmenu" class="unselectable">
     <%--<div class="menuItem" data-toggle="modal" data-target="#cercCheltuieli"><spring:message code="MAIN.CHELTUIELI" /></div>--%>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadPropunere"><spring:message code="MAIN.PROPUNERE" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadChestionar"><spring:message code="MAIN.CHESTIONAR" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadRaport"><spring:message code="MAIN.RAPORT" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadBd"><spring:message code="MAIN.BD" /></div>
-    <div class="menuItem" data-toggle="modal" data-target="#uploadAlteMateriale"><spring:message code="MAIN.ALTEMATERIALE" /></div>
+    <div class="menuItem" data-toggle="modal" data-target="#uploadPropunere"><spring:message code="MAIN.PROPUNERE"/></div>
+    <div class="menuItem" data-toggle="modal" data-target="#uploadChestionar"><spring:message code="MAIN.CHESTIONAR"/></div>
+    <div class="menuItem" data-toggle="modal" data-target="#uploadRaport"><spring:message code="MAIN.RAPORT"/></div>
+    <div class="menuItem" data-toggle="modal" data-target="#uploadBd"><spring:message code="MAIN.BD"/></div>
+    <div class="menuItem" data-toggle="modal" data-target="#uploadAlteMateriale"><spring:message code="MAIN.ALTEMATERIALE"/></div>
 </div>
 
 
@@ -129,14 +129,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="DIALOG.DELETE" /></h4>
+                <h4 class="modal-title"><spring:message code="DIALOG.DELETE"/></h4>
             </div>
             <div class="modal-body">
-                <h3><spring:message code="DIALOG.ESTISIGURDELETE" /> <span id="fileNameDel" style="color: #149bdf; word-break: break-all;"></span>?</h3>
+                <h3><spring:message code="DIALOG.ESTISIGURDELETE"/> <span id="fileNameDel" style="color: #149bdf; word-break: break-all;"></span>?</h3>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="deleteFile();"><spring:message code="DIALOG.DEL" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="NU" /></button>
+                <button type="button" class="btn btn-danger" onclick="deleteFile();"><spring:message code="DIALOG.DEL"/></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="NU"/></button>
 
             </div>
         </div>
@@ -152,7 +152,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="MAIN.CHELTUIELI" /></h4>
+                <h4 class="modal-title"><spring:message code="MAIN.CHELTUIELI"/></h4>
             </div>
             <div class="modal-body">
                 <table>
@@ -164,8 +164,8 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary pull-left" onclick=""><spring:message code="DIALOG.ADD" /></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
+                <button type="button" class="btn btn-primary pull-left" onclick=""><spring:message code="DIALOG.ADD"/></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE"/></button>
 
             </div>
         </div>
@@ -194,7 +194,8 @@
 <input hidden="hidden" id="appLangCode" value="">
 </body>
 <footer class="panel-footer">
-    <p class="pull-right"><a href="#"><spring:message code="NAVBAR.BACKTOTOP" /></a></p>
+    <p class="pull-right"><a href="#"><spring:message code="NAVBAR.BACKTOTOP"/></a></p>
+
     <p>&copy; fieldcover 2014 <a href="#top"></a> &middot; <a href="#">Shepherd</a></p>
 </footer>
 </html>
@@ -216,7 +217,7 @@
     var appLangCode = getUrlParameter("lang");
     var appLang;
 
-    switch(appLangCode){
+    switch (appLangCode) {
         case '':
             appLang = "/fonts/ro_RO.txt";
             break;
@@ -231,9 +232,9 @@
             break;
     }
 
-    function deleteFile(){
+    function deleteFile() {
         var category = $("#category").val();
-        switch(category) {
+        switch (category) {
             case 'p':
                 propunereDelete();
                 break;
@@ -258,7 +259,7 @@
         $("#fileNameDel").text($('#fileName').val());
     }
 
-    function download(){
+    function download() {
         window.location = $("#download").val();
     }
 
@@ -310,12 +311,12 @@
     $('input[type=file]').bootstrapFileInput();
     $('.file-inputs').bootstrapFileInput();
 
-    function ajaxLoaderShow(type){
+    function ajaxLoaderShow(type) {
         $('.inprogress-gif').show();
         $('div.modal-body').addClass('inprogress');
     }
 
-    function ajaxLoaderHide(){
+    function ajaxLoaderHide() {
         $('div.modal-body').removeClass('inprogress');
         $('.inprogress-gif').hide();
     }
@@ -333,7 +334,7 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadBd',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: data,
@@ -369,7 +370,7 @@
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete:function(e){
+            complete: function (e) {
                 ajaxLoaderHide();
 
             }
@@ -389,7 +390,7 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadPropunere',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: data,
@@ -409,11 +410,11 @@
 
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -426,17 +427,17 @@
                 hideModal();
                 $("#alert").show();
                 $("#alert").notify({
-                    message: { text: respContent},
+                    message: {text: respContent},
                     type: 'success',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 ajaxLoaderHide();
             }
         });
@@ -455,7 +456,7 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadChestionar',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: data,
@@ -475,11 +476,11 @@
 
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -493,17 +494,17 @@
                 hideModal();
                 $("#alert").show();
                 $("#alert").notify({
-                    message: { text: respContent + " "},
+                    message: {text: respContent + " "},
                     type: 'success',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 ajaxLoaderHide();
             }
         });
@@ -522,7 +523,7 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadRaport',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: data,
@@ -542,11 +543,11 @@
 
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -560,17 +561,17 @@
                 hideModal();
                 $("#alert").show();
                 $("#alert").notify({
-                    message: { text: respContent + " "},
+                    message: {text: respContent + " "},
                     type: 'success',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 ajaxLoaderHide();
             }
         });
@@ -589,7 +590,7 @@
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/upload/uploadAlteMateriale',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: data,
@@ -603,11 +604,11 @@
 
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -627,17 +628,17 @@
                 hideModal();
                 $("#alert").show();
                 $("#alert").notify({
-                    message: { text: respContent + " "},
+                    message: {text: respContent + " "},
                     type: 'success',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 ajaxLoaderHide();
             }
         });
@@ -648,13 +649,13 @@
         var header = $("meta[name='_csrf_header']").attr("content");
 
         var idProiect = $('#idMaster').val();
-        var idAM = $('#id').val() ;
+        var idAM = $('#id').val();
         var fileName = $('#fileName').val();
 
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/altemateriale',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: 'idProiect=' + idProiect + "&idAM=" + idAM,
@@ -663,11 +664,11 @@
             success: function (response) {
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -679,17 +680,17 @@
                 respContent += " a fost sters!  ";
                 hideModal();
                 $("#alert").notify({
-                    message: { text: respContent},
+                    message: {text: respContent},
                     type: 'info',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 var t = '#' + idProiect;
                 var tr = $(t);
                 var row = table.row(tr);
@@ -704,13 +705,13 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var idProiect = $('#idMaster').val();
-        var idP = $('#id').val() ;
+        var idP = $('#id').val();
         var fileName = $('#fileName').val();
 
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/propunere',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: 'idProiect=' + idProiect + "&idP=" + idP,
@@ -718,11 +719,11 @@
             success: function (response) {
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -734,17 +735,17 @@
                 respContent += " a fost sters!  ";
                 hideModal();
                 $("#alert").notify({
-                    message: { text: respContent},
+                    message: {text: respContent},
                     type: 'info',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 var t = '#' + idProiect;
                 var tr = $(t);
                 var row = table.row(tr);
@@ -759,13 +760,13 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var idProiect = $('#idMaster').val();
-        var idC = $('#id').val() ;
+        var idC = $('#id').val();
         var fileName = $('#fileName').val();
 
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/chestionar',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: 'idProiect=' + idProiect + "&idC=" + idC,
@@ -774,11 +775,11 @@
             success: function (response) {
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -790,17 +791,17 @@
                 respContent += " a fost sters!  ";
                 hideModal();
                 $("#alert").notify({
-                    message: { text: respContent},
+                    message: {text: respContent},
                     type: 'info',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 var t = '#' + idProiect;
                 var tr = $(t);
                 var row = table.row(tr);
@@ -815,13 +816,13 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var idProiect = $('#idMaster').val();
-        var idR = $('#id').val() ;
+        var idR = $('#id').val();
         var fileName = $('#fileName').val();
 
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/raport',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: 'idProiect=' + idProiect + "&idR=" + idR,
@@ -829,11 +830,11 @@
             success: function (response) {
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -845,17 +846,17 @@
                 respContent += " a fost sters!  ";
                 hideModal();
                 $("#alert").notify({
-                    message: { text: respContent},
+                    message: {text: respContent},
                     type: 'info',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 var t = '#' + idProiect;
                 var tr = $(t);
                 var row = table.row(tr);
@@ -870,13 +871,13 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var idProiect = $('#idMaster').val();
-        var idB = $('#id').val() ;
+        var idB = $('#id').val();
         var fileName = $('#fileName').val();
 
         $.ajax({
             type: 'post',
             url: '${pageContext.request.contextPath}/delete/bd',
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             data: 'idProiect=' + idProiect + "&idB=" + idB,
@@ -885,11 +886,11 @@
             success: function (response) {
                 if (response == "error") {
                     $("#alert").notify({
-                        message: { text: 'Fisierul este gol  ' },
+                        message: {text: 'Fisierul este gol  '},
                         type: 'danger',
                         closeable: 'true',
                         transition: 'fade',
-                        fadeOut: { enabled: true, delay: 15000 }
+                        fadeOut: {enabled: true, delay: 15000}
                     }).show();
                     return;
                 }
@@ -901,17 +902,17 @@
                 respContent += " a fost sters!  ";
                 hideModal();
                 $("#alert").notify({
-                    message: { text: respContent},
+                    message: {text: respContent},
                     type: 'info',
                     closeable: 'true',
                     transition: 'fade',
-                    fadeOut: { enabled: true, delay: 15000 }
+                    fadeOut: {enabled: true, delay: 15000}
                 }).show();
             },
             error: function (e) {
                 alert("Eroare la conexiune!" + e);
             },
-            complete: function(e){
+            complete: function (e) {
                 var t = '#' + idProiect;
                 var tr = $(t);
                 var row = table.row(tr);
@@ -927,18 +928,25 @@
     }
 
     function format(idProj) {
-        var childString = '<div id="copil" class="well copil"><table class="table copil" style="width: 100%;font-size: 8pt;word-break: break-all;"><thead class="copil" style="margin-bottom:10px;"><tr class="copil"><th>Propunere</th><th>Chestionar final</th><th>Raport final</th><th>Baza de date</th><th>Alte materiale</th></tr></thead><tbody class="copil"><tr class="copil"> ';
-        var propString  = '<td style="vertical-align: top;">';
+        var childString = '<div id="copil-' + idProj + '" class="well copil">' +
+                '<table class="table copil" style="width: 100%;font-size: 8pt;word-break: break-all;">' +
+                '<thead class="copil" style="margin-bottom:10px;">' +
+                '<tr class="copil">' +
+                '<th>Propunere</th><th>Chestionar final</th><th>Raport final</th><th>Baza de date</th><th>Alte materiale</th></tr>' +
+                '</thead>' +
+                '<tbody class="copil"><tr class="copil"> ';
+        var propString = '<td style="vertical-align: top;">';
         var chestString = '<td style="vertical-align: top;">';
-        var rapString   = '<td style="vertical-align: top;">';
-        var bdString    = '<td style="vertical-align: top;">';
-        var amString    = '<td style="vertical-align: top;">';
+        var rapString = '<td style="vertical-align: top;">';
+        var bdString = '<td style="vertical-align: top;">';
+        var amString = '<td style="vertical-align: top;">';
+
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/files/' + idProj,
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader(header, token);
             },
             async: false,
@@ -964,9 +972,9 @@
                     arr = arr.split("=");
                     if (arr[0] != 0 || arr[1] != "null") {
                         var id = '' + arr[0];
-                        id = id.replace(" ","");
+                        id = id.replace(" ", "");
                         var downloadLink = '';
-                        if($("#propDownloadString") && $("#propDownloadString").val() == 1) {
+                        if ($("#propDownloadString") && $("#propDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/propunere\/' + id + '" title="Click pentru download"';
                         }
                         propString += '<a class="download pr"' + downloadLink + ' id="prop' + id + '" data-idp="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
@@ -977,12 +985,12 @@
                     arr = arr.split("=");
                     if (arr[0] != 0 || arr[1] != "null") {
                         var id = '' + arr[0];
-                        id = id.replace(" ","");
+                        id = id.replace(" ", "");
                         var downloadLink = '';
-                        if($("#chestDownloadString") && $("#chestDownloadString").val() == 1) {
+                        if ($("#chestDownloadString") && $("#chestDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/chestionar\/' + id + '" title="Click pentru download"';
                         }
-                        chestString += '<a class="download ch" ' + downloadLink +' id="chest' + id + '" data-idc="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
+                        chestString += '<a class="download ch" ' + downloadLink + ' id="chest' + id + '" data-idc="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
                     }
                 }
                 for (var i = 0; i < rapArr.length; i++) {
@@ -990,9 +998,9 @@
                     arr = arr.split("=");
                     if (arr[0] != 0 || arr[1] != "null") {
                         var id = '' + arr[0];
-                        id = id.replace(" ","");
+                        id = id.replace(" ", "");
                         var downloadLink = '';
-                        if($("#rapDownloadString") && $("#rapDownloadString").val() == 1) {
+                        if ($("#rapDownloadString") && $("#rapDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/raport\/' + id + '" title="Click pentru download"';
                         }
                         rapString += '<a class="download ra" ' + downloadLink + ' id="rap' + id + '" data-idr="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
@@ -1003,9 +1011,9 @@
                     arr = arr.split("=");
                     if (arr[0] != 0 || arr[1] != "null") {
                         var id = '' + arr[0];
-                        id = id.replace(" ","");
+                        id = id.replace(" ", "");
                         var downloadLink = '';
-                        if($("#bdDownloadString") && $("#bdDownloadString").val() == 1) {
+                        if ($("#bdDownloadString") && $("#bdDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/bd\/' + id + '" title="Click pentru download"';
                         }
                         bdString += '<a class="download bd" ' + downloadLink + ' id="bd' + id + '" data-idb="' + id + '""> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
@@ -1016,9 +1024,9 @@
                     arr = arr.split("=");
                     if (arr[0] != 0 || arr[1] != "null") {
                         var id = '' + arr[0];
-                        id = id.replace(" ","");
+                        id = id.replace(" ", "");
                         var downloadLink = '';
-                        if($("#amDownloadString") && $("#amDownloadString").val() == 1) {
+                        if ($("#amDownloadString") && $("#amDownloadString").val() == 1) {
                             downloadLink = 'href="\/download\/altemateriale\/' + id + '" title="Click pentru download"';
                         }
                         amString += '<a class="download am" ' + downloadLink + ' id="am' + id + '" data-ida="' + id + '"> &#9658;&nbsp;' + arr[1] + '</a><br style="margin: 3px;"/>'
@@ -1035,7 +1043,7 @@
         rapString += '</td>';
         bdString += '</td>';
         amString += '</td>';
-        var buttonString =  '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="fa fa-upload ">&nbsp;</span> Upload Propunere</a></td>' +
+        var buttonString = '<tr class="copil">  <td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadPropunere"><span class="fa fa-upload ">&nbsp;</span> Upload Propunere</a></td>' +
                 '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadChestionar"><span class="fa fa-upload ">&nbsp;</span> Upload Chestionar</a></td>' +
                 '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadRaport"><span class="fa fa-upload">&nbsp;</span> Upload Raport</a></td>' +
                 '<td><a type="button" class="btn btn-sm btn-primary" style="margin:10px; width: 150px !important;" onclick="getProjId(' + idProj + ');" data-toggle="modal" data-target="#uploadBd"><span class="fa fa-upload ">&nbsp;</span> Upload Baza de date</a></td>' +
@@ -1054,13 +1062,13 @@
             "language": {
                 "url": '/fonts/ro_RO.txt'
             },
-            "aLengthMenu": [[10, 25, 50, 100,-1], [10, 25, 50, 100, "Toate"]],
+            "aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Toate"]],
             stateSave: true,
             "aoColumns": [{
-                "sWidth": "0px",
+                "sWidth": "15px",
                 "bSortable": false,
                 "orderable": false
-            },{
+            }, {
                 "sWidth": "25px",
                 "bSortable": false
             }, {
@@ -1118,13 +1126,17 @@
         });
 
         // Add event listener for opening and closing details
-        $('#tabelProiecte tbody').on('dblclick', 'tr', function(){ showChildRow($(this))});
+        $('#tabelProiecte tbody').on('dblclick', 'tr', function () {
+            showChildRow($(this))
+        });
 
-        $('#tabelProiecte tbody').on('click', 'td.details-control', function(){ showChildRow($(this))});
+        $('#tabelProiecte tbody').on('click', 'td.details-control', function () {
+            showChildRow($(this))
+        });
 
         function showChildRow(elem) {
             var tr = elem.closest('tr');
-            var row = table.row( tr );
+            var row = table.row(tr);
             var id;
             if (!elem.hasClass('copil')) {
                 if (event.button == 0) {
@@ -1149,22 +1161,45 @@
             }
         }
 
-
         $('#tabelProiecte tbody').on('mousedown', 'tr', function (e) {
+            var id;
+            var div;
+            var tr = $(event.target).closest('tr');
+            if($(tr).hasClass('copil')){
+                div = $(this).closest('div').attr('id');
+                if(div === 'tabelProiecte_wrapper'){
+                    div = tr.find('div.copil');
+                    id =+ $(div).attr('id').replace('copil-', '');
+                } else {
+                    id = div.replace('copil-', '');
+                }
+                $('#' + id).siblings().removeClass('selected');
+                $('#' + id).addClass('selected');
+                $("input[name='idProiect']").val(id);
+                $("#idMaster").val(id);
+
+            } else {
+                id = $(this).closest('tr').attr('id');
+
+                $("input[name='idProiect']").val(id);
+                $("#idMaster").val(id);
+                tr.addClass('selected');
+                tr.siblings().removeClass('selected');
+            }
             var aElem = $(event.target).closest("a");
             if (aElem.hasClass('download')) {
                 if (e.button == 2) {
                     $("#download").val(aElem.attr('href'));
-                    if(aElem.hasClass('am')) {
+                    if (aElem.hasClass('am')) {
                         $("#id").val(aElem.data('ida'));
                         $("#category").val("am");
-                    } else if(aElem.hasClass('pr')) {
+                    } else if (aElem.hasClass('pr')) {
                         $("#id").val(aElem.data('idp'));
                         $("#category").val("p");
-                    } else if(aElem.hasClass('ch')) {
+                    } else if (aElem.hasClass('ch')) {
                         $("#id").val(aElem.data('idc'));
                         $("#category").val("c");
-                    } else if(aElem.hasClass('ra')) {
+                    } else if (aElem.hasClass('ra')) {
                         $("#id").val(aElem.data('idr'));
                         $("#category").val("r");
                     } else {
@@ -1189,15 +1224,17 @@
             }
         });
 
-        document.getElementById("tabelProiecte").oncontextmenu = function () {
-            return false;
-        }
 
-        $(document).click(function (e) {
-            if (e.button == 0 ||e.button == 1 ) {
-                $("#rcmenu").fadeOut(40);
-                $("#childrcmenu").fadeOut(40);
-            }
-        });
+    document.getElementById("tabelProiecte").oncontextmenu = function () {
+        return false;
+    }
+
+    $(document).click(function (e) {
+        if (e.button == 0 || e.button == 1) {
+            $("#rcmenu").fadeOut(40);
+            $("#childrcmenu").fadeOut(40);
+        }
     });
+    })
+    ;
 </script>

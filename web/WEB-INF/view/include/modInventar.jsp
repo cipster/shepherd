@@ -43,8 +43,8 @@
                     <button type="button" class="btn btn-primary" id="btnModPers" data-toggle="modal" onclick="atribuiePersMod()">
                         <span class="fa fa-edit">&nbsp;</span><spring:message code="MODPERS.MODPERS"/>
                     </button>
-                    <button type="button" class="btn btn-success" id="btnAddPers" data-toggle="modal">
-                        <span class="fa fa-edit">&nbsp;</span><spring:message code="MODPERS.ADDPERS"/>
+                    <button type="button" class="btn btn-success" id="btnAddPers" data-toggle="modal" data-target="#add-person-modal">
+                        <span class="fa fa-plus">&nbsp;</span><spring:message code="MODPERS.ADDPERS"/>
                     </button>
                     <button type="button" class="btn btn-danger" id="btnDelPers" data-toggle="modal" onclick="atribuiePersDel()">
                         <span class="fa fa-times">&nbsp;</span><spring:message code="MODPERS.BUTTONDEL"/>
@@ -187,6 +187,85 @@
 
 </div>
 
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="add-person-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON"/></h4>
+                </div>
+                <form id="adaugapersoana" action="${pageContext.request.contextPath}/global/admin/inventar/adaugapersoana" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nume">Nume</label>
+                            <input id="nume" name="nume" title="nume" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="cnp">CNP</label>
+                            <input id="cnp" name="cnp" title="cnp" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="functie">Functie</label>
+                            <input id="functie" name="functie" title="functie" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <span class="fa fa-plus">&nbsp;</span><spring:message code="DIALOG.ADD"/></button>
+                        <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal">
+                            <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
+
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</sec:authorize>
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="mod-person-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="DIALOG.MODPERSON"/></h4>
+                </div>
+                <form id="modificapersoana" action="${pageContext.request.contextPath}/global/admin/inventar/modificapersoana" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nume-mod">Nume</label>
+                            <input  id="nume-mod" name="nume" title="nume" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="cnp-mod">CNP</label>
+                            <input  id="cnp-mod" name="cnp" title="cnp" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="functie-mod">Functie</label>
+                            <input  id="functie-mod" name="functie" title="functie" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <span class="fa fa-edit">&nbsp;</span><spring:message code="DIALOG.MOD"/></button>
+                        <button type="button" id="closepersmod" class="btn btn-default" data-dismiss="modal">
+                            <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
+
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</sec:authorize>
+
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -205,6 +284,68 @@
                 $('#cnp-pers').val('');
                 $('#functie-pers').val('');
             }
+        });
+
+        $('#adaugapersoana').on('submit', function (e) {
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var nume = $('#nume').val();
+            var cnp = $('#cnp').val();
+            var functie = $('#functie').val();
+            if (nume.length < 7) {
+                alert('Numele este prea scurt!');
+                return;
+            }
+            if (nume.length == 0) {
+                alert('Numele este prea scurt!');
+                return;
+            }
+            if (cnp.length == 0) {
+                alert('Cnp-ul este obligatoriu!');
+                return;
+            }
+            if (cnp.length != 13) {
+                alert('Cnp-ul trebuie sa aiba 13 cifre!');
+                return;
+            }
+            if (!validCNP(cnp)) {
+                alert('Cnp-ul nu este valid');
+                return;
+            }
+            if (functie.length == 0) {
+                alert('Functia este obligatorie!');
+                return;
+            }
+            if (functie.length < 5) {
+                alert('Functia este prea scurta!');
+                return;
+            }
+            var data = {"nume": nume, "cnp": cnp, "functie": functie};
+            // will pass the form date using the jQuery serialize function
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $('#nume').val(EMPTY);
+                    $('#cnp').val(EMPTY);
+                    $('#functie').val(EMPTY);
+                    hideModal();
+                    getPersoane();
+                    showNotification(response.message)
+                },
+                error: function (err) {
+                    alert('Eroare la conexiune!');
+                }
+            });
+
         });
 
         $('#articol-mod-select').on('change', function () {
