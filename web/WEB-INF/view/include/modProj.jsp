@@ -75,7 +75,7 @@
     function atribuieNumeMod() {
         if ($("#idProiectSelect").val() <= ZERO) {
             alert("Alege un proiect din lista!");
-            return;
+            return false;
         }
         if ($("#nrProiectInput").val() === '' || $("#anSelInput").val() <= ZERO || $("#numeProiectInput").val() === '' || $("#idClientInput").val() <= ZERO) {
             hideModal();
@@ -131,6 +131,7 @@
                 chosenUnselect("#idClientInput");
                 hideModal();
                 showNotification(response.message);
+                $('#btnMod').attr('data-target', '');
                 $('#modifica').click();
             },
             error: function (xhr, e) {
