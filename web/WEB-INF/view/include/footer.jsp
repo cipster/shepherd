@@ -6,7 +6,7 @@
            value="${_csrf.token}"/>
 </form>
 
-<a id="scrollUp" href="#top" style="position: fixed; z-index: 900; display: none;"></a>
+<a id="scrollUp" href="#top" tabindex="-1" title="Mergi sus" style="position: fixed; z-index: 900; display: none;"></a>
 
 <div class="panel-footer">
     <p>&copy; fieldcover 2014 <a href="#"></a> &middot; <a href="#">Shepherd</a></p>
