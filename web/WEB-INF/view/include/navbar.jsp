@@ -15,7 +15,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/setari" data-toggle="tooltip" data-placement="bottom"
+                <li><a style="color: darkmagenta" href="/setari" data-toggle="tooltip" data-placement="bottom"
                        title="<spring:message code="MAIN.ESTI_INREGISTRAT_CA" /> ${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a>
                 </li>
                 <li><a href="javascript:formSubmit()"><spring:message code="NAVBAR.LOG_OUT" /></a></li>

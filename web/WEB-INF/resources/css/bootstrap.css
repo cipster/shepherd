@@ -12,8 +12,12 @@ html {
 }
 
 body {
-    margin: 0 box-shadow : inset 0 0 100 px rgba(0, 0, 0, .5);
-    background-color: #f6f6f6;
+    margin: 0 box-shadow : inset 0 0 100 px rgba(0, 0, 0, .5) ;
+    background-color: #f6f6f6; /* fallback color if gradients are not supported */
+    background: -webkit-linear-gradient(top, hsl(0, 0%, 68%), #dddddd) no-repeat fixed  ;  /* For Chrome 25 and Safari 6, iOS 6.1, Android 4.3 */
+    background:    -moz-linear-gradient(top, hsl(0, 0%, 68%), #dddddd) no-repeat fixed  ;  /* For Firefox (3.6 to 15) */
+    background:      -o-linear-gradient(top, hsl(0, 0%, 68%), #dddddd) no-repeat fixed  ;  /* For old Opera (11.1 to 12.0) */
+    background:         linear-gradient(to bottom, hsl(0, 0%, 68%), #dddddd) no-repeat fixed ; /* Standard syntax; must be last */
 }
 
 article,
@@ -1800,6 +1804,9 @@ table td[class*=col-], table th[class*=col-] {
         border: 1px solid #ddd;
         -webkit-overflow-scrolling: touch
     }
+    .break-row-lg {
+        height: 20px;
+    }
 
     .table-responsive > .table {
         margin-bottom: 0
@@ -2139,7 +2146,9 @@ textarea.input-lg, select[multiple].input-lg {
         margin-bottom: 0;
         vertical-align: middle
     }
-
+    .break-row-lg {
+        height: 20px;
+    }
     .form-inline .form-control {
         display: inline-block;
         width: auto;
@@ -2205,22 +2214,22 @@ textarea.input-lg, select[multiple].input-lg {
 
 .btn {
     display: inline-block;
-    margin-bottom: 0!important;
-    font-weight: 400!important;
-    text-align: center!important;
-    vertical-align: middle!important;
-    cursor: pointer!important;
-    background-image: none!important;
-    border: 1px solid transparent!important;
-    white-space: nowrap!important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
     padding: 6px 12px;
     font-size: 14px;
-    line-height: 1.42857143!important;
-    border-radius: 4px!important;
-    -webkit-user-select: none!important;
-    -moz-user-select: none!important;
-    -ms-user-select: none!important;
-    user-select: none!important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
 }
 
 .btn:focus, .btn:active:focus, .btn.active:focus {
@@ -2251,9 +2260,9 @@ textarea.input-lg, select[multiple].input-lg {
 }
 
 .btn-default {
-    color: #333!important;
-    background-color: #fff!important;
-    border-color: #ccc!important;
+    color: #333 !important;
+    background-color: #fff !important;
+    border-color: #ccc !important;
 }
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
@@ -4342,8 +4351,9 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 }
 
 .navbar-default {
-    background-color: #f8f8f8;
-    border-color: #e7e7e7
+    background-color: #F8F8F8;
+    border-color: #878C7B;
+    font-size: 13pt;
 }
 
 .navbar-default .navbar-brand {
@@ -4807,7 +4817,7 @@ a.badge:hover, a.badge:focus {
 a.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
     color: #428bca;
     background-color: #fff;
-    cursor: pointer!important;
+    cursor: pointer !important;
 }
 
 .nav-pills > li > a > .badge {
@@ -4816,9 +4826,13 @@ a.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
 
 .jumbotron {
     padding: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
     color: inherit;
-    background-color: #eee
+    background-color: #e6e6e6;
+    -moz-box-shadow: 0.1em 0.1em 0 0.1em rgba(91, 30, 81, 0.46);
+    -webkit-box-shadow: 0.1em 0.1em 0 0.1em rgba(91, 30, 81, 0.46);
+    box-shadow: 0.1em 0.1em 0 0.1em rgba(91, 30, 81, 0.46);
+
 }
 
 .jumbotron h1, .jumbotron .h1 {
@@ -4840,20 +4854,22 @@ a.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
 }
 
 @media screen and (max-device-width: 1366px) {
-    #inventory-table{
+    #inventory-table {
         font-size: 9pt;
     }
+
     #tabelProiecte td {
         font-size: 10pt;
     }
 
-    #inventory-table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td  {
-        padding: 5px!important;
-        line-height: 1!important;
+    #inventory-table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 5px !important;
+        line-height: 1 !important;
     }
+
     #tabelProiecte > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-        padding: 7px!important;
-        line-height: 1.05!important;
+        padding: 7px !important;
+        line-height: 1.05 !important;
     }
 
     .jumbotron {
@@ -5130,7 +5146,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     margin-bottom: -1px;
     background-color: #fff;
     border: 1px solid #ddd;
-    cursor: pointer!important;
+    cursor: pointer !important;
 }
 
 .list-group-item:first-child {
@@ -5323,7 +5339,7 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:hover, a.list-g
 
 .panel-footer {
     padding: 10px 15px;
-    position: fixed!important;
+    position: fixed !important;
     bottom: 0;
     left: 0px;
     width: 100%;
@@ -6552,9 +6568,10 @@ button.close {
 }
 
 .break-row-lg {
-    height: 20px;
+    height: 30px;
     display: block;
 }
+
 #backiese {
     display: none;
 }
@@ -6598,7 +6615,6 @@ div.dataTables_wrapper {
     height: 17px;
 }
 
-
 .spinner {
     position: absolute;
     top: 30%;
@@ -6608,7 +6624,7 @@ div.dataTables_wrapper {
 }
 
 #scrollUp {
-    background-image:url(../img/top_grey.png);
+    background-image: url(../img/top_grey.png);
     bottom: 10%;
     right: 15%;
     width: 38px;
@@ -6616,5 +6632,5 @@ div.dataTables_wrapper {
 }
 
 #scrollUp:hover {
-    background-image:url(../img/top_grey-hover.png);
+    background-image: url(../img/top_grey-hover.png);
 }

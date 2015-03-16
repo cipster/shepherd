@@ -786,7 +786,7 @@
                     "url": '${pageContext.request.contextPath}/api/getinventory',
                     "dataSrc": ""
                 },
-                "aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Toate"]],
+                "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Toate"]],
                 "language": {
                     "url": '/fonts/ro_RO.txt'
                 },

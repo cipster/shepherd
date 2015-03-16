@@ -1201,6 +1201,7 @@
                     $("#childrcmenu").css('left', e.pageX + 5);
                     $("#childrcmenu").css('top', e.pageY + 5);
                     $("#childrcmenu").fadeIn(80);
+                    $("#rcmenu").fadeOut(40);
                 }
             } else if (!$(this).hasClass('copil')) {
                 if (event.button == 0) {
@@ -1211,6 +1212,7 @@
                     $("#rcmenu").css('left', e.pageX + 5);
                     $("#rcmenu").css('top', e.pageY + 5);
                     $("#rcmenu").fadeIn(80);
+                    $("#childrcmenu").fadeOut(40);
                 }
             }
         });
