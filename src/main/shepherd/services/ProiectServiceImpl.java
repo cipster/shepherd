@@ -42,11 +42,12 @@ public class ProiectServiceImpl implements ProiectService {
 		int id = Integer.parseInt(idProiect);
 		if(isInvalidParam(id)) {
             throw new IllegalArgumentException("Project ID cannot be null!");
-        } else if(projectHasFiles(id)){
-            throw new ProjectHasFilesException("Proiectul are fisiere salvate. Stergeti mai intai fisierele si apoi proiectul!");
-        } else {
-            return proiectDAO.deleteByID(id) > DAOResult.ZERO;
         }
+        if(projectHasFiles(id)) {
+            throw new ProjectHasFilesException("Proiectul are fisiere salvate. Stergeti mai intai fisierele si apoi proiectul!");
+        }
+            return proiectDAO.deleteByID(id) > DAOResult.ZERO;
+
 	}
 
 	private boolean paramsAreEmpty(Proiect proiect) {

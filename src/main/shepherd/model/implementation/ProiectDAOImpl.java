@@ -427,8 +427,8 @@ public class ProiectDAOImpl extends JdbcDaoSupport implements ProiectDAO {
     @Override
     public boolean hasFiles(int id) {
         try {
-            final String query = "SELECT * FROM proiecte.listaproiecte p WHERE p.id_proiect='" + id + "' AND p.id_alte_materiale REGEXP '^[A-Za-z1-9]+$' OR p.id_propunere REGEXP '^[A-Za-z1-9]+$'" +
-                    " OR p.id_chestionar_final REGEXP '^[A-Za-z1-9]+$' OR p.id_raport_final REGEXP '^[A-Za-z1-9]+$' OR p.id_bd REGEXP '^[A-Za-z1-9]+$'";
+            final String query = "SELECT * FROM listaproiecte WHERE id_proiect=" + id + " AND id_alte_materiale REGEXP '^[A-Za-z1-9]+$' OR id_propunere REGEXP '^[A-Za-z1-9]+$'" +
+                    " OR id_chestionar_final REGEXP '^[A-Za-z1-9]+$' OR id_raport_final REGEXP '^[A-Za-z1-9]+$' OR id_bd REGEXP '^[A-Za-z1-9]+$'";
 
             List<Proiect> proiectList = getJdbcTemplate().query(query, listaProiecteParameterizedRowMapper);
             return !proiectList.isEmpty();

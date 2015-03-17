@@ -49,7 +49,7 @@
 <body>
 <jsp:include page="include/navbar.jsp"></jsp:include>
 <div class="container">
-    <div id="spinner-container" class="jumbotron col-md-12" style="min-height: 550px;">
+    <div id="spinner-container" class="jumbotron col-md-12" style="height: 510px;">
         <img id="spinner" src="/img/spinner.gif" class="spinner" style="display: none;">
         <div class="list-group col-md-3">
             <sec:authorize access="hasRole('ROLE_ADMIN')">

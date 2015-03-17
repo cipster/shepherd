@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="ro" style="background-color: #ffffff !important">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -56,23 +56,16 @@
     </style>
 </head>
 
-<body style="text-align:center;">
+<body class="text-center" style="background: #ffffff !important">
 
-<div class="container" style="text-align:center;">
+<div class="container">
 
 
-    <form:form class="form-signin" name='loginForm'
-          action="/login" method="POST">
-        <h2 class="form-signin-heading"><img style="margin-top: 6px;" width="200"
-                                             src="/img/logoLogin.png"/></h2>
-        <input id="username" name="username" type="text" autocomplete="off" class="form-control" placeholder="<spring:message code="USER" />"
-                />
-        <input name="password" type="password" class="form-control" placeholder="<spring:message code="PASSWORD" />"
-                />
-        <button id="btnLogin" class="btn btn-lg btn-primary btn-block" type="submit"><span
-                class="glyphicon glyphicon-login"></span> Sign in
-        </button>
-
+    <form:form class="form-signin" name='loginForm' action="/login" method="POST">
+        <h2 class="form-signin-heading"><img style="margin-top: 6px;" width="200" src="/img/logoLogin.png"/></h2>
+        <input id="username" name="username" type="text" autocomplete="off" class="form-control" placeholder="<spring:message code="USER" />"/>
+        <input name="password" type="password" class="form-control" placeholder="<spring:message code="PASSWORD" />"/>
+        <button id="btnLogin" class="btn btn-lg btn-primary btn-block" type="submit"> Sign in</button>
     </form:form>
 
     <c:if test="${not empty error}">
@@ -87,14 +80,14 @@
 
 </div>
 <!-- /container -->
-<div id="downloadChrome" class="jumbotron" style="width: 60%;height:auto; margin-left:auto; margin-right: auto;">
-    <div>
-    <h3><spring:message code="DOWNLOADCHROME" /></h3>
-    <div>
-    <a class="btn btn-primary pull-right" href="http://google.com">Google Chrome</a>  <a class="btn btn-primary pull-right" href="">Chromium</a>
-    </div>
-    </div>
-</div>
+<%--<div id="downloadChrome" class="jumbotron" style="width: 60%;height:auto; margin-left:auto; margin-right: auto;">--%>
+    <%--<div>--%>
+    <%--<h3><spring:message code="DOWNLOADCHROME" /></h3>--%>
+    <%--<div>--%>
+    <%--<a class="btn btn-primary pull-right" href="http://google.com">Google Chrome</a>  <a class="btn btn-primary pull-right" href="">Chromium</a>--%>
+    <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 
 
 <!-- Bootstrap core JavaScript
@@ -105,15 +98,9 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script type="application/javascript">
-    $(".container").hide();
-    $("#downloadChrome").hide();
 
-    if(/chrom(e|ium)/.test(navigator.userAgent.toLowerCase())){
-        $("#downloadChrome").hide();
+    $(document).ready(function(){
         $(".container").show();
         $('#username').focus();
-    } else {
-        $(".container").hide();
-        $("#downloadChrome").show()
-    }
+    });
 </script>

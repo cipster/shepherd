@@ -37,7 +37,7 @@
 <body>
 <jsp:include page="include/navbar.jsp"></jsp:include>
 
-<div class="container" style="margin-bottom: 50px;">
+<div class="container" style="margin-bottom: 40px;">
     <!-- Main component -->
     <div id="spinner-container" class="jumbotron">
         <img id="spinner" src="/img/spinner.gif" class="spinner" style="display: none;">
