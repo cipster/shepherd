@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html lang="ro">
@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><spring:message code="ERROR.TITLE" /></title>
+    <title><spring:message code="ERROR.TITLE"/></title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -29,36 +29,26 @@
 </head>
 
 <body>
-
-<div class="site-wrapper">
-
-
-    <div class="cover-container">
-
-
-        <div class="inner cover">
-            <h1 class="cover-heading"><spring:message code="ERROR.TITLE"/></h1>
-
-            <p class="lead"><spring:message code="ERROR.MSG" /></p>
-
-            <p class="lead">
+<div class="container" style="margin-top: 50px;">
+    <div class="jumbotron">
+        <div class="form-group">
+            <h1><span class="fa fa-cogs"></span> <spring:message code="ERROR.TITLE"/></h1>
+        </div>
+            <div class="lead">
+                <p>A intervenit o eroare, contacteaz&#259; administratorul sau mai &#238;ncearc&#259; o dat&#259;.<br>
+                    Folose&#351te butonul <b><a href="javascript: history.back();"> Back</a></b> al browser-ului pentru a merge inapoi la ultima pagin&#259; sau apas&#259; butonul de mai jos pentru a merge pe prima pagin&#259;</p>
                 <a href="/main" class="btn btn-large btn-primary">
                     <i class="fa fa-home"></i>
                     <spring:message code="ERROR.HOME"/>
                 </a>
-            </p>
-        </div>
-
-        <div class="mastfoot">
-            <div class="inner">
-                <p><spring:message code="FOOTER.MORE"/> <a href="http://bostanciprian.wordpress.com/">Shepherd</a><spring:message code="FOOTER.CREATEDBY"/><a
-                        href="https://twitter.com/bostanciprian"> @fieldcover</a>.</p>
             </div>
-        </div>
-
     </div>
-
-
+    <div class="mastfoot">
+        <div class="inner">
+            <p><spring:message code="FOOTER.MORE"/> <a href="http://bostanciprian.wordpress.com/">Shepherd</a><spring:message code="FOOTER.CREATEDBY"/><a
+                    href="https://twitter.com/bostanciprian"> @fieldcover</a>.</p>
+        </div>
+    </div>
 </div>
 
 <!-- Bootstrap core JavaScript
