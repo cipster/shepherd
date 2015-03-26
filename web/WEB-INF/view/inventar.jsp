@@ -41,6 +41,7 @@
 <div id="spinner-container" class="container" style="margin-bottom: 50px;">
     <img id="spinner" src="/img/spinner.gif" class="spinner" style="display: none;">
     <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
+        <%--ToDo: modificat sa apara fisiere--%>
         <div class="btn-group" style="float:left; margin: 15px;">
             <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
             <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
@@ -422,6 +423,7 @@
         var useUserRecuperat = false;
         var userRecuperat;
         var primitPrinTranzit;
+        var useStareAnterioara = false;
         var barcode = d.barcode;
         generateBarcode(barcode);
         // `d` is the original data object for the row
@@ -440,6 +442,7 @@
                 data = toJSDate(d.dataRecuperare, 1);
                 dataTitle = 'Recuperat la:';
                 detalii = d.detaliiRecuperare;
+                useStareAnterioara = true;
                 if (detalii.length > 0) {
                     detaliiTitle = 'Detalii recuperare';
                     useDetalii = true;
@@ -456,6 +459,7 @@
                 data = toJSDate(evidentaInventar.dataPreluarii, 1);
                 dataTitle = 'Atribuit la:';
                 stareIcon = 'fa-thumb-tack';
+                useStareAnterioara = true;
                 persoana = getPersoanaById(evidentaInventar.idPersoana).nume;
                 if (persoana.length > 0) {
                     usePersoana = true;
@@ -546,7 +550,7 @@
                 '<td>' + stare + '</td>' +
                 '</tr>';
 
-        if (usePrimire) {
+        if (useStareAnterioara) {
             retString += '<tr>' +
             '<td><span class="fa fa-truck fa-fw">&nbsp;</span><b>Stare anterioar&#259;:</b></td>' +
             '<td>Tranzit</td>' +

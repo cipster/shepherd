@@ -38,7 +38,6 @@
             <label for="persoana-select"><spring:message code="MODUSER.PERSOANA"/></label>
             <select data-placeholder="Alege o persoana..." class="chosen-select" id="persoana-select"></select>
         </div>
-        <div class="col-md-12"><br/></div>
         <div class="form-group">
             <div class="col-sm-10">
                 <button type="button" class="btn btn-warning" id="btnChPass" data-toggle="modal">

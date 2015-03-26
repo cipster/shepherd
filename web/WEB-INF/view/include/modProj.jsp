@@ -32,7 +32,6 @@
         <label for="idClientInput"><spring:message code="FORM.CLIENT"/></label>
         <select id="idClientInput" data-placeholder="Alege un client..." class="chosen-select form-control"> </select>
     </div>
-    <div class="col-md-12"><br/></div>
     <div class="form-group">
         <div class="col-sm-10">
             <button type="button" class="btn btn-primary" id="btnMod" data-toggle="modal" onclick="atribuieNumeMod();">
@@ -96,6 +95,7 @@
         var numeProiect = $("#numeProiectInput").val();
         var idClient = $("#idClientInput").val();
         var idProiect = $("#idProiectSelect").val();
+
 
         if (idProiect <= ZERO) {
             hideModal();

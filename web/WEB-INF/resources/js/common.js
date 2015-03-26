@@ -140,7 +140,7 @@ function getUrlParameter(sParam) {
     }
 }
 
-function toJSDate(dateTime, ora) {
+function toJSDate(dateTimeParam, ora) {
     var options = {
         weekday: "long",
         year: "numeric",
@@ -150,15 +150,16 @@ function toJSDate(dateTime, ora) {
         "minute": "2-digit",
         "hour": "2-digit"
     };
-    var dateTime = dateTime.split(" ");//dateTime[0] = date, dateTime[1] = time
+
+    var dateTime = dateTimeParam.split(" ");//dateTime[0] = date, dateTime[1] = time
     var time;
     var date = dateTime[0].split("-");
     date[1] = parseInt(date[1]) - 1;
     if (ora && ora == 1) {
         time = dateTime[1].split(":");
+        //(year, month, day, hours, minutes, seconds, milliseconds)
         return new Date(date[0], date[1], date[2], time[0], time[1], time[2], 0).toLocaleString('ro', options);
     }
-    //(year, month, day, hours, minutes, seconds, milliseconds)
     return new Date(date[0], date[1], date[2]).toLocaleString('ro', options);
 
 }
@@ -172,6 +173,8 @@ $(window).scroll(function(){
 });
 
 $(document).ready(function(){
+    $('#an-copyright').text(new Date().getFullYear());
+
     $('a').on('click', function(e){
         var linkLocation = $($(this).attr('href')).offset();
         if(linkLocation)

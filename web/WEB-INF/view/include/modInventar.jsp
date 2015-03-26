@@ -38,7 +38,6 @@
                     <label for="functie-pers">Func&#355;ie</label>
                     <input type="text" class="form-control" id="functie-pers">
                 </div>
-                <div class="col-md-12"><br/></div>
                 <div class="form-group col-md-12">
                     <button type="button" class="btn btn-primary" id="btnModPers" data-toggle="modal" onclick="atribuiePersMod()">
                         <span class="fa fa-edit">&nbsp;</span><spring:message code="MODPERS.MODPERS"/>
