@@ -27,7 +27,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/global/admin/inventar")
-public class AdminInventarController {
+public class AdminInventarRestController {
 
 	@Autowired
 	private Cod1Service cod1Service;
