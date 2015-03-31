@@ -9,5 +9,5 @@ public interface PersoanaDAO extends GenericDAO<Persoana, Integer> {
 
     public List<Persoana> getAll();
 
-    Persoana findByUsername(String username);
+    public Persoana findByUsername(String username);
 }

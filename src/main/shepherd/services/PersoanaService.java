@@ -17,4 +17,8 @@ public interface PersoanaService {
 	List<Persoana> fetchAllPersoane();
 
 	ControllerResult addPersoana(Persoana persoana) throws DAOException;
+
+	ControllerResult modPersoana(Persoana persoana) throws DAOException;
+
+	ControllerResult delPersoana(Persoana persoana) throws DAOException;
 }

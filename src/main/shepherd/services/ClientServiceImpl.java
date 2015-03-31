@@ -13,7 +13,6 @@ import util.enums.DAOResult;
  */
 public class ClientServiceImpl implements ClientService {
 
-	@Qualifier("clientDAO")
 	@Autowired
 	private ClientDAO clientDAO;
 

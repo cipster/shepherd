@@ -71,7 +71,7 @@
                             <label for="newUsernameInput"><spring:message code="USER"/></label>
                             <input id="newUsernameInput" class="form-control col-md-12"/>
                         </div>
-                        <div class="col-md-7  well" style="margin-left: 23px; font-size: 13pt;">
+                        <div class="col-md-7 well" style="margin-left: 23px; font-size: 13pt;">
                             <span><span class="fa fa-info-circle fa-fw">&nbsp;&nbsp;</span>Parola provizorie este <b><code>qwerty</code></b></span>
                         </div>
                         <div class="form-group col-md-8">
@@ -138,9 +138,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"><spring:message code="MODUSER.CHANGEPASS"/></button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE"/></button>
-
+                    <button type="submit" class="btn btn-primary"><span class="fa fa-lock fa-fw">&nbsp;</span> <spring:message code="MODUSER.CHANGEPASS"/></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times fa-fw">&nbsp;</span> <spring:message code="DIALOG.CLOSE"/></button>
                 </div>
             </form>
         </div>
@@ -160,9 +159,8 @@
                 <h3><spring:message code="USER.ESTISIGURMOD"/> <span id="userNumeMod" style="color: #149bdf;"></span>?</h3>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="modusersubmit" class="btn btn-primary">Modific</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="NU"/></button>
-
+                <button type="button" id="modusersubmit" class="btn btn-primary"><span class="fa fa-edit fa-fw">&nbsp;</span> Modific&#259;</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times fa-fw">&nbsp;</span> <spring:message code="NU"/></button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -280,12 +278,12 @@
             });
         });
 
-        $("#modificauserform").on('submit', function (e) {
+        $("#modificauserform").on('submit', function (e) {debugger;
             e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            var user = $('#usernameInput').text();
+            var user = $('#usernameInput').val();
             var status = $('#statusInput').val();
             var rol = $('#adminInput').val();
             var persoana = $('#persoana-select').val();
@@ -316,9 +314,8 @@
                         }).show();
                         return;
                     }
-                    $('#usernameInput').text('');
-                    $('#statusInput').val(-1);
-                    $('#statusInput').trigger('chosen:updated');
+                    $('#usernameInput').text(EMPTY);
+                    chosenUnselect('#statusInput');
                     $('#adminInput').val(-1);
                     $('#adminInput').trigger('chosen:updated');
                     $('#persoana-select').val(-1);

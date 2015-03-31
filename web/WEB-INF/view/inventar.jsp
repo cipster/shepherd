@@ -61,7 +61,6 @@
     <div class="jumbotron">
         <br/>
         <br/>
-        <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
             <table id="inventory-table" class="table" width="100%">
                 <thead>
                 <tr>
@@ -77,7 +76,6 @@
                 </thead>
 
             </table>
-        </sec:authorize>
     </div>
 </div>
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
@@ -347,15 +345,7 @@
 </sec:authorize>
 
 <div id="alert" class="notifications"></div>
-<input id="username" hidden="hidden" value="${pageContext.request.userPrincipal.name}"/>
-<sec:authorize access="hasRole('ROLE_DOWNLOAD')">
-    <input id="propDownloadString" hidden="hidden" value="1">
-    <input id="chestDownloadString" hidden="hidden" value="1">
-    <input id="rapDownloadString" hidden="hidden" value="1">
-    <input id="bdDownloadString" hidden="hidden" value="1">
-    <input id="amDownloadString" hidden="hidden" value="1">
-    <input id="download" hidden="hidden">
-</sec:authorize>
+
 <input hidden="hidden" id="appLangCode" value="">
 
 <jsp:include page="include/footer.jsp"></jsp:include>
@@ -787,7 +777,7 @@
         try {
             table = $('#inventory-table').DataTable({
                 "ajax": {
-                    "url": '${pageContext.request.contextPath}/api/getinventory',
+                    "url": '${pageContext.request.contextPath}/global/inventar/articole/getinventory',
                     "dataSrc": ""
                 },
                 "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Toate"]],

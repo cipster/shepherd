@@ -1,13 +1,13 @@
 package model.implementation;
 
+import model.dao.ArticolDAO;
+import model.dto.Articol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import model.dto.Articol;
-import model.dao.ArticolDAO;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -54,9 +54,22 @@ public class ArticolDAOImpl extends JdbcDaoSupport implements ArticolDAO {
         final String query = "SELECT * FROM proiecte.articole";
         try {
             return getJdbcTemplate().query(query, rowMapper);
-        } catch (DataAccessException ex){
-            ex.printStackTrace();
-            return null;
+        } catch (DataAccessException ex) {
+            logger.debug(ex.getMessage(), ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public List<Articol> getOnlyMine(int idPersoana) {
+        final String query = "SELECT * FROM articole a " +
+                "JOIN evidenta_inventar e ON  a.id_cod_3=e.id_cod_3 AND id_persoana = '" + idPersoana + "' AND e.data_recuperarii IS NULL " +
+                "  WHERE a.stare = 3; ";
+        try {
+            return getJdbcTemplate().query(query, rowMapper);
+        } catch (DataAccessException ex) {
+            logger.debug(ex.getMessage(), ex);
+            throw ex;
         }
     }
 
@@ -67,9 +80,9 @@ public class ArticolDAOImpl extends JdbcDaoSupport implements ArticolDAO {
             String query = "SELECT * FROM proiecte.articole WHERE id_cod_3=" + id;
 
             return getJdbcTemplate().queryForObject(query, rowMapper);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-            return null;
+        } catch (DataAccessException ex) {
+            logger.debug(ex.getMessage(), ex);
+            throw ex;
         }
     }
 
@@ -80,7 +93,7 @@ public class ArticolDAOImpl extends JdbcDaoSupport implements ArticolDAO {
 
     @Override
     public Integer update(final Articol entity) {
-       return null;
+        return null;
     }
 
     @Override

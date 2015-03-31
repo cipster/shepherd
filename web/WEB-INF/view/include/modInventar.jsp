@@ -16,7 +16,7 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="persoane">
-            <form method="post" id="modificapersform" action="${pageContext.request.contextPath}/api/modificapersoana">
+            <form method="post" id="modificapersform" action="${pageContext.request.contextPath}/global/admin/inventar/modifyperson">
                 <div class="well-sm">
                     <p>Modific&#259; persoana aleas&#259;</p>
                 </div>
@@ -93,7 +93,8 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="nume-articol">Denumire</label>
-                    <input type="text" class="form-control" <sec:authorize ifNotGranted="ROLE_ADMIN"> disabled="disabled" </sec:authorize> id="nume-articol">
+                    <input type="text" class="form-control"
+                    <sec:authorize ifNotGranted="ROLE_ADMIN"> disabled="disabled" </sec:authorize> id="nume-articol">
                 </div>
                 <div class="col-md-12"></div>
                 <div class="form-group col-md-6">
@@ -225,6 +226,61 @@
     </div>
     <!-- /.modal -->
 </sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="estiSigurPersoana">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="MODPROJ.TITLE"/></h4>
+                </div>
+                <div class="modal-body">
+                    <h3><spring:message code="DIALOG.ESTISIGURMODPERS"/> <span id="persNumeMod" style="color: #149bdf"></span>?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="modifyPerson();">
+                        <span class="fa fa-edit">&nbsp;</span>
+                        Da
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="estiSigurDelPersoana">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="MODPROJ.TITLE"/></h4>
+                </div>
+                <div class="modal-body">
+                    <h3><spring:message code="DIALOG.ESTISIGURDELPERS"/> <span id="persNumeDel" style="color: #149bdf"></span>?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="deletePerson();">
+                        <span class="fa fa-edit">&nbsp;</span>
+                        Da
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</sec:authorize>
+
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
     <div class="modal fade" id="mod-person-modal">
         <div class="modal-dialog ">
@@ -237,15 +293,15 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nume-mod">Nume</label>
-                            <input  id="nume-mod" name="nume" title="nume" class="form-control">
+                            <input id="nume-mod" name="nume" title="nume" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="cnp-mod">CNP</label>
-                            <input  id="cnp-mod" name="cnp" title="cnp" class="form-control">
+                            <input id="cnp-mod" name="cnp" title="cnp" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="functie-mod">Functie</label>
-                            <input  id="functie-mod" name="functie" title="functie" class="form-control">
+                            <input id="functie-mod" name="functie" title="functie" class="form-control">
                         </div>
 
                     </div>
@@ -270,6 +326,55 @@
 <script src="/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
+    function atribuiePersMod() {
+        $('#persNumeMod').text($('#nume-pers').val());
+    }
+
+    function atribuiePersDel() {
+        $('#persNumeDel').text($('#nume-pers').val());
+    }
+
+    function modifyPerson() {
+        $('#modificapersform').submit();
+    }
+
+    function deletePerson() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var data = {
+            "idPersoana" : $('#persoana-mod-select').val()
+        };
+        $.ajax({
+            type: 'post',
+            url: '${pageContext.request.contextPath}/global/admin/inventar/deleteperson',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                if (response && response.httpStatus == 500) {
+                    showNotification(response.message, DANGER);
+                    return;
+                }
+                $('#persoana-mod-select').val(EMPTY);
+                $('#nume-pers').val(EMPTY);
+                $('#cnp-pers').val(EMPTY);
+                $('#functie-pers').val(EMPTY);
+                getPersoane();
+                hideModal();
+                showNotification(response.message);
+                $('#btnDelPers').attr('data-target', '');
+            },
+            error: function (xhr, e) {
+                alert("Eroare la conexiune!" + e);
+            }
+        });
+
+    }
+
     $(document).ready(function () {
         $('#persoana-mod-select').on('change', function () {
             var id = 'persoana' + $(this).val();
@@ -278,10 +383,14 @@
                 $('#nume-pers').val(persoana.getAttribute("label"));
                 $('#cnp-pers').val(persoana.getAttribute("data-cnp"));
                 $('#functie-pers').val(persoana.getAttribute("data-functie"));
+                $('#btnModPers').attr('data-target', '#estiSigurPersoana');
+                $('#btnDelPers').attr('data-target', '#estiSigurDelPersoana');
             } else {
-                $('#nume-pers').val('');
-                $('#cnp-pers').val('');
-                $('#functie-pers').val('');
+                $('#nume-pers').val(EMPTY);
+                $('#cnp-pers').val(EMPTY);
+                $('#functie-pers').val(EMPTY);
+                $('#btnModPers').attr('data-target', '');
+                $('#btnDelPers').attr('data-target', '');
             }
         });
 
@@ -342,6 +451,53 @@
                 },
                 error: function (err) {
                     alert('Eroare la conexiune!');
+                }
+            });
+
+        });
+
+        $('#modificapersform').on('submit', function (e) {
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var idPersoana = $('#persoana-mod-select').val();
+            var nume = $('#nume-pers').val();
+            var cnp = $('#cnp-pers').val();
+            var functie = $('#functie-pers').val();
+            var data = {
+                "idPersoana": idPersoana,
+                "nume": nume,
+                "cnp": cnp,
+                "functie": functie
+            };
+
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response && response.httpStatus == 500) {
+                        showNotification(response.message, DANGER);
+                        return;
+                    }
+                    $('#persoana-mod-select').val(EMPTY);
+                    $('#nume-pers').val(EMPTY);
+                    $('#cnp-pers').val(EMPTY);
+                    $('#functie-pers').val(EMPTY);
+                    chosenUnselect('#persoana-mod-select');
+                    hideModal();
+                    showNotification(response.message);
+                    $('#btnModPers').attr('data-target', '');
+                },
+                error: function (xhr, e) {
+                    alert("Eroare la conexiune!" + e);
                 }
             });
 

@@ -9,4 +9,5 @@ public interface ArticolDAO extends GenericDAO<Articol, Integer> {
 
     public List<Articol> getAll();
 
+    public List<Articol> getOnlyMine(int idPersoana);
 }

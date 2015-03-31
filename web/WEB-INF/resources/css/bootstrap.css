@@ -4921,6 +4921,8 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     font-size: 12pt;
     cursor: pointer;
     margin-left: 15px;
+    border: 3px solid gray;
+
 }
 
 .alert h4 {
@@ -6468,9 +6470,12 @@ button.close {
 }
 
 .notifications {
+    padding: 15px;
     position: fixed;
-    bottom: 100px;
-    left: 30px;
+    top: 15%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 /* Positioning */

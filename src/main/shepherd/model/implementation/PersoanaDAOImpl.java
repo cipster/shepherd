@@ -46,12 +46,12 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
 
     @Override
     public List<Persoana> getAll() {
-        final String query = "SELECT * FROM proiecte.persoana";
+        final String query = "SELECT * FROM proiecte.persoana ORDER BY nume ASC ";
         try {
             return getJdbcTemplate().query(query, rowMapper);
         } catch (DataAccessException ex){
-            ex.printStackTrace();
-            return null;
+            logger.debug(ex.getMessage(), ex);
+            throw ex;
         }
     }
 
@@ -61,8 +61,9 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
             String query = "SELECT * FROM proiecte.persoana WHERE username='" + username + "'";
 
             return getJdbcTemplate().queryForObject(query, rowMapper);
-        } catch (DataAccessException e) {
-            return null;
+        } catch (DataAccessException ex) {
+            logger.debug(ex.getMessage(), ex);
+            throw ex;
         }
     }
 
@@ -73,8 +74,8 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
 
             return getJdbcTemplate().queryForObject(query, rowMapper);
         } catch (DataAccessException e) {
-            e.printStackTrace();
-            return null;
+            logger.debug(e.getMessage(), e);
+            throw e;
         }
     }
 
@@ -82,7 +83,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
     public Integer create(final Persoana entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        final String query = "INSERT INTO proiecte.persoana(id_persoana, nume,cnp, functie,username) VALUES (?,?,?,?,?)";
+        final String query = "INSERT INTO proiecte.persoana(id_persoana, nume, cnp, functie, username) VALUES (?,?,?,?,?)";
 
 		try {
 			PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -102,6 +103,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
 			};
 			jdbcTemplate.update(psc, keyHolder);
 		} catch (DataAccessException e) {
+            logger.debug(e.getMessage(), e);
 			throw e;
 		}
 
@@ -132,6 +134,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
 			};
 			jdbcTemplate.update(psc);
 		} catch (DataAccessException e) {
+            logger.debug(e.getMessage(), e);
 			throw e;
 		}
 		return entity.getIdPersoana();

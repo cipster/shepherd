@@ -73,14 +73,6 @@ public class ApiRestController {
         binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(sdf, true));
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
-    @RequestMapping(value = "/getinventory", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<Articol> getAllStoc() {
-
-        return articolDAO.getAll();
-    }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")

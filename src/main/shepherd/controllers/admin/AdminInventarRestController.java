@@ -59,6 +59,22 @@ public class AdminInventarRestController {
 		return persoanaService.addPersoana(persoana);
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/modifyperson", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ControllerResult modPersoana(@RequestBody Persoana persoana) {
+		return persoanaService.modPersoana(persoana);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/deleteperson", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ControllerResult delPersoana(@RequestBody Persoana persoana) {
+		return persoanaService.delPersoana(persoana);
+	}
+
 }
 
 

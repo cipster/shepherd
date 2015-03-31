@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * Created by Ciprian on 3/12/2015.
- * Project Raindrop
+ * Project Shepherd
  */
 public class PersoanaServiceImpl implements PersoanaService {
 	private final Log LOGGER = LogFactory.getLog(getClass());
@@ -41,6 +41,40 @@ public class PersoanaServiceImpl implements PersoanaService {
 				controllerResult = new ControllerResult(HttpStatus.OK.value(), "Persoana " + persoana.getNume() + " a fost adaugată cu succes!");
 			} else {
 				throw new RuntimeException("Persoana nu a fost adăugată!");
+			}
+
+		} catch (RuntimeException e) {
+			LOGGER.error(e.getMessage(), e);
+			controllerResult = new ControllerResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+		}
+		return controllerResult;
+	}
+
+	@Override
+	public ControllerResult modPersoana(Persoana persoana) throws DAOException {
+		ControllerResult controllerResult;
+		try {
+			if ( persoanaDAO.update(persoana) > DAOResult.ZERO ) {
+				controllerResult = new ControllerResult(HttpStatus.OK.value(), "Persoana " + persoana.getNume() + " a fost modificată cu succes!");
+			} else {
+				throw new RuntimeException("Persoana nu a fost modificată!");
+			}
+
+		} catch (RuntimeException e) {
+			LOGGER.error(e.getMessage(), e);
+			controllerResult = new ControllerResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+		}
+		return controllerResult;
+	}
+
+	@Override
+	public ControllerResult delPersoana(Persoana persoana) throws DAOException {
+		ControllerResult controllerResult;
+		try {
+			if ( persoanaDAO.deleteByID(persoana.getIdPersoana()) > DAOResult.ZERO ) {
+				controllerResult = new ControllerResult(HttpStatus.OK.value(), "Persoana " + persoana.getNume() + " a fost ştearsă cu succes!");
+			} else {
+				throw new RuntimeException("Persoana nu a fost ştearsă!");
 			}
 
 		} catch (RuntimeException e) {
