@@ -28,7 +28,6 @@
     <link href="/css/chosen.css" rel="stylesheet">
     <link href="/css/datatabletools.css" rel="stylesheet">
 
-
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -136,7 +135,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON"/></h4>
                 </div>
-                <form id="adaugapersoana" action="${pageContext.request.contextPath}/global/admin/inventar/adaugapersoana" method="post">
+                <form id="adaugapersoana" action="${pageContext.request.contextPath}/global/admin/inventar/addpersoana" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nume">Nume</label>
@@ -150,7 +149,10 @@
                             <label for="functie">Functie</label>
                             <input id="functie" name="functie" title="functie" class="form-control">
                         </div>
-
+                        <div class="form-group">
+                            <label for="localitate">Localitate</label>
+                            <input id="localitate"  title="localitate" class="form-control">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success"><spring:message code="DIALOG.ADD"/></button>
@@ -395,7 +397,6 @@
         }
     }
 
-    /* Formatting function for row details */
     function format(d) {
         var evidentaInventar;
         var data;
@@ -413,7 +414,6 @@
         var useUserRecuperat = false;
         var userRecuperat;
         var primitPrinTranzit;
-        var useStareAnterioara = false;
         var barcode = d.barcode;
         generateBarcode(barcode);
         // `d` is the original data object for the row
@@ -432,7 +432,6 @@
                 data = toJSDate(d.dataRecuperare, 1);
                 dataTitle = 'Recuperat la:';
                 detalii = d.detaliiRecuperare;
-                useStareAnterioara = true;
                 if (detalii.length > 0) {
                     detaliiTitle = 'Detalii recuperare';
                     useDetalii = true;
@@ -449,7 +448,6 @@
                 data = toJSDate(evidentaInventar.dataPreluarii, 1);
                 dataTitle = 'Atribuit la:';
                 stareIcon = 'fa-thumb-tack';
-                useStareAnterioara = true;
                 persoana = getPersoanaById(evidentaInventar.idPersoana).nume;
                 if (persoana.length > 0) {
                     usePersoana = true;
@@ -540,12 +538,7 @@
                 '<td>' + stare + '</td>' +
                 '</tr>';
 
-        if (useStareAnterioara) {
-            retString += '<tr>' +
-            '<td><span class="fa fa-truck fa-fw">&nbsp;</span><b>Stare anterioar&#259;:</b></td>' +
-            '<td>Tranzit</td>' +
-            '</tr>';
-        }
+
 
         retString += '<tr>' +
         '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>' +
@@ -1685,6 +1678,7 @@
             var nume = $('#nume').val();
             var cnp = $('#cnp').val();
             var functie = $('#functie').val();
+            var localitate = $('#localitate').val();
             if (nume.length < 7) {
                 alert('Numele este prea scurt!');
                 return;
@@ -1713,7 +1707,12 @@
                 alert('Functia este prea scurta!');
                 return;
             }
-            var data = {"nume": nume, "cnp": cnp, "functie": functie};
+            var data = {
+                "nume": nume,
+                "cnp": cnp,
+                "functie": functie,
+                "localitate": localitate
+            };
             // will pass the form date using the jQuery serialize function
             $.ajax({
                 type: 'post',

@@ -246,15 +246,16 @@
         var modPersoanaSelect = $("#persoana-mod-select");
         var newPersoanaSelect = $("#persoana-select-new");
         var persoanaSelect = $("#persoana-select");
-        persoanaSelect.html("");
-        modPersoanaSelect.html("");
-        newPersoanaSelect.html("");
+        persoanaSelect.html(EMPTY);
+        modPersoanaSelect.html(EMPTY);
+        newPersoanaSelect.html(EMPTY);
 
         var idPersoana;
         var nume;
         var username;
         var cnp;
         var functie;
+        var localitate;
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/global/admin/inventar/persoanelist',
@@ -267,10 +268,9 @@
                         username = response[i].username;
                         cnp = response[i].cnp;
                         functie = response[i].functie;
-                        modPersoanaSelect.append($('<option id="persoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +
-                        ' data-cnp="' + cnp + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
-                        newPersoanaSelect.append($('<option id="artpersoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +
-                        ' data-cnp="' + cnp + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
+                        localitate = response[i].localitate;
+                        modPersoanaSelect.append($('<option id="persoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +    ' data-cnp="' + cnp + '" data-localitate="' + localitate + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
+                        newPersoanaSelect.append($('<option id="artpersoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' + ' data-cnp="' + cnp + '" data-localitate="' + localitate + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
                         persoanaSelect.append($('<option label="' + nume + '">').val(idPersoana).text(nume));
                     }
                 }
@@ -494,7 +494,7 @@
         $("#loc-mod-select").chosen({
             width: "100%",
             search_contains: true,
-            no_results_text: "Persoana nu exista!",
+            no_results_text: "Locul nu exista!",
             allow_single_deselect: true
         });
         chosenUnselect("#loc-mod-select");
@@ -502,7 +502,7 @@
         $("#articol-mod-select").chosen({
             width: "100%",
             search_contains: true,
-            no_results_text: "Persoana nu exista!",
+            no_results_text: "Articolul nu exista!",
             allow_single_deselect: true
         });
         $("#articol-mod-select").val(UNSELECT);
@@ -538,7 +538,7 @@
         $("#cod2-mod-select").chosen({
             width: "100%",
             search_contains: true,
-            no_results_text: "Locul nu exista!",
+            no_results_text: "codul nu exista!",
             allow_single_deselect: true
         });
         $("#cod2-mod-select").val(UNSELECT);

@@ -38,6 +38,11 @@
                     <label for="functie-pers">Func&#355;ie</label>
                     <input type="text" class="form-control" id="functie-pers">
                 </div>
+
+                <div class="form-group col-md-6">
+                    <label for="localitate-pers">Localitate</label>
+                    <input type="text" class="form-control" id="localitate-pers">
+                </div>
                 <div class="form-group col-md-12">
                     <button type="button" class="btn btn-primary" id="btnModPers" data-toggle="modal" onclick="atribuiePersMod()">
                         <span class="fa fa-edit">&nbsp;</span><spring:message code="MODPERS.MODPERS"/>
@@ -52,12 +57,12 @@
             </form>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="locuri">
-            <form method="post" id="modificalocform" action="${pageContext.request.contextPath}/api/modificaloc">
+            <form method="post" id="modificalocform" action="${pageContext.request.contextPath}/global/admin/inventar/modifyloc">
                 <div class="well-sm">
                     <p>Modific&#259; locul ales</p>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="loc-mod-select"><spring:message code="MODUSER.PERSOANA"/></label>
+                    <label for="loc-mod-select"><spring:message code="MODUSER.LOC"/></label>
                     <select data-placeholder="Alege un loc..." class="chosen-select" id="loc-mod-select"> </select>
                 </div>
                 <div class="col-md-12"><br></div>
@@ -69,15 +74,15 @@
                     <button type="button" class="btn btn-primary" id="btnModLoc" data-toggle="modal" onclick="atribuieLocMod()">
                         <span class="fa fa-edit">&nbsp;</span><spring:message code="MODLOC.MODLOC"/>
                     </button>
-                    <button type="button" class="btn btn-success" id="btnAddLoc" data-toggle="modal">
+                    <button type="button" class="btn btn-success" id="btnAddLoc" data-toggle="modal" data-target="#add-loc-modal">
                         <span class="fa fa-plus">&nbsp;</span><spring:message code="MODLOC.ADDLOC"/>
                     </button>
-                    <button type="button" class="btn btn-danger" id="btnDelLoc" data-toggle="modal" onclick="atribuieLocMod()">
+                    <button type="button" class="btn btn-danger" id="btnDelLoc" data-toggle="modal" onclick="atribuieLocDel()">
                         <span class="fa fa-times">&nbsp;</span><spring:message code="MODLOC.DELLOC"/>
                     </button>
                 </div>
             </form>
-        </div>
+        </div>`
         <div role="tabpanel" class="tab-pane fade" id="articole">
             <form method="post" id="modificaarticolform" action="${pageContext.request.contextPath}/api/modificaarticol">
                 <div class="well-sm">
@@ -195,7 +200,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title"><spring:message code="DIALOG.ADDPERSON"/></h4>
                 </div>
-                <form id="adaugapersoana" action="${pageContext.request.contextPath}/global/admin/inventar/adaugapersoana" method="post">
+                <form id="adaugapersoana" action="${pageContext.request.contextPath}/global/admin/inventar/addpersoana" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nume">Nume</label>
@@ -209,22 +214,48 @@
                             <label for="functie">Functie</label>
                             <input id="functie" name="functie" title="functie" class="form-control">
                         </div>
-
+                        <div class="form-group">
+                            <label for="localitate">Localitate</label>
+                            <input id="localitate" name="localitate" title="localitate" class="form-control">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">
                             <span class="fa fa-plus">&nbsp;</span><spring:message code="DIALOG.ADD"/></button>
                         <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal">
                             <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
-
                     </div>
                 </form>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="add-loc-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDPLACE"/></h4>
+                </div>
+                <form id="adaugaloc" action="${pageContext.request.contextPath}/global/admin/inventar/addloc" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="denumireloc">Nume</label>
+                            <input id="denumireloc" name="denumireloc" title="denumire loc" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <span class="fa fa-plus">&nbsp;</span><spring:message code="DIALOG.ADD"/></button>
+                        <button type="button" id="closeloc" class="btn btn-default" data-dismiss="modal">
+                            <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
@@ -233,7 +264,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><spring:message code="MODPROJ.TITLE"/></h4>
+                    <h4 class="modal-title"><spring:message code="MODPERS.MODPERS"/></h4>
                 </div>
                 <div class="modal-body">
                     <h3><spring:message code="DIALOG.ESTISIGURMODPERS"/> <span id="persNumeMod" style="color: #149bdf"></span>?</h3>
@@ -247,11 +278,32 @@
                         <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="estiSigurLoc">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="MODLOC.MODLOC"/></h4>
+                </div>
+                <div class="modal-body">
+                    <h3><spring:message code="DIALOG.ESTISIGURMODLOC"/> <span id="locNumeMod" style="color: #149bdf"></span>?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="modifyLoc();">
+                        <span class="fa fa-edit">&nbsp;</span>
+                        Da
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
@@ -260,7 +312,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><spring:message code="MODPROJ.TITLE"/></h4>
+                    <h4 class="modal-title"><spring:message code="MODPERS.BUTTONDEL"/></h4>
                 </div>
                 <div class="modal-body">
                     <h3><spring:message code="DIALOG.ESTISIGURDELPERS"/> <span id="persNumeDel" style="color: #149bdf"></span>?</h3>
@@ -274,11 +326,32 @@
                         <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="estiSigurDelLoc">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="MODLOC.DELLOC"/></h4>
+                </div>
+                <div class="modal-body">
+                    <h3><spring:message code="DIALOG.ESTISIGURDELETELOC"/> <span id="locNumeDel" style="color: #149bdf"></span>?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="deleteLoc();">
+                        <span class="fa fa-edit">&nbsp;</span>
+                        Da
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
@@ -303,14 +376,12 @@
                             <label for="functie-mod">Functie</label>
                             <input id="functie-mod" name="functie" title="functie" class="form-control">
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">
                             <span class="fa fa-edit">&nbsp;</span><spring:message code="DIALOG.MOD"/></button>
                         <button type="button" id="closepersmod" class="btn btn-default" data-dismiss="modal">
                             <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
-
                     </div>
                 </form>
             </div>
@@ -318,9 +389,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
 </sec:authorize>
-
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -338,11 +407,26 @@
         $('#modificapersform').submit();
     }
 
+    function atribuieLocMod() {
+        $('#locNumeMod').text($('#nume-loc').val());
+    }
+
+    function atribuieLocDel() {
+        $('#locNumeDel').text($('#nume-loc').val());
+    }
+
+    function modifyLoc() {
+        $('#modificalocform').submit();
+    }
+
     function deletePerson() {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
+        var idPersoana = $('#persoana-mod-select').val();
+        var nume = $('#nume-pers').val();
         var data = {
-            "idPersoana" : $('#persoana-mod-select').val()
+            "idPersoana": idPersoana,
+            "nume": nume
         };
         $.ajax({
             type: 'post',
@@ -372,7 +456,43 @@
                 alert("Eroare la conexiune!" + e);
             }
         });
+    }
 
+    function deleteLoc() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var idLoc = $('#loc-mod-select').val();
+        var denumireLoc = $('#nume-loc').val();
+        var data = {
+            "idLoc": idLoc,
+            "denumireLoc": denumireLoc
+        };
+        $.ajax({
+            type: 'post',
+            url: '${pageContext.request.contextPath}/global/admin/inventar/deleteloc',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                if (response && response.httpStatus == 500) {
+                    showNotification(response.message, DANGER);
+                    return;
+                }
+                $('#loc-mod-select').val(EMPTY);
+                $('#nume-loc').val(EMPTY);
+                getLocuri();
+                hideModal();
+                showNotification(response.message);
+                $('#btnDelLoc').attr('data-target', '');
+            },
+            error: function (xhr, e) {
+                alert("Eroare la conexiune!" + e);
+            }
+        });
     }
 
     $(document).ready(function () {
@@ -383,12 +503,15 @@
                 $('#nume-pers').val(persoana.getAttribute("label"));
                 $('#cnp-pers').val(persoana.getAttribute("data-cnp"));
                 $('#functie-pers').val(persoana.getAttribute("data-functie"));
+                var localitate = persoana.getAttribute("data-localitate")==='null' ? '' : persoana.getAttribute("data-localitate");
+                $('#localitate-pers').val(localitate);
                 $('#btnModPers').attr('data-target', '#estiSigurPersoana');
                 $('#btnDelPers').attr('data-target', '#estiSigurDelPersoana');
             } else {
                 $('#nume-pers').val(EMPTY);
                 $('#cnp-pers').val(EMPTY);
                 $('#functie-pers').val(EMPTY);
+                $('#localitate-pers').val(EMPTY);
                 $('#btnModPers').attr('data-target', '');
                 $('#btnDelPers').attr('data-target', '');
             }
@@ -401,6 +524,7 @@
             var nume = $('#nume').val();
             var cnp = $('#cnp').val();
             var functie = $('#functie').val();
+            var localitate = $('#localitate').val();
             if (nume.length < 7) {
                 alert('Numele este prea scurt!');
                 return;
@@ -429,7 +553,13 @@
                 alert('Functia este prea scurta!');
                 return;
             }
-            var data = {"nume": nume, "cnp": cnp, "functie": functie};
+            var data = {
+                "nume": nume,
+                "cnp": cnp,
+                "functie": functie,
+                "localitate": localitate
+            };
+
             // will pass the form date using the jQuery serialize function
             $.ajax({
                 type: 'post',
@@ -445,6 +575,12 @@
                     $('#nume').val(EMPTY);
                     $('#cnp').val(EMPTY);
                     $('#functie').val(EMPTY);
+                    $('#localitate').val(EMPTY);
+
+                    $('#nume-pers').val(EMPTY);
+                    $('#cnp-pers').val(EMPTY);
+                    $('#functie-pers').val(EMPTY);
+                    $('#localitate-pers').val(EMPTY);
                     hideModal();
                     getPersoane();
                     showNotification(response.message)
@@ -453,7 +589,6 @@
                     alert('Eroare la conexiune!');
                 }
             });
-
         });
 
         $('#modificapersform').on('submit', function (e) {
@@ -465,11 +600,13 @@
             var nume = $('#nume-pers').val();
             var cnp = $('#cnp-pers').val();
             var functie = $('#functie-pers').val();
+            var localitate = $('#localitate-pers').val();
             var data = {
                 "idPersoana": idPersoana,
                 "nume": nume,
                 "cnp": cnp,
-                "functie": functie
+                "functie": functie,
+                "localitate": localitate
             };
 
             $.ajax({
@@ -491,8 +628,10 @@
                     $('#nume-pers').val(EMPTY);
                     $('#cnp-pers').val(EMPTY);
                     $('#functie-pers').val(EMPTY);
+                    $('#localitate-pers').val(EMPTY);
                     chosenUnselect('#persoana-mod-select');
                     hideModal();
+                    getPersoane();
                     showNotification(response.message);
                     $('#btnModPers').attr('data-target', '');
                 },
@@ -501,6 +640,100 @@
                 }
             });
 
+        });
+
+        $('#loc-mod-select').on('change', function () {
+            var id = 'loc' + $(this).val();
+            var loc = document.getElementById(id);
+            if (loc) {
+                $('#nume-loc').val(loc.getAttribute("label"));
+                $('#btnModLoc').attr('data-target', '#estiSigurLoc');
+                $('#btnDelLoc').attr('data-target', '#estiSigurDelLoc');
+            } else {
+                $('#nume-loc').val(EMPTY);
+                $('#btnModLoc').attr('data-target', EMPTY);
+                $('#btnDelLoc').attr('data-target', EMPTY);
+            }
+        });
+
+        $('#modificalocform').on('submit', function (e) {
+            e.preventDefault();
+
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var idLoc = $('#loc-mod-select').val();
+            var nume = $('#nume-loc').val();
+            var data = {
+                "idLoc": idLoc,
+                "denumireLoc": nume
+            };
+
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response && response.httpStatus == 500) {
+                        showNotification(response.message, DANGER);
+                        return;
+                    }
+                    $('#loc-mod-select').val(EMPTY);
+                    $('#nume-loc').val(EMPTY);
+                    hideModal();
+                    getLocuri();
+                    showNotification(response.message);
+                    $('#btnModLoc').attr('data-target', '');
+                },
+                error: function (xhr, e) {
+                    alert("Eroare la conexiune!" + e);
+                }
+            });
+        });
+
+        $('#adaugaloc').on('submit', function (e) {
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var denumireloc = $('#denumireloc').val();
+
+            if (denumireloc.length < 7) {
+                alert('Numele este prea scurt!');
+                return;
+            }
+            if (denumireloc.length == 0) {
+                alert('Numele este prea scurt!');
+                return;
+            }
+            var data = {"denumireLoc": denumireloc};
+            // will pass the form date using the jQuery serialize function
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $('#denumireloc').val(EMPTY);
+                    $('#nume_loc').val(EMPTY);
+                    hideModal();
+                    getLocuri();
+                    showNotification(response.message)
+                },
+                error: function (err) {
+                    alert('Eroare la conexiune!');
+                }
+            });
         });
 
         $('#articol-mod-select').on('change', function () {
@@ -514,20 +747,10 @@
                 $('#loc-articol').trigger('chosen:updated');
                 $('#data-articol').val(articol.getAttribute("data-data"));
             } else {
-                $('#nume-articol').val('');
-                $('#stare-articol').val('');
-                $('#loc-articol').val('');
-                $('#data-articol').val('');
-            }
-        });
-
-        $('#loc-mod-select').on('change', function () {
-            var id = 'loc' + $(this).val();
-            var loc = document.getElementById(id);
-            if (loc) {
-                $('#nume-loc').val(loc.getAttribute("label"));
-            } else {
-                $('#nume-loc').val('');
+                $('#nume-articol').val(EMPTY);
+                $('#stare-articol').val(EMPTY);
+                $('#loc-articol').val(EMPTY);
+                $('#data-articol').val(EMPTY);
             }
         });
 
@@ -538,7 +761,7 @@
             if (cod1) {
                 $('#nume-cod1').val(cod1.getAttribute("label"));
             } else {
-                $('#nume-cod1').val('');
+                $('#nume-cod1').val(EMPTY);
             }
         });
 
@@ -548,8 +771,10 @@
             if (cod2) {
                 $('#nume-cod2').val(cod2.getAttribute("label"));
             } else {
-                $('#nume-cod2').val('');
+                $('#nume-cod2').val(EMPTY);
             }
         });
+
+
     });
 </script>

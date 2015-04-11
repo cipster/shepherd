@@ -34,6 +34,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
             persoana.setCnp(rs.getString("cnp"));
             persoana.setFunctie(rs.getString("functie"));
             persoana.setUsername(rs.getString("username"));
+            persoana.setLocalitate(rs.getString("localitate"));
 
             return persoana;
         }
@@ -83,7 +84,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
     public Integer create(final Persoana entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        final String query = "INSERT INTO proiecte.persoana(id_persoana, nume, cnp, functie, username) VALUES (?,?,?,?,?)";
+        final String query = "INSERT INTO proiecte.persoana(id_persoana, nume, cnp, functie, username, localitate) VALUES (?,?,?,?,?,?)";
 
 		try {
 			PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -96,6 +97,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
 					ps.setString(3, entity.getCnp());
 					ps.setString(4, entity.getFunctie());
 					ps.setString(5, entity.getUsername());
+					ps.setString(6, entity.getLocalitate());
 
 					logger.debug(ps.toString());
 					return ps;
@@ -113,7 +115,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
     @Override
     public Integer update(final Persoana entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        final String query = "UPDATE proiecte.persoana SET nume=?, cnp=?, functie=?, username=? WHERE id_persoana=?";
+        final String query = "UPDATE proiecte.persoana SET nume=?, cnp=?, functie=?, username=?, localitate=? WHERE id_persoana=?";
 
 		try {
 			PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -126,7 +128,8 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
 					ps.setString(2, entity.getCnp());
 					ps.setString(3, entity.getFunctie());
 					ps.setString(4, entity.getUsername());
-					ps.setInt(5, entity.getIdPersoana());
+					ps.setString(5, entity.getLocalitate());
+					ps.setInt(6, entity.getIdPersoana());
 
 					logger.debug(ps.toString());
 					return ps;

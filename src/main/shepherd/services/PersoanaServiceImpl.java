@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class PersoanaServiceImpl implements PersoanaService {
 	private final Log LOGGER = LogFactory.getLog(getClass());
+
 	@Autowired
 	private PersoanaDAO persoanaDAO;
 

@@ -9,5 +9,5 @@
 <a id="scrollUp" href="#top" tabindex="-1" title="Mergi sus" style="position: fixed; z-index: 900; display: none;"></a>
 
 <div class="panel-footer">
-    <p> fieldcover &copy; 2014 - <span id="an-copyright"></span> &middot; <a>Shepherd 0.9.0.2</a></p>
+    <p> fieldcover &copy; 2014 - <span id="an-copyright"></span> &middot; <a>Shepherd 0.9.0.3</a></p>
 </div>

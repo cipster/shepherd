@@ -16,6 +16,7 @@ public class Persoana {
     private String cnp;
     private String functie;
     private String username;
+    private String localitate;
 
     @Id
     @Column(name = "id_persoana")
@@ -67,19 +68,30 @@ public class Persoana {
         this.username = username;
     }
 
+    @Basic
+    @Column(name = "localitate")
+    public String getLocalitate() {
+        return localitate;
+    }
+
+    public void setLocalitate(String localitate) {
+        this.localitate = localitate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Persoana)) return false;
 
         Persoana persoana = (Persoana) o;
 
         if (idPersoana != persoana.idPersoana) return false;
+        if (nume != null ? !nume.equals(persoana.nume) : persoana.nume != null) return false;
         if (cnp != null ? !cnp.equals(persoana.cnp) : persoana.cnp != null) return false;
         if (functie != null ? !functie.equals(persoana.functie) : persoana.functie != null) return false;
-        if (nume != null ? !nume.equals(persoana.nume) : persoana.nume != null) return false;
+        if (username != null ? !username.equals(persoana.username) : persoana.username != null) return false;
+        return !(localitate != null ? !localitate.equals(persoana.localitate) : persoana.localitate != null);
 
-        return true;
     }
 
     @Override
@@ -88,6 +100,8 @@ public class Persoana {
         result = 31 * result + (nume != null ? nume.hashCode() : 0);
         result = 31 * result + (cnp != null ? cnp.hashCode() : 0);
         result = 31 * result + (functie != null ? functie.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (localitate != null ? localitate.hashCode() : 0);
         return result;
     }
 }
