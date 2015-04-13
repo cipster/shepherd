@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import util.enums.DAOResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class PersoanaServiceImpl implements PersoanaService {
 		try {
 			listaPersoane = persoanaDAO.getAll();
 		} catch (Exception e) {
-			listaPersoane = new ArrayList<>();
+			listaPersoane = Collections.emptyList();
 		}
 		return listaPersoane;
 	}

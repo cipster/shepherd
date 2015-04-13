@@ -1,10 +1,9 @@
 package controllers.admin;
 
 import model.ControllerResult;
-import model.dto.Cod1;
-import model.dto.Loc;
-import model.dto.Persoana;
+import model.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
@@ -13,16 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import services.ArticolService;
 import services.Cod1Service;
 import services.LocService;
 import services.PersoanaService;
 
 import java.util.List;
-
-/**
- * Created by Ciprian on 3/12/2015.
- * Project Shepherd
- */
 
 @Controller
 @RequestMapping(value = "/global/admin/inventar")
@@ -34,6 +29,8 @@ public class AdminInventarRestController {
 	private PersoanaService persoanaService;
 	@Autowired
 	private LocService locService;
+	@Autowired
+	private ArticolService articolService;
 
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
@@ -99,6 +96,30 @@ public class AdminInventarRestController {
 	@ResponseBody
 	public ControllerResult delLoc(@RequestBody Loc loc) {
 		return locService.delLoc(loc);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/modifyarticol", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ControllerResult modArticol(@RequestBody Cod3 articol) {
+		return articolService.modArticol(articol);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/addarticol", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ControllerResult addArticol(@RequestBody Cod3 articol) {
+		return articolService.addArticol(articol);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/deletearticol", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ControllerResult delArticol(@RequestBody Cod3 articol) {
+		return articolService.delArticol(articol);
 	}
 }
 

@@ -164,20 +164,97 @@ function toJSDate(dateTimeParam, ora) {
 
 }
 
-$(window).scroll(function(){
-    if($(document).scrollTop() > 0){
+$(window).scroll(function () {
+    if ($(document).scrollTop() > 0) {
         $('#scrollUp').fadeIn(400)
-    }else{
+    } else {
         $('#scrollUp').fadeOut(400);
     }
 });
 
-$(document).ready(function(){
+function generateModal(id, title, content, buttons) {
+    var modalHtml = '';
+    var modalId = '#' + id;
+    if (id && title && content && buttons) {
+        modalHtml += '<div class="modal fade" id="' + id + '">'
+            .concat('<div class="modal-dialog ">')
+            .concat('<div class="modal-content">')
+            .concat('<div class="modal-header">')
+            .concat('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>')
+            .concat('<h4 class="modal-title">').concat(title).concat('</h4>')
+            .concat('</div><div class="modal-body">')
+            .concat(content)
+            .concat('</div><div class="modal-footer">')
+            .concat(buttons)
+            .concat('</div></div></div></div>');
+
+        $('body').append(modalHtml);
+
+        $(modalId).modal('show');
+    } else {
+        throw "you must specify mandatory arguments "
+    }
+}
+
+function generateButton(id, type, text) {
+    var buttonHtml = '';
+    if (id) {
+        switch (type) {
+            case 'submit':
+                buttonHtml = '<button type="submit" id="' + id + '" class="btn btn-success"><span class="fa fa-plus">&nbsp;</span>' + text + '</button>';
+                break;
+            case 'close':
+                buttonHtml = '<button type="button" id="' + id + '" class="btn btn-default"><span class="fa fa-times">&nbsp;</span>' + text + '</button>';
+                break;
+        }
+    }
+    return buttonHtml;
+}
+
+$(document).ready(function () {
     $('#an-copyright').text(new Date().getFullYear());
 
-    $('a').on('click', function(e){
+    $('a').on('click', function (e) {
         var linkLocation = $($(this).attr('href')).offset();
-        if(linkLocation)
-            $('html,body').animate({scrollTop: linkLocation.top}, "10000",'linear');
+        if (linkLocation)
+            $('html,body').animate({scrollTop: linkLocation.top}, "10000", 'linear');
     });
+
+    var selcod1 = $('#selcod1');
+
+    function getCod2ByCod1(idCod1) {
+        var cod2 = $('#selcod2');
+        var cod2Cat = $('#cod2-mod-select');
+        cod2.html('');
+        $.ajax({
+            type: 'get',
+            url: '/api/cod2list/' + idCod1,
+            contentType: "application/json",
+            success: function (response) {
+                if (typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        idCod2 = response[i].cod2;
+                        denumire2 = response[i].denumire2;
+                        cod2.append($('<option id="cod2-art' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
+                        cod2Cat.append($('<option id="cod2-' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
+                    }
+                }
+            },
+            error: function (e) {
+                alert("Connection error!");
+            },
+            complete: function (e) {
+                cod2.val(UNSELECT);
+                cod2.trigger(chosenUpdated);
+                cod2Cat.val(UNSELECT);
+                cod2Cat.trigger(chosenUpdated);
+            }
+        });
+    }
+
+    selcod1.on('change', function () {
+        getCod2ByCod1($(this).val());
+    });
+
+
 });

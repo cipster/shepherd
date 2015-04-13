@@ -5706,7 +5706,7 @@ button.close {
 
 .modal-backdrop-white {
 
-    z-index: 1040;
+    z-index: 5040;
     background-color: #f5f5f5;
 }
 

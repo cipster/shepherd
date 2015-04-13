@@ -5,12 +5,9 @@ import model.dto.Cod1;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Ciprian on 3/12/2015.
- * Project Raindrop
- */
 public class Cod1ServiceImpl implements Cod1Service {
 
 	@Autowired
@@ -22,7 +19,7 @@ public class Cod1ServiceImpl implements Cod1Service {
 		try {
 			listaCod1 = cod1DAO.getAll();
 		} catch (Exception e) {
-			listaCod1 = new ArrayList<>();
+			listaCod1 = Collections.emptyList();
 		}
 		return listaCod1;
 	}

@@ -159,4 +159,9 @@ public class BeanConfig {
 	public LocService locService() {
 		return new LocServiceImpl();
 	}
+
+	@Bean
+	public ArticolService articolService() {
+		return new ArticolServiceImpl();
+	}
 }

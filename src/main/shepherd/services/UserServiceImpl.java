@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 import util.enums.RoleType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
 				listaUsers = userDAO.getAllNonAdmin();
 			}
 		} catch (Exception e) {
-			listaUsers = new ArrayList<>();
+			listaUsers = Collections.emptyList();
 		}
 		return listaUsers;
 	}

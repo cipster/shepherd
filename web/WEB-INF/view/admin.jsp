@@ -114,7 +114,9 @@
 
     function getAllCod1() {
         var cod1 = $("#cod1-mod-select");
-        cod1.html("");
+        var selcod1 = $("#selcod1");
+        cod1.html(EMPTY);
+        selcod1.html(EMPTY);
 
         var idCod1;
         var denumire1;
@@ -128,6 +130,7 @@
                         idCod1 = response[i].cod1;
                         denumire1 = response[i].denumire1;
                         cod1.append($('<option id="cod1-' + idCod1 + '" label="' + denumire1 + '">').val(idCod1).text(denumire1));
+                        selcod1.append($('<option id="cod1-' + idCod1 + '" label="' + denumire1 + '">').val(idCod1).text(denumire1));
                     }
                 }
             },
@@ -137,37 +140,11 @@
             complete: function (e) {
                 cod1.val(UNSELECT);
                 cod1.trigger("chosen:updated");
+                selcod1.val(UNSELECT);
+                selcod1.trigger("chosen:updated");
             }
         });
 
-    }
-
-    function getCod2ByCod1(idCod1) {
-        var cod2 = $('#cod2-mod-select');
-        cod2.html('');
-        var idCod2;
-        var denumire2;
-        $.ajax({
-            type: 'get',
-            url: '${pageContext.request.contextPath}/api/cod2list/' + idCod1,
-            contentType: "application/json",
-            success: function (response) {
-                if (typeof response !== 'undefined') {
-                    for (var i = 0; i < response.length; i++) {
-                        idCod2 = response[i].cod2;
-                        denumire2 = response[i].denumire2;
-                        cod2.append($('<option id="cod2-' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
-                    }
-                }
-            },
-            error: function (e) {
-                alert("Connection error!");
-            },
-            complete: function (e) {
-                cod2.val(UNSELECT);
-                cod2.trigger('chosen:updated');
-            }
-        });
     }
 
     function getArticole() {
@@ -505,8 +482,7 @@
             no_results_text: "Articolul nu exista!",
             allow_single_deselect: true
         });
-        $("#articol-mod-select").val(UNSELECT);
-        $("#articol-mod-select").trigger('chosen:updated');
+        chosenUnselect("#articol-mod-select");
 
         $("#persoana-select-new").chosen({
             width: "100%",
@@ -514,8 +490,7 @@
             no_results_text: "Persoana nu exista!",
             allow_single_deselect: true
         });
-        $("#persoana-select-new").val(UNSELECT);
-        $("#persoana-select-new").trigger('chosen:updated');
+        chosenUnselect("#persoana-select-new");
 
         $("#loc-articol").chosen({
             width: "100%",
@@ -523,8 +498,7 @@
             no_results_text: "Locul nu exista!",
             allow_single_deselect: true
         });
-        $("#loc-articol").val(UNSELECT);
-        $("#loc-articol").trigger('chosen:updated');
+        chosenUnselect("#loc-articol");
 
         $("#cod1-mod-select").chosen({
             width: "100%",
@@ -532,8 +506,23 @@
             no_results_text: "Locul nu exista!",
             allow_single_deselect: true
         });
-        $("#cod1-mod-select").val(UNSELECT);
-        $("#cod1-mod-select").trigger('chosen:updated');
+        chosenUnselect("#cod1-mod-select");
+
+        $("#selcod1").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: " nu exista!",
+            allow_single_deselect: true
+        });
+        chosenUnselect("#selcod1");
+
+        $("#selcod2").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: " nu exista!",
+            allow_single_deselect: true
+        });
+        chosenUnselect("#selcod2");
 
         $("#cod2-mod-select").chosen({
             width: "100%",
@@ -541,8 +530,7 @@
             no_results_text: "codul nu exista!",
             allow_single_deselect: true
         });
-        $("#cod2-mod-select").val(UNSELECT);
-        $("#cod2-mod-select").trigger('chosen:updated');
+        chosenUnselect("#cod2-mod-select");
 
         $("#anSelInput").val(UNSELECT);
         $("#anSelInput").trigger("chosen:updated");

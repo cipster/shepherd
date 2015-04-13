@@ -142,7 +142,7 @@ public class ApiRestController {
     @RequestMapping(value = "/articol/{code}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Cod3 getArticol(@PathVariable String code) {
-        Cod3 cod3 = null;
+        Cod3 cod3;
         try {
             cod3 = cod3DAO.findByBarcode(code);
             if(cod3 == null){
@@ -266,7 +266,7 @@ public class ApiRestController {
     @RequestMapping(value = "/generatebarcode/{id}", method = RequestMethod.GET)
     @ResponseBody
     public String generateBarcode(@PathVariable String id) throws IOException {
-        File f = null;
+        File f;
         String code = id;
         try {
             String dirPath = "/WEB-INF" + File.separatorChar + "resources" + File.separatorChar + "barcode";

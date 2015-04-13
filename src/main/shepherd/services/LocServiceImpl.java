@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import util.enums.DAOResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public class LocServiceImpl implements LocService {
         try {
             listaLocuri = locDAO.getAll();
         } catch (Exception e) {
-            listaLocuri = new ArrayList<>();
+            listaLocuri = Collections.emptyList();
         }
         return listaLocuri;
     }

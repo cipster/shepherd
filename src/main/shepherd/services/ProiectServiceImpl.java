@@ -7,11 +7,6 @@ import model.dto.Proiect;
 import org.springframework.beans.factory.annotation.Autowired;
 import util.enums.DAOResult;
 
-/**
- * Created by Ciprian on 3/8/2015.
- * Project Shepherd
- */
-
 public class ProiectServiceImpl implements ProiectService {
 
     @Autowired

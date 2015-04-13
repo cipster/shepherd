@@ -85,7 +85,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title"><spring:message code="DIALOG.ADDITEM"/></h4>
                 </div>
-                <form id="adaugaarticol" action="${pageContext.request.contextPath}/api/adaugaarticol" method="post">
+                <form id="adaugaarticol" action="${pageContext.request.contextPath}/global/admin/inventar/addarticol" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="selcod1">Alege cod 1</label><br/>
@@ -684,30 +684,7 @@
         return articoleJSON;
     }
 
-    function getCod2ByCod1(idCod1) {
-        var cod2 = $('#selcod2');
-        cod2.html('');
-        $.ajax({
-            type: 'get',
-            url: '${pageContext.request.contextPath}/api/cod2list/' + idCod1,
-            contentType: "application/json",
-            success: function (response) {
-                if (typeof response !== 'undefined') {
-                    for (var i = 0; i < response.length; i++) {
-                        cod2.append($("<option>").val(response[i].cod2).text(response[i].denumire2));
-                    }
-                }
-            },
-            error: function (e) {
-                alert("Connection error!");
-            },
-            complete: function (e) {
-                cod2.val(UNSELECT);
-                cod2.trigger(chosenUpdated);
-            }
-        });
 
-    }
 
     function getPersoane() {
         $("#iesepers").html("");
@@ -993,12 +970,8 @@
             allow_single_deselect: true,
             disable_search: true
         });
-        selcod2.val(-1);
+        selcod2.val(UNSELECT);
         selcod2.trigger('chosen:updated');
-
-        selcod1.on('change', function () {
-            getCod2ByCod1(selcod1.val());
-        });
 
         iesepers.chosen({
             width: "60%",
@@ -1423,7 +1396,6 @@
                 }
                 $('#nextintra').addClass('ascuns');
             }
-
         });
 
         //butonul care introduce datele in evidenta de inventar

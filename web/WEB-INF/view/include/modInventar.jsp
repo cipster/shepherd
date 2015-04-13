@@ -84,7 +84,7 @@
             </form>
         </div>`
         <div role="tabpanel" class="tab-pane fade" id="articole">
-            <form method="post" id="modificaarticolform" action="${pageContext.request.contextPath}/api/modificaarticol">
+            <form method="post" id="modificaarticolform" action="${pageContext.request.contextPath}/global/admin/inventar/modifyarticol">
                 <div class="well-sm">
                     <p>Modific&#259; articol ales</p>
                 </div>
@@ -98,8 +98,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="nume-articol">Denumire</label>
-                    <input type="text" class="form-control"
-                    <sec:authorize ifNotGranted="ROLE_ADMIN"> disabled="disabled" </sec:authorize> id="nume-articol">
+                    <input type="text" class="form-control" <sec:authorize ifNotGranted="ROLE_ADMIN"> disabled="disabled" </sec:authorize> id="nume-articol">
                 </div>
                 <div class="col-md-12"></div>
                 <div class="form-group col-md-6">
@@ -132,7 +131,7 @@
                     <button type="button" class="btn btn-primary" id="btnModArticol" data-toggle="modal" onclick="atribuieArticolMod()">
                         <span class="fa fa-edit">&nbsp;</span><spring:message code="MODART.MODART"/>
                     </button>
-                    <button type="button" class="btn btn-success" id="btnAddArticol" data-toggle="modal">
+                    <button type="button" class="btn btn-success" id="btnAddArticol" data-toggle="modal" data-target="#add-item-modal">
                         <span class="fa fa-plus">&nbsp;</span><spring:message code="MODART.ADDART"/>
                     </button>
                     <button type="button" class="btn btn-danger" id="btnDelArticol" data-toggle="modal" onclick="atribuieArticolMod()">
@@ -224,6 +223,47 @@
                             <span class="fa fa-plus">&nbsp;</span><spring:message code="DIALOG.ADD"/></button>
                         <button type="button" id="closepers" class="btn btn-default" data-dismiss="modal">
                             <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="add-item-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="DIALOG.ADDITEM"/></h4>
+                </div>
+                <form id="adaugaarticol" action="${pageContext.request.contextPath}/global/admin/inventar/addarticol" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="selcod1">Alege cod 1</label><br/>
+                            <select id="selcod1" name="cod1" data-placeholder="Alege o categorie..."  title=""> </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selcod2">Alege cod 2</label><br/>
+                            <select id="selcod2" name="cod2" data-placeholder="Alege o categorie..." title=""> </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="denumire3">Denumire articol</label>
+                            <input id="denumire3" name="denumire3" title="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="detalii">Detalii articol</label>
+                            <textarea id="detalii" name="detalii" title="" style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="pretachizitie">Pret achizitie</label>
+                            <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"><span class="fa fa-plus">&nbsp;</span><spring:message code="DIALOG.ADD"/></button>
+                        <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
                     </div>
                 </form>
             </div>
@@ -385,9 +425,7 @@
                     </div>
                 </form>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 </sec:authorize>
 
@@ -754,6 +792,47 @@
             }
         });
 
+        $('#modificaarticolform').on('submit', function (e) {
+            e.preventDefault();
+
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var idLoc = $('#loc-mod-select').val();
+            var nume = $('#nume-loc').val();
+            var data = {
+                "idLoc": idLoc,
+                "denumireLoc": nume
+            };
+
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response && response.httpStatus == 500) {
+                        showNotification(response.message, DANGER);
+                        return;
+                    }
+                    $('#loc-mod-select').val(EMPTY);
+                    $('#nume-loc').val(EMPTY);
+                    hideModal();
+                    getLocuri();
+                    showNotification(response.message);
+                    $('#btnModLoc').attr('data-target', '');
+                },
+                error: function (xhr, e) {
+                    alert("Eroare la conexiune!" + e);
+                }
+            });
+        });
+
         $('#cod1-mod-select').on('change', function () {
             var id = 'cod1-' + $(this).val();
             getCod2ByCod1($(this).val());
@@ -775,6 +854,79 @@
             }
         });
 
+        $('#adaugaarticol').on('submit', function (e) {
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var cod1 = $('#selcod1').val();
+            var cod2 = $('#selcod2').val();
+            var denumire3 = $('#denumire3').val();
+            var detalii = $('#detalii').val();
+            var pret = $('#pretachizitie').val();
+
+            if (cod1 <= 0) {
+                alert('Cod 1 este obligatoriu!');
+                return;
+            }
+            if (cod2 <= 0) {
+                alert('Cod 2 este obligatoriu!');
+                return;
+            }
+            if (denumire3.length == 0) {
+                alert('Denumirea este obligatorie!');
+                return;
+            }
+            if (denumire3.length < 5) {
+                alert('Denumirea este prea scurta!');
+                return;
+            }
+            if (detalii.length < 10) {
+                alert('Detaliile trebuie sa contina mai mult de 10 caractere!');
+                return;
+            }
+            if (pret.length == 0) {
+                alert('Pretul este obligatoriu!');
+                return;
+            }
+
+            var data = {
+                "cod1": cod1, "cod2": cod2, "denumire3": denumire3,
+                "detalii": detalii, "pretAchizitie": pret
+            };
+            // will pass the form date using the jQuery serialize function
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    chosenUnselect('#selcod1');
+                    chosenUnselect('#selcod2');
+                    $('#articol-mod-select').val(UNSELECT);
+                    $('#data-articol').val(EMPTY);
+                    $('#nume-articol').val(EMPTY);
+                    $('#stare-articol').val(UNSELECT);
+                    $('#loc-articol').val(UNSELECT);
+                    $('#selcod1').val(UNSELECT);
+                    $('#selcod2').val(UNSELECT);
+                    $('#denumire3').val(EMPTY);
+                    $('#detalii').val(EMPTY);
+                    $('#pretachizitie').val(EMPTY);
+                    hideModal();
+                    getArticole();
+                    showNotification(response.message);
+
+                },
+                error: function (err) {
+                    alert('Eroare la conexiune!');
+                }
+            });
+        });
 
     });
 </script>
