@@ -17,12 +17,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Ciprian on 12/14/2014.
- * Project Raindrop
- */
+
 public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
     private RowMapper<Persoana> rowMapper = new RowMapper<Persoana>() {
         @Override
@@ -52,7 +50,7 @@ public class PersoanaDAOImpl extends JdbcDaoSupport implements PersoanaDAO {
             return getJdbcTemplate().query(query, rowMapper);
         } catch (DataAccessException ex){
             logger.debug(ex.getMessage(), ex);
-            throw ex;
+            return Collections.emptyList();
         }
     }
 

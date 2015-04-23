@@ -82,7 +82,8 @@
                     </button>
                 </div>
             </form>
-        </div>`
+        </div>
+
         <div role="tabpanel" class="tab-pane fade" id="articole">
             <form method="post" id="modificaarticolform" action="${pageContext.request.contextPath}/global/admin/inventar/modifyarticol">
                 <div class="well-sm">
@@ -98,7 +99,8 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="nume-articol">Denumire</label>
-                    <input type="text" class="form-control" <sec:authorize ifNotGranted="ROLE_ADMIN"> disabled="disabled" </sec:authorize> id="nume-articol">
+                    <input id="nume-articol" type="text" class="form-control"
+                    <sec:authorize ifNotGranted="ROLE_ADMIN"> disabled="disabled" </sec:authorize> >
                 </div>
                 <div class="col-md-12"></div>
                 <div class="form-group col-md-6">
@@ -126,15 +128,19 @@
                     <label for="loc-articol">Loc</label>
                     <select data-placeholder="Alege un loc..." class="form-control" id="loc-articol"></select>
                 </div>
+                <input id="artcod1" hidden="hidden">
+                <input id="artcod2" hidden="hidden">
+                <input id="artpret" hidden="hidden">
+
                 <div class="col-md-12"><br/></div>
                 <div class="form-group col-md-12">
-                    <button type="button" class="btn btn-primary" id="btnModArticol" data-toggle="modal" onclick="atribuieArticolMod()">
+                    <button type="button" class="btn btn-primary" id="btnModArt" data-toggle="modal" onclick="atribuieArticolMod()">
                         <span class="fa fa-edit">&nbsp;</span><spring:message code="MODART.MODART"/>
                     </button>
                     <button type="button" class="btn btn-success" id="btnAddArticol" data-toggle="modal" data-target="#add-item-modal">
                         <span class="fa fa-plus">&nbsp;</span><spring:message code="MODART.ADDART"/>
                     </button>
-                    <button type="button" class="btn btn-danger" id="btnDelArticol" data-toggle="modal" onclick="atribuieArticolMod()">
+                    <button type="button" class="btn btn-danger" id="btnDelArt" data-toggle="modal" onclick="atribuieArticolDel()">
                         <span class="fa fa-times">&nbsp;</span><spring:message code="MODART.DELART"/>
                     </button>
                 </div>
@@ -157,10 +163,10 @@
                 </div>
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-primary" id="btnModCod1" data-toggle="modal" onclick="atribuieArticolMod()">
+                    <button type="button" class="btn btn-primary" id="btnModCod1" data-toggle="modal" onclick="atribuieCod1Mod()">
                         <span class="fa fa-edit">&nbsp;</span>Modifică
                     </button>
-                    <button type="button" class="btn btn-danger" id="btnDelCod1" data-toggle="modal" onclick="atribuieArticolMod()">
+                    <button type="button" class="btn btn-danger" id="btnDelCod1" data-toggle="modal" onclick="atribuieCod1Del()">
                         <span class="fa fa-times">&nbsp;</span>&#x218;terge
                     </button>
                 </div>
@@ -178,10 +184,10 @@
                 <div class="col-md-12"><br/></div>
 
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-primary" id="btnModCod2" data-toggle="modal" onclick="atribuieArticolMod()">
+                    <button type="button" class="btn btn-primary" id="btnModCod2" data-toggle="modal" onclick="atribuieCod2Mod()">
                         <span class="fa fa-edit">&nbsp;</span>Modifică
                     </button>
-                    <button type="button" class="btn btn-danger" id="btnDelCod2" data-toggle="modal" onclick="atribuieArticolMod()">
+                    <button type="button" class="btn btn-danger" id="btnDelCod2" data-toggle="modal" onclick="atribuieCod2Del()">
                         <span class="fa fa-times">&nbsp;</span>&#x218;terge
                     </button>
                 </div>
@@ -242,7 +248,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="selcod1">Alege cod 1</label><br/>
-                            <select id="selcod1" name="cod1" data-placeholder="Alege o categorie..."  title=""> </select>
+                            <select id="selcod1" name="cod1" data-placeholder="Alege o categorie..." title=""> </select>
                         </div>
                         <div class="form-group">
                             <label for="selcod2">Alege cod 2</label><br/>
@@ -254,7 +260,11 @@
                         </div>
                         <div class="form-group">
                             <label for="detalii">Detalii articol</label>
-                            <textarea id="detalii" name="detalii" title="" style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
+                            <textarea id="detalii" name="detalii" title="" style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai multe detalii"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="loc-add-articol">Loc</label>
+                            <select id="loc-add-articol" name="loc-add-articol" title="" class="form-control" data-placeholder="Alege un loc..."></select>
                         </div>
                         <div class="form-group">
                             <label for="pretachizitie">Pret achizitie</label>
@@ -347,6 +357,30 @@
 </sec:authorize>
 
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="estiSigurArt">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="MODART.MODART"/></h4>
+                </div>
+                <div class="modal-body">
+                    <h3><spring:message code="DIALOG.ESTISIGURMODART"/> <span id="articolNumeMod" style="color: #149bdf"></span>?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="modifyArticol();">
+                        <span class="fa fa-edit">&nbsp;</span>
+                        Da
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
     <div class="modal fade" id="estiSigurDelPersoana">
         <div class="modal-dialog ">
             <div class="modal-content">
@@ -383,6 +417,30 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="deleteLoc();">
+                        <span class="fa fa-edit">&nbsp;</span>
+                        Da
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <span class="fa fa-times">&nbsp;</span><spring:message code="NU"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="estiSigurDelArt">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><spring:message code="MODART.DELART"/></h4>
+                </div>
+                <div class="modal-body">
+                    <h3><spring:message code="DIALOG.ESTISIGURDELETEARTICOL"/> <span id="articolNumeDel" style="color: #149bdf"></span>?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="deleteArticol();">
                         <span class="fa fa-edit">&nbsp;</span>
                         Da
                     </button>
@@ -455,6 +513,18 @@
 
     function modifyLoc() {
         $('#modificalocform').submit();
+    }
+
+    function atribuieArticolMod() {
+        $('#articolNumeMod').text($('#nume-articol').val());
+    }
+
+    function atribuieArticolDel() {
+        $('#articolNumeDel').text($('#nume-articol').val());
+    }
+
+    function modifyArticol() {
+        $('#modificaarticolform').submit();
     }
 
     function deletePerson() {
@@ -533,6 +603,43 @@
         });
     }
 
+    function deleteArticol() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var idCod3 = $('#articol-mod-select').val();
+        var denumireArticol = $('#nume-articol').val();
+        var data = {
+            "cod3": idCod3,
+            "denumire3": denumireArticol
+        };
+        $.ajax({
+            type: 'post',
+            url: '${pageContext.request.contextPath}/global/admin/inventar/deletearticol',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                if (response && response.httpStatus == 500) {
+                    showNotification(response.message, DANGER);
+                    return;
+                }
+                $('#articol-mod-select').val(EMPTY);
+                $('#nume-articol').val(EMPTY);
+                getArticole();
+                hideModal();
+                showNotification(response.message);
+                $('#btnDelArt').attr('data-target', '');
+            },
+            error: function (xhr, e) {
+                alert("Eroare la conexiune!" + e);
+            }
+        });
+    }
+
     $(document).ready(function () {
         $('#persoana-mod-select').on('change', function () {
             var id = 'persoana' + $(this).val();
@@ -541,7 +648,7 @@
                 $('#nume-pers').val(persoana.getAttribute("label"));
                 $('#cnp-pers').val(persoana.getAttribute("data-cnp"));
                 $('#functie-pers').val(persoana.getAttribute("data-functie"));
-                var localitate = persoana.getAttribute("data-localitate")==='null' ? '' : persoana.getAttribute("data-localitate");
+                var localitate = persoana.getAttribute("data-localitate") === 'null' ? '' : persoana.getAttribute("data-localitate");
                 $('#localitate-pers').val(localitate);
                 $('#btnModPers').attr('data-target', '#estiSigurPersoana');
                 $('#btnDelPers').attr('data-target', '#estiSigurDelPersoana');
@@ -659,6 +766,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     if (response && response.httpStatus == 500) {
+                        hideModal();
                         showNotification(response.message, DANGER);
                         return;
                     }
@@ -719,6 +827,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     if (response && response.httpStatus == 500) {
+                        hideModal();
                         showNotification(response.message, DANGER);
                         return;
                     }
@@ -784,11 +893,18 @@
                 $('#loc-articol').val(articol.getAttribute("data-loc"));
                 $('#loc-articol').trigger('chosen:updated');
                 $('#data-articol').val(articol.getAttribute("data-data"));
+                $('#artcod1').val(articol.getAttribute("data-cod1"));
+                $('#artcod2').val(articol.getAttribute("data-cod2"));
+                $('#artpret').val(articol.getAttribute("data-pret"));
+                $('#btnModArt').attr('data-target', '#estiSigurArt');
+                $('#btnDelArt').attr('data-target', '#estiSigurDelArt');
             } else {
                 $('#nume-articol').val(EMPTY);
                 $('#stare-articol').val(EMPTY);
                 $('#loc-articol').val(EMPTY);
                 $('#data-articol').val(EMPTY);
+                $('#artcod1').val(EMPTY);
+                $('#artcod2').val(EMPTY);
             }
         });
 
@@ -798,13 +914,52 @@
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            var idLoc = $('#loc-mod-select').val();
-            var nume = $('#nume-loc').val();
-            var data = {
-                "idLoc": idLoc,
-                "denumireLoc": nume
-            };
+            var cod1 = $('#artcod1').val();
+            var cod2 = $('#artcod2').val();
+            var cod3 = $('#articol-mod-select').val();
+            var denumire3 = $('#nume-articol').val();
+            var detalii = 'Modificat de administrator: ' + $('#username').val();
+            var loc = $('#loc-articol').val();
+            var pret = $('#artpret').val();
+            var stare = $('#stare-articol').val();
 
+            if (cod1 <= 0) {
+                alert('Cod 1 este obligatoriu!');
+                return;
+            }
+            if (cod2 <= 0) {
+                alert('Cod 2 este obligatoriu!');
+                return;
+            }
+            if (denumire3.length == 0) {
+                alert('Denumirea este obligatorie!');
+                return;
+            }
+            if (denumire3.length < 5) {
+                alert('Denumirea este prea scurta!');
+                return;
+            }
+            if (detalii.length < 10) {
+                alert('Detaliile trebuie sa contina mai mult de 10 caractere!');
+                return;
+            }
+            if (loc <= 0) {
+                alert('Locul este obligatoriu!');
+                return;
+            }
+            if (pret.length == 0) {
+                alert('Pretul este obligatoriu!');
+                return;
+            }
+            if (stare.length <= 0) {
+                alert('Starea este obligatorie!');
+                return;
+            }
+
+            var data = {
+                "cod3": cod3, "cod1": cod1, "cod2": cod2, "denumire3": denumire3,
+                "detalii": detalii, "pretAchizitie": pret, "idLoc": loc, "stare": stare
+            };
             $.ajax({
                 type: 'post',
                 url: $(this).attr('action'),
@@ -817,15 +972,20 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     if (response && response.httpStatus == 500) {
+                        hideModal();
                         showNotification(response.message, DANGER);
                         return;
                     }
-                    $('#loc-mod-select').val(EMPTY);
-                    $('#nume-loc').val(EMPTY);
+                    $('#articol-mod-select').val(EMPTY);
+                    $('#nume-articol').val(EMPTY);
+                    $('#data-articol').val(EMPTY);
+                    chosenUnselect('#loc-articol');
+                    chosenUnselect('#stare-articol');
                     hideModal();
-                    getLocuri();
+                    getArticole();
                     showNotification(response.message);
-                    $('#btnModLoc').attr('data-target', '');
+                    $('#btnModArt').attr('data-target', '');
+                    $('#btnDelArt').attr('data-target', '');
                 },
                 error: function (xhr, e) {
                     alert("Eroare la conexiune!" + e);
@@ -861,8 +1021,8 @@
             var cod1 = $('#selcod1').val();
             var cod2 = $('#selcod2').val();
             var denumire3 = $('#denumire3').val();
-            var detalii = $('#detalii').val();
-            var pret = $('#pretachizitie').val();
+            var detalii =  $('#detalii').val() ;
+            var loc = $('#loc-add-articol').val();
 
             if (cod1 <= 0) {
                 alert('Cod 1 este obligatoriu!');
@@ -884,14 +1044,14 @@
                 alert('Detaliile trebuie sa contina mai mult de 10 caractere!');
                 return;
             }
-            if (pret.length == 0) {
-                alert('Pretul este obligatoriu!');
+            if (loc <= 0) {
+                alert('Locul este obligatoriu!');
                 return;
             }
 
             var data = {
                 "cod1": cod1, "cod2": cod2, "denumire3": denumire3,
-                "detalii": detalii, "pretAchizitie": pret
+                "detalii": detalii, "idLoc": loc
             };
             // will pass the form date using the jQuery serialize function
             $.ajax({
@@ -910,8 +1070,8 @@
                     $('#articol-mod-select').val(UNSELECT);
                     $('#data-articol').val(EMPTY);
                     $('#nume-articol').val(EMPTY);
-                    $('#stare-articol').val(UNSELECT);
-                    $('#loc-articol').val(UNSELECT);
+                    chosenUnselect('#stare-articol');
+                    chosenUnselect('#loc-articol');
                     $('#selcod1').val(UNSELECT);
                     $('#selcod2').val(UNSELECT);
                     $('#denumire3').val(EMPTY);

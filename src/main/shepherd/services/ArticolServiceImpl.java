@@ -21,7 +21,6 @@ public class ArticolServiceImpl implements ArticolService {
 
     @Autowired
     private ArticolDAO articolDAO;
-    @Qualifier("cod3DAO")
     @Autowired
     private Cod3DAO cod3DAO;
 
@@ -31,6 +30,17 @@ public class ArticolServiceImpl implements ArticolService {
         List<Articol> articoleList;
         try {
             articoleList = articolDAO.getAll();
+        } catch (Exception e) {
+            articoleList = Collections.emptyList();
+        }
+        return articoleList;
+    }
+
+    @Override
+    public List<Cod3> fetchAllCod3() {
+        List<Cod3> articoleList;
+        try {
+            articoleList = cod3DAO.getAll();
         } catch (Exception e) {
             articoleList = Collections.emptyList();
         }
@@ -75,7 +85,7 @@ public class ArticolServiceImpl implements ArticolService {
     public ControllerResult delArticol(Cod3 cod3) throws DAOException {
         ControllerResult controllerResult;
         try {
-            if ( articolDAO.deleteByID(cod3.getIdCod3()) > DAOResult.ZERO ) {
+            if ( cod3DAO.deleteByID(cod3.getCod3()) > DAOResult.ZERO ) {
                 controllerResult = new ControllerResult(HttpStatus.OK.value(), "Articolul " + cod3.getDenumire3() + " a fost şters cu succes!");
             } else {
                 throw new RuntimeException("Articolul nu a fost şters!");

@@ -90,7 +90,6 @@ public class AdminInventarRestController {
 		return locService.addLoc(loc);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
 	@RequestMapping(value = "/deleteloc", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
@@ -98,7 +97,6 @@ public class AdminInventarRestController {
 		return locService.delLoc(loc);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
 	@RequestMapping(value = "/modifyarticol", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
@@ -106,7 +104,13 @@ public class AdminInventarRestController {
 		return articolService.modArticol(articol);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/articolelist", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Cod3> fetchArticole() {
+		return articolService.fetchAllCod3();
+	}
+
 	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
 	@RequestMapping(value = "/addarticol", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import util.beans.FileBean;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,12 +34,14 @@ public class DownloadRestController {
     private BdDAO bdJDBCDAO;
     @Autowired
     private AlteMaterialeDAO alteMaterialeJDBCDAO;
+    @Autowired
+    ServletContext servletContext;
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
     @RequestMapping(value = "/propunere/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
-    String propunereDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String propunereDownload(@PathVariable int id, HttpServletResponse response) throws IOException, ServletException {
 
         Propunere propunere = propunereJDBCDAO.findByID(id);
         FileBean file = new FileBean();
@@ -51,6 +54,32 @@ public class DownloadRestController {
         file.setCreatDe(propunere.getCreat_de());
         file.setCreatLa(propunere.getCreat_la());
         file.setFilename(propunere.getNume());
+
+        response.setContentLength(file.getFile().length);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");
+
+        FileCopyUtils.copy(file.getFile(), response.getOutputStream());
+
+        return null;
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    @RequestMapping(value = "/barcode/{code}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String barcodeDownload(@PathVariable String code, HttpServletResponse response) throws IOException, ServletException {
+        String dirPath = "/WEB-INF" + File.separatorChar + "resources" + File.separatorChar + "barcode";
+        String contextDirName = this.servletContext.getRealPath(dirPath);
+        File dir = new File(contextDirName);
+        String filename = dir + File.separator + code + ".png";
+        FileBean file = new FileBean();
+        File serverFile = new File(filename);
+
+        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
+        byte[] bytes = new byte[(int) serverFile.length()];
+        stream.read(bytes);
+        file.setFile(bytes);
+        file.setFilename(code + ".png");
 
         response.setContentLength(file.getFile().length);
         response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFilename() + "\"");

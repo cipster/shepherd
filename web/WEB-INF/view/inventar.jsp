@@ -110,6 +110,10 @@
                             <textarea id="detalii" name="detalii" title="" style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
                         </div>
                         <div class="form-group">
+                            <label for="loc-add-articol">Loc</label>
+                            <select id="loc-add-articol" name="loc-add-articol" title=""  class="form-control" data-placeholder="Alege un loc..."></select>
+                        </div>
+                        <div class="form-group">
                             <label for="pretachizitie">Pret achizitie</label>
                             <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
                         </div>
@@ -399,7 +403,7 @@
 
     function format(d) {
         var evidentaInventar;
-        var data;
+        var dataPreluare;
         var loc;
         var stare;
         var dataTitle;
@@ -422,14 +426,14 @@
                 loc = getLocById(d.idLoc).denumireLoc;
                 stare = '<%=StareArticol.STOC.getLabel()%>';
                 stareIcon = 'fa-cubes';
-                data = toJSDate(d.dataAdaugare, 1);
+                dataPreluare = toJSDate(d.dataAdaugare, 1);
                 dataTitle = 'Ad&#259;ugat la:';
                 break;
             case 2:
                 loc = getLocById(d.idLoc).denumireLoc;
                 stare = '<%=StareArticol.RECUPERAT.getLabel()%>';
                 stareIcon = 'fa-recycle';
-                data = toJSDate(d.dataRecuperare, 1);
+                dataPreluare = toJSDate(d.dataRecuperare, 1);
                 dataTitle = 'Recuperat la:';
                 detalii = d.detaliiRecuperare;
                 if (detalii.length > 0) {
@@ -445,7 +449,7 @@
                 evidentaInventar = getTranzactie(d.idCod3);
                 loc = getLocById(evidentaInventar.idLoc).denumireLoc;
                 stare = '<%=StareArticol.IN_FOLOSINTA.getLabel()%>';
-                data = toJSDate(evidentaInventar.dataPreluarii, 1);
+                dataPreluare = toJSDate(evidentaInventar.dataPreluarii, 1);
                 dataTitle = 'Atribuit la:';
                 stareIcon = 'fa-thumb-tack';
                 persoana = getPersoanaById(evidentaInventar.idPersoana).nume;
@@ -460,8 +464,8 @@
                 dataPrimire = d.dataPrimire;
                 if (dataPrimire) {
                     dataPrimire = toJSDate(dataPrimire, 1);
-                    if (dataPrimire < data) {
-                        dataPrimire = undefined;
+                    if (dataPrimire < dataPreluare) {
+                        dataPrimire = null;
 
                     }
                 }
@@ -480,7 +484,7 @@
                 stare = '<%=StareArticol.TRANZIT.getLabel()%>';
                 stareIcon = 'fa-truck';
                 detalii = evidentaInventar.detalii;
-                data = toJSDate(evidentaInventar.dataPreluarii, 1);
+                dataPreluare = toJSDate(evidentaInventar.dataPreluarii, 1);
                 dataTitle = 'Plecat la:';
                 persoana = getPersoanaById(evidentaInventar.idPersoana).nume;
                 if (persoana.length > 0) {
@@ -493,31 +497,40 @@
                 dataPrimire = d.dataPrimire;
                 if (dataPrimire) {
                     dataPrimire = toJSDate(dataPrimire, 1);
-                    if (dataPrimire < data) {
-                        dataPrimire = undefined;
+                    if (dataPrimire < dataPreluare) {
+                        dataPrimire = null;
+                        usePrimire = false;
 
                     }
                 }
-                usePrimire = true;
                 if (dataPrimire) {
+                    usePrimire = true;
                     dataPrimire = toJSDate(dataPrimire, 1)
                 } else {
                     dataPrimire = '&#206;nc&#259; nu a ajuns la destina&#355;ie';
                 }
                 break;
             case 5:
+                loc = getLocById(d.idLoc).denumireLoc;
+                dataTitle = 'Atribuit la:';
                 stare = '<%=StareArticol.DETERIORAT.getLabel()%>';
                 stareIcon = 'fa-bug';
                 break;
             case 6:
+                dataTitle = 'Atribuit la:';
+                loc = getLocById(d.idLoc).denumireLoc;
                 stare = '<%=StareArticol.SERVICE.getLabel()%>';
                 stareIcon = 'fa-wrench';
                 break;
             case 7:
+                dataTitle = 'Atribuit la:';
+                loc = getLocById(d.idLoc).denumireLoc;
                 stare = '<%=StareArticol.DISPARUT.getLabel()%>';
                 stareIcon = 'fa-exclamation-triangle';
                 break;
             case 8:
+                dataTitle = 'Atribuit la:';
+                loc = getLocById(d.idLoc).denumireLoc;
                 stare = '<%=StareArticol.CASAT.getLabel()%>';
                 stareIcon = 'fa-trash';
                 break;
@@ -542,7 +555,7 @@
 
         retString += '<tr>' +
         '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>' +
-        '<td>' + data + '</td>' +
+        '<td>' + dataPreluare + '</td>' +
         '</tr>';
         if (usePrimire) {
             retString += '<tr><td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>Primit la:</b></td>' +
@@ -564,7 +577,7 @@
             '<td>' + detalii + '</td>' +
             '</tr>';
         }
-        retString += '<tr><td colspan="2"><button class="btn btn-default"><span class="fa fa-print"> &nbsp;</span> Print cod de bare</button></td></tr>';
+        retString += '<tr><td colspan="2"><a href="/download/barcode/' + barcode + '.png" class="btn btn-default"><span class="fa fa-floppy-o"> &nbsp;</span> Salveaz&#259; cod de bare</a></td></tr>';
         retString += '</table></div>';
 
         return retString;
@@ -1578,6 +1591,7 @@
             var cod2 = $('#selcod2').val();
             var denumire3 = $('#denumire3').val();
             var detalii = $('#detalii').val();
+            var loc = $('#loc-add-articol').val();
             var pret = $('#pretachizitie').val();
             if (cod1 <= 0) {
                 alert('Cod 1 este obligatoriu!');
@@ -1599,6 +1613,10 @@
                 alert('Detaliile trebuie sa contina mai mult de 10 caractere!');
                 return;
             }
+            if (loc <= 0) {
+                alert('Locul este obligatoriu!');
+                return;
+            }
             if (pret.length == 0) {
                 alert('Pretul este obligatoriu!');
                 return;
@@ -1606,7 +1624,7 @@
 
             var data = {
                 "cod1": cod1, "cod2": cod2, "denumire3": denumire3,
-                "detalii": detalii, "pretAchizitie": pret
+                "detalii": detalii, "pretAchizitie": pret, "idLoc": loc
             };
             // will pass the form date using the jQuery serialize function
             $.ajax({
@@ -1620,22 +1638,15 @@
                 mimeType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (response) {
-                    $('#selcod1').val(-1);
-                    $('#selcod1').trigger('chosen:updated');
-                    $('#selcod2').val(-1);
-                    $('#selcod2').trigger('chosen:updated');
-                    $('#denumire3').val('');
-                    $('#detalii').val('');
-                    $('#pret').val('');
+                    chosenUnselect('#selcod1');
+                    chosenUnselect('#selcod2');
+                    chosenUnselect('#loc-add-articol');
+                    $('#denumire3').val(EMPTY);
+                    $('#detalii').val(EMPTY);
+                    $('#pret').val(EMPTY);
                     $('#closeart').click();
                     table.ajax.reload();
-                    $("#alert").notify({
-                        message: {text: 'Articol adaugat cu succes!'},
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 3500}
-                    }).show();
+                    showNotification(response.message);
                 },
                 error: function (err) {
                     alert('Eroare la conexiune!');

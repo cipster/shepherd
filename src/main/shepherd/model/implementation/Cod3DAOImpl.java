@@ -19,12 +19,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Ciprian on 12/14/2014.
- * Project Shepherd
- */
+
 public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     private RowMapper<Cod3> rowMapper = new RowMapper<Cod3>() {
         @Override
@@ -65,7 +63,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
             return getJdbcTemplate().query(query, rowMapper);
         } catch (DataAccessException ex){
             ex.printStackTrace();
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -135,6 +133,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Integer create(final Cod3 entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -175,7 +174,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
         final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, denumire_3=?, detalii=?, pret_achizitie=?," +
                 " stare =?, id_loc=?, detalii_recuperare=?,  modificat_de=? " +
                 (now?", data_recuperare=now()" : " ") +
-                " WHERE id_cod_3=?";
+                " WHERE cod_3=?";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -192,19 +191,19 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
                 ps.setInt(7, entity.getIdLoc());
                 ps.setString(8, entity.getDetaliiRecuperare());
                 ps.setString(9, entity.getModificatDe());
-                ps.setInt(10, entity.getIdCod3());
+                ps.setInt(10, entity.getCod3());
 
                 logger.debug(ps.toString());
                 return ps;
             }
         };
         jdbcTemplate.update(psc);
-        return entity.getIdCod3();
+        return entity.getCod3();
     }
 
     @Override
     public Integer deleteByID(Integer id) {
-        String query = "DELETE FROM proiecte.cod_3 WHERE id_cod_3=" + id;
+        String query = "DELETE FROM proiecte.cod_3 WHERE cod_3=" + id;
         return getJdbcTemplate().update(query);
     }
 }

@@ -14,6 +14,8 @@ public interface ArticolService {
 
     List<Articol> fetchAllArticole();
 
+    List<Cod3> fetchAllCod3();
+
     ControllerResult addArticol(Cod3 articol) throws DAOException;
 
     ControllerResult modArticol(Cod3 articol) throws DAOException;

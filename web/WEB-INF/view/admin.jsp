@@ -97,7 +97,7 @@
 <!--/.container-->
 
 <div id="alert" class="notifications"></div>
-
+<input id="username" hidden="hidden" value="${pageContext.request.userPrincipal.name}"/>
 <jsp:include page="include/footer.jsp"></jsp:include>
 </body>
 </html>
@@ -155,21 +155,27 @@
         var denumire3;
         var stare;
         var idLoc;
+        var cod1;
+        var cod2;
         var dataAdaugare;
+        var pret;
         $.ajax({
             type: 'get',
-            url: '${pageContext.request.contextPath}/api/articolelist',
+            url: '${pageContext.request.contextPath}/global/admin/inventar/articolelist',
             contentType: "application/json",
             success: function (response) {
                 if (typeof response !== 'undefined') {
                     for (var i = 0; i < response.length; i++) {
-                        idCod3 = response[i].idCod3;
+                        idCod3 = response[i].cod3;
                         denumire3 = response[i].denumire3;
                         stare = response[i].stare;
                         idLoc = response[i].idLoc;
+                        cod1 = response[i].cod1;
+                        cod2 = response[i].cod2;
+                        pret = response[i].pretAchizitie;
                         dataAdaugare = response[i].dataAdaugare;
                         modArticoleSelect.append($('<option id="articol' + idCod3 + '" label="' + denumire3 + '" data-stare="' + stare + '"' +
-                        ' data-loc="' + idLoc + '" data-data="' + dataAdaugare + '">').val(idCod3).text(denumire3));
+                        ' data-loc="' + idLoc + '" data-cod1="' + cod1 + '" data-cod2="' + cod2 + '" data-pret="' + pret + '" data-data="' + dataAdaugare + '">').val(idCod3).text(denumire3));
                     }
                 }
             },
@@ -187,8 +193,10 @@
     function getLocuri() {
         var modLocSelect = $("#loc-mod-select");
         var locSelect = $("#loc-articol");
+        var locArticol = $("#loc-add-articol");
         modLocSelect.html("");
         locSelect.html("");
+        locArticol.html("");
 
         var idLoc;
         var denumireLoc;
@@ -203,6 +211,7 @@
                         denumireLoc = response[i].denumireLoc;
                         modLocSelect.append($('<option id="loc' + idLoc + '" label="' + denumireLoc + '">').val(idLoc).text(denumireLoc));
                         locSelect.append($('<option id="artloc' + idLoc + '" label="' + denumireLoc + '">').val(idLoc).text(denumireLoc));
+                        locArticol.append($('<option id="artloc' + idLoc + '" label="' + denumireLoc + '">').val(idLoc).text(denumireLoc));
                     }
                 }
             },
@@ -214,6 +223,8 @@
                 modLocSelect.trigger("chosen:updated");
                 locSelect.val(UNSELECT);
                 locSelect.trigger("chosen:updated");
+                locArticol.val(UNSELECT);
+                locArticol.trigger("chosen:updated");
             }
         });
 
@@ -531,6 +542,14 @@
             allow_single_deselect: true
         });
         chosenUnselect("#cod2-mod-select");
+
+        $("#loc-add-articol").chosen({
+            width: "100%",
+            search_contains: true,
+            no_results_text: "locul nu exista!",
+            allow_single_deselect: true
+        });
+        chosenUnselect("#loc-add-articol");
 
         $("#anSelInput").val(UNSELECT);
         $("#anSelInput").trigger("chosen:updated");
