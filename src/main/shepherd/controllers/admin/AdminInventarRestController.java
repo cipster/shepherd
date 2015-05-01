@@ -3,7 +3,6 @@ package controllers.admin;
 import model.ControllerResult;
 import model.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
@@ -95,6 +94,29 @@ public class AdminInventarRestController {
 	@ResponseBody
 	public ControllerResult delLoc(@RequestBody Loc loc) {
 		return locService.delLoc(loc);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/modifycod1", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ControllerResult modCod1(@RequestBody Cod1 cod1) {
+		return cod1Service.modCod1(cod1);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/addcod1", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ControllerResult addCod1(@RequestBody Cod1 cod1) {
+		return cod1Service.addCod1(cod1);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+	@RequestMapping(value = "/deletecod1", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ControllerResult delLoc(@RequestBody Cod1 cod1) {
+		return cod1Service.delCod1(cod1);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")

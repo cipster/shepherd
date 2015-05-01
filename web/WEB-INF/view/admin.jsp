@@ -159,6 +159,7 @@
         var cod2;
         var dataAdaugare;
         var pret;
+        var barcode;
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/global/admin/inventar/articolelist',
@@ -174,8 +175,9 @@
                         cod2 = response[i].cod2;
                         pret = response[i].pretAchizitie;
                         dataAdaugare = response[i].dataAdaugare;
+                        barcode = response[i].barcode;
                         modArticoleSelect.append($('<option id="articol' + idCod3 + '" label="' + denumire3 + '" data-stare="' + stare + '"' +
-                        ' data-loc="' + idLoc + '" data-cod1="' + cod1 + '" data-cod2="' + cod2 + '" data-pret="' + pret + '" data-data="' + dataAdaugare + '">').val(idCod3).text(denumire3));
+                        ' data-loc="' + idLoc + '" data-cod1="' + cod1 + '" data-cod2="' + cod2 + '" data-pret="' + pret + '" data-data="' + dataAdaugare + '">').val(idCod3).text(barcode + " " + denumire3));
                     }
                 }
             },
@@ -514,7 +516,7 @@
         $("#cod1-mod-select").chosen({
             width: "100%",
             search_contains: true,
-            no_results_text: "Locul nu exista!",
+            no_results_text: " nu exista!",
             allow_single_deselect: true
         });
         chosenUnselect("#cod1-mod-select");
@@ -538,7 +540,7 @@
         $("#cod2-mod-select").chosen({
             width: "100%",
             search_contains: true,
-            no_results_text: "codul nu exista!",
+            no_results_text: " nu exista!",
             allow_single_deselect: true
         });
         chosenUnselect("#cod2-mod-select");

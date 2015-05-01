@@ -151,43 +151,47 @@
                 <p>Modific&#259; categorii articole</p>
             </div>
             <div class="col-md-5 jumbotron">
-                <div class="col-md-12">
-                    <span>Cod1</span>
-                    <select data-placeholder="Alege un articol..." class="chosen-select form-control" id="cod1-mod-select"> </select>
+                <div class="form-group">
+                    <label for="cod1-mod-select">Cod1</label>
+                    <select data-placeholder="Alege o categorie..." class="chosen-select form-control" id="cod1-mod-select"> </select>
                 </div>
 
-                <div class="col-md-12"><br/></div>
-                <div class="col-md-12">
-                    <span>Denumire</span>
+                <div class="form-group">
+                    <label for="nume-cod1">Denumire</label>
                     <input type="text" class="form-control" id="nume-cod1">
                 </div>
                 <div class="col-md-12"><br/></div>
-                <div class="col-md-12">
-                    <button type="button" class="btn btn-primary" id="btnModCod1" data-toggle="modal" onclick="atribuieCod1Mod()">
+                <div class="form-group col-md-12">
+                    <button type="button" disabled class="btn btn-sm btn-primary" id="btnModCod1" data-toggle="modal" onclick="atribuieCod1Mod()">
                         <span class="fa fa-edit">&nbsp;</span>Modifică
                     </button>
-                    <button type="button" class="btn btn-danger" id="btnDelCod1" data-toggle="modal" onclick="atribuieCod1Del()">
+                    <button type="button" class="btn btn-sm btn-success" id="btnAddCod1" data-toggle="modal" data-target="#add-cod1-modal">
+                        <span class="fa fa-plus">&nbsp;</span>Adaugă
+                    </button>
+                    <button type="button" disabled class="btn btn-sm btn-danger" id="btnDelCod1" data-toggle="modal" onclick="atribuieCod1Del()">
                         <span class="fa fa-times">&nbsp;</span>&#x218;terge
                     </button>
                 </div>
             </div>
             <div class="col-md-5 col-md-offset-1 jumbotron">
-                <div class="col-md-12 ">
-                    <span>Cod2</span>
-                    <select data-placeholder="Alege un articol..." class="chosen-select form-control" id="cod2-mod-select"> </select>
+                <div class="form-group">
+                    <label for="cod2-mod-select">Cod2</label>
+                    <select data-placeholder="Alege o categorie..." class="chosen-select form-control" id="cod2-mod-select"> </select>
                 </div>
-                <div class="col-md-12"><br/></div>
-                <div class="col-md-12">
-                    <span>Denumire</span>
+                <div class="form-group">
+                    <label for="nume-cod2">Denumire</label>
                     <input type="text" class="form-control" id="nume-cod2">
                 </div>
                 <div class="col-md-12"><br/></div>
 
-                <div class="col-md-12">
-                    <button type="button" class="btn btn-primary" id="btnModCod2" data-toggle="modal" onclick="atribuieCod2Mod()">
+                <div class="form-group col-md-12">
+                    <button type="button" disabled class="btn btn-sm btn-primary" id="btnModCod2" data-toggle="modal" onclick="atribuieCod2Mod()">
                         <span class="fa fa-edit">&nbsp;</span>Modifică
                     </button>
-                    <button type="button" class="btn btn-danger" id="btnDelCod2" data-toggle="modal" onclick="atribuieCod2Del()">
+                    <button type="button" class="btn btn-sm btn-success" id="btnAddCod2" data-toggle="modal" data-target="#add-cod2-modal">
+                        <span class="fa fa-plus">&nbsp;</span>Adaugă
+                    </button>
+                    <button type="button" disabled class="btn btn-sm btn-danger" id="btnDelCod2" data-toggle="modal" onclick="atribuieCod2Del()">
                         <span class="fa fa-times">&nbsp;</span>&#x218;terge
                     </button>
                 </div>
@@ -274,6 +278,64 @@
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success"><span class="fa fa-plus">&nbsp;</span><spring:message code="DIALOG.ADD"/></button>
                         <button type="button" id="closeart" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="add-cod1-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Adaugă cod 1 nou</h4>
+                </div>
+                <form id="adaugacod1form" action="${pageContext.request.contextPath}/global/admin/inventar/addcod1" method="post">
+                    <div class="modal-body">
+                        <div class="container">
+                        <div class="form-group col-md-7">
+                            <label for="denumire-cod-1">Nume</label>
+                            <input id="denumire-cod-1" name="denumire-cod-1" title="denumire cod 1" class="form-control" placeholder="indrodu denumirea">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <span class="fa fa-plus">&nbsp;</span><spring:message code="DIALOG.ADD"/></button>
+                        <button type="button" id="closecod1" class="btn btn-default" data-dismiss="modal">
+                            <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
+    <div class="modal fade" id="add-cod2-modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Adaugă cod 2 nou</h4>
+                </div>
+                <form id="adaugacod2form" action="${pageContext.request.contextPath}/global/admin/inventar/addcod2" method="post">
+                    <div class="modal-body">
+                        <div class="container">
+                        <div class="form-group col-md-7">
+                            <label for="denumire-cod-2">Nume</label>
+                            <input id="denumire-cod-2" name="denumire-cod-2" title="denumire cod 2" class="form-control" placeholder="indrodu denumirea">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <span class="fa fa-plus">&nbsp;</span><spring:message code="DIALOG.ADD"/></button>
+                        <button type="button" id="closecod2" class="btn btn-default" data-dismiss="modal">
+                            <span class="fa fa-times">&nbsp;</span><spring:message code="DIALOG.CLOSE"/></button>
                     </div>
                 </form>
             </div>
@@ -883,6 +945,84 @@
             });
         });
 
+        $('#adaugacod1form').on('submit', function (e) {
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var denumireCod1 = $('#denumire-cod-1').val();
+
+            if (denumireCod1.length < 7) {
+                showNotification('Denumirea este prea scurta', 'danger');
+                return;
+            }
+            if (denumireCod1.length == 0) {
+                showNotification('Denumirea este obligatorie', 'danger');
+                return;
+            }
+            var data = {"denumire1": denumireCod1};
+            // will pass the form date using the jQuery serialize function
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $('#denumire-cod-1').val(EMPTY);
+                    $('#nume-cod1').val(EMPTY);
+                    hideModal();
+                    getAllCod1();
+                    showNotification(response.message)
+                },
+                error: function (err) {
+                    alert('Eroare la conexiune!');
+                }
+            });
+        });
+
+        $('#adaugacod2form').on('submit', function (e) {
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var denumireCod1 = $('#denumire-cod-2').val();
+
+            if (denumireCod1.length < 7) {
+                showNotification('Denumirea este prea scurta', 'danger');
+                return;
+            }
+            if (denumireCod1.length == 0) {
+                showNotification('Denumirea este obligatorie', 'danger');
+                return;
+            }
+            var data = {"denumire2": denumireCod1};
+            // will pass the form date using the jQuery serialize function
+            $.ajax({
+                type: 'post',
+                url: $(this).attr('action'),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $('#denumire-cod-2').val(EMPTY);
+                    $('#nume-cod2').val(EMPTY);
+                    hideModal();
+                    getCod2ByCod1($('#cod1-mod-select').val());
+                    showNotification(response.message)
+                },
+                error: function (err) {
+                    alert('Eroare la conexiune!');
+                }
+            });
+        });
+
         $('#articol-mod-select').on('change', function () {
             var id = 'articol' + $(this).val();
             var articol = document.getElementById(id);
@@ -994,8 +1134,8 @@
         });
 
         $('#cod1-mod-select').on('change', function () {
-            var id = 'cod1-' + $(this).val();
             getCod2ByCod1($(this).val());
+            var id = 'cod1-' + $(this).val();
             var cod1 = document.getElementById(id);
             if (cod1) {
                 $('#nume-cod1').val(cod1.getAttribute("label"));
@@ -1021,7 +1161,7 @@
             var cod1 = $('#selcod1').val();
             var cod2 = $('#selcod2').val();
             var denumire3 = $('#denumire3').val();
-            var detalii =  $('#detalii').val() ;
+            var detalii = $('#detalii').val();
             var loc = $('#loc-add-articol').val();
 
             if (cod1 <= 0) {

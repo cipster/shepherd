@@ -8,11 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @author Ciprian on 4/4/2015.
- *
- *         Shepherd
- */
 @Service
 public interface LocService {
 
