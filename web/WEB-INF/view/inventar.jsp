@@ -41,18 +41,18 @@
     <img id="spinner" src="/img/spinner.gif" class="spinner" style="display: none;">
     <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
         <%--ToDo: modificat sa apara fisiere--%>
-        <div class="btn-group" style="float:left; margin: 15px;">
-            <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
+        <div class="btn-group btn-group-lg" style="float:left; margin: 15px;">
+            <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default btn-lg"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
             <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
-                <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default"><span class="fa fa-download">&nbsp;</span> Intrare</button>
+                <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default btn-lg"><span class="fa fa-download">&nbsp;</span> Intrare</button>
             </sec:authorize>
-            <button id="primire" data-toggle="modal" data-target="#primire-modal" class="btn btn-default"><span class="fa fa-flag-checkered">&nbsp;</span> Primire</button>
+            <button id="primire" data-toggle="modal" data-target="#primire-modal" class="btn btn-default btn-lg"><span class="fa fa-flag-checkered">&nbsp;</span> Primire</button>
         </div>
         <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
             <div class="btn-group" style="float:right; margin: 15px;">
-                <button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; articol</button>
-                <button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; persoan&#259;</button>
-                <button id="add-place" data-toggle="modal" data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; loc</button>
+                <%--<button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; articol</button>--%>
+                <%--<button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; persoan&#259;</button>--%>
+                <%--<button id="add-place" data-toggle="modal" data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; loc</button>--%>
             </div>
         </sec:authorize>
     </sec:authorize>

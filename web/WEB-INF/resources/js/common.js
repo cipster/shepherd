@@ -211,6 +211,36 @@ function generateButton(id, type, text) {
     return buttonHtml;
 }
 
+function getCod2ByCod1(idCod1) {
+    var cod2 = $('#selcod2');
+    var cod2Cat = $('#cod2-mod-select');
+    cod2.html('');
+    $.ajax({
+        type: 'get',
+        url: '/api/cod2list/' + idCod1,
+        contentType: "application/json",
+        success: function (response) {
+            if (typeof response !== 'undefined') {
+                for (var i = 0; i < response.length; i++) {
+                    idCod2 = response[i].cod2;
+                    denumire2 = response[i].denumire2;
+                    cod2.append($('<option id="cod2-art' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
+                    cod2Cat.append($('<option id="cod2-' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
+                }
+            }
+        },
+        error: function (e) {
+            alert("Connection error!");
+        },
+        complete: function (e) {
+            cod2.val(UNSELECT);
+            cod2.trigger(chosenUpdated);
+            cod2Cat.val(UNSELECT);
+            cod2Cat.trigger(chosenUpdated);
+        }
+    });
+}
+
 $(document).ready(function () {
     $('#an-copyright').text(new Date().getFullYear());
 
@@ -222,39 +252,11 @@ $(document).ready(function () {
 
     var selcod1 = $('#selcod1');
 
-    function getCod2ByCod1(idCod1) {
-        var cod2 = $('#selcod2');
-        var cod2Cat = $('#cod2-mod-select');
-        cod2.html('');
-        $.ajax({
-            type: 'get',
-            url: '/api/cod2list/' + idCod1,
-            contentType: "application/json",
-            success: function (response) {
-                if (typeof response !== 'undefined') {
-                    for (var i = 0; i < response.length; i++) {
-                        idCod2 = response[i].cod2;
-                        denumire2 = response[i].denumire2;
-                        cod2.append($('<option id="cod2-art' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
-                        cod2Cat.append($('<option id="cod2-' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
-                    }
-                }
-            },
-            error: function (e) {
-                alert("Connection error!");
-            },
-            complete: function (e) {
-                cod2.val(UNSELECT);
-                cod2.trigger(chosenUpdated);
-                cod2Cat.val(UNSELECT);
-                cod2Cat.trigger(chosenUpdated);
-            }
-        });
-    }
-
     selcod1.on('change', function () {
         getCod2ByCod1($(this).val());
     });
+
+
 
 
 });

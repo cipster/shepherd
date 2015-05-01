@@ -5,6 +5,8 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,10 +16,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/**
- * Created by Ciprian on 11/15/2014.
- */
+
 public class Barcode {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Barcode.class);
 
     private static BarcodeFormat DEFAULT_BARCODE_FORMAT = BarcodeFormat.CODE_128;
 
@@ -63,7 +64,7 @@ public class Barcode {
             outputStream.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.debug(e.getMessage(), e);
             throw new Exception(e.getMessage());
         }
     }
@@ -96,7 +97,7 @@ public class Barcode {
             // setting results.
             finalResult = String.valueOf(result.getText());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.debug(e.getMessage(), e);
             throw new RuntimeException(e.getMessage());
         }
         return finalResult;

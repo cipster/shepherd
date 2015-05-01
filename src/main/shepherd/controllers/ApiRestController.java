@@ -223,7 +223,7 @@ public class ApiRestController {
     @RequestMapping(value = "/getPersoana/{idPersoana}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Persoana getPersoanaById(@PathVariable int idPersoana) {
-        Persoana persoana = null;
+        Persoana persoana;
         try {
             persoana = persoanaDAO.findByID(idPersoana);
             if(persoana == null){
@@ -244,7 +244,7 @@ public class ApiRestController {
     @ResponseBody
     public Persoana getPersoanaForUserlist(@PathVariable String username) {
         username = username.replaceAll("-", ".");
-        Persoana persoana = null;
+        Persoana persoana;
         try {
             persoana = persoanaDAO.findByUsername(username);
             if(persoana == null){

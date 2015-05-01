@@ -1,6 +1,8 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,13 +19,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Ciprian on 12/14/2014.
- * Project Raindrop
- */
 public class Cod1DAOImpl extends JdbcDaoSupport implements Cod1DAO {
+
     private RowMapper<Cod1> rowMapper = new RowMapper<Cod1>() {
         @Override
         public Cod1 mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -48,7 +48,8 @@ public class Cod1DAOImpl extends JdbcDaoSupport implements Cod1DAO {
         try {
             return getJdbcTemplate().query(query, rowMapper);
         } catch (DataAccessException e){
-            throw e;
+            logger.error(e);
+           return Collections.emptyList();
         }
     }
 
@@ -59,7 +60,7 @@ public class Cod1DAOImpl extends JdbcDaoSupport implements Cod1DAO {
 
             return getJdbcTemplate().queryForObject(query, rowMapper);
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            logger.error(e);
             return null;
         }
     }
@@ -76,7 +77,7 @@ public class Cod1DAOImpl extends JdbcDaoSupport implements Cod1DAO {
                 PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
                 ps.setInt(1, entity.getIdCod1());
-                ps.setInt(2, entity.getCod1());
+                ps.setInt(2, entity.getIdCod1());
                 ps.setString(3, entity.getDenumire1());
 
                 logger.debug(ps.toString());
@@ -91,7 +92,7 @@ public class Cod1DAOImpl extends JdbcDaoSupport implements Cod1DAO {
     @Override
     public Integer update(final Cod1 entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        final String query = "UPDATE proiecte.cod_1 SET cod_1=?, denumire_1=? WHERE id_cod_1=?";
+        final String query = "UPDATE proiecte.cod_1 SET denumire_1=? WHERE id_cod_1=?";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -99,9 +100,8 @@ public class Cod1DAOImpl extends JdbcDaoSupport implements Cod1DAO {
 
                 PreparedStatement ps = con.prepareStatement(query);
 
-                ps.setInt(1, entity.getCod1());
-                ps.setString(2, entity.getDenumire1());
-                ps.setInt(3, entity.getIdCod1());
+                ps.setString(1, entity.getDenumire1());
+                ps.setInt(2, entity.getIdCod1());
 
                 logger.debug(ps.toString());
                 return ps;

@@ -15,12 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Ciprian on 4/4/2015.
- *         <p>
- *         Shepherd
- */
-
 public class LocServiceImpl implements LocService {
     private final Log LOGGER = LogFactory.getLog(getClass());
 
