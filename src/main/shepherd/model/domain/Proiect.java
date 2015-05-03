@@ -1,4 +1,4 @@
-package model.dto;
+package model.domain;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;

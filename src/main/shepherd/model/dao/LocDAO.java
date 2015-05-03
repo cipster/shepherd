@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.Loc;
+import model.domain.Loc;
 
 import java.util.List;
 

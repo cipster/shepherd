@@ -1,6 +1,6 @@
 package controllers;
 
-import model.dto.*;
+import model.domain.*;
 import model.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

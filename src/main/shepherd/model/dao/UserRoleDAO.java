@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.UserRole;
+import model.domain.UserRole;
 
 import java.util.List;
 

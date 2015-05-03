@@ -48,13 +48,6 @@
             </sec:authorize>
             <button id="primire" data-toggle="modal" data-target="#primire-modal" class="btn btn-default btn-lg"><span class="fa fa-flag-checkered">&nbsp;</span> Primire</button>
         </div>
-        <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
-            <div class="btn-group" style="float:right; margin: 15px;">
-                <%--<button id="add-item" data-toggle="modal" data-target="#add-item-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; articol</button>--%>
-                <%--<button id="add-person" data-toggle="modal" data-target="#add-person-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; persoan&#259;</button>--%>
-                <%--<button id="add-place" data-toggle="modal" data-target="#add-place-modal" class="btn btn-default"><span class="fa fa-plus-square-o">&nbsp;</span> Adaug&#259; loc</button>--%>
-            </div>
-        </sec:authorize>
     </sec:authorize>
     <!-- Main component -->
     <div class="jumbotron">
@@ -77,6 +70,7 @@
             </table>
     </div>
 </div>
+
 <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
     <div class="modal fade" id="add-item-modal">
         <div class="modal-dialog ">
@@ -500,7 +494,6 @@
                     if (dataPrimire < dataPreluare) {
                         dataPrimire = null;
                         usePrimire = false;
-
                     }
                 }
                 if (dataPrimire) {
@@ -577,10 +570,43 @@
             '<td>' + detalii + '</td>' +
             '</tr>';
         }
-        retString += '<tr><td colspan="2"><a href="/download/barcode/' + barcode + '.png" class="btn btn-default"><span class="fa fa-floppy-o"> &nbsp;</span> Salveaz&#259; cod de bare</a></td></tr>';
+        retString += '<tr>' +
+                '<td><a id="history-' + barcode + '" class="btn btn-warning"><span class="fa fa-history"> &nbsp;</span> Arată istoric</a></td>' +
+                '<td><a href="/download/barcode/' + barcode + '.png" class="btn btn-primary  pull-right"><span class="fa fa-floppy-o"> &nbsp;</span> Salvează cod de bare</a></td>' +
+                '</tr>';
         retString += '</table></div>';
 
         return retString;
+    }
+
+    function amPrimit(idContainer, useScan) {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var articole = [];
+        var querySelector = '#' + idContainer;
+        $(querySelector).find('li').each(function () {
+            if ($(this).prop('id')) {
+                articole.push($(this).prop('id'));
+            }
+        });
+        var data = {"cod3": articole, "scan": useScan};
+        $.ajax({
+            type: 'post',
+            url: '${pageContext.request.contextPath}/api/amprimit',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: JSON.stringify(data),
+            success: function (response) {
+                $('#closeprimire').click();
+                table.ajax.reload();
+                showNotification('Ai confirmat primirea cu succes!', SUCCESS, 3500);
+            },
+            error: function (err) {
+                showNotification('Operatie nereusita!', DANGER);
+            }
+        });
     }
 
     function getTranzactie(idArticol) {
@@ -596,7 +622,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
 
@@ -616,7 +642,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
 
@@ -636,7 +662,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
 
@@ -653,7 +679,7 @@
 
             },
             error: function (err) {
-                alert('Erroare la conexiune');
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
     }
@@ -671,7 +697,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
         return articolJSON;
@@ -690,7 +716,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
 
@@ -713,13 +739,12 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 chosenUnselect("#iesepers")
             }
         });
-        ;
     }
 
     function getLoc() {
@@ -737,7 +762,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 chosenUnselect("#ieseloc");
@@ -829,28 +854,28 @@
                         "fnCreatedCell": function (nTd, sData, oData, i) {
                             switch (sData) {
                                 case 1:
-                                    $(nTd).html('<div class="btn btn-success"><span class="fa fa-cubes fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-success stare-icon"><span class="fa fa-cubes fa-fw"></span></div>');
                                     break;
                                 case 2:
-                                    $(nTd).html('<div class="btn btn-success"><span class="fa fa-recycle fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-success stare-icon"><span class="fa fa-recycle fa-fw"></span></div>');
                                     break;
                                 case 3:
-                                    $(nTd).html('<div class="btn btn-primary"><span class="fa fa-thumb-tack fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-primary stare-icon"><span class="fa fa-thumb-tack fa-fw"></span></div>');
                                     break;
                                 case 4:
-                                    $(nTd).html('<div class="btn btn-warning"><span class="fa fa-truck fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-warning stare-icon"><span class="fa fa-truck fa-fw"></span></div>');
                                     break;
                                 case 5:
-                                    $(nTd).html('<div class="btn btn-danger"><span class="fa fa-bug fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-danger stare-icon"><span class="fa fa-bug fa-fw"></span></div>');
                                     break;
                                 case 6:
-                                    $(nTd).html('<div class="btn btn-danger"><span class="fa fa-wrench fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-danger stare-icon"><span class="fa fa-wrench fa-fw"></span></div>');
                                     break;
                                 case 7:
-                                    $(nTd).html('<div class="btn btn-danger"><span class="fa fa-exclamation-triangle fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-danger stare-icon"><span class="fa fa-exclamation-triangle fa-fw"></span></div>');
                                     break;
                                 case 8:
-                                    $(nTd).html('<div class="btn btn-danger"><span class="fa fa-trash fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-danger stare-icon"><span class="fa fa-trash fa-fw"></span></div>');
                                     break;
                             }
                         }
@@ -908,50 +933,24 @@
                 }
             });
 
+            $('#inventory-table tbody').on('click', 'div.stare-icon', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                    tr.addClass('shown');
+                }
+            });
+
         } catch (err) {
             console.log(err);
-        }
-
-        function amPrimit(idContainer, useScan) {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-
-            var articole = [];
-            var querySelector = '#' + idContainer;
-            $(querySelector).find('li').each(function () {
-                if ($(this).prop('id')) {
-                    articole.push($(this).prop('id'));
-                }
-            });
-            var data = {"cod3": articole, "scan": useScan};
-            $.ajax({
-                type: 'post',
-                url: '${pageContext.request.contextPath}/api/amprimit',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                },
-                data: JSON.stringify(data),
-                success: function (response) {
-                    $('#closeprimire').click();
-                    table.ajax.reload();
-                    $("#alert").notify({
-                        message: {text: 'Ai confirmat primirea cu succes!'},
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 3500}
-                    }).show();
-                },
-                error: function (err) {
-                    $("#alert").notify({
-                        message: {text: 'Operatie nereusita!'},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 3500}
-                    }).show();
-                }
-            });
         }
 
         $("#iesebarcodeinput").css({
@@ -974,7 +973,7 @@
             placeholder_text_single: 'Alege o optiune...',
             disable_search: true
         });
-        selcod1.val(-1);
+        selcod1.val(UNSELECT);
         selcod1.trigger('chosen:updated');
 
         selcod2.chosen({
@@ -1020,6 +1019,42 @@
 
         $('#intra-modal').on('shown.bs.modal', function (e) {
             $('#intrabarcodeinput').focus();
+        });
+
+        $('body').on('click', 'button[id$="-modal-close"]', function(){
+            var id = $(this).attr('id');
+            id = '#' + id.replace('-close', '');
+            hideModal();
+            $(id).remove();
+        });
+
+        $('body').on('click', 'a[id^="history-"]', function(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var id = $(this).attr('id');
+            var barcode = id.replace('history-', '');
+
+            $.ajax({
+                type: 'get',
+                url: '${pageContext.request.contextPath}/global/inventar/articole/gethistory/' + barcode,
+                contentType: "application/json",
+                mimeType: 'application/json',
+                dataType: 'json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (response) {
+                    id = id + '-modal';
+                    var titlu = 'Istoric pentru articolul ' + barcode;
+                    var tabel = generateHistoryTable(response);
+
+                    showModal(id, titlu, tabel);
+                },
+                error: function (err) {
+                    showNotification('Eroare! Contactati administratorul', DANGER);
+                }
+            });
         });
 
         $('#primire-modal').on('show.bs.modal', function (e) {
@@ -1112,12 +1147,12 @@
                 var tranzactie;
                 if (typeof  articolJSON !== 'undefined') {
                     if (articolJSON.idCod3 == 0) {
-                        alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
+                        showNotification('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.', WARNING);
                     } else if (articolJSON.stare == 4) {
                         var idArticol = articolJSON.cod3;
                         tranzactie = getTranzactie(idArticol);
                         if (!tranzactie || tranzactie.idEvidentaInventar == 0) {
-                            alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
+                            showNotification('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul', DANGER);
                             return;
                         }
                         if ($('#articolescanateprimire').html().trim() === '') {
@@ -1131,13 +1166,13 @@
                             });
                         }
                     } else if (articolJSON.stare != 4) {
-                        alert('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul');
+                        showNotification('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul', DANGER);
                     } else {
-                        alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
+                        showNotification('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou', DANGER);
                     }
 
                 } else {
-                    alert('Articolul nu a fost gasit!');
+                    showNotification('Articolul nu a fost gasit!', INFO);
                 }
                 $(this).focus();
             }
@@ -1155,12 +1190,12 @@
                 var tranzactie;
                 if (typeof  articolJSON !== 'undefined') {
                     if (articolJSON.idCod3 == 0) {
-                        alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
+                        showNotification('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.', WARNING);
                     } else if (articolJSON.stare == 4) {
                         var idArticol = articolJSON.cod3;
                         tranzactie = getTranzactie(idArticol);
                         if (!tranzactie || tranzactie.idEvidentaInventar == 0) {
-                            alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
+                            showNotification('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul', DANGER);
                             return;
                         }
                         if ($('#articoleintroduseprimire').html().trim() === '') {
@@ -1174,13 +1209,13 @@
                             });
                         }
                     } else if (articolJSON.stare != 4) {
-                        alert('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul');
+                        showNotification('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul', DANGER);
                     } else {
-                        alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
+                        showNotification('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou', WARNING);
                     }
 
                 } else {
-                    alert('Articolul nu a fost gasit!');
+                    showNotification('Articolul nu a fost gasit!', INFO);
                 }
                 $(this).focus();
             }
@@ -1292,7 +1327,7 @@
                 var articolJSON = getArticol(code);
                 if (typeof  articolJSON !== 'undefined') {
                     if (articolJSON.idCod3 == 0) {
-                        alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
+                        showNotification('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.', WARNING);
                     } else if (articolJSON.stare == 1 || articolJSON.stare == 2) {
                         if ($('#articolecautate').html().trim() === '') {
                             $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
@@ -1308,13 +1343,13 @@
                             $('#nextiese').removeClass('ascuns');
                         }
                     } else if (articolJSON.stare == 4) {
-                        alert('Articolul este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
+                        showNotification('Articolul este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou', INFO);
                     } else {
-                        alert('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou');
+                        showNotification('Articolul este deja alocat!\nDaca aceasta situatie nu corespunde cu realitatea, recuperati articolul si incercati din nou', INFO);
                     }
 
                 } else {
-                    alert('Articolul nu a fost gasit!');
+                    showNotification('Articolul nu a fost gasit!', INFO);
                 }
             }
         });
@@ -1323,20 +1358,20 @@
             var keyCode = e.keyCode ? e.keyCode : e.which;
             if (keyCode === 13) {
                 var code = $(this).val();
-                $(this).val('');
-                if (code === '') {
+                $(this).val(EMPTY);
+                if (code === EMPTY) {
                     return;
                 }
                 var articolJSON = getArticol(code);
                 var tranzactie;
                 if (typeof  articolJSON !== 'undefined') {
                     if (articolJSON.idCod3 == 0) {
-                        alert('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.');
+                        showNotification('Articolul nu a fost gasit in inventar!\nAdaugati articolul in inventar si incercati din nou.', WARNING);
                     } else if (articolJSON.stare == 3) {
                         var idArticol = articolJSON.cod3;
                         tranzactie = getTranzactie(idArticol);
                         if (!tranzactie || tranzactie.idEvidentaInventar == 0) {
-                            alert('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul');
+                            showNotification('Articolul nu este prezent in evidenta inventar!\nLuati legatura cu managerul', WARNING);
                             return;
                         }
                         if ($('#intraarticolecautate').html().trim() === '') {
@@ -1348,19 +1383,19 @@
                                     if ($(this).attr('data-evidenta') == tranzactie.idPersoana && $(this).attr('data-loc') == tranzactie.idLoc && $(this).attr('data-data') == tranzactie.dataPreluarii) {
                                         $('#intraarticolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit" data-evidenta="' + tranzactie.idEvidentaInventar + '" data-persoana="' + tranzactie.idPersoana + '" data-loc="' + tranzactie.idLoc + '"  data-data="' + tranzactie.dataPreluarii + '">' + articolJSON.denumire3 + '</li></h3>');
                                     } else {
-                                        alert('Articolele nu sunt atribuite aceleasi persoane!');
+                                        showNotification('Articolele nu sunt atribuite aceleasi persoane!', DANGER);
                                     }
                                 }
                             });
                         }
                     } else if (articolJSON.stare == 4) {
-                        alert('Articolul este in tranzit!\nIntrati in meniul de primire mai intai');
+                        showNotification('Articolul este in tranzit!\nIntrati in meniul de primire mai intai', INFO);
                     } else {
-                        alert('Articolul nu este alocat!\nDaca aceasta situatie nu corespunde cu realitatea, luati legatura cu managerul');
+                        showNotification('Articolul nu este alocat!\nDaca aceasta situatie nu corespunde cu realitatea, luati legatura cu managerul', DANGER);
                     }
 
                 } else {
-                    alert('Articolul nu a fost gasit!');
+                    showNotification('Articolul nu a fost gasit!', DANGER);
                 }
             }
         });
@@ -1380,7 +1415,7 @@
 
         $('#nextintra').on('click', function () {
             if ($('#intraarticolecautate').find('li').length == 0) {
-                alert('Scaneaza articole mai intai!');
+                showNotification('Scaneaza articole mai intai!', WARNING);
                 $('#intrabarcodeinput').focus();
                 return;
             }
@@ -1398,7 +1433,7 @@
                 $(this).addClass('pas2');
             } else if ($(this).hasClass('pas2')) {
                 if ($('#intraloc').val() <= 0) {
-                    alert('Alege locul unde se recupereaza!');
+                    showNotification('Alege locul unde se recupereaza!', WARNING);
                     return;
                 }
                 $('#intraalege').addClass('ascuns');
@@ -1438,23 +1473,23 @@
             });
             var detalii = $('#detaliiiese').val().replace(/=/g, "-").replace(/:/g, "-");
             if (pers <= 0) {
-                alert('Alege o persoana!');
+                showNotification('Alege o persoana!', WARNING);
                 return;
             }
             if (loc <= 0) {
-                alert('Alege un loc!');
+                showNotification('Alege un loc!', WARNING);
                 return;
             }
             if (livrare <= 0) {
-                alert('Alege o metoda de iesire!');
+                showNotification('Alege o metoda de iesire!', WARNING);
                 return;
             }
             if (detalii.length < 10) {
-                alert('Insuficiente informatii!');
+                showNotification('Insuficiente informatii!', WARNING);
                 return;
             }
             if (stare == 0) {
-                alert('Alege o metoda de iesire din lista!');
+                showNotification('Alege o metoda de iesire din lista!', WARNING);
                 return;
             }
             var data = {"idPersoana": pers, "idLoc": loc, "cod3": articole, "detalii": detalii, "stare": stare};
@@ -1484,22 +1519,10 @@
                     $('#ieseas').show();
                     $('#articolecautate').html('');
                     table.ajax.reload();
-                    $("#alert").notify({
-                        message: {text: 'Atribuire articole cu succes!'},
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 3500}
-                    }).show();
+                    showNotification('Atribuire articole cu succes!');
                 },
                 error: function (err) {
-                    $("#alert").notify({
-                        message: {text: 'Operatie nereusita!'},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 3500}
-                    }).show();
+                    showNotification('Operatie nereusita!', DANGER);
                 }
             });
         });
@@ -1518,11 +1541,11 @@
             });
             var detalii = $('#detaliiintra').val();
             if (loc <= 0) {
-                alert('Alege un loc!');
+                showNotification('Alege un loc!', WARNING);
                 return;
             }
             if (detalii.length < 10) {
-                alert('Insuficiente informatii!');
+                showNotification('Insuficiente informatii!', WARNING);
                 return;
             }
             var data = {"idLoc": loc, "cod3": articole, "detalii": detalii};
@@ -1554,13 +1577,7 @@
                     showNotification('Recuperare cu succes!');
                 },
                 error: function (err) {
-                    $("#alert").notify({
-                        message: {text: 'Operatie nereusita!'},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 3500}
-                    }).show();
+                    showNotification('Operatie nereusita!', DANGER);
                 }
             });
         });
@@ -1594,31 +1611,31 @@
             var loc = $('#loc-add-articol').val();
             var pret = $('#pretachizitie').val();
             if (cod1 <= 0) {
-                alert('Cod 1 este obligatoriu!');
+                showNotification('Cod 1 este obligatoriu!', WARNING);
                 return;
             }
             if (cod2 <= 0) {
-                alert('Cod 2 este obligatoriu!');
+                showNotification('Cod 2 este obligatoriu!', WARNING);
                 return;
             }
             if (denumire3.length == 0) {
-                alert('Denumirea este obligatorie!');
+                showNotification('Denumirea este obligatorie!', WARNING);
                 return;
             }
             if (denumire3.length < 5) {
-                alert('Denumirea este prea scurta!');
+                showNotification('Denumirea este prea scurta!', WARNING);
                 return;
             }
             if (detalii.length < 10) {
-                alert('Detaliile trebuie sa contina mai mult de 10 caractere!');
+                showNotification('Detaliile trebuie sa contina mai mult de 10 caractere!', WARNING);
                 return;
             }
             if (loc <= 0) {
-                alert('Locul este obligatoriu!');
+                showNotification('Locul este obligatoriu!', WARNING);
                 return;
             }
             if (pret.length == 0) {
-                alert('Pretul este obligatoriu!');
+                showNotification('Pretul este obligatoriu!', WARNING);
                 return;
             }
 
@@ -1649,7 +1666,7 @@
                     showNotification(response.message);
                 },
                 error: function (err) {
-                    alert('Eroare la conexiune!');
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -1662,32 +1679,32 @@
             var cnp = $('#cnp').val();
             var functie = $('#functie').val();
             var localitate = $('#localitate').val();
-            if (nume.length < 7) {
-                alert('Numele este prea scurt!');
+            if (nume.length < 3) {
+                showNotification('Numele este prea scurt!', WARNING);
                 return;
             }
             if (nume.length == 0) {
-                alert('Numele este prea scurt!');
+                showNotification('Numele este obligatoriu!', WARNING);
                 return;
             }
             if (cnp.length == 0) {
-                alert('Cnp-ul este obligatoriu!');
+                showNotification('Cnp-ul este obligatoriu!', WARNING);
                 return;
             }
             if (cnp.length != 13) {
-                alert('Cnp-ul trebuie sa aiba 13 cifre!');
+                showNotification('Cnp-ul trebuie sa aiba 13 cifre!', WARNING);
                 return;
             }
             if (!validCNP(cnp)) {
-                alert('Cnp-ul nu este valid');
+                showNotification('Cnp-ul nu este valid', WARNING);
                 return;
             }
             if (functie.length == 0) {
-                alert('Functia este obligatorie!');
+                showNotification('Functia este obligatorie!', WARNING);
                 return;
             }
             if (functie.length < 5) {
-                alert('Functia este prea scurta!');
+                showNotification('Functia este prea scurta!', WARNING);
                 return;
             }
             var data = {
@@ -1716,7 +1733,7 @@
                     showNotification(response.message)
                 },
                 error: function (err) {
-                    alert('Eroare la conexiune!');
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
 
@@ -1728,11 +1745,11 @@
             var header = $("meta[name='_csrf_header']").attr("content");
             var denumireloc = $('#denumireLoc').val();
             if (denumireloc.length == 0) {
-                alert('Denumirea este obligatorie!');
+                showNotification('Denumirea este obligatorie!', WARNING);
                 return;
             }
             if (denumireloc.length < 5) {
-                alert('Denumirea este prea scurta!');
+                showNotification('Denumirea este prea scurta!', WARNING);
                 return;
             }
             var data = {"denumireLoc": denumireloc};
@@ -1748,19 +1765,13 @@
                 mimeType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (response) {
-                    $('#denumireLoc').val('');
+                    $('#denumireLoc').val(EMPTY);
                     $('#closeloc').click();
                     getLoc();
-                    $("#alert").notify({
-                        message: {text: 'Loc adaugat cu succes!'},
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 3500}
-                    }).show()
+                    showNotification('Loc adaugat cu succes!');
                 },
                 error: function (err) {
-                    alert('Eroare la conexiune!');
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });

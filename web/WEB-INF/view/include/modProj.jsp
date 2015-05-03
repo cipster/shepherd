@@ -73,12 +73,12 @@
 
     function atribuieNumeMod() {
         if ($("#idProiectSelect").val() <= ZERO) {
-            alert("Alege un proiect din lista!");
+            showNotification('Alege un proiect din lista!', WARNING);
             return false;
         }
         if ($("#nrProiectInput").val() === '' || $("#anSelInput").val() <= ZERO || $("#numeProiectInput").val() === '' || $("#idClientInput").val() <= ZERO) {
             hideModal();
-            alert("Asigurati-vă că ati completat toate cmpurile!");
+            showNotification('Asigurati-vă că ati completat toate campurile!', DANGER);
             return;
         }
 
@@ -99,7 +99,7 @@
 
         if (idProiect <= ZERO) {
             hideModal();
-            alert("Alege un proiect din lista!");
+            showNotification('Alege un proiect din lista!', WARNING);
             return;
         }
         var data = {
@@ -135,7 +135,7 @@
                 $('#modifica').click();
             },
             error: function (xhr, e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
     }

@@ -1,7 +1,7 @@
 package controllers.admin;
 
 import model.UserAndRolesResult;
-import model.dto.User;
+import model.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

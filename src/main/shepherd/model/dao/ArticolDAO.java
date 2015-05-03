@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.Articol;
+import model.domain.Articol;
 
 import java.util.List;
 

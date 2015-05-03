@@ -110,9 +110,9 @@
                         </option>
                         <option value="<%=util.enums.StareArticol.RECUPERAT.getCode()%>"><%=util.enums.StareArticol.RECUPERAT.getLabel()%>
                         </option>
-                        <option value="<%=util.enums.StareArticol.IN_FOLOSINTA.getCode()%>"><%=util.enums.StareArticol.IN_FOLOSINTA.getLabel()%>
+                        <option value="<%=util.enums.StareArticol.IN_FOLOSINTA.getCode()%>" <sec:authorize ifNotGranted="ROLE_ADMIN">disabled</sec:authorize>><%=util.enums.StareArticol.IN_FOLOSINTA.getLabel()%>
                         </option>
-                        <option value="<%=util.enums.StareArticol.TRANZIT.getCode()%>"><%=util.enums.StareArticol.TRANZIT.getLabel()%>
+                        <option value="<%=util.enums.StareArticol.TRANZIT.getCode()%>" <sec:authorize ifNotGranted="ROLE_ADMIN">disabled</sec:authorize>><%=util.enums.StareArticol.TRANZIT.getLabel()%>
                         </option>
                         <option value="<%=util.enums.StareArticol.DETERIORAT.getCode()%>"><%=util.enums.StareArticol.DETERIORAT.getLabel()%>
                         </option>
@@ -774,6 +774,7 @@
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
+                async: false,
                 dataType: 'json',
                 contentType: 'application/json',
                 mimeType: 'application/json',
@@ -1058,10 +1059,10 @@
             var cod2 = $('#artcod2').val();
             var cod3 = $('#articol-mod-select').val();
             var denumire3 = $('#nume-articol').val();
-            var detalii = 'Modificat de administrator: ' + $('#username').val();
             var loc = $('#loc-articol').val();
             var pret = $('#artpret').val();
             var stare = $('#stare-articol').val();
+            var dataRecuperare = 'now';
 
             if (cod1 <= 0) {
                 alert('Cod 1 este obligatoriu!');
@@ -1079,10 +1080,6 @@
                 alert('Denumirea este prea scurta!');
                 return;
             }
-            if (detalii.length < 10) {
-                alert('Detaliile trebuie sa contina mai mult de 10 caractere!');
-                return;
-            }
             if (loc <= 0) {
                 alert('Locul este obligatoriu!');
                 return;
@@ -1098,7 +1095,8 @@
 
             var data = {
                 "cod3": cod3, "cod1": cod1, "cod2": cod2, "denumire3": denumire3,
-                "detalii": detalii, "pretAchizitie": pret, "idLoc": loc, "stare": stare
+                "pretAchizitie": pret,
+                "idLoc": loc, "stare": stare, "dataRecuperare": dataRecuperare
             };
             $.ajax({
                 type: 'post',

@@ -3,7 +3,7 @@ package services;
 import exceptions.DAOException;
 import model.ControllerResult;
 import model.dao.Cod1DAO;
-import model.dto.Cod1;
+import model.domain.Cod1;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

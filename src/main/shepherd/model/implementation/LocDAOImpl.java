@@ -1,7 +1,7 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dto.Loc;
+import model.domain.Loc;
 import model.dao.LocDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

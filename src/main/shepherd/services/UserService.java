@@ -1,7 +1,7 @@
 package services;
 
 import model.UserAndRolesResult;
-import model.dto.User;
+import model.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -2,15 +2,18 @@ package services;
 
 import exceptions.DAOException;
 import model.ControllerResult;
-import model.dao.ArticolDAO;
-import model.dao.Cod3DAO;
-import model.dto.Articol;
-import model.dto.Cod3;
+import model.dao.*;
+import model.domain.Articol;
+import model.domain.Cod3;
+import model.domain.Evidenta;
+import model.domain.EvidentaInventar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import util.enums.DAOResult;
 
 import java.util.Collections;
@@ -23,6 +26,12 @@ public class ArticolServiceImpl implements ArticolService {
     private ArticolDAO articolDAO;
     @Autowired
     private Cod3DAO cod3DAO;
+    @Autowired
+    private EvidentaDAO evidentaDAO;
+    @Autowired
+    private EvidentaInventarDAO evidentaInventarDAO;
+    @Autowired
+    private PersoanaDAO persoanaDAO;
 
 
     @Override
@@ -65,15 +74,25 @@ public class ArticolServiceImpl implements ArticolService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ControllerResult modArticol(Cod3 cod3) throws DAOException {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername(); //get logged in username
         ControllerResult controllerResult;
+        EvidentaInventar evidentaInventar;
+        String detalii = "Modificat de administrator: " + username;
+        int idCod3 = cod3DAO.findByID(cod3.getCod3()).getCod3();
         try {
+            evidentaInventar = evidentaInventarDAO.findByIdArticol(String.valueOf(idCod3));
+            cod3.setDetaliiRecuperare(detalii);
             if ( cod3DAO.update(cod3) > DAOResult.ZERO ) {
                 controllerResult = new ControllerResult(HttpStatus.OK.value(), "Articolul " + cod3.getDenumire3() + " a fost modificat cu succes!");
+                if(evidentaInventar != null) {
+                    evidentaInventarDAO.update(evidentaInventar);
+                }
             } else {
                 throw new RuntimeException("Articolul nu a fost modificat!");
             }
-
         } catch (RuntimeException e) {
             LOGGER.error(e.getMessage(), e);
             controllerResult = new ControllerResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
@@ -96,5 +115,17 @@ public class ArticolServiceImpl implements ArticolService {
             controllerResult = new ControllerResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
         return controllerResult;
+    }
+
+    @Override
+    public List<Evidenta> fetchEvidentaByBarcode(String barcode) {
+        List<Evidenta> evidenta;
+        try {
+            evidenta = evidentaDAO.findEvidentaByBarcode(barcode);
+        } catch (Exception e) {
+            evidenta = Collections.emptyList();
+        }
+        return evidenta;
+
     }
 }

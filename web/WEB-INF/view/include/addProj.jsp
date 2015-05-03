@@ -62,7 +62,7 @@
         var idClient = $("#idClient").val();
 
         if (nrProiect === '' || anInput <= 0 || numeProiect === '' || idClient <= 0) {
-            alert("Asigurati-va ca ati completat toate campurile!");
+            showNotification('Asigurati-va ca ati completat toate campurile!', DANGER);
             return;
         }
         var data = {
@@ -94,7 +94,7 @@
                 showNotification(response.message);
             },
             error: function (xhr, e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
     }

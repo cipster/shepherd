@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.Role;
+import model.domain.Role;
 
 import java.util.List;
 

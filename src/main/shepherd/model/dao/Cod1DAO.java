@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.Cod1;
+import model.domain.Cod1;
 
 import java.util.List;
 

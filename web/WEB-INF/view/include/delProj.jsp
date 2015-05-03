@@ -54,7 +54,7 @@
 
     function delBut() {
         if ($("#idProiect").val() <= ZERO) {
-            alert("Alege un proiect din lista!");
+            showNotification('Alege un proiect din lista!', WARNING);
         } else {
             $("#estiSigurClient").modal('show');
             atribuieNumeDel();
@@ -71,7 +71,7 @@
         var idProiect = $("#idProiect").val();
         if (idProiect <= 0) {
             hideModal();
-            alert("Alege un proiect din lista!");
+            showNotification('Alege un proiect din lista!', WARNING);
             return;
         }
         var data = 'idProiect=' + idProiect;
@@ -91,11 +91,11 @@
                 }
                 chosenUnselect('#idProiect');
                 hideModal();
-                showNotification(response.message)
+                showNotification(response.message);
                 $('#sterge').click();
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
     }

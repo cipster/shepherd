@@ -3,15 +3,13 @@ package services;
 import exceptions.DAOException;
 import model.ControllerResult;
 import model.dao.LocDAO;
-import model.dto.Loc;
-import model.dto.Persoana;
+import model.domain.Loc;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import util.enums.DAOResult;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

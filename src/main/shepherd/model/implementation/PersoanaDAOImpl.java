@@ -1,7 +1,7 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dto.Persoana;
+import model.domain.Persoana;
 import model.dao.PersoanaDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

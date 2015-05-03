@@ -178,12 +178,12 @@
 
     function atribuieUserMod() {
         if ($("#idUserSelect").val() <= 0) {
-            alert("Alege un utilizator din lista!");
+            showNotification('Alege un utilizator din lista!', WARNING);
             return;
         }
         if ($("#usernameInput").val() === '' || $("#adminInput").val() <= 0 || $("#statusInput").val() < 0) {
             hideModal();
-            alert("Asigurati-va ca ati completat toate campurile!");
+            showNotification('Asigurati-va ca ati completat toate campurile!', WARNING);
             return;
         }
 
@@ -235,45 +235,26 @@
                 success: function (response) {
                     if (response === '-1') {
                         hideModal();
-                        $("#alert").notify({
-                            message: {text: 'Utilizatorul nu a fost adaugat!'},
-                            type: 'danger',
-                            closeable: 'true',
-                            transition: 'fade',
-                            fadeOut: {enabled: true, delay: 15000}
-                        }).show();
+                        showNotification('Utilizatorul nu a fost adaugat!', DANGER);
                         return;
                     }
 
                     if (response === '-2') {
                         hideModal();
-                        $("#alert").notify({
-                            message: {text: 'Utilizatorul cu numele ' + user + ' exista deja!'},
-                            type: 'warning',
-                            closeable: 'true',
-                            transition: 'fade',
-                            fadeOut: {enabled: true, delay: 15000}
-                        }).show();
+                        showNotification('Utilizatorul cu numele ' + user + ' exista deja!', DANGER);
                         return;
                     }
-                    $('#newUsernameInput').val('');
+                    $('#newUsernameInput').val(EMPTY);
                     $('#newRoluriInput').val(3);
                     $('#newRoluriInput').trigger('chosen:updated');
-                    $('#persoana-select').val(-1);
-                    $('#persoana-select').trigger('chosen:updated');
+                    chosenUnselect('#persoana-select');
                     $("#utilizatori").click();
                     var respContent = 'Utilizatorul ' + user + ' a fost adaugat!';
                     hideModal();
-                    $("#alert").notify({
-                        message: {text: respContent},
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification(respContent);
                 },
                 error: function (e) {
-                    alert("Eroare la conexiune!" + e);
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -305,34 +286,20 @@
                 success: function (response) {
                     if (response === '-1') {
                         hideModal();
-                        $("#alert").notify({
-                            message: {text: 'Utilizatorul nu a fost modificat!'},
-                            type: 'danger',
-                            closeable: 'true',
-                            transition: 'fade',
-                            fadeOut: {enabled: true, delay: 15000}
-                        }).show();
+                        showNotification('Utilizatorul nu a fost modificat!', DANGER);
                         return;
                     }
                     $('#usernameInput').text(EMPTY);
                     chosenUnselect('#statusInput');
-                    $('#adminInput').val(-1);
-                    $('#adminInput').trigger('chosen:updated');
-                    $('#persoana-select').val(-1);
-                    $('#persoana-select').trigger('chosen:updated');
+                    chosenUnselect('#adminInput');
+                    chosenUnselect('#persoana-select');
                     $("#utilizatori").click();
                     var respContent = 'Utilizatorul ' + user + ' a fost modificat!';
                     hideModal();
-                    $("#alert").notify({
-                        message: {text: respContent},
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification(respContent);
                 },
                 error: function (xhr, e) {
-                    alert("Eroare la conexiune!" + e);
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -349,7 +316,7 @@
                 return;
             }
             if (pass !== rpass) {
-                alert('Parolele nu se potrivesc!');
+                showNotification('Parolele nu se potrivesc!', WARNING);
                 return;
             }
             data = 'user=' + user + '&password=' + pass;
@@ -363,29 +330,17 @@
                 success: function (response) {
                     if (response === '-1') {
                         hideModal();
-                        $("#alert").notify({
-                            message: {text: 'Parola nu a fost schimbata!'},
-                            type: 'danger',
-                            closeable: 'true',
-                            transition: 'fade',
-                            fadeOut: {enabled: true, delay: 15000}
-                        }).show();
+                        showNotification('Parola nu a fost schimbata!', DANGER);
                         return;
                     }
-                    $('#chPasswordInput').val('');
-                    $('#chRepeatPasswordInput').val('');
+                    $('#chPasswordInput').val(EMPTY);
+                    $('#chRepeatPasswordInput').val(EMPTY);
                     var respContent = 'Parola a fost actualizata!';
                     hideModal();
-                    $("#alert").notify({
-                        message: {text: respContent},
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification(respContent);
                 },
                 error: function (e) {
-                    alert("Eroare la conexiune!" + e);
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -427,7 +382,7 @@
                         $("#adminInput").trigger(chosenUpdated);
                     },
                     error: function (e) {
-                        alert("Eroare la conexiune!");
+                        showNotification('Eroare la conexiune!', DANGER);
                     }
                 });
             }

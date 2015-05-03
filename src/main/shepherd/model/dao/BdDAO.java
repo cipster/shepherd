@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.Bd;
+import model.domain.Bd;
 
 import java.util.List;
 

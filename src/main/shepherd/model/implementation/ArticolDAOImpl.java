@@ -1,7 +1,7 @@
 package model.implementation;
 
 import model.dao.ArticolDAO;
-import model.dto.Articol;
+import model.domain.Articol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;

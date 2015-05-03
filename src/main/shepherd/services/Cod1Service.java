@@ -2,7 +2,7 @@ package services;
 
 import exceptions.DAOException;
 import model.ControllerResult;
-import model.dto.Cod1;
+import model.domain.Cod1;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

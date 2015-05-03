@@ -3,7 +3,7 @@ package services;
 import exceptions.DAOException;
 import exceptions.ProjectHasFilesException;
 import model.dao.ProiectDAO;
-import model.dto.Proiect;
+import model.domain.Proiect;
 import org.springframework.beans.factory.annotation.Autowired;
 import util.enums.DAOResult;
 

@@ -153,7 +153,7 @@
                 $('#clienti').click();
             },
             error: function (xhr, err) {
-                alert("Eroare la conexiune!" + err.message);
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
     }
@@ -191,7 +191,7 @@
 
             },
             error: function (xhr, err) {
-                alert("Eroare la conexiune!" + err);
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
     }
@@ -202,7 +202,7 @@
         var client = $('#clientnumeInput').val();
 
         if (client === EMPTY) {
-            alert("Asigurati-vă că ati completat campul!");
+            showNotification('Asigurati-vă că ati completat campul!', DANGER);
             return;
         }
         var data = {
@@ -230,7 +230,7 @@
                 $('#clienti').click();
             },
             error: function (xhr, err) {
-                alert("Eroare la conexiune!" + err);
+                showNotification('Eroare la conexiune!', DANGER);
             }
         });
     }

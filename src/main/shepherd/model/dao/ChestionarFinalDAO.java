@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.dto.ChestionarFinal;
+import model.domain.ChestionarFinal;
 
 import java.util.List;
 

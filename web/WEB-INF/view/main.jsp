@@ -356,10 +356,10 @@
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea baza de date!  ";
                 hideModal();
-                showNotification(respContent)
+                showNotification(respContent);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 ajaxLoaderHide();
@@ -395,18 +395,12 @@
                 row.child(format(tr.prop("id"))).show();
                 tr.next().addClass('copil');
                 $("#copil").children().addClass('copil');
-                $("#uploadAlert").html("");
-                $("#propunereFile").val("");
+                $("#uploadAlert").html(EMPTY);
+                $("#propunereFile").val(EMPTY);
                 $("#filepropunereFile").text("Click aici pentru a selecta o propunere");
 
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification('Fisierul este gol', DANGER, 15000);
                     return;
                 }
 
@@ -416,17 +410,10 @@
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea propunere!  ";
                 hideModal();
-                $("#alert").show();
-                $("#alert").notify({
-                    message: {text: respContent},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 ajaxLoaderHide();
@@ -461,39 +448,26 @@
                 row.child(format(tr.prop("id"))).show();
                 tr.next().addClass('copil');
                 $("#copil").children().addClass('copil');
-                $("#uploadAlert").html("");
-                $("#chestionarFile").val("");
+                $("#uploadAlert").html(EMPTY);
+                $("#chestionarFile").val(EMPTY);
                 $("#filechestionarFile").text("Click aici pentru a selecta un chestionar final");
 
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification('Fisierul este gol', DANGER, 15000);
                     return;
                 }
 
-                var respContent = "";
+                var respContent = EMPTY;
                 var uploadResponse = JSON.parse(JSON.parse(response));
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea chestionar final!  ";
                 hideModal();
-                $("#alert").show();
-                $("#alert").notify({
-                    message: {text: respContent + " "},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 ajaxLoaderHide();
@@ -528,39 +502,26 @@
                 row.child(format(tr.prop("id"))).show();
                 tr.next().addClass('copil');
                 $("#copil").children().addClass('copil');
-                $("#uploadAlert").html("");
-                $("#raportFile").val("");
+                $("#uploadAlert").html(EMPTY);
+                $("#raportFile").val(EMPTY);
                 $("#fileraportFile").text("Click aici pentru a selecta un raport final");
 
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification('Fisierul este gol', DANGER, 15000);
                     return;
                 }
 
-                var respContent = "";
+                var respContent = EMPTY;
                 var uploadResponse = JSON.parse(JSON.parse(response));
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.fileName;
                 respContent += " a fost adaugat cu succes in sectiunea raport final!  ";
                 hideModal();
-                $("#alert").show();
-                $("#alert").notify({
-                    message: {text: respContent + " "},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 ajaxLoaderHide();
@@ -589,21 +550,15 @@
             processData: false,
             contentType: false,
             success: function (response) {
-                $("#uploadAlert").html("");
-                $("#alteMaterialeFile").val("");
+                $("#uploadAlert").html(EMPTY);
+                $("#alteMaterialeFile").val(EMPTY);
                 $("#filealteMaterialeFile").text("Click aici pentru a selecta alte materiale");
 
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification('Fisierul este gol', DANGER);
                     return;
                 }
-                var respContent = "";
+                var respContent = EMPTY;
                 var uploadResponse = JSON.parse(JSON.parse(response));
 
                 respContent += "Fisierul ";
@@ -617,17 +572,10 @@
                 tr.next().addClass('copil');
                 $("#copil").children().addClass('copil');
                 hideModal();
-                $("#alert").show();
-                $("#alert").notify({
-                    message: {text: respContent + " "},
-                    type: 'success',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 ajaxLoaderHide();
@@ -654,32 +602,19 @@
 
             success: function (response) {
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
-                    return;
+                    showNotification('Fisierul este gol', DANGER);
                 }
-                var respContent = "";
+                var respContent = EMPTY;
                 var uploadResponse = JSON.parse(response);
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
                 hideModal();
-                $("#alert").notify({
-                    message: {text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent, INFO);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 var t = '#' + idProiect;
@@ -709,32 +644,20 @@
             cache: false,
             success: function (response) {
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification('Fisierul este gol', DANGER);
                     return;
                 }
-                var respContent = "";
+                var respContent = EMPTY;
                 var uploadResponse = JSON.parse(response);
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
                 hideModal();
-                $("#alert").notify({
-                    message: {text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent, INFO);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 var t = '#' + idProiect;
@@ -765,32 +688,20 @@
 
             success: function (response) {
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification('Fisierul este gol', DANGER);
                     return;
                 }
-                var respContent = "";
+                var respContent = EMPTY;
                 var uploadResponse = JSON.parse(response);
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
                 hideModal();
-                $("#alert").notify({
-                    message: {text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent, INFO);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 var t = '#' + idProiect;
@@ -820,32 +731,20 @@
             cache: false,
             success: function (response) {
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification('Fisierul este gol', DANGER);
                     return;
                 }
-                var respContent = "";
+                var respContent = EMPTY;
                 var uploadResponse = JSON.parse(response);
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
                 hideModal();
-                $("#alert").notify({
-                    message: {text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent, INFO);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 var t = '#' + idProiect;
@@ -876,32 +775,20 @@
 
             success: function (response) {
                 if (response == "error") {
-                    $("#alert").notify({
-                        message: {text: 'Fisierul este gol  '},
-                        type: 'danger',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    showNotification('Fisierul este gol', DANGER);
                     return;
                 }
-                var respContent = "";
+                var respContent = EMPTY;
                 var uploadResponse = JSON.parse(response);
 
                 respContent += "Fisierul ";
                 respContent += uploadResponse.nume;
                 respContent += " a fost sters!  ";
                 hideModal();
-                $("#alert").notify({
-                    message: {text: respContent},
-                    type: 'info',
-                    closeable: 'true',
-                    transition: 'fade',
-                    fadeOut: {enabled: true, delay: 15000}
-                }).show();
+                showNotification(respContent, INFO);
             },
             error: function (e) {
-                alert("Eroare la conexiune!" + e);
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 var t = '#' + idProiect;

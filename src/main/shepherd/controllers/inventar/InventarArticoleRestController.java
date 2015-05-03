@@ -3,8 +3,9 @@ package controllers.inventar;
 import model.dao.ArticolDAO;
 import model.dao.PersoanaDAO;
 import model.dao.UserRoleDAO;
-import model.dto.Articol;
-import model.dto.UserRole;
+import model.domain.Articol;
+import model.domain.Evidenta;
+import model.domain.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,22 +13,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import services.ArticolService;
 import util.enums.RoleType;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
-
-/**
- * @author Ciprian on 3/30/2015.
- *
- *         Shepherd
- */
 
 @Controller
 @RequestMapping(value = "/global/inventar/articole")
-public class InventarArticoleController {
+public class InventarArticoleRestController {
 
     @Autowired
     private ArticolDAO articolDAO;
@@ -35,6 +33,8 @@ public class InventarArticoleController {
     private UserRoleDAO userRoleDAO;
     @Autowired
     private PersoanaDAO persoanaDAO;
+    @Autowired
+    private ArticolService articolService;
 
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
@@ -47,6 +47,14 @@ public class InventarArticoleController {
         } else {
             return articolDAO.getOnlyMine(getIdPersoana());
         }
+    }
+
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+    @RequestMapping(value = "/gethistory/{barcode}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<Evidenta> getHistoryForCode(@PathVariable @NotNull String barcode) {
+        return articolService.fetchEvidentaByBarcode(barcode);
     }
 
     private int getIdPersoana(){

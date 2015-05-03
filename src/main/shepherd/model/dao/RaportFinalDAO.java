@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.RaportFinal;
+import model.domain.RaportFinal;
 
 import java.util.List;
 

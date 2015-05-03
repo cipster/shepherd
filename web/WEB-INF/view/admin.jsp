@@ -135,7 +135,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 cod1.val(UNSELECT);
@@ -182,7 +182,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 modArticoleSelect.val(UNSELECT);
@@ -196,9 +196,9 @@
         var modLocSelect = $("#loc-mod-select");
         var locSelect = $("#loc-articol");
         var locArticol = $("#loc-add-articol");
-        modLocSelect.html("");
-        locSelect.html("");
-        locArticol.html("");
+        modLocSelect.html(EMPTY);
+        locSelect.html(EMPTY);
+        locArticol.html(EMPTY);
 
         var idLoc;
         var denumireLoc;
@@ -218,7 +218,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 modLocSelect.val(UNSELECT);
@@ -266,7 +266,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 modPersoanaSelect.val(UNSELECT);
@@ -279,9 +279,9 @@
     }
 
     function getClients() {
-        $("#clientselect").html("");
-        $("#idClient").html("");
-        $("#idClientInput").html("");
+        $("#clientselect").html(EMPTY);
+        $("#idClient").html(EMPTY);
+        $("#idClientInput").html(EMPTY);
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/api/clientlist',
@@ -296,7 +296,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 chosenUnselect("#idClientInput");
@@ -310,7 +310,7 @@
 
     function getUsers() {
         var idUserSelect = $("#idUserSelect");
-        idUserSelect.html("");
+        idUserSelect.html(EMPTY);
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/global/admin/user/userlist',
@@ -330,7 +330,7 @@
                                 idPersoana = response.idPersoana;
                             },
                             error: function (e) {
-                                alert("Connection error! Nu s-a gasit persoana pentru: " + response[i].username);
+                                showNotification('Eroare la conexiune! Nu s-a gasit persoana pentru: ' + response[i].username, 'danger');
                             }
                         });
                         idUserSelect
@@ -341,7 +341,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function (e) {
                 idUserSelect.val(UNSELECT);
@@ -355,8 +355,8 @@
     function getProjects() {
         var idProiectSelect = $("#idProiectSelect");
         var idProiect = $("#idProiect");
-        idProiectSelect.html("");
-        idProiect.html("");
+        idProiectSelect.html(EMPTY);
+        idProiect.html(EMPTY);
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/api/proiectelist',
@@ -376,7 +376,7 @@
                 }
             },
             error: function (e) {
-                alert("Connection error!");
+                showNotification('Eroare la conexiune!', DANGER);
             },
             complete: function(e) {
                 idProiectSelect.val(UNSELECT);
@@ -553,8 +553,7 @@
         });
         chosenUnselect("#loc-add-articol");
 
-        $("#anSelInput").val(UNSELECT);
-        $("#anSelInput").trigger("chosen:updated");
+        chosenUnselect("#anSelInput");
         $("#idProiect").val([]);
         $("#idProiect").trigger("chosen:updated");
         $("#idUserSelect").val([]);

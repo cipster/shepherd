@@ -3,7 +3,7 @@ package model.implementation;
 
 import com.mysql.jdbc.Statement;
 import exceptions.DAOException;
-import model.dto.Client;
+import model.domain.Client;
 import model.dao.ClientDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

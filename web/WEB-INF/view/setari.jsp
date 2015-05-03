@@ -63,32 +63,32 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><spring:message code="MODUSER.CHANGEPASS" /></h4>
+                <h4 class="modal-title"><spring:message code="MODUSER.CHANGEPASS"/></h4>
             </div>
             <form method="POST" id="adminChangePass" action="${pageContext.request.contextPath}/api/schimbaparola">
                 <div class="modal-body">
-                    <div class="input-group">
-                        <div class="col-md-12"><br/></div>
-                        <div class="col-md-6">
-                            <label for="chPasswordInput"><spring:message code="MODUSER.PASSNEW" /></label>
+                    <div class="container-fluid form-horizontal">
+                        <div class="form-group col-md-6">
+                            <label for="chPasswordInput"><spring:message code="MODUSER.PASSNEW"/></label>
                             <input type="password" id="chPasswordInput" class="form-control input-sm"/>
                         </div>
-                        <div class="col-md-12"><br/></div>
-                        <div class="col-md-6">
-                            <label for="chRepeatPasswordInput"><spring:message code="MODUSER.REPETAPAROLA" /></label>
+                        <div class="col-md-12"></div>
+                        <div class="form-group col-md-6">
+                            <label for="chRepeatPasswordInput"><spring:message code="MODUSER.REPETAPAROLA"/></label>
                             <input type="password" id="chRepeatPasswordInput" class="form-control input-sm"/>
                         </div>
-                        <div class="col-md-12"><br/></div>
-                        <div class="col-md-6">
-                            <label for="chShowPass"><spring:message code="MODUSER.ARATAPAROLA" /></label>
-                            <input type="checkbox" id="chShowPass" class="checkbox"/>
+                        <div class="col-md-12">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="chShowPass"/> <spring:message code="MODUSER.ARATAPAROLA"/>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" ><spring:message code="MODUSER.CHANGEPASS" /></button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE" /></button>
-
+                    <button type="submit" class="btn btn-primary"><span class="fa fa-lock fa-fw">&nbsp;</span> <spring:message code="MODUSER.CHANGEPASS"/></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times fa-fw">&nbsp;</span> <spring:message code="DIALOG.CLOSE"/></button>
                 </div>
             </form>
         </div>
@@ -141,12 +141,12 @@
                 return;
             }
             if(pass !== rpass){
-                alert('Parolele nu se potrivesc!');
+                showNotification('Parolele nu se potrivesc!', WARNING);
                 return;
             }
 
-            if(pass.length < 7){
-                alert('Parola trebuie sa aiba 8 sau mai multe caractere!');
+            if(pass.length < 8){
+                showNotification('Parola trebuie sa aiba 8 sau mai multe caractere!', WARNING);
                 return;
             }
             data = 'user=' + user + '&password=' + pass;
@@ -159,32 +159,17 @@
                 data: data,
                 success: function (response) {
                     if (response === '-1') {
-                        $("#alert").notify({
-                            message: {text: 'Parola nu a fost schimbata!'},
-                            type: 'danger',
-                            closeable: 'true',
-                            transition: 'fade',
-                            fadeOut: {enabled: true, delay: 15000}
-                        }).show();
+                        showNotification('Parola nu a fost schimbata!', DANGER, 15000);
                         return;
                     }
-                    $('#chPasswordInput').val('');
-                    $('#chRepeatPasswordInput').val('');
+                    $('#chPasswordInput').val(EMPTY);
+                    $('#chRepeatPasswordInput').val(EMPTY);
                     var respContent = 'Parola a fost actualizata!';
-
-                    $('.modal.in').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
-                    $("#alert").notify({
-                        message: {text: respContent},
-                        type: 'success',
-                        closeable: 'true',
-                        transition: 'fade',
-                        fadeOut: {enabled: true, delay: 15000}
-                    }).show();
+                    hideModal();
+                    showNotification(respContent);
                 },
                 error: function (e) {
-                    alert("Eroare la conexiune!" + e);
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });

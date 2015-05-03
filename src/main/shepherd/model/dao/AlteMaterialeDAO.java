@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.AlteMateriale;
+import model.domain.AlteMateriale;
 
 import java.util.List;
 

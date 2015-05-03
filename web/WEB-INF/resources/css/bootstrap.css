@@ -2267,7 +2267,7 @@ textarea.input-lg, select[multiple].input-lg {
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
     color: #333;
-    background-color: #ebebeb;
+    background-color: #c1c1c1;
     border-color: #adadad
 }
 
@@ -5722,8 +5722,11 @@ button.close {
 
 .modal-header {
     padding: 15px;
-    border-bottom: 1px solid #e5e5e5;
-    min-height: 16.42857143px
+    border-bottom: 1px solid #6c6c6c;
+    min-height: 16.42857143px;
+    background-color: #dbd8d8;
+    border-top-left-radius: .4em;
+    border-top-right-radius: .4em;
 }
 
 .modal-header .close {
@@ -6476,6 +6479,7 @@ button.close {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    z-index: 10000;
 }
 
 /* Positioning */
@@ -6644,3 +6648,11 @@ div.dataTables_wrapper {
     font-size: 10pt!important;
 }
 
+#logout:hover {
+    background-color: #E6E6E6;
+}
+
+.table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th {
+    background-color: #909090;
+    color: white;
+}

@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="model.dto.Role" table="roles" schema="" catalog="proiecte">
+    <class name="model.domain.Role" table="roles" schema="" catalog="proiecte">
         <id name="idRole" column="id_role"/>
         <property name="role" column="role"/>
     </class>

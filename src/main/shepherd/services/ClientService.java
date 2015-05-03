@@ -1,7 +1,6 @@
 package services;
 
-import model.dto.Client;
-import model.dto.Proiect;
+import model.domain.Client;
 import org.springframework.stereotype.Service;
 
 /**

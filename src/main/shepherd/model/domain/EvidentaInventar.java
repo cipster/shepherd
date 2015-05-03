@@ -1,4 +1,4 @@
-package model.dto;
+package model.domain;
 
 import javax.persistence.*;
 
@@ -13,9 +13,11 @@ public class EvidentaInventar {
     private int idCod3;
     private int idPersoana;
     private int idLoc;
+    private int idLocRecuperare;
     private String dataPreluarii;
     private String dataRecuperarii;
     private String detalii;
+    private String detaliiRecuperare;
 
     @Id
     @Column(name = "id_evidenta_inventar")
@@ -114,5 +116,25 @@ public class EvidentaInventar {
         result = 31 * result + (dataPreluarii != null ? dataPreluarii.hashCode() : 0);
         result = 31 * result + (detalii != null ? detalii.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "detalii_recuperare")
+    public String getDetaliiRecuperare() {
+        return detaliiRecuperare;
+    }
+
+    public void setDetaliiRecuperare(String detaliiRecuperare) {
+        this.detaliiRecuperare = detaliiRecuperare;
+    }
+
+    @Basic
+    @Column(name = "id_loc_recuperare")
+    public int getIdLocRecuperare() {
+        return idLocRecuperare;
+    }
+
+    public void setIdLocRecuperare(int idLocRecuperare) {
+        this.idLocRecuperare = idLocRecuperare;
     }
 }

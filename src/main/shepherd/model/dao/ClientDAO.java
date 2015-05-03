@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.dto.Client;
+import model.domain.Client;
 
 import java.util.List;
 

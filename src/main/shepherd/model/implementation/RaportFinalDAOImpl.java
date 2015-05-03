@@ -12,7 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import model.dto.RaportFinal;
+import model.domain.RaportFinal;
 
 import javax.sql.DataSource;
 import java.sql.*;

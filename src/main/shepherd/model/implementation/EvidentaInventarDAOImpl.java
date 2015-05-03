@@ -1,7 +1,7 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dto.EvidentaInventar;
+import model.domain.EvidentaInventar;
 import model.dao.EvidentaInventarDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -30,9 +30,11 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
             evidentaInventar.setIdCod3(rs.getInt("id_cod_3"));
             evidentaInventar.setIdPersoana(rs.getInt("id_persoana"));
             evidentaInventar.setIdLoc(rs.getInt("id_loc"));
+            evidentaInventar.setIdLocRecuperare(rs.getInt("id_loc_recuperare"));
             evidentaInventar.setDataPreluarii(rs.getString("data_preluarii"));
             evidentaInventar.setDataRecuperarii(rs.getString("data_recuperarii"));
             evidentaInventar.setDetalii(rs.getString("detalii"));
+            evidentaInventar.setDetaliiRecuperare(rs.getString("detalii_recuperare"));
 
             return evidentaInventar;
         }
@@ -122,7 +124,7 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
     @Override
     public Integer update(final EvidentaInventar entity) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
-        final String query = "UPDATE proiecte.evidenta_inventar SET id_cod_3=?, id_persoana=?, id_loc=?, data_recuperarii=NOW(), detalii=? WHERE id_evidenta_inventar=?";
+        final String query = "UPDATE proiecte.evidenta_inventar SET id_loc_recuperare=?, data_recuperarii=NOW(), detalii_recuperare=? WHERE id_evidenta_inventar=?";
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -130,11 +132,9 @@ public class EvidentaInventarDAOImpl extends JdbcDaoSupport implements EvidentaI
 
                 PreparedStatement ps = con.prepareStatement(query);
 
-                ps.setInt(1, entity.getIdCod3());
-                ps.setInt(2, entity.getIdPersoana());
-                ps.setInt(3, entity.getIdLoc());
-                ps.setString(4, entity.getDetalii());
-                ps.setLong(5, entity.getIdEvidentaInventar());
+                ps.setInt(1, entity.getIdLocRecuperare());
+                ps.setString(2, entity.getDetaliiRecuperare());
+                ps.setLong(3, entity.getIdEvidentaInventar());
 
                 logger.debug(ps.toString());
                 return ps;

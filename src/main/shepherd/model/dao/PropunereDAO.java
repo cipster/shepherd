@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.dto.Propunere;
+import model.domain.Propunere;
 
 import java.util.List;
 

@@ -2,9 +2,9 @@ package services;
 
 import exceptions.DAOException;
 import model.ControllerResult;
-import model.dto.Articol;
-import model.dto.Cod3;
-import model.dto.Loc;
+import model.domain.Articol;
+import model.domain.Cod3;
+import model.domain.Evidenta;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,4 +21,6 @@ public interface ArticolService {
     ControllerResult modArticol(Cod3 articol) throws DAOException;
 
     ControllerResult delArticol(Cod3 articol) throws DAOException;
+
+    List<Evidenta> fetchEvidentaByBarcode(String barcode);
 }

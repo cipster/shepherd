@@ -1,10 +1,9 @@
 package controllers;
 
 import com.google.zxing.BarcodeFormat;
-import model.dto.*;
 import model.dao.*;
+import model.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,16 +15,18 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import util.Barcode;
 import util.enums.Response;
 import util.enums.StareArticol;
-import util.Barcode;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -321,8 +322,8 @@ public class ApiRestController {
             JsonObject obj = Json.createReader(new StringReader(evidenta)).readObject();
 
             if (obj != null) {
-                Integer idLoc = Integer.parseInt(obj.getString("idLoc"));
-                Integer idPersoana = Integer.parseInt(obj.getString("idPersoana"));
+                int idLoc = Integer.parseInt(obj.getString("idLoc"));
+                int idPersoana = Integer.parseInt(obj.getString("idPersoana"));
                 String detalii = obj.getString("detalii");
                 int stare = obj.getInt("stare");
 
@@ -330,8 +331,8 @@ public class ApiRestController {
                 evidentaInventar.setIdPersoana(idPersoana);
                 evidentaInventar.setDetalii(detalii);
                 JsonArray cod3 = obj.getJsonArray("cod3");
-                for(int i = 0; i < cod3.size(); i ++){
-                    Integer cod3Val = Integer.parseInt(cod3.getJsonString(i).getString());
+                for(int i = 0; i < cod3.size(); i++){
+                    int cod3Val = Integer.parseInt(cod3.getJsonString(i).getString());
                     evidentaInventar.setIdCod3(cod3Val);
                     try {
                         Cod3 articol = cod3DAO.findByID(cod3Val);
@@ -359,8 +360,8 @@ public class ApiRestController {
     public String evidentaIntra(HttpServletRequest request) {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername(); //get logged in username
-        EvidentaInventar evidentaInventar = new EvidentaInventar();
-        evidentaInventar.setIdEvidentaInventar(0);
+        EvidentaInventar evidentaInventar;
+
         String evidenta = request.getParameterNames().nextElement();
         String response = Response.ERROR.getLabel();
         if(evidenta != null) {
@@ -384,10 +385,14 @@ public class ApiRestController {
                         articol.setIdLoc(idLoc);
                         articol.setModificatDe(username);
                         articol.setDetaliiRecuperare(detalii);
+                        evidentaInventar.setDetaliiRecuperare(detalii);
+                        evidentaInventar.setIdLocRecuperare(idLoc);
                         cod3DAO.update(articol);
                         evidentaInventarDAO.update(evidentaInventar);
                         response = Response.SUCCESS.getLabel();
                     } catch (DataAccessException ex) {
+                        evidentaInventar = new EvidentaInventar();
+                        evidentaInventar.setIdEvidentaInventar(0);
                         ex.printStackTrace();
                         response = Response.ERROR.getLabel();
                     }

@@ -2,7 +2,7 @@ package model.implementation;
 
 import com.mysql.jdbc.Statement;
 import model.dao.ProiectDAO;
-import model.dto.Proiect;
+import model.domain.Proiect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

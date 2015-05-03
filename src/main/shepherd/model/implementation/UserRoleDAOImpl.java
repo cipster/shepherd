@@ -13,7 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import model.dto.UserRole;
+import model.domain.UserRole;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -3,15 +3,12 @@ package services;
 import model.UserAndRolesResult;
 import model.dao.UserDAO;
 import model.dao.UserRoleDAO;
-import model.dto.User;
-import model.dto.UserRole;
+import model.domain.User;
+import model.domain.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.CollectionUtils;
-import util.enums.RoleType;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package model.implementation;
 
 import com.mysql.jdbc.Statement;
-import model.dto.Cod3;
+import model.domain.Cod3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -171,7 +171,7 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
         if(entity.getStare() == 2){
             now = true;
         }
-        final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, denumire_3=?, detalii=?, pret_achizitie=?," +
+        final String query = "UPDATE proiecte.cod_3 SET cod_1=?, cod_2=?, denumire_3=?, pret_achizitie=?," +
                 " stare =?, id_loc=?, detalii_recuperare=?,  modificat_de=? " +
                 (now?", data_recuperare=now()" : " ") +
                 " WHERE cod_3=?";
@@ -185,13 +185,12 @@ public class Cod3DAOImpl extends JdbcDaoSupport implements Cod3DAO {
                 ps.setInt(1, entity.getCod1());
                 ps.setInt(2, entity.getCod2());
                 ps.setString(3, entity.getDenumire3());
-                ps.setString(4, entity.getDetalii());
-                ps.setString(5, entity.getPretAchizitie());
-                ps.setInt(6, entity.getStare());
-                ps.setInt(7, entity.getIdLoc());
-                ps.setString(8, entity.getDetaliiRecuperare());
-                ps.setString(9, entity.getModificatDe());
-                ps.setInt(10, entity.getCod3());
+                ps.setString(4, entity.getPretAchizitie());
+                ps.setInt(5, entity.getStare());
+                ps.setInt(6, entity.getIdLoc());
+                ps.setString(7, entity.getDetaliiRecuperare());
+                ps.setString(8, entity.getModificatDe());
+                ps.setInt(9, entity.getCod3());
 
                 logger.debug(ps.toString());
                 return ps;

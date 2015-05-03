@@ -1,38 +1,7 @@
 package configuration;
 
-import model.dao.AlteMaterialeDAO;
-import model.dao.ArticolDAO;
-import model.dao.BdDAO;
-import model.dao.ChestionarFinalDAO;
-import model.dao.ClientDAO;
-import model.dao.Cod1DAO;
-import model.dao.Cod2DAO;
-import model.dao.Cod3DAO;
-import model.dao.EvidentaInventarDAO;
-import model.dao.LocDAO;
-import model.dao.PersoanaDAO;
-import model.dao.ProiectDAO;
-import model.dao.PropunereDAO;
-import model.dao.RoleDAO;
-import model.dao.UserDAO;
-import model.dao.UserRoleDAO;
-import model.implementation.AlteMaterialeDAOImpl;
-import model.implementation.ArticolDAOImpl;
-import model.implementation.BdDAOImpl;
-import model.implementation.ChestionarFinalDAOImpl;
-import model.implementation.ClientDAOImpl;
-import model.implementation.Cod1DAOImpl;
-import model.implementation.Cod2DAOImpl;
-import model.implementation.Cod3DAOImpl;
-import model.implementation.EvidentaInventarDAOImpl;
-import model.implementation.LocDAOImpl;
-import model.implementation.PersoanaDAOImpl;
-import model.implementation.ProiectDAOImpl;
-import model.implementation.PropunereDAOImpl;
-import model.implementation.RaportFinalDAOImpl;
-import model.implementation.RoleDAOImpl;
-import model.implementation.UserDAOImpl;
-import model.implementation.UserRoleDAOImpl;
+import model.dao.*;
+import model.implementation.*;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -131,6 +100,11 @@ public class BeanConfig {
 	}
 
 	@Bean
+	public EvidentaDAO evidentaDAO() {
+		return new EvidentaDAOImpl(dataSource);
+	}
+
+	@Bean
 	public ProiectService proiectService() {
 		return new ProiectServiceImpl();
 	}
@@ -164,4 +138,5 @@ public class BeanConfig {
 	public ArticolService articolService() {
 		return new ArticolServiceImpl();
 	}
+
 }

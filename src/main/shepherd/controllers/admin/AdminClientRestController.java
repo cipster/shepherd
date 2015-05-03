@@ -1,13 +1,9 @@
 package controllers.admin;
 
 import model.ControllerResult;
-import model.dao.ClientDAO;
 import model.dao.UserRoleDAO;
-import model.dto.Client;
-import model.dto.UserRole;
+import model.domain.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,12 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import services.ClientService;
-import util.enums.Response;
-
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/global/admin/client")

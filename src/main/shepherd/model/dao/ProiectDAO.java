@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.dto.Proiect;
+import model.domain.Proiect;
 
 import java.util.List;
 

@@ -2,6 +2,7 @@ var SUCCESS = 'success';
 var DANGER = 'danger';
 var WARNING = 'warning';
 var PRIMARY = 'primary';
+var INFO = 'info';
 var EMPTY = '';
 var UNSELECT = -1;
 var ZERO = 0;
@@ -27,27 +28,6 @@ function hideModal() {
     $('.modal.in').modal('hide');
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
-}
-
-function insertModal(id, action, actionMessage, header, content) {
-    var modal = '<div class="modal fade" id="' + id + '">'
-        + '<div class="modal-dialog">'
-        + '<div class="modal-content">'
-        + '<div class="modal-header">'
-        + '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'
-        + '<h4 class="modal-title">' + header + '</h4>'
-        + '</div>'
-        + '<div class="modal-body">'
-        + content
-        + '</div>'
-        + '<div class="modal-footer">'
-        + '<button id="' + id + '-action" type="button" class="btn btn-success">' + actionMessage + '</button>'
-        + '<button id="' + id + '-close"  type="button"  class="btn btn-default" data-dismiss="modal"><spring:message code="DIALOG.CLOSE"/></button>'
-        + '</div>'
-        + '</div>'
-        + '</div>'
-        + '</div>';
-    $(document).append(modal);
 }
 
 function formSubmit() {
@@ -172,12 +152,15 @@ $(window).scroll(function () {
     }
 });
 
-function generateModal(id, title, content, buttons) {
+function showModal(id, title, content, buttons) {
     var modalHtml = '';
     var modalId = '#' + id;
-    if (id && title && content && buttons) {
+    if(!buttons){
+        buttons = '<button type="button" id="' + id + '-close" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span> &#206;nchide</button>';
+    }
+    if (id && title && content) {
         modalHtml += '<div class="modal fade" id="' + id + '">'
-            .concat('<div class="modal-dialog ">')
+            .concat('<div class="modal-dialog modal-lg">')
             .concat('<div class="modal-content">')
             .concat('<div class="modal-header">')
             .concat('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>')
@@ -204,11 +187,59 @@ function generateButton(id, type, text) {
                 buttonHtml = '<button type="submit" id="' + id + '" class="btn btn-success"><span class="fa fa-plus">&nbsp;</span>' + text + '</button>';
                 break;
             case 'close':
-                buttonHtml = '<button type="button" id="' + id + '" class="btn btn-default"><span class="fa fa-times">&nbsp;</span>' + text + '</button>';
+                buttonHtml = '<button type="button" id="' + id + '" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times">&nbsp;</span>' + text + '</button>';
                 break;
         }
     }
     return buttonHtml;
+}
+
+function generateHistoryTable(articol){
+    var counter;
+    var dataIesire;
+    var persoana;
+    var loc;
+    var locRecuperare;
+    var dataIntrare;
+    var detalii;
+    var detaliiRecuperare;
+    var historyTable = '<div class="wrapper">' +
+        '<table class="table table-responsive table-hover"><thead><tr>' +
+        '<td>Nr</td><td>Data iesire</td><td>Persoana</td><td>Loc Predare</td><td>Detalii Predare</td><td>Loc Recuperare</td><td>Data intrare</td><td>Detalii Recuperare</td>' +
+        '</tr></thead><tbody>';
+    if (articol && articol.length > 0) {
+        for (var i = 0; i < articol.length; i++) {
+            counter = i + 1;
+            dataIesire = toJSDate(articol[i].dataPreluarii, 1);
+            persoana = articol[i].nume;
+            loc = articol[i].denumireLoc;
+            locRecuperare = articol[i].denumireLocRecuperare;
+            if(!locRecuperare) {
+                locRecuperare = EMPTY;
+            }
+            dataIntrare = articol[i].dataRecuperarii;
+            if (dataIntrare) {
+                dataIntrare = toJSDate(dataIntrare, 1);
+            } else {
+                dataIntrare = '<span style="color:red;">Articolul este încă alocat</span>'
+            }
+            detalii = articol[i].detalii;
+            detaliiRecuperare = articol[i].detaliiRecuperare;
+            if(!detaliiRecuperare){
+                detaliiRecuperare = EMPTY;
+            }
+            historyTable += '<tr><td>' + counter + '</td><td>' + dataIesire + '</td><td>' + persoana + '</td>' +
+                '<td>' + loc + '</td><td>' + detalii + '</td><td>' + locRecuperare + '</td><td>' + dataIntrare + '</td><td>' + detaliiRecuperare + '</td></tr>';
+
+        }
+    } else {
+        historyTable += '<tr><td colspan="8" style="color:red; text-align: center; font-weight: bold; font-size: 14pt;">Nu sunt intrări în evidenţă pentru acest articol</td></tr>';
+    }
+
+    historyTable += '</tbody></table></div>';
+
+    return historyTable;
+
 }
 
 function getCod2ByCod1(idCod1) {
@@ -255,8 +286,5 @@ $(document).ready(function () {
     selcod1.on('change', function () {
         getCod2ByCod1($(this).val());
     });
-
-
-
 
 });

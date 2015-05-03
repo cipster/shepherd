@@ -1,7 +1,7 @@
 package model.dao;
 
 
-import model.dto.EvidentaInventar;
+import model.domain.EvidentaInventar;
 
 import java.util.List;
 

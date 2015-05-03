@@ -2,9 +2,8 @@ package services;
 
 import exceptions.DAOException;
 import model.dao.ClientDAO;
-import model.dto.Client;
+import model.domain.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import util.enums.DAOResult;
 
 /**

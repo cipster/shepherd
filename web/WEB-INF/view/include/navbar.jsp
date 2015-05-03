@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/main"><img style="height:30px;"
+            <a class="navbar-brand"><img style="height:30px;"
                                                       src="/img/logo360.png"/></a>
         </div>
         <div class="navbar-collapse collapse">
@@ -18,7 +18,7 @@
                 <li><a style="color: darkmagenta" href="/setari" data-toggle="tooltip" data-placement="bottom"
                        title="<spring:message code="MAIN.ESTI_INREGISTRAT_CA" /> ${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a>
                 </li>
-                <li><a href="javascript:formSubmit()"><spring:message code="NAVBAR.LOG_OUT" /></a></li>
+                <li id="logout" class="nav nav-tabs"><a href="javascript:formSubmit()" title="Ie?i din aplica?ie"><spring:message code="NAVBAR.LOG_OUT" /></a></li>
             </ul>
 
             <ul class="nav nav-tabs nav-navbar">

@@ -2,7 +2,7 @@ package controllers.admin;
 
 import exceptions.ProjectHasFilesException;
 import model.ControllerResult;
-import model.dto.Proiect;
+import model.domain.Proiect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
