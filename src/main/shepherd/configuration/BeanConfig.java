@@ -125,6 +125,11 @@ public class BeanConfig {
 	}
 
 	@Bean
+	public Cod2Service cod2Service() {
+		return new Cod2ServiceImpl();
+	}
+
+	@Bean
 	public PersoanaService persoanaService() {
 		return new PersoanaServiceImpl();
 	}

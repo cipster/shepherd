@@ -26,12 +26,6 @@
     <link href="/css/navbar-fixed-top.css" rel="stylesheet">
     <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/chosen.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <style>
         input {
             font-size: 13pt !important;
@@ -51,45 +45,45 @@
 <div class="container">
     <div id="spinner-container" class="jumbotron col-md-12" style="height: 510px;">
         <img id="spinner" src="/img/spinner.gif" class="spinner" style="display: none;">
-        <div class="list-group col-md-3">
+        <ul class="list-group nav nav-pills nav-stacked col-md-3" role="tablist">
             <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <a id="adauga" class="list-group-item">
-                    <span class="fa fa-plus fa-fw">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ"/></a>
-                <a id="modifica" class="list-group-item">
+                <li role="presentation"><a id="adauga" class="list-group-item">
+                    <span class="fa fa-plus fa-fw">&nbsp;</span> <spring:message code="ADMIN.ADDPROJ"/></a></li>
+                <li role="presentation"><a id="modifica" class="list-group-item">
                     <span class="fa fa-pencil fa-fw">&nbsp;</span>
-                    <spring:message code="ADMIN.MODPROJ"/></a>
-                <a id="sterge" class="list-group-item">
+                    <spring:message code="ADMIN.MODPROJ"/></a></li>
+                <li role="presentation"><a id="sterge" class="list-group-item">
                     <span class="fa fa-remove fa-fw">&nbsp;</span>
-                    <spring:message code="ADMIN.DELPROJ"/></a>
-                <a id="clienti" class="list-group-item">
-                    <span class="fa fa-briefcase fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODCLIENTI"/></a>
+                    <spring:message code="ADMIN.DELPROJ"/></a></li>
+                <li role="presentation"><a id="clienti" class="list-group-item">
+                    <span class="fa fa-briefcase fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODCLIENTI"/></a></li>
             </sec:authorize>
-            <a id="utilizatori" class="list-group-item">
-                <span class="fa fa-group fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODUSER"/></a>
-            <a id="inventar" class="list-group-item">
-                <span class="fa fa-cubes fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODINVENTAR"/></a>
-        </div>
+            <li role="presentation"><a id="utilizatori" class="list-group-item">
+                <span class="fa fa-group fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODUSER"/></a></li>
+            <li role="presentation"><a id="inventar" class="list-group-item">
+                <span class="fa fa-cubes fa-fw">&nbsp;</span> <spring:message code="ADMIN.MODINVENTAR"/></a></li>
+        </ul>
         <div class="well col-md-9 col-md-offset-0" id="continut">
 
             <h3 style="text-align: center;" id="sfat"><spring:message code="ADMIN.PLACEHOLDER"/></h3>
 
             <div id="addProj" style="display: none">
-                <c:import url="include/addProj.jsp"></c:import>
+                <c:import url="include/admin/addProj.jsp"></c:import>
             </div>
             <div id="modProj" style="display: none">
-                <c:import url="include/modProj.jsp"></c:import>
+                <c:import url="include/admin/modProj.jsp"></c:import>
             </div>
             <div id="delProj" style="display: none">
-                <c:import url="include/delProj.jsp"></c:import>
+                <c:import url="include/admin/delProj.jsp"></c:import>
             </div>
             <div id="modClienti" style="display: none">
-                <c:import url="include/modClient.jsp"></c:import>
+                <c:import url="include/admin/modClient.jsp"></c:import>
             </div>
             <div id="modUsers" style="display: none">
-                <c:import url="include/modUsers.jsp"></c:import>
+                <c:import url="include/admin/modUsers.jsp"></c:import>
             </div>
             <div id="modInventar" style="display: none">
-                <c:import url="include/modInventar.jsp"></c:import>
+                <c:import url="include/admin/modInventar.jsp"></c:import>
             </div>
         </div>
     </div>

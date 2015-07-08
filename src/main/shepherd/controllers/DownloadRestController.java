@@ -63,7 +63,7 @@ public class DownloadRestController {
         return null;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD','ROLE_SUPERUSER')")
     @RequestMapping(value = "/barcode/{code}", method = RequestMethod.GET)
     public
     @ResponseBody

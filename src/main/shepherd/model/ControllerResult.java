@@ -1,11 +1,5 @@
 package model;
 
-import org.springframework.http.HttpStatus;
-
-/**
- * Created by Ciprian on 3/8/2015.
- * Project Raindrop
- */
 public class ControllerResult {
     private int httpStatus;
     private String message;

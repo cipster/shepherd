@@ -27,12 +27,6 @@
     <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/chosen.css" rel="stylesheet">
     <link href="/css/datatabletools.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>
@@ -53,21 +47,21 @@
     <div class="jumbotron">
         <br/>
         <br/>
-            <table id="inventory-table" class="table" width="100%">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Nr</th>
-                    <th><spring:message code="INVENTAR.CATEGORIE"/></th>
-                    <th><spring:message code="INVENTAR.TIP"/></th>
-                    <th><spring:message code="INVENTAR.ARTICOL"/></th>
-                    <th><spring:message code="INVENTAR.COD"/></th>
-                    <th><spring:message code="INVENTAR.DETALII"/></th>
-                    <th><spring:message code="INVENTAR.ALOCAT"/></th>
-                </tr>
-                </thead>
+        <table id="inventory-table" class="table" width="100%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Nr</th>
+                <th><spring:message code="INVENTAR.CATEGORIE"/></th>
+                <th><spring:message code="INVENTAR.TIP"/></th>
+                <th><spring:message code="INVENTAR.ARTICOL"/></th>
+                <th><spring:message code="INVENTAR.COD"/></th>
+                <th><spring:message code="INVENTAR.DETALII"/></th>
+                <th><spring:message code="INVENTAR.ALOCAT"/></th>
+            </tr>
+            </thead>
 
-            </table>
+        </table>
     </div>
 </div>
 
@@ -105,7 +99,7 @@
                         </div>
                         <div class="form-group">
                             <label for="loc-add-articol">Loc</label>
-                            <select id="loc-add-articol" name="loc-add-articol" title=""  class="form-control" data-placeholder="Alege un loc..."></select>
+                            <select id="loc-add-articol" name="loc-add-articol" title="" class="form-control" data-placeholder="Alege un loc..."></select>
                         </div>
                         <div class="form-group">
                             <label for="pretachizitie">Pret achizitie</label>
@@ -149,7 +143,7 @@
                         </div>
                         <div class="form-group">
                             <label for="localitate">Localitate</label>
-                            <input id="localitate"  title="localitate" class="form-control">
+                            <input id="localitate" title="localitate" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -259,6 +253,7 @@
                         <div id="intrabarcode" class="form-group">
                             <h3 class="scan">Scaneaz&#259; articolul</h3>
                             <input id="intrabarcodeinput">
+
                             <div class="form-group">
                                 <ol id="intraarticolecautate"></ol>
                             </div>
@@ -314,6 +309,7 @@
                     <div id="primire-scan-div" class="ascuns">
                         <h3 class="scan text-center">Scaneaz&#259; articolul</h3>
                         <input id="primirescanbarcodeinput">
+
                         <div class="form-group">
                             <ol id="articolescanateprimire"></ol>
                         </div>
@@ -545,30 +541,29 @@
                 '</tr>';
 
 
-
         retString += '<tr>' +
-        '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>' +
-        '<td>' + dataPreluare + '</td>' +
-        '</tr>';
+                '<td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>' + dataTitle + '</b></td>' +
+                '<td>' + dataPreluare + '</td>' +
+                '</tr>';
         if (usePrimire) {
             retString += '<tr><td><span class="fa fa-calendar fa-fw">&nbsp;</span><b>Primit la:</b></td>' +
-            '<td>' + dataPrimire + '</td>' +
-            '</tr>';
+                    '<td>' + dataPrimire + '</td>' +
+                    '</tr>';
         }
         if (usePersoana) {
             retString += '<tr><td><span class="fa fa-user fa-fw">&nbsp;</span><b>Persoan&#259;:</b></td>' +
-            '<td>' + persoana + '</td>' +
-            '</tr>';
+                    '<td>' + persoana + '</td>' +
+                    '</tr>';
         }
         if (useUserRecuperat) {
             retString += '<tr><td><span class="fa fa-user fa-fw">&nbsp;</span><b>Recuperat de:</b></td>' +
-            '<td>' + userRecuperat + '</td>' +
-            '</tr>';
+                    '<td>' + userRecuperat + '</td>' +
+                    '</tr>';
         }
         if (useDetalii) {
             retString += '<tr><td><span class="fa fa-comment fa-fw">&nbsp;</span><b>' + detaliiTitle + ':</b></td>' +
-            '<td>' + detalii + '</td>' +
-            '</tr>';
+                    '<td>' + detalii + '</td>' +
+                    '</tr>';
         }
         retString += '<tr>' +
                 '<td><a id="history-' + barcode + '" class="btn btn-warning"><span class="fa fa-history"> &nbsp;</span> Arată istoric</a></td>' +
@@ -722,7 +717,6 @@
 
         return articoleJSON;
     }
-
 
 
     function getPersoane() {
@@ -1021,14 +1015,14 @@
             $('#intrabarcodeinput').focus();
         });
 
-        $('body').on('click', 'button[id$="-modal-close"]', function(){
+        $('body').on('click', 'button[id$="-modal-close"]', function () {
             var id = $(this).attr('id');
             id = '#' + id.replace('-close', '');
             hideModal();
             $(id).remove();
         });
 
-        $('body').on('click', 'a[id^="history-"]', function(){
+        $('body').on('click', 'a[id^="history-"]', function () {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -1159,11 +1153,15 @@
                             $('#articolescanateprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
 
                         } else {
+                            var notAdded = true;
                             $('#articolescanateprimire').find('li').each(function () {
-                                if ($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
-                                    $('#articolescanateprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                                if ($(this).prop('id') && $(this).prop('id') == articolJSON.cod3) {
+                                    notAdded = false;
                                 }
                             });
+                            if (notAdded) {
+                                $('#articolescanateprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                            }
                         }
                     } else if (articolJSON.stare != 4) {
                         showNotification('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul', DANGER);
@@ -1202,11 +1200,15 @@
                             $('#articoleintroduseprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
 
                         } else {
+                            var notAdded = true;
                             $('#articoleintroduseprimire').find('li').each(function () {
-                                if ($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
-                                    $('#articoleintroduseprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                                if ($(this).prop('id') && $(this).prop('id') == articolJSON.cod3) {
+                                    notAdded = false;
                                 }
                             });
+                            if (notAdded) {
+                                $('#articoleintroduseprimire').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                            }
                         }
                     } else if (articolJSON.stare != 4) {
                         showNotification('Articolul nu este in tranzit!\nDaca aceasta situatie nu corespunde cu realitatea, contactati managerul', DANGER);
@@ -1333,11 +1335,15 @@
                             $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
 
                         } else {
-                            $('#articolecautate').find('li').each(function () {
-                                if ($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
-                                    $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                            var notAdded = true;
+                            $('#articolecautate').find('li').each(function (i) {
+                                if ($(this).prop('id') && $(this).prop('id') == articolJSON.cod3) {
+                                    notAdded = false;
                                 }
                             });
+                            if (notAdded) {
+                                $('#articolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit">' + articolJSON.denumire3 + '</li></h3>');
+                            }
                         }
                         if ($('#nextiese').hasClass('ascuns')) {
                             $('#nextiese').removeClass('ascuns');
@@ -1378,13 +1384,20 @@
                             $('#intraarticolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit" data-evidenta="' + tranzactie.idEvidentaInventar + '" data-persoana="' + tranzactie.idPersoana + '" data-loc="' + tranzactie.idLoc + '" data-data="' + tranzactie.dataPreluarii + '">' + articolJSON.denumire3 + '</li></h3>');
 
                         } else {
+                            var notAdded = true;
+                            var notSameTranzaction = false;
                             $('#intraarticolecautate').find('li').each(function () {
-                                if ($(this).prop('id') && $(this).prop('id') != articolJSON.cod3) {
-                                    if ($(this).attr('data-evidenta') == tranzactie.idPersoana && $(this).attr('data-loc') == tranzactie.idLoc && $(this).attr('data-data') == tranzactie.dataPreluarii) {
-                                        $('#intraarticolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit" data-evidenta="' + tranzactie.idEvidentaInventar + '" data-persoana="' + tranzactie.idPersoana + '" data-loc="' + tranzactie.idLoc + '"  data-data="' + tranzactie.dataPreluarii + '">' + articolJSON.denumire3 + '</li></h3>');
-                                    } else {
-                                        showNotification('Articolele nu sunt atribuite aceleasi persoane!', DANGER);
-                                    }
+                                if ($(this).prop('id') && $(this).prop('id') == articolJSON.cod3) {
+                                    notAdded = false;
+                                }
+                                if ($(this).attr('data-evidenta') != tranzactie.idPersoana || $(this).attr('data-loc') != tranzactie.idLoc) {
+                                    notSameTranzaction = true;
+                                    notAdded = false;
+                                }
+                                if (notAdded) {
+                                    $('#intraarticolecautate').append('<h3><li id="' + articolJSON.cod3 + '" class="articolgasit" data-evidenta="' + tranzactie.idEvidentaInventar + '" data-persoana="' + tranzactie.idPersoana + '" data-loc="' + tranzactie.idLoc + '"  data-data="' + tranzactie.dataPreluarii + '">' + articolJSON.denumire3 + '</li></h3>');
+                                } else if(notSameTranzaction){
+                                    showNotification('Articolele nu sunt atribuite aceleasi persoane!', DANGER);
                                 }
                             });
                         }

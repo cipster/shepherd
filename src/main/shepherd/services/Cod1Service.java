@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public interface Cod1Service {
 
-	public List<Cod1> fetchAllCod1();
+	List<Cod1> fetchAllCod1();
 
 	ControllerResult modCod1(Cod1 cod1);
 

@@ -23,4 +23,5 @@ public interface ArticolService {
     ControllerResult delArticol(Cod3 articol) throws DAOException;
 
     List<Evidenta> fetchEvidentaByBarcode(String barcode);
+
 }

@@ -83,7 +83,6 @@
                 </div>
             </form>
         </div>
-
         <div role="tabpanel" class="tab-pane fade" id="articole">
             <form method="post" id="modificaarticolform" action="${pageContext.request.contextPath}/global/admin/inventar/modifyarticol">
                 <div class="well-sm">
@@ -794,7 +793,7 @@
                     showNotification(response.message)
                 },
                 error: function (err) {
-                    alert('Eroare la conexiune!');
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -845,7 +844,7 @@
                     $('#btnModPers').attr('data-target', '');
                 },
                 error: function (xhr, e) {
-                    alert("Eroare la conexiune!" + e);
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
 
@@ -902,7 +901,7 @@
                     $('#btnModLoc').attr('data-target', '');
                 },
                 error: function (xhr, e) {
-                    alert("Eroare la conexiune!" + e);
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -941,7 +940,7 @@
                     showNotification(response.message)
                 },
                 error: function (err) {
-                    alert('Eroare la conexiune!');
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -980,7 +979,7 @@
                     showNotification(response.message)
                 },
                 error: function (err) {
-                    alert('Eroare la conexiune!');
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -1019,7 +1018,7 @@
                     showNotification(response.message)
                 },
                 error: function (err) {
-                    alert('Eroare la conexiune!');
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -1126,7 +1125,7 @@
                     $('#btnDelArt').attr('data-target', '');
                 },
                 error: function (xhr, e) {
-                    alert("Eroare la conexiune!" + e);
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });
@@ -1205,7 +1204,6 @@
                 success: function (response) {
                     chosenUnselect('#selcod1');
                     chosenUnselect('#selcod2');
-                    $('#articol-mod-select').val(UNSELECT);
                     $('#data-articol').val(EMPTY);
                     $('#nume-articol').val(EMPTY);
                     chosenUnselect('#stare-articol');
@@ -1221,7 +1219,7 @@
 
                 },
                 error: function (err) {
-                    alert('Eroare la conexiune!');
+                    showNotification('Eroare la conexiune!', DANGER);
                 }
             });
         });

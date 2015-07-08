@@ -14,10 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * Created by Ciprian on 3/7/2015.
- * Project Shepherd
- */
 public class ExcelServiceImpl implements ExcelService {
     /** Logger available to subclasses */
     protected final Log LOGGER = LogFactory.getLog(getClass());

@@ -3,10 +3,6 @@ package util.enums;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Ciprian on 2/21/2015.
- * Project Shepherd
- */
 public enum StareArticol {
     STOC(1,"Stoc"),
     RECUPERAT(2,"Recuperat"),

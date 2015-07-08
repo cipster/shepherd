@@ -1,9 +1,5 @@
 package model;
 
-/**
- * Created by Ciprian on 3/9/2015.
- * Project Raindrop
- */
 public class UserAndRolesResult {
 	private String username;
 	private int[] roles;

@@ -15,10 +15,10 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a style="color: darkmagenta" href="/setari" data-toggle="tooltip" data-placement="bottom"
+                <li><a style="color: darkmagenta" href="/setari" data-toggle="tooltip" data-placement="bottom" data-trigger="mouseover"
                        title="<spring:message code="MAIN.ESTI_INREGISTRAT_CA" /> ${pageContext.request.userPrincipal.name}">${pageContext.request.userPrincipal.name}</a>
                 </li>
-                <li id="logout" class="nav nav-tabs"><a href="javascript:formSubmit()" title="Ie?i din aplica?ie"><spring:message code="NAVBAR.LOG_OUT" /></a></li>
+                <li id="logout" class="nav nav-tabs"><a href="javascript:formSubmit();" title="Ie?i din aplica?ie"><spring:message code="NAVBAR.LOG_OUT" /></a></li>
             </ul>
 
             <ul class="nav nav-tabs nav-navbar">
@@ -30,9 +30,11 @@
                 <sec:authorize access="hasAnyRole('ROLE_INVENTAR','ROLE_ADMIN','ROLE_SUPERUSER')">
                     <li id="slashinventar"><a href="/inventar"><spring:message code="NAVBAR.INVENTAR" /></a></li>
                 </sec:authorize>
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_SUPERUSER')">
+                    <li id="slashraport"><a href="/raport"><spring:message code="NAVBAR.RAPORT" /></a></li>
+                </sec:authorize>
                 <li id="slashsetari"><a href="/setari"><spring:message code="NAVBAR.SETARI" /></a></li>
             </ul>
         </div>
-        <!--/.nav-collapse -->
     </div>
 </div>

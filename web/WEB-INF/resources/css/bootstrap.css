@@ -6652,7 +6652,40 @@ div.dataTables_wrapper {
     background-color: #E6E6E6;
 }
 
+.table-hover>tbody {
+    word-break: break-all;
+}
+
 .table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th {
-    background-color: #909090;
+    background-color: #cdcdcd;
     color: white;
+}
+
+.raindrop {
+    display: inline!important;
+    width: 30px;
+    height: auto;
+    margin-bottom: 3px;
+}
+
+.green {
+    color: #4ac847;
+    font-size: 13pt;
+}
+
+span.copyright {
+    text-transform: uppercase;
+    text-transform: none;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 40px;
+}
+
+span.app-title {
+    text-transform: uppercase;
+    text-transform: none;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #000000;
+    line-height: 40px;
+    margin-right: 10px;
+    font-weight: bold;
 }

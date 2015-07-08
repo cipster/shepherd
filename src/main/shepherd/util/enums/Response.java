@@ -3,10 +3,6 @@ package util.enums;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Ciprian on 3/2/2015.
- * Project Shepherd
- */
 public enum Response {
     ERROR(-1,"-1"),
     SUCCESS(1,"1"),
@@ -34,7 +30,7 @@ public enum Response {
     }
 
     private static void initMapping() {
-        codeToStatusMapping = new HashMap<Integer, Response>();
+        codeToStatusMapping = new HashMap<>();
         for (Response s: values()) {
             codeToStatusMapping.put(s.code, s);
         }
