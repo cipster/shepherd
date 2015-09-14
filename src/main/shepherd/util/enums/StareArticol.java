@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum StareArticol {
-    STOC(1,"Stoc"),
-    RECUPERAT(2,"Recuperat"),
+    STOC(1,"In Stoc"),
+    RECUPERAT(2,"Recuperat / In Stoc"),
     IN_FOLOSINTA(3,"In folosinta"),
-    TRANZIT(4,"Tranzit"),
+    TRANZIT(4,"In Tranzit"),
     DETERIORAT(5,"Deteriorat"),
-    SERVICE(6,"Service"),
+    SERVICE(6,"In Service"),
     DISPARUT(7,"Disparut"),
     CASAT(8,"Casat");
 

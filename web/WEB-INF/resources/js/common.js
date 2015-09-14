@@ -7,6 +7,7 @@ var EMPTY = '';
 var UNSELECT = -1;
 var ZERO = 0;
 var chosenUpdated = 'chosen:updated';
+var role;
 
 $(document).ajaxStart(function () {
     $("#spinner").show();

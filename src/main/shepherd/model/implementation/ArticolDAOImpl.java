@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,13 +64,13 @@ public class ArticolDAOImpl extends JdbcDaoSupport implements ArticolDAO {
     @Override
     public List<Articol> getOnlyMine(int idPersoana) {
         final String query = "SELECT * FROM articole a " +
-                "JOIN evidenta_inventar e ON  a.id_cod_3=e.id_cod_3 AND id_persoana = '" + idPersoana + "' AND e.data_recuperarii IS NULL " +
-                "  WHERE a.stare = 3; ";
+                "JOIN evidenta_inventar e ON  a.id_cod_3=e.id_cod_3 AND e.id_persoana = '" + idPersoana + "' AND e.data_recuperarii IS NULL " +
+                " WHERE a.stare = 3; ";
         try {
             return getJdbcTemplate().query(query, rowMapper);
         } catch (DataAccessException ex) {
             logger.debug(ex.getMessage(), ex);
-            throw ex;
+            return Collections.emptyList();
         }
     }
 

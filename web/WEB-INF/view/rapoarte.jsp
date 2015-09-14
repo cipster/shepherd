@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -63,17 +64,17 @@
 
                 <div class="well-sm">
                     <h3>Raport Inventar</h3>
+                    <h6 class="small text-muted">Alege unul sau mai multe criterii pentru raport.<br> Daca lasi un camp gol nu se va filtra dupa criteriu si se vor selecta automat toate optiunile</h6>
                     <hr>
                 </div>
 
                 <form id="generate-raport-form" target="_blank" action="${pageContext.request.contextPath}/generate-raport/raport-inventar" method="post" novalidate>
-                    <h4>Genereaz&#259; raport dup&#259; </h4>
 
                     <div id="raport-inventar">
                         <div class="row">
                             <div class="col-md-7 form-group">
                                 <label for="loc-select">Loc</label>
-                                <select multiple data-placeholder="Alege un loc..." class="chosen-select" id="loc-select" name="idLoc" required>
+                                <select multiple data-placeholder="Toate sau alege un loc..." class="chosen-select" id="loc-select" name="idLoc" required>
                                     <option></option>
                                     <c:forEach items="${locuri}" var="loc">
                                         <option value="${loc.idLoc}">${loc.denumireLoc}</option>
@@ -85,7 +86,7 @@
                         <div class="row">
                             <div class="col-md-7 form-group">
                                 <label for="persoana-select">Persoana</label>
-                                <select multiple data-placeholder="Alege o persoana..." class="chosen-select" id="persoana-select" name="idPersoana" required>
+                                <select multiple data-placeholder="Toate sau alege o persoana..." class="chosen-select" id="persoana-select" name="idPersoana" required>
                                     <option></option>
                                     <c:forEach items="${persoane}" var="persoana">
                                         <option value="${persoana.idPersoana}">${persoana.nume}</option>
@@ -97,7 +98,7 @@
                         <div class="row">
                             <div class="col-md-7 form-group">
                                 <label for="cod1-select">Categorie COD 1</label>
-                                <select multiple data-placeholder="Alege o categorie..." class="chosen-select" id="cod1-select" name="cod1" required>
+                                <select multiple data-placeholder="Toate sau alege o categorie..." class="chosen-select" id="cod1-select" name="cod1" required>
                                     <option></option>
                                     <c:forEach items="${listaCod1}" var="cod1">
                                         <option value="${cod1.cod1}">${cod1.denumire1}</option>
@@ -109,7 +110,7 @@
                         <div class="row">
                             <div class="col-md-7 form-group">
                                 <label for="cod2-select">Categorie COD 2</label>
-                                <select multiple data-placeholder="Alege o categorie..." class="chosen-select" id="cod2-select" name="cod2" required>
+                                <select multiple data-placeholder="Toate sau alege o categorie..." class="chosen-select" id="cod2-select" name="cod2" required>
                                     <option></option>
                                     <option disabled>Alege mai intai o categorie COD 1</option>
                                 </select>
@@ -123,6 +124,7 @@
                                     <option></option>
                                     <option value="id_loc">Loc</option>
                                     <option value="nume">Persoana</option>
+                                    <option value="cod1">Categorie COD 1</option>
                                     <option value="cod2">Categorie COD 2</option>
                                 </select>
                             </div>

@@ -36,11 +36,11 @@
     <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')">
         <%--ToDo: modificat sa apara fisiere--%>
         <div class="btn-group btn-group-lg" style="float:left; margin: 15px;">
-            <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default btn-lg"><span class="fa fa-upload">&nbsp;</span> Ie&#351;ire</button>
+            <button id="iese" data-toggle="modal" data-target="#iese-modal" class="btn btn-default btn-lg"><span class="fa fa-upload">&nbsp;</span> Predare Articole</button>
             <sec:authorize access="hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')">
-                <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default btn-lg"><span class="fa fa-download">&nbsp;</span> Intrare</button>
+                <button id="intra" data-toggle="modal" data-target="#intra-modal" class="btn btn-default btn-lg"><span class="fa fa-download">&nbsp;</span> Recuperare Articole</button>
             </sec:authorize>
-            <button id="primire" data-toggle="modal" data-target="#primire-modal" class="btn btn-default btn-lg"><span class="fa fa-flag-checkered">&nbsp;</span> Primire</button>
+            <button id="primire" data-toggle="modal" data-target="#primire-modal" class="btn btn-default btn-lg"><span class="fa fa-flag-checkered">&nbsp;</span> Primire Articole</button>
         </div>
     </sec:authorize>
     <!-- Main component -->
@@ -572,7 +572,7 @@
         }
         retString += '<tr>' +
                 '<td><a id="history-' + barcode + '" class="btn btn-warning"><span class="fa fa-history"> &nbsp;</span> Arată istoric</a></td>' +
-                '<td><a href="/download/barcode/' + barcode + '.png" class="btn btn-primary  pull-right"><span class="fa fa-floppy-o"> &nbsp;</span> Salvează cod de bare</a></td>' +
+                '<td><a href="/download/barcode/' + barcode + '.png" class="btn btn-primary pull-right"><span class="fa fa-floppy-o"> &nbsp;</span> Salvează cod de bare</a></td>' +
                 '</tr>';
         retString += '</table></div>';
 
@@ -853,28 +853,28 @@
                         "fnCreatedCell": function (nTd, sData, oData, i) {
                             switch (sData) {
                                 case 1:
-                                    $(nTd).html('<div class="btn btn-success stare-icon"><span class="fa fa-cubes fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-success stare-icon" title="In stoc"><span class="fa fa-cubes fa-fw"></span></div>');
                                     break;
                                 case 2:
-                                    $(nTd).html('<div class="btn btn-success stare-icon"><span class="fa fa-recycle fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-success stare-icon" title="Recuperat / In Stoc"><span class="fa fa-recycle fa-fw"></span></div>');
                                     break;
                                 case 3:
-                                    $(nTd).html('<div class="btn btn-primary stare-icon"><span class="fa fa-thumb-tack fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-primary stare-icon" title="In Folosinta"><span class="fa fa-thumb-tack fa-fw"></span></div>');
                                     break;
                                 case 4:
-                                    $(nTd).html('<div class="btn btn-warning stare-icon"><span class="fa fa-truck fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-warning stare-icon" title="In Tranzit"><span class="fa fa-truck fa-fw"></span></div>');
                                     break;
                                 case 5:
-                                    $(nTd).html('<div class="btn btn-danger stare-icon"><span class="fa fa-bug fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-danger stare-icon" title="Deteriorat"><span class="fa fa-bug fa-fw"></span></div>');
                                     break;
                                 case 6:
-                                    $(nTd).html('<div class="btn btn-danger stare-icon"><span class="fa fa-wrench fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-danger stare-icon" title="In Service"><span class="fa fa-wrench fa-fw"></span></div>');
                                     break;
                                 case 7:
-                                    $(nTd).html('<div class="btn btn-danger stare-icon"><span class="fa fa-exclamation-triangle fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-danger stare-icon" title="Disparut"><span class="fa fa-exclamation-triangle fa-fw"></span></div>');
                                     break;
                                 case 8:
-                                    $(nTd).html('<div class="btn btn-danger stare-icon"><span class="fa fa-trash fa-fw"></span></div>');
+                                    $(nTd).html('<div class="btn btn-danger stare-icon" title="Casat"><span class="fa fa-trash fa-fw"></span></div>');
                                     break;
                             }
                         }
@@ -1045,13 +1045,13 @@
                 },
                 success: function (response) {
                     id = id + '-modal';
-                    var titlu = 'Istoric pentru articolul ' + barcode;
+                    var titlu = '<i class="fa fa-barcode"></i>  Istoric pentru articolul ' + barcode;
                     var tabel = generateHistoryTable(response);
 
                     showModal(id, titlu, tabel);
                 },
-                error: function (err) {
-                    showNotification('Eroare! Contactati administratorul', DANGER);
+                error: function () {
+                    showNotification('Nu ai destule drepturi!', WARNING);
                 }
             });
         });
@@ -1068,7 +1068,6 @@
                 $.each(articolePrimire, function (i, articol) {
                     listaPrimire
                             .append('<tr id="' + articol.cod3 + '" class="articolgasit" data-loc="' + articol.idLoc + '">' +
-                                //'<td><input type="checkbox" class="checkbox-inventar" id="bifa-primire" /></td>' +
                             '<td>' + count + '</td>' +
                             '<td>' + articol.denumire3 + '</td>' +
                             '</tr>');

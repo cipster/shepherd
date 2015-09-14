@@ -118,7 +118,7 @@ public class RaportRestController {
             }
             boolean newOrderValue;
             switch (raport.getOrderBy()) {
-                case "id_loc":
+                default:
                     newOrderValue = !found.getDenumireLoc().equals(orderValue);
                     if (newOrderValue) {
                         orderValue = found.getDenumireLoc();
@@ -130,7 +130,13 @@ public class RaportRestController {
                         orderValue = found.getNume();
                     }
                     break;
-                default:
+                case "cod1":
+                    newOrderValue = !found.getCat1().equals(orderValue);
+                    if (newOrderValue) {
+                        orderValue = found.getCat1();
+                    }
+                    break;
+                case "cod2":
                     newOrderValue = !found.getCat2().equals(orderValue);
                     if (newOrderValue) {
                         orderValue = found.getCat2();
@@ -142,7 +148,7 @@ public class RaportRestController {
                 if (i != 0) {
                     htmlString = htmlString.replace("$firstCount", String.valueOf(internalCount));
                 }
-                htmlString += "<tr style='background-color: magenta;'>" +
+                htmlString += "<tr style='background-color: rgba(203, 152, 254, 0.53) !important;'>" +
                         "<td class='magenta' colspan=2>" +
                         orderValue +
                         "</td>" +

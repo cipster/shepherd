@@ -261,7 +261,7 @@ public class ApiRestController {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN','ROLE_INVENTAR')")
     @RequestMapping(value = "/generatebarcode/{code}", method = RequestMethod.GET)
     @ResponseBody
     public String generateBarcode(@PathVariable String code) throws IOException {
