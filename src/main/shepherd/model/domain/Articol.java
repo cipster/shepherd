@@ -5,10 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-/**
- * Created by Ciprian on 12/14/2014.
- * Project Raindrop
- */
 @Entity
 public class Articol {
     private int idCod3;
@@ -20,6 +16,7 @@ public class Articol {
     private String pretAchizitie;
     private int stare;
     private int idLoc;
+    private int idPersoana;
     private String dataAdaugare;
     private String dataRecuperare;
     private String dataPrimire;
@@ -166,23 +163,39 @@ public class Articol {
         this.modificatDe = modificatDe;
     }
 
+    @Basic
+    @Column(name = "id_persoana")
+    public int getIdPersoana() {
+        return idPersoana;
+    }
+
+    public void setIdPersoana(int idPersoana) {
+        this.idPersoana = idPersoana;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Articol)) return false;
 
         Articol articol = (Articol) o;
 
         if (idCod3 != articol.idCod3) return false;
-        if (barcode != null ? !barcode.equals(articol.barcode) : articol.barcode != null) return false;
+        if (stare != articol.stare) return false;
+        if (idLoc != articol.idLoc) return false;
+        if (idPersoana != articol.idPersoana) return false;
         if (denumire1 != null ? !denumire1.equals(articol.denumire1) : articol.denumire1 != null) return false;
         if (denumire2 != null ? !denumire2.equals(articol.denumire2) : articol.denumire2 != null) return false;
         if (denumire3 != null ? !denumire3.equals(articol.denumire3) : articol.denumire3 != null) return false;
+        if (barcode != null ? !barcode.equals(articol.barcode) : articol.barcode != null) return false;
         if (detalii != null ? !detalii.equals(articol.detalii) : articol.detalii != null) return false;
-        if (pretAchizitie != null ? !pretAchizitie.equals(articol.pretAchizitie) : articol.pretAchizitie != null)
-            return false;
+        if (pretAchizitie != null ? !pretAchizitie.equals(articol.pretAchizitie) : articol.pretAchizitie != null) return false;
+        if (dataAdaugare != null ? !dataAdaugare.equals(articol.dataAdaugare) : articol.dataAdaugare != null) return false;
+        if (dataRecuperare != null ? !dataRecuperare.equals(articol.dataRecuperare) : articol.dataRecuperare != null) return false;
+        if (dataPrimire != null ? !dataPrimire.equals(articol.dataPrimire) : articol.dataPrimire != null) return false;
+        if (detaliiRecuperare != null ? !detaliiRecuperare.equals(articol.detaliiRecuperare) : articol.detaliiRecuperare != null) return false;
+        return !(modificatDe != null ? !modificatDe.equals(articol.modificatDe) : articol.modificatDe != null);
 
-        return true;
     }
 
     @Override
@@ -194,6 +207,14 @@ public class Articol {
         result = 31 * result + (barcode != null ? barcode.hashCode() : 0);
         result = 31 * result + (detalii != null ? detalii.hashCode() : 0);
         result = 31 * result + (pretAchizitie != null ? pretAchizitie.hashCode() : 0);
+        result = 31 * result + stare;
+        result = 31 * result + idLoc;
+        result = 31 * result + idPersoana;
+        result = 31 * result + (dataAdaugare != null ? dataAdaugare.hashCode() : 0);
+        result = 31 * result + (dataRecuperare != null ? dataRecuperare.hashCode() : 0);
+        result = 31 * result + (dataPrimire != null ? dataPrimire.hashCode() : 0);
+        result = 31 * result + (detaliiRecuperare != null ? detaliiRecuperare.hashCode() : 0);
+        result = 31 * result + (modificatDe != null ? modificatDe.hashCode() : 0);
         return result;
     }
 }

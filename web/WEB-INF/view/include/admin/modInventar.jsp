@@ -90,7 +90,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="articol-mod-select"><spring:message code="MODUSER.ARTICOL"/></label>
-                    <select data-placeholder="Alege un articol..." class="chosen-select form-control" id="articol-mod-select"> </select>
+                    <select data-placeholder="Alege un articol..." class="chosen-select" id="articol-mod-select"> </select>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="data-articol">Dat&#259; ad&#259;ugare</label>
@@ -104,7 +104,7 @@
                 <div class="col-md-12"></div>
                 <div class="form-group col-md-6">
                     <label for="stare-articol">Stare</label>
-                    <select data-placeholder="Alege o stare..." class="chosen-select form-control" id="stare-articol">
+                    <select data-placeholder="Alege o stare..." class="chosen-select" id="stare-articol">
                         <option value="<%=util.enums.StareArticol.STOC.getCode()%>"><%=util.enums.StareArticol.STOC.getLabel()%>
                         </option>
                         <option value="<%=util.enums.StareArticol.RECUPERAT.getCode()%>"><%=util.enums.StareArticol.RECUPERAT.getLabel()%>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="loc-articol">Loc</label>
-                    <select data-placeholder="Alege un loc..." class="form-control" id="loc-articol"></select>
+                    <select data-placeholder="Alege un loc..." class="chosen-select" id="loc-articol"></select>
                 </div>
                 <input id="artcod1" hidden="hidden">
                 <input id="artcod2" hidden="hidden">
@@ -152,7 +152,7 @@
             <div class="col-md-5 jumbotron">
                 <div class="form-group">
                     <label for="cod1-mod-select">Cod1</label>
-                    <select data-placeholder="Alege o categorie..." class="chosen-select form-control" id="cod1-mod-select"> </select>
+                    <select data-placeholder="Alege o categorie..." class="chosen-select" id="cod1-mod-select"> </select>
                 </div>
 
                 <div class="form-group">
@@ -175,7 +175,7 @@
             <div class="col-md-5 col-md-offset-1 jumbotron">
                 <div class="form-group">
                     <label for="cod2-mod-select">Cod2</label>
-                    <select data-placeholder="Alege o categorie..." class="chosen-select form-control" id="cod2-mod-select"> </select>
+                    <select data-placeholder="Alege o categorie..." class="chosen-select" id="cod2-mod-select"> </select>
                 </div>
                 <div class="form-group">
                     <label for="nume-cod2">Denumire</label>
@@ -251,11 +251,11 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="selcod1">Alege cod 1</label><br/>
-                            <select id="selcod1" name="cod1" data-placeholder="Alege o categorie..." title=""> </select>
+                            <select id="selcod1" name="cod1" class="chosen-select" data-placeholder="Alege o categorie..." title=""> </select>
                         </div>
                         <div class="form-group">
                             <label for="selcod2">Alege cod 2</label><br/>
-                            <select id="selcod2" name="cod2" data-placeholder="Alege o categorie..." title=""> </select>
+                            <select id="selcod2" name="cod2" class="chosen-select" data-placeholder="Alege o categorie..." title=""> </select>
                         </div>
                         <div class="form-group">
                             <label for="denumire3">Denumire articol</label>
@@ -267,7 +267,7 @@
                         </div>
                         <div class="form-group">
                             <label for="loc-add-articol">Loc</label>
-                            <select id="loc-add-articol" name="loc-add-articol" title="" class="form-control" data-placeholder="Alege un loc..."></select>
+                            <select id="loc-add-articol" name="loc-add-articol" title="" class="chosen-select" data-placeholder="Alege un loc..."></select>
                         </div>
                         <div class="form-group">
                             <label for="pretachizitie">Pret achizitie</label>
@@ -975,7 +975,8 @@
                     $('#denumire-cod-1').val(EMPTY);
                     $('#nume-cod1').val(EMPTY);
                     hideModal();
-                    getAllCod1();
+                    getAllCod1('cod1-mod-select');
+                    getAllCod1('selcod1');
                     showNotification(response.message)
                 },
                 error: function (err) {
@@ -1014,7 +1015,8 @@
                     $('#denumire-cod-2').val(EMPTY);
                     $('#nume-cod2').val(EMPTY);
                     hideModal();
-                    getCod2ByCod1($('#cod1-mod-select').val());
+                    getCod2ByCod1($('#cod1-mod-select').val(),'selcod2');
+                    getCod2ByCod1($('#cod1-mod-select').val(),'cod2-mod-select');
                     showNotification(response.message)
                 },
                 error: function (err) {
@@ -1131,7 +1133,8 @@
         });
 
         $('#cod1-mod-select').on('change', function () {
-            getCod2ByCod1($(this).val());
+            getCod2ByCod1($('#cod1-mod-select').val(), 'selcod2');
+            getCod2ByCod1($('#cod1-mod-select').val(), 'cod2-mod-select');
             var id = 'cod1-' + $(this).val();
             var cod1 = document.getElementById(id);
             if (cod1) {

@@ -16,7 +16,7 @@
     </div>
     <div class="form-group col-md-6">
         <label for="anInput"><spring:message code="FORM.AN"/></label>
-        <select id="anInput" data-placeholder="Alege un an..." class="chosen-select form-control">
+        <select id="anInput" data-placeholder="Alege un an..." class="chosen-select">
             <c:forEach var="ani" begin="2008" end="2030">
                 <c:set var="ancurent" value="<%=Calendar.getInstance().get(Calendar.YEAR)%>"> </c:set>
                 <c:choose>
@@ -36,7 +36,7 @@
     </div>
     <div class="form-group col-md-12">
         <label for="idClient"><spring:message code="FORM.CLIENT"/></label>
-        <select id="idClient" data-placeholder="Alege un client..." class="chosen-select form-control">
+        <select id="idClient" data-placeholder="Alege un client..." class="chosen-select">
 
         </select>
     </div>

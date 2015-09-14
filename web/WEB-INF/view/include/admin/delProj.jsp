@@ -14,7 +14,7 @@
     </div>
     <div class="form-group col-md-7">
         <label for="idProiect">Alege un proiect</label>
-        <select id="idProiect" data-placeholder="Alege un proiect..." class="chosen-select form-control"> </select>
+        <select id="idProiect" data-placeholder="Alege un proiect..." class="chosen-select"> </select>
     </div>
     <div class="col-md-12"><br/></div>
     <div class="form-group">

@@ -22,7 +22,7 @@
     </div>
     <div class="form-group col-md-6">
         <label for="anSelInput"><spring:message code="FORM.AN"/></label>
-        <select id="anSelInput" data-placeholder="Alege un an..." class="chosen-select form-control">
+        <select id="anSelInput" data-placeholder="Alege un an..." class="chosen-select">
             <c:forEach var="ani" begin="2008" end="2030">
                 <option value="${ani}" label="${ani}">${ani}</option>
             </c:forEach>
@@ -30,7 +30,7 @@
     </div>
     <div class="form-group col-md-12">
         <label for="idClientInput"><spring:message code="FORM.CLIENT"/></label>
-        <select id="idClientInput" data-placeholder="Alege un client..." class="chosen-select form-control"> </select>
+        <select id="idClientInput" data-placeholder="Alege un client..." class="chosen-select"> </select>
     </div>
     <div class="form-group">
         <div class="col-sm-10">

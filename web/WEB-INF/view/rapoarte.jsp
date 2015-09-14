@@ -41,23 +41,106 @@
 <jsp:include page="include/navbar.jsp"></jsp:include>
 
 <div class="container">
-    <div role="tabpanel" class="jumbotron" style="height: 510px;">
+    <div role="tabpanel" class="jumbotron container">
 
         <!-- Nav tabs -->
         <ul class="list-group nav nav-pills nav-stacked col-md-3" role="tablist">
             <li role="presentation" class="active"><a class="list-group-item" href="#inventar" aria-controls="inventar" role="tab" data-toggle="tab"><span class="fa fa-cubes fa-fw">&nbsp;</span>
                 Inventar</a></li>
-            <li role="presentation"><a class="list-group-item" href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><span class="fa fa-briefcase fa-fw">&nbsp;</span> Profile</a></li>
-            <li role="presentation"><a class="list-group-item" href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><span class="fa fa-briefcase fa-fw">&nbsp;</span> Messages</a>
-            </li>
-            <li role="presentation"><a class="list-group-item" href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><span class="fa fa-briefcase fa-fw">&nbsp;</span> Settings</a>
-            </li>
+            <sec:authorize access="hasAnyRole('ROLE_DEV')">
+                <%--<li role="presentation"><a class="list-group-item" href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><span class="fa fa-briefcase fa-fw">&nbsp;</span> Profile</a>--%>
+                <%--</li>--%>
+                <%--<li role="presentation"><a class="list-group-item" href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><span class="fa fa-briefcase fa-fw">&nbsp;</span> Messages</a>--%>
+                <%--</li>--%>
+                <%--<li role="presentation"><a class="list-group-item" href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><span class="fa fa-briefcase fa-fw">&nbsp;</span> Settings</a>--%>
+                <%--</li>--%>
+            </sec:authorize>
         </ul>
 
         <!-- Tab panes -->
-        <div class="tab-content well col-md-9" style="height: 470px!important;">
+        <div class="tab-content well col-md-9" style="min-height: 470px!important;">
             <div role="tabpanel" class="tab-pane fade in active" id="inventar">
-                <jsp:include page="include/rapoarte/raportInventar.jsp"></jsp:include>
+
+                <div class="well-sm">
+                    <h3>Raport Inventar</h3>
+                    <hr>
+                </div>
+
+                <form id="generate-raport-form" target="_blank" action="${pageContext.request.contextPath}/generate-raport/raport-inventar" method="post" novalidate>
+                    <h4>Genereaz&#259; raport dup&#259; </h4>
+
+                    <div id="raport-inventar">
+                        <div class="row">
+                            <div class="col-md-7 form-group">
+                                <label for="loc-select">Loc</label>
+                                <select multiple data-placeholder="Alege un loc..." class="chosen-select" id="loc-select" name="idLoc" required>
+                                    <option></option>
+                                    <c:forEach items="${locuri}" var="loc">
+                                        <option value="${loc.idLoc}">${loc.denumireLoc}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-7 form-group">
+                                <label for="persoana-select">Persoana</label>
+                                <select multiple data-placeholder="Alege o persoana..." class="chosen-select" id="persoana-select" name="idPersoana" required>
+                                    <option></option>
+                                    <c:forEach items="${persoane}" var="persoana">
+                                        <option value="${persoana.idPersoana}">${persoana.nume}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-7 form-group">
+                                <label for="cod1-select">Categorie COD 1</label>
+                                <select multiple data-placeholder="Alege o categorie..." class="chosen-select" id="cod1-select" name="cod1" required>
+                                    <option></option>
+                                    <c:forEach items="${listaCod1}" var="cod1">
+                                        <option value="${cod1.cod1}">${cod1.denumire1}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-7 form-group">
+                                <label for="cod2-select">Categorie COD 2</label>
+                                <select multiple data-placeholder="Alege o categorie..." class="chosen-select" id="cod2-select" name="cod2" required>
+                                    <option></option>
+                                    <option disabled>Alege mai intai o categorie COD 1</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-7 form-group">
+                                <label for="order-select">Ordoneaza dupa</label>
+                                <select data-placeholder="Alege dupa ce se ordoneaza..." class="chosen-select" id="order-select" name="orderBy" required>
+                                    <option></option>
+                                    <option value="id_loc">Loc</option>
+                                    <option value="nume">Persoana</option>
+                                    <option value="cod2">Categorie COD 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-md-offset-4 form-group">
+                        <select data-placeholder="Alege un format..." class="chosen-select" id="format-raport-select" required>
+                            <option value="1" selected>HTML</option>
+                            <%--<option disabled value="2">PDF</option>--%>
+                            <%--<option disabled value="3">XLS</option>--%>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Genereaz&#259; raport"/>
+                    </div>
+                </form>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="profile">profile.</div>
             <div role="tabpanel" class="tab-pane fade" id="messages">messages.</div>
@@ -66,26 +149,7 @@
 
     </div>
 </div>
-<div class="hidden">
-    <div id="raport-inventar-loc">
-        <div class="row">
-            <label for="loc-raport-select">Loc</label><select data-placeholder="Alege un loc..." class="chosen-select" id="loc-raport-select">
-                <c:forEach items="${locuri}" var="item">
-                    <option value="${item.idLoc}">${item.denumireLoc}</option>
-                </c:forEach>
-            </select>
-        </div>
-    </div>
-    <div id="raport-inventar-persoana">
 
-    </div>
-    <div id="raport-inventar-categorie">
-
-    </div>
-    <div id="raport-inventar-general">
-
-    </div>
-</div>
 <div id="alert" class="notifications"></div>
 <jsp:include page="include/footer.jsp"></jsp:include>
 </body>
@@ -93,74 +157,63 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/chosen.jquery.js"></script>
-<script src="/js/bootstrap-notify.js"></script>
-<script src="/js/common.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap-notify.js"></script>
+<script src="${pageContext.request.contextPath}/js/common.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
 
         $('#slashraport').addClass('active');
-        $("#categorie-raport-select").chosen({
-            width: "100%",
-            disable_search: true,
-            allow_single_deselect: true
-        });
 
-        $("#format-raport-select").chosen({
-            width: "100%",
-            disable_search: true,
-        });
-
-        $("#categorie-raport-select").on('change', function () {
-            var retVal;
-            var tipRaport = parseInt($(this).val());
-            var raport = $('#report');
-            raport.html(EMPTY);
-            $('#report-details').removeClass("hidden");
-            switch (tipRaport) {
-                case -1:
-                    $('#report-details').addClass("hidden");
-                    break;
-                case 1:
-                    retVal = $('#raport-inventar-loc').html();
-                    break;
-                case 2:
-                    retVal = '';
-                    break;
-                case 3:
-                    retVal = '';
-                    break;
+        $(document).on('change', '#cod1-select', function () {
+            var options = [];
+            var container = 'cod2-select';
+            $.each($(this).find('option:selected'), function (index, value) {
+                options.push($(value).val());
+            });
+            if(options.length == 1) {
+                getCod2ByCod1(options[0], container);
+            } else if(options.length > 1){
+                getCod2ByMultipleCo1(options, container);
             }
-            raport.html(retVal);
         });
 
-        $('#generate-raport-form').on('submit', function (e) {
-            e.preventDefault();
+        $(document).on('submit', '#generate-raport-form', function (e) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            var tipRaport = $("#categorie-raport-select").val();
+            var idLoc = $("#loc-select").val();
+            var idPersoana = $("#persoana-select").val();
+            var cod1 = $("#cod1-select").val();
+            var cod2 = $("#cod2-select").val();
+            var orderBy = $("#order-select").val();
+
+            var data = {
+                'idLoc': idLoc, 'idPersoana': idPersoana,
+                'cod1': cod1, 'cod2': cod2, 'orderBy': orderBy
+            };
 
             $.ajax({
                 type: 'post',
-                url: '${pageContext.request.contextPath}/global/raport/' + tipRaport,
+                url: $(this).prop('action'),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
+                data: JSON.stringify(data),
                 dataType: 'json',
                 contentType: 'application/json',
                 mimeType: 'application/json',
-                data: $(this).serialize(),
                 success: function (response) {
-
+                    window.location = "/generate-raport/raport-inventar/" + response;
                 },
                 error: function (err) {
                     showNotification('Eroare la conexiune!', DANGER);
                 }
             });
+            e.preventDefault();
         });
     });
 </script>

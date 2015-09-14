@@ -259,7 +259,7 @@
             });
         });
 
-        $("#modificauserform").on('submit', function (e) {debugger;
+        $("#modificauserform").on('submit', function (e) {
             e.preventDefault();
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");

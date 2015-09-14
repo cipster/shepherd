@@ -26,6 +26,7 @@
         <mapping class="model.domain.Persoana"/>
         <mapping class="model.domain.Articol"/>
         <mapping class="model.domain.Evidenta"/>
+        <mapping class="model.domain.RaportInventar"/>
 
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->

@@ -21,6 +21,7 @@ public class Cod3 {
     private String factura;
     private String detaliiRecuperare;
     private int idLoc;
+    private int idPersoana;
     private String dataAdaugare;
     private String dataRecuperare;
     private String dataPrimire;
@@ -53,6 +54,16 @@ public class Cod3 {
 
     public void setIdLoc(int idLoc) {
         this.idLoc = idLoc;
+    }
+
+    @Basic
+    @Column(name = "id_persoana")
+    public int getIdPersoana() {
+        return idPersoana;
+    }
+
+    public void setIdPersoana(int idPersoana) {
+        this.idPersoana = idPersoana;
     }
 
     @Basic
@@ -198,21 +209,29 @@ public class Cod3 {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Cod3)) return false;
 
         Cod3 cod31 = (Cod3) o;
 
+        if (idCod3 != cod31.idCod3) return false;
         if (cod1 != cod31.cod1) return false;
         if (cod2 != cod31.cod2) return false;
         if (cod3 != cod31.cod3) return false;
-        if (idCod3 != cod31.idCod3) return false;
-        if (barcode != null ? !barcode.equals(cod31.barcode) : cod31.barcode != null) return false;
+        if (stare != cod31.stare) return false;
+        if (idLoc != cod31.idLoc) return false;
+        if (idPersoana != cod31.idPersoana) return false;
         if (denumire3 != null ? !denumire3.equals(cod31.denumire3) : cod31.denumire3 != null) return false;
+        if (barcode != null ? !barcode.equals(cod31.barcode) : cod31.barcode != null) return false;
         if (detalii != null ? !detalii.equals(cod31.detalii) : cod31.detalii != null) return false;
-        if (pretAchizitie != null ? !pretAchizitie.equals(cod31.pretAchizitie) : cod31.pretAchizitie != null)
-            return false;
+        if (pretAchizitie != null ? !pretAchizitie.equals(cod31.pretAchizitie) : cod31.pretAchizitie != null) return false;
+        if (factura != null ? !factura.equals(cod31.factura) : cod31.factura != null) return false;
+        if (detaliiRecuperare != null ? !detaliiRecuperare.equals(cod31.detaliiRecuperare) : cod31.detaliiRecuperare != null) return false;
+        if (dataAdaugare != null ? !dataAdaugare.equals(cod31.dataAdaugare) : cod31.dataAdaugare != null) return false;
+        if (dataRecuperare != null ? !dataRecuperare.equals(cod31.dataRecuperare) : cod31.dataRecuperare != null) return false;
+        if (dataPrimire != null ? !dataPrimire.equals(cod31.dataPrimire) : cod31.dataPrimire != null) return false;
+        if (creatDe != null ? !creatDe.equals(cod31.creatDe) : cod31.creatDe != null) return false;
+        return !(modificatDe != null ? !modificatDe.equals(cod31.modificatDe) : cod31.modificatDe != null);
 
-        return true;
     }
 
     @Override
@@ -225,6 +244,16 @@ public class Cod3 {
         result = 31 * result + (barcode != null ? barcode.hashCode() : 0);
         result = 31 * result + (detalii != null ? detalii.hashCode() : 0);
         result = 31 * result + (pretAchizitie != null ? pretAchizitie.hashCode() : 0);
+        result = 31 * result + stare;
+        result = 31 * result + (factura != null ? factura.hashCode() : 0);
+        result = 31 * result + (detaliiRecuperare != null ? detaliiRecuperare.hashCode() : 0);
+        result = 31 * result + idLoc;
+        result = 31 * result + idPersoana;
+        result = 31 * result + (dataAdaugare != null ? dataAdaugare.hashCode() : 0);
+        result = 31 * result + (dataRecuperare != null ? dataRecuperare.hashCode() : 0);
+        result = 31 * result + (dataPrimire != null ? dataPrimire.hashCode() : 0);
+        result = 31 * result + (creatDe != null ? creatDe.hashCode() : 0);
+        result = 31 * result + (modificatDe != null ? modificatDe.hashCode() : 0);
         return result;
     }
 }

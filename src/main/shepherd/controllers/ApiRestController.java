@@ -204,7 +204,7 @@ public class ApiRestController {
     @RequestMapping(value = "/getLoc/{idLoc}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Loc getLocById(@PathVariable int idLoc) {
-        Loc loc = null;
+        Loc loc;
         try {
             loc = locDAO.findByID(idLoc);
             if(loc == null){
@@ -262,11 +262,10 @@ public class ApiRestController {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER','ROLE_ADMIN')")
-    @RequestMapping(value = "/generatebarcode/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/generatebarcode/{code}", method = RequestMethod.GET)
     @ResponseBody
-    public String generateBarcode(@PathVariable String id) throws IOException {
+    public String generateBarcode(@PathVariable String code) throws IOException {
         File f;
-        String code = id;
         try {
             String dirPath = "/WEB-INF" + File.separatorChar + "resources" + File.separatorChar + "barcode";
             String contextDirName = this.servletContext.getRealPath(dirPath);
@@ -274,7 +273,7 @@ public class ApiRestController {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            String filename = dir + File.separator + id + ".png";
+            String filename = dir + File.separator + code + ".png";
             f = new File(filename);
             if(!f.exists()){
                 f.createNewFile();
@@ -339,6 +338,7 @@ public class ApiRestController {
                         articol.setModificatDe(username);
                         articol.setIdLoc(idLoc);
                         articol.setStare(stare);
+                        articol.setIdPersoana(idPersoana);
                         articol.setDataPrimire(null);
                         cod3DAO.update(articol);
                         evidentaInventarDAO.create(evidentaInventar);
@@ -384,6 +384,7 @@ public class ApiRestController {
                         articol.setStare(stare);
                         articol.setIdLoc(idLoc);
                         articol.setModificatDe(username);
+                        articol.setIdPersoana(0);
                         articol.setDetaliiRecuperare(detalii);
                         evidentaInventar.setDetaliiRecuperare(detalii);
                         evidentaInventar.setIdLocRecuperare(idLoc);

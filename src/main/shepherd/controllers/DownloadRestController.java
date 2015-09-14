@@ -1,7 +1,7 @@
 package controllers;
 
-import model.domain.*;
 import model.dao.*;
+import model.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,6 @@ import util.beans.FileBean;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -35,7 +34,7 @@ public class DownloadRestController {
     @Autowired
     private AlteMaterialeDAO alteMaterialeJDBCDAO;
     @Autowired
-    ServletContext servletContext;
+    private ServletContext servletContext;
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
     @RequestMapping(value = "/propunere/{id}", method = RequestMethod.GET)
@@ -46,9 +45,7 @@ public class DownloadRestController {
         Propunere propunere = propunereJDBCDAO.findByID(id);
         FileBean file = new FileBean();
         File serverFile = new File(propunere.getPropunere());
-        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-        byte[] bytes = new byte[(int) serverFile.length()];
-        stream.read(bytes);
+        byte[] bytes = getBytesFromFile(serverFile);
         file.setId(propunere.getIdPropunere());
         file.setFile(bytes);
         file.setCreatDe(propunere.getCreat_de());
@@ -75,9 +72,7 @@ public class DownloadRestController {
         FileBean file = new FileBean();
         File serverFile = new File(filename);
 
-        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-        byte[] bytes = new byte[(int) serverFile.length()];
-        stream.read(bytes);
+        byte[] bytes = getBytesFromFile(serverFile);
         file.setFile(bytes);
         file.setFilename(code + ".png");
 
@@ -93,14 +88,12 @@ public class DownloadRestController {
     @RequestMapping(value = "/chestionar/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
-    String chestionarDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String chestionarDownload(@PathVariable int id, HttpServletResponse response) throws IOException, ServletException {
 
         ChestionarFinal chestionarFinal = chestionarFinalJDBCDAO.findByID(id);
         FileBean file = new FileBean();
         File serverFile = new File(chestionarFinal.getChestionarFinal());
-        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-        byte[] bytes = new byte[(int) serverFile.length()];
-        stream.read(bytes);
+        byte[] bytes = getBytesFromFile(serverFile);
         file.setId(chestionarFinal.getIdChestionarFinal());
         file.setFile(bytes);
         file.setCreatDe(chestionarFinal.getCreat_de());
@@ -119,14 +112,16 @@ public class DownloadRestController {
     @RequestMapping(value = "/raport/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
-    String raportDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String raportDownload(@PathVariable int id, HttpServletResponse response) throws IOException, ServletException {
 
         RaportFinal raportFinal = raportFinalJDBCDAO.findByID(id);
         FileBean file = new FileBean();
         File serverFile = new File(raportFinal.getRaportFinal());
-        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-        byte[] bytes = new byte[(int) serverFile.length()];
-        stream.read(bytes);
+        byte[] bytes;
+        bytes = new byte[(int) serverFile.length()];
+        try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile))) {
+            stream.read(bytes);
+        }
         file.setId(raportFinal.getIdRaportFinal());
         file.setFile(bytes);
         file.setCreatDe(raportFinal.getCreat_de());
@@ -140,18 +135,17 @@ public class DownloadRestController {
 
         return null;
     }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
     @RequestMapping(value = "/bd/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
-    String bdDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String bdDownload(@PathVariable int id, HttpServletResponse response) throws IOException, ServletException {
 
         Bd bd = bdJDBCDAO.findByID(id);
         File serverFile = new File(bd.getBd());
         FileBean file = new FileBean();
-        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-        byte[] bytes = new byte[(int) serverFile.length()];
-        stream.read(bytes);
+        byte[] bytes = getBytesFromFile(serverFile);
         file.setId(bd.getIdBd());
         file.setFile(bytes);
         file.setCreatDe(bd.getCreat_de());
@@ -165,18 +159,17 @@ public class DownloadRestController {
 
         return null;
     }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOWNLOAD')")
     @RequestMapping(value = "/altemateriale/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
-    String alteMaterialeDownload(@PathVariable int id,HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String alteMaterialeDownload(@PathVariable int id, HttpServletResponse response) throws IOException, ServletException {
 
         AlteMateriale alteMateriale = alteMaterialeJDBCDAO.findByID(id);
         FileBean file = new FileBean();
         File serverFile = new File(alteMateriale.getAltemateriale());
-        BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile));
-        byte[] bytes = new byte[(int) serverFile.length()];
-        stream.read(bytes);
+        byte[] bytes = getBytesFromFile(serverFile);
         file.setId(alteMateriale.getIdAlteMateriale());
         file.setFile(bytes);
         file.setCreatDe(alteMateriale.getCreat_de());
@@ -191,6 +184,12 @@ public class DownloadRestController {
         return null;
     }
 
+    private byte[] getBytesFromFile(File serverFile) throws IOException {
+        byte[] bytes = new byte[(int) serverFile.length()];
+        try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(serverFile))) {
+            stream.read(bytes);
+        }
+        return bytes;
+    }
+
 }
-
-

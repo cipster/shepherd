@@ -5769,6 +5769,11 @@ button.close {
         margin: 30px auto
     }
 
+    .modal-lg {
+        max-width: 900px;
+        width: 100%;
+    }
+
     .modal-content {
         -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
         box-shadow: 0 5px 15px rgba(0, 0, 0, .5)
@@ -5781,7 +5786,8 @@ button.close {
 
 @media (min-width: 992px) {
     .modal-lg {
-        width: 900px
+        max-width: 1300px;
+        width: 100%;
     }
 }
 

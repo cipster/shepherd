@@ -192,6 +192,7 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/docs.min.js"></script>
 <script src="/js/bootstrap.file-input.js"></script>
+<script src="/js/chosen.jquery.min.js"></script>
 <script src="/js/datatables.js"></script>
 <script src="/js/datatables.bootstrap.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
@@ -1101,7 +1102,7 @@
 
         document.getElementById("tabelProiecte").oncontextmenu = function () {
             return false;
-        }
+        };
 
         $(document).click(function (e) {
             if (e.button == 0 || e.button == 1) {

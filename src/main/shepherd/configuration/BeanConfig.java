@@ -95,6 +95,11 @@ public class BeanConfig {
 	}
 
 	@Bean
+	public RaportInventarDAO raportInventarDAO() {
+		return new RaportInventarDAOImpl(dataSource);
+	}
+
+	@Bean
 	public ArticolDAO articolDAO() {
 		return new ArticolDAOImpl(dataSource);
 	}

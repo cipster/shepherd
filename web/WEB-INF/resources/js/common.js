@@ -220,8 +220,10 @@ function generateHistoryTable(articol){
             dataIntrare = articol[i].dataRecuperarii;
             if (dataIntrare) {
                 dataIntrare = toJSDate(dataIntrare, 1);
+            } else if(i == (articol.length - 1)){
+                dataIntrare = '<span style="color:red;">Articolul este încă alocat</span>';
             } else {
-                dataIntrare = '<span style="color:red;">Articolul este încă alocat</span>'
+                dataIntrare = '';
             }
             detalii = articol[i].detalii;
             detaliiRecuperare = articol[i].detaliiRecuperare;
@@ -242,38 +244,77 @@ function generateHistoryTable(articol){
 
 }
 
-function getCod2ByCod1(idCod1) {
-    var cod2 = $('#selcod2');
-    var cod2Cat = $('#cod2-mod-select');
-    cod2.html('');
-    $.ajax({
-        type: 'get',
-        url: '/api/cod2list/' + idCod1,
-        contentType: "application/json",
-        success: function (response) {
-            if (typeof response !== 'undefined') {
-                for (var i = 0; i < response.length; i++) {
-                    idCod2 = response[i].cod2;
-                    denumire2 = response[i].denumire2;
-                    cod2.append($('<option id="cod2-art' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
-                    cod2Cat.append($('<option id="cod2-' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
+function getCod2ByCod1(idCod1, idCod2) {
+    var cod2 = $('#' + idCod2);
+    cod2.html('<option></option>');
+    if (idCod1 && idCod1 != 0) {
+        $.ajax({
+            type: 'get',
+            url: '/api/cod2list/' + idCod1,
+            contentType: "application/json",
+            success: function (response) {
+                var idCod2;
+                var denumire2;
+                if (typeof response !== 'undefined') {
+                    for (var i = 0; i < response.length; i++) {
+                        idCod2 = response[i].cod2;
+                        denumire2 = response[i].denumire2;
+                        cod2.append($('<option id="cod2-art' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
+                    }
+                    cod2.trigger(chosenUpdated);
                 }
+            },
+            error: function (e) {
+                alert("Connection error!");
             }
-        },
-        error: function (e) {
-            alert("Connection error!");
-        },
-        complete: function (e) {
-            cod2.val(UNSELECT);
-            cod2.trigger(chosenUpdated);
-            cod2Cat.val(UNSELECT);
-            cod2Cat.trigger(chosenUpdated);
-        }
-    });
+        });
+    } else {
+        cod2.html('<option></option>').append(' <option disabled>Alege mai intai o categorie COD 1</option>')
+    }
+    cod2.trigger(chosenUpdated);
+}
+
+function getCod2ByMultipleCo1(cod1Arr, idCod2) {
+    var cod2 = $('#' + idCod2);
+    cod2.html('<option></option>');
+    if (cod1Arr && cod1Arr.length != 0) {
+        $.each(cod1Arr, function(index, val){
+            $.ajax({
+                type: 'get',
+                url: '/api/cod2list/' + val,
+                contentType: "application/json",
+                success: function (response) {
+                    var idCod2;
+                    var denumire2;
+                    if (typeof response !== 'undefined') {
+                        for (var i = 0; i < response.length; i++) {
+                            idCod2 = response[i].cod2;
+                            denumire2 = response[i].denumire2;
+                            cod2.append($('<option id="cod2-art' + idCod2 + '"  label="' + denumire2 + '">').val(idCod2).text(denumire2));
+                        }
+                        cod2.trigger(chosenUpdated);
+                    }
+                },
+                error: function (e) {
+                    alert("Connection error!");
+                }
+            });
+        });
+    } else {
+        cod2.html('<option></option>').append(' <option disabled>Alege mai intai o categorie COD 1</option>')
+    }
+    cod2.trigger(chosenUpdated);
 }
 
 $(document).ready(function () {
     $('#an-copyright').text(new Date().getFullYear());
+    $('.chosen-select').chosen({
+        width: "100%",
+        search_contains: true,
+        no_results_text: " nu exista!",
+        allow_single_deselect: true,
+        disable_search_threshold: 3
+    });
 
     $('a').on('click', function (e) {
         var linkLocation = $($(this).attr('href')).offset();
@@ -284,7 +325,7 @@ $(document).ready(function () {
     var selcod1 = $('#selcod1');
 
     selcod1.on('change', function () {
-        getCod2ByCod1($(this).val());
+        getCod2ByCod1($(this).val(), 'selcod1');
     });
 
 });

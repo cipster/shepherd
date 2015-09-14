@@ -57,7 +57,7 @@ public class EvidentaDAOImpl extends JdbcDaoSupport implements EvidentaDAO {
 
     @Override
     public List<Evidenta> findEvidentaByBarcode(String barcode) {
-        final String query = "SELECT * FROM proiecte.evidenta WHERE barcode='" + barcode + "' ORDER BY data_preluarii DESC ";
+        final String query = "SELECT * FROM proiecte.evidenta WHERE barcode='" + barcode + "' ORDER BY data_preluarii ASC ";
         try {
             return getJdbcTemplate().query(query, rowMapper);
         } catch (DataAccessException ex){

@@ -10,8 +10,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content=EMPTY>
+    <meta name="author" content=EMPTY>
     <link rel="icon" href="/img/favico.png">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -77,7 +77,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="selcod1">Alege cod 1</label><br/>
-                            <select id="selcod1" name="cod1" title="">
+                            <select id="selcod1" name="cod1" title=EMPTY>
                                 <c:forEach items="${cod1}" var="codunu">
                                     <option value="${codunu.cod1}">${codunu.denumire1}</option>
                                 </c:forEach>
@@ -85,25 +85,25 @@
                         </div>
                         <div class="form-group">
                             <label for="selcod2">Alege cod 2</label><br/>
-                            <select id="selcod2" name="cod2" title="">
+                            <select id="selcod2" name="cod2" title=EMPTY>
 
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="denumire3">Denumire articol</label>
-                            <input id="denumire3" name="denumire3" title="" class="form-control">
+                            <input id="denumire3" name="denumire3" title=EMPTY class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="detalii">Detalii articol</label>
-                            <textarea id="detalii" name="detalii" title="" style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
+                            <textarea id="detalii" name="detalii" title=EMPTY style="max-width: 558px;" class="form-control" rows="4" cols="76" placeholder="mai mult"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="loc-add-articol">Loc</label>
-                            <select id="loc-add-articol" name="loc-add-articol" title="" class="form-control" data-placeholder="Alege un loc..."></select>
+                            <select id="loc-add-articol" name="loc-add-articol" title=EMPTY class="form-control" data-placeholder="Alege un loc..."></select>
                         </div>
                         <div class="form-group">
                             <label for="pretachizitie">Pret achizitie</label>
-                            <input id="pretachizitie" name="pretAchizitie" title="" class="form-control">
+                            <input id="pretachizitie" name="pretAchizitie" title=EMPTY class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -342,7 +342,7 @@
 
 <div id="alert" class="notifications"></div>
 
-<input hidden="hidden" id="appLangCode" value="">
+<input hidden="hidden" id="appLangCode" value=EMPTY>
 
 <jsp:include page="include/footer.jsp"></jsp:include>
 </body>
@@ -358,7 +358,7 @@
 <script src="/js/bootstrap.file-input.js"></script>
 <script src="/js/datatables.js"></script>
 <script src="/js/datatables.bootstrap.js"></script>
-<script src="/js/chosen.jquery.js"></script>
+<script src="/js/chosen.jquery.min.js"></script>
 <script src="/js/bootstrap-notify.js"></script>
 <script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
 <script src="/js/common.js"></script>
@@ -391,7 +391,7 @@
         }
     }
 
-    function format(d) {
+    function format(articol) {
         var evidentaInventar;
         var dataPreluare;
         var loc;
@@ -399,7 +399,11 @@
         var dataTitle;
         var usePersoana = false;
         var stareIcon;
+        var idPersoana = articol.idPersoana;
         var persoana;
+        if(idPersoana){
+            persoana = getPersoanaById(idPersoana).nume;
+        }
         var useDetalii = false;
         var detalii;
         var detaliiTitle;
@@ -408,35 +412,36 @@
         var useUserRecuperat = false;
         var userRecuperat;
         var primitPrinTranzit;
-        var barcode = d.barcode;
+        var barcode = articol.barcode;
+
         generateBarcode(barcode);
         // `d` is the original data object for the row
-        switch (d.stare) {
+        switch (articol.stare) {
             case 1:
-                loc = getLocById(d.idLoc).denumireLoc;
+                loc = getLocById(articol.idLoc).denumireLoc;
                 stare = '<%=StareArticol.STOC.getLabel()%>';
                 stareIcon = 'fa-cubes';
-                dataPreluare = toJSDate(d.dataAdaugare, 1);
+                dataPreluare = toJSDate(articol.dataAdaugare, 1);
                 dataTitle = 'Ad&#259;ugat la:';
                 break;
             case 2:
-                loc = getLocById(d.idLoc).denumireLoc;
+                loc = getLocById(articol.idLoc).denumireLoc;
                 stare = '<%=StareArticol.RECUPERAT.getLabel()%>';
                 stareIcon = 'fa-recycle';
-                dataPreluare = toJSDate(d.dataRecuperare, 1);
+                dataPreluare = toJSDate(articol.dataRecuperare, 1);
                 dataTitle = 'Recuperat la:';
-                detalii = d.detaliiRecuperare;
+                detalii = articol.detaliiRecuperare;
                 if (detalii.length > 0) {
                     detaliiTitle = 'Detalii recuperare';
                     useDetalii = true;
                 }
-                userRecuperat = d.modificatDe;
+                userRecuperat = articol.modificatDe;
                 if (userRecuperat && userRecuperat.length > 0) {
                     useUserRecuperat = true;
                 }
                 break;
             case 3:
-                evidentaInventar = getTranzactie(d.idCod3);
+                evidentaInventar = getTranzactie(articol.idCod3);
                 loc = getLocById(evidentaInventar.idLoc).denumireLoc;
                 stare = '<%=StareArticol.IN_FOLOSINTA.getLabel()%>';
                 dataPreluare = toJSDate(evidentaInventar.dataPreluarii, 1);
@@ -451,7 +456,7 @@
                     detaliiTitle = 'Detalii preluare';
                     useDetalii = true;
                 }
-                dataPrimire = d.dataPrimire;
+                dataPrimire = articol.dataPrimire;
                 if (dataPrimire) {
                     dataPrimire = toJSDate(dataPrimire, 1);
                     if (dataPrimire < dataPreluare) {
@@ -469,7 +474,7 @@
 
                 break;
             case 4:
-                evidentaInventar = getTranzactie(d.idCod3);
+                evidentaInventar = getTranzactie(articol.idCod3);
                 loc = getLocById(evidentaInventar.idLoc).denumireLoc;
                 stare = '<%=StareArticol.TRANZIT.getLabel()%>';
                 stareIcon = 'fa-truck';
@@ -484,7 +489,7 @@
                     detaliiTitle = 'Detalii tranzit';
                     useDetalii = true;
                 }
-                dataPrimire = d.dataPrimire;
+                dataPrimire = articol.dataPrimire;
                 if (dataPrimire) {
                     dataPrimire = toJSDate(dataPrimire, 1);
                     if (dataPrimire < dataPreluare) {
@@ -500,26 +505,26 @@
                 }
                 break;
             case 5:
-                loc = getLocById(d.idLoc).denumireLoc;
+                loc = getLocById(articol.idLoc).denumireLoc;
                 dataTitle = 'Atribuit la:';
                 stare = '<%=StareArticol.DETERIORAT.getLabel()%>';
                 stareIcon = 'fa-bug';
                 break;
             case 6:
                 dataTitle = 'Atribuit la:';
-                loc = getLocById(d.idLoc).denumireLoc;
+                loc = getLocById(articol.idLoc).denumireLoc;
                 stare = '<%=StareArticol.SERVICE.getLabel()%>';
                 stareIcon = 'fa-wrench';
                 break;
             case 7:
                 dataTitle = 'Atribuit la:';
-                loc = getLocById(d.idLoc).denumireLoc;
+                loc = getLocById(articol.idLoc).denumireLoc;
                 stare = '<%=StareArticol.DISPARUT.getLabel()%>';
                 stareIcon = 'fa-exclamation-triangle';
                 break;
             case 8:
                 dataTitle = 'Atribuit la:';
-                loc = getLocById(d.idLoc).denumireLoc;
+                loc = getLocById(articol.idLoc).denumireLoc;
                 stare = '<%=StareArticol.CASAT.getLabel()%>';
                 stareIcon = 'fa-trash';
                 break;
@@ -720,7 +725,7 @@
 
 
     function getPersoane() {
-        $("#iesepers").html("");
+        $("#iesepers").html(EMPTY);
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/api/persoane',
@@ -742,7 +747,7 @@
     }
 
     function getLoc() {
-        $("#ieseloc").html("");
+        $("#ieseloc").html(EMPTY);
         $.ajax({
             type: 'get',
             url: '${pageContext.request.contextPath}/api/locuri',
@@ -780,7 +785,7 @@
             table = $('#inventory-table').DataTable({
                 "ajax": {
                     "url": '${pageContext.request.contextPath}/global/inventar/articole/getinventory',
-                    "dataSrc": ""
+                    "dataSrc": EMPTY
                 },
                 "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Toate"]],
                 "language": {

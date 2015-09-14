@@ -106,11 +106,9 @@
 <script src="/js/common.js"></script>
 <script type="text/javascript">
 
-    function getAllCod1() {
-        var cod1 = $("#cod1-mod-select");
-        var selcod1 = $("#selcod1");
-        cod1.html(EMPTY);
-        selcod1.html(EMPTY);
+    function getAllCod1(container) {
+        var cod1 = $("#" + container);
+        cod1.html('<option></option>');
 
         var idCod1;
         var denumire1;
@@ -124,18 +122,12 @@
                         idCod1 = response[i].cod1;
                         denumire1 = response[i].denumire1;
                         cod1.append($('<option id="cod1-' + idCod1 + '" label="' + denumire1 + '">').val(idCod1).text(denumire1));
-                        selcod1.append($('<option id="cod1-' + idCod1 + '" label="' + denumire1 + '">').val(idCod1).text(denumire1));
                     }
+                    cod1.trigger(chosenUpdated);
                 }
             },
             error: function (e) {
                 showNotification('Eroare la conexiune!', DANGER);
-            },
-            complete: function (e) {
-                cod1.val(UNSELECT);
-                cod1.trigger("chosen:updated");
-                selcod1.val(UNSELECT);
-                selcod1.trigger("chosen:updated");
             }
         });
 
@@ -171,7 +163,7 @@
                         dataAdaugare = response[i].dataAdaugare;
                         barcode = response[i].barcode;
                         modArticoleSelect.append($('<option id="articol' + idCod3 + '" label="' + denumire3 + '" data-stare="' + stare + '"' +
-                        ' data-loc="' + idLoc + '" data-cod1="' + cod1 + '" data-cod2="' + cod2 + '" data-pret="' + pret + '" data-data="' + dataAdaugare + '">').val(idCod3).text(barcode + " " + denumire3));
+                                ' data-loc="' + idLoc + '" data-cod1="' + cod1 + '" data-cod2="' + cod2 + '" data-pret="' + pret + '" data-data="' + dataAdaugare + '">').val(idCod3).text(barcode + " " + denumire3));
                     }
                 }
             },
@@ -253,7 +245,7 @@
                         cnp = response[i].cnp;
                         functie = response[i].functie;
                         localitate = response[i].localitate;
-                        modPersoanaSelect.append($('<option id="persoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' +    ' data-cnp="' + cnp + '" data-localitate="' + localitate + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
+                        modPersoanaSelect.append($('<option id="persoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' + ' data-cnp="' + cnp + '" data-localitate="' + localitate + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
                         newPersoanaSelect.append($('<option id="artpersoana' + idPersoana + '" label="' + nume + '" data-username="' + username + '"' + ' data-cnp="' + cnp + '" data-localitate="' + localitate + '" data-functie="' + functie + '">').val(idPersoana).text(nume));
                         persoanaSelect.append($('<option label="' + nume + '">').val(idPersoana).text(nume));
                     }
@@ -288,14 +280,12 @@
                         $("#idClient").append($("<option>").val(response[i].idClient).text(response[i].client));
                     }
                 }
+                $("#clientselect").trigger(chosenUpdated);
+                $("#idClientInput").trigger(chosenUpdated);
+                $("#idClient").trigger(chosenUpdated);
             },
             error: function (e) {
                 showNotification('Eroare la conexiune!', DANGER);
-            },
-            complete: function (e) {
-                chosenUnselect("#idClientInput");
-                chosenUnselect("#idClient");
-                chosenUnselect("#clientselect");
             }
         });
 
@@ -329,7 +319,7 @@
                         });
                         idUserSelect
                                 .append($('<option id="user-' + response[i].username + '" data-username="' + response[i].username + '" data-password="' + response[i].password + '" data-status="' +
-                                response[i].enabled + '" data-persoana="' + idPersoana + '">')
+                                        response[i].enabled + '" data-persoana="' + idPersoana + '">')
                                         .val('user-' + response[i].username).text(response[i].username));
                     }
                 }
@@ -372,7 +362,7 @@
             error: function (e) {
                 showNotification('Eroare la conexiune!', DANGER);
             },
-            complete: function(e) {
+            complete: function (e) {
                 idProiectSelect.val(UNSELECT);
                 idProiectSelect.trigger("chosen:updated");
                 idProiect.val(UNSELECT);
@@ -386,176 +376,6 @@
     $(document).ready(function () {
 
         $('#slashadmin').addClass('active');
-        $("#adminInput").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Rolul nu exista!"
-        });
-        $("#idProiect").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Proiectul nu exista!",
-            allow_single_deselect: true
-        });
-        $("#clientselect").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Clientul nu exista!",
-            allow_single_deselect: true
-        });
-        $("#idClient").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Clientul nu exista!",
-            allow_single_deselect: true
-        });
-        $("#idClientInput").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Clientul nu exista!",
-            allow_single_deselect: true
-        });
-        $("#idProiectSelect").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Proiectul nu exista!",
-            allow_single_deselect: true
-        });
-        $("#idUserSelect").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Utilizatorul nu exista!",
-            allow_single_deselect: true,
-            disable_search_threshold: 5
-        });
-        $("#statusInput").chosen({
-            width: "100%",
-            disable_search: true,
-            allow_single_deselect: true
-        });
-
-        $("#anInput").chosen({
-            width: "100%",
-            disable_search: true,
-            allow_single_deselect: true
-        });
-
-        $("#anSelInput").chosen({
-            width: "100%",
-            disable_search: true,
-            allow_single_deselect: true
-        });
-
-        $("#newRoluriInput").chosen({
-            width: "100%",
-            disable_search: true,
-            allow_single_deselect: true
-        });
-
-        $("#stare-articol").chosen({
-            width: "100%",
-            disable_search: true,
-            allow_single_deselect: true
-        });
-        chosenUnselect("#stare-articol");
-
-        $("#persoana-select").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Persoana nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#persoana-select");
-
-        $("#persoana-mod-select").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Persoana nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#persoana-mod-select");
-
-        $("#loc-mod-select").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Locul nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#loc-mod-select");
-
-        $("#articol-mod-select").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Articolul nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#articol-mod-select");
-
-        $("#persoana-select-new").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Persoana nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#persoana-select-new");
-
-        $("#loc-articol").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "Locul nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#loc-articol");
-
-        $("#cod1-mod-select").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: " nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#cod1-mod-select");
-
-        $("#selcod1").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: " nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#selcod1");
-
-        $("#selcod2").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: " nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#selcod2");
-
-        $("#cod2-mod-select").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: " nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#cod2-mod-select");
-
-        $("#loc-add-articol").chosen({
-            width: "100%",
-            search_contains: true,
-            no_results_text: "locul nu exista!",
-            allow_single_deselect: true
-        });
-        chosenUnselect("#loc-add-articol");
-
-        chosenUnselect("#anSelInput");
-        $("#idProiect").val([]);
-        $("#idProiect").trigger("chosen:updated");
-        $("#idUserSelect").val([]);
-        $("#idUserSelect").trigger("chosen:updated");
-        $("#idProiectSelect").val([]);
-        $("#idProiectSelect").trigger("chosen:updated");
-        $("#clientselect").val([]);
-        $("#clientselect").trigger("chosen:updated");
 
         $("#addProj").css('display', "none");
         $("#modProj").css('display', "none");
@@ -683,7 +503,8 @@
             getPersoane();
             getLocuri();
             getArticole();
-            getAllCod1();
+            getAllCod1('cod1-mod-select');
+            getAllCod1('selcod1');
 
         });
     });
