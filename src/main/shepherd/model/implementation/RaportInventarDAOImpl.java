@@ -50,13 +50,17 @@ public class RaportInventarDAOImpl extends JdbcDaoSupport implements RaportInven
                 entity.setDenumireLoc("");
 
             }
-            if (rs.getString("data_primire") != null) {
+            if (rs.getString("data_recuperare") != null) {
+                entity.setDataPrimire(rs.getString("data_recuperare"));
+            } else if (rs.getString("data_primire") != null) {
                 entity.setDataPrimire(rs.getString("data_primire"));
             } else {
                 entity.setDataPrimire("");
             }
             if (rs.getString("detalii_recuperare") != null) {
                 entity.setDetaliiRecuperare(rs.getString("detalii_recuperare"));
+            } else if (rs.getString("detalii_preluare") != null) {
+                entity.setDetaliiRecuperare(rs.getString("detalii_preluare"));
             } else {
                 entity.setDetaliiRecuperare("");
             }
