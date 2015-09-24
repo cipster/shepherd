@@ -1,7 +1,11 @@
 package configuration;
 
+import configuration.security.WebSecurityConfig;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -20,7 +24,6 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import configuration.security.WebSecurityConfig;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Arrays;
@@ -29,8 +32,8 @@ import java.util.Properties;
 
 @EnableWebMvc
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled=true)
-@ComponentScan(basePackages = {"controllers","services"})
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@ComponentScan(basePackages = {"controllers", "services"})
 @Import({WebSecurityConfig.class, BeanConfig.class, DatasourceConfig.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
 
@@ -71,7 +74,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
 
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:messages");
+        messageSource.setBasenames("classpath:messages", "classpath:application.properties");
         // if true, the key of the message will be displayed if the key is not
         // found, instead of throwing a NoSuchMessageException
         messageSource.setUseCodeAsDefaultMessage(true);

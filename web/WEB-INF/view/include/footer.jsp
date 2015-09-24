@@ -11,5 +11,5 @@
 <div class="panel-footer unselectable">
     <span class="copyright">Copyright &copy;&nbsp;&middot;&nbsp;<span class="green">Raindrop Software&nbsp;<span id="an-copyright"></span></span>&nbsp;<img src="img/raindrop-logo.png"
                                                                                                                                                              class="raindrop"></span><span
-        class="app-title pull-right">Shepherd 0.9.1</span>
+        class="app-title pull-right">Shepherd <spring:message code="version"/></span>
 </div>
