@@ -6,18 +6,18 @@ import javax.persistence.*;
 @Table(name = "user_roles", schema = "", catalog = "proiecte")
 public class UserRole {
 
-    private int userRoleId;
+    private long userRoleId;
     private String role;
     private String username;
-    private int roleType;
+    private Integer roleType;
 
     @Id
     @Column(name = "user_role_id", nullable = false, insertable = true, updatable = true)
-    public int getUserRoleId() {
+    public long getUserRoleId() {
         return userRoleId;
     }
 
-    public void setUserRoleId(int userRoleId) {
+    public void setUserRoleId(long userRoleId) {
         this.userRoleId = userRoleId;
     }
 
@@ -41,31 +41,12 @@ public class UserRole {
 
     @Basic
     @Column(name = "role_type", nullable = false, insertable = true, updatable = true, length = 45)
-    public int getRoleType() {
+    public Integer getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(int roleType) {
+    public void setRoleType(Integer roleType) {
         this.roleType = roleType;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
-
-        UserRole userRole = (UserRole) o;
-
-        if(userRoleId != userRole.userRoleId) return false;
-        if(role != null ? !role.equals(userRole.role) : userRole.role != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = userRoleId;
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        return result;
-    }
 }

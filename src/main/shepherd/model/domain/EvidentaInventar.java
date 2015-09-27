@@ -2,18 +2,14 @@ package model.domain;
 
 import javax.persistence.*;
 
-/**
- * Created by Ciprian on 12/14/2014.
- * Project Raindrop
- */
 @Entity
 @Table(name = "evidenta_inventar", schema = "", catalog = "proiecte")
 public class EvidentaInventar {
     private long idEvidentaInventar;
-    private int idCod3;
-    private int idPersoana;
-    private int idLoc;
-    private int idLocRecuperare;
+    private Long idCod3;
+    private Long idPersoana;
+    private Long idLoc;
+    private Long idLocRecuperare;
     private String dataPreluarii;
     private String dataRecuperarii;
     private String detalii;
@@ -31,31 +27,31 @@ public class EvidentaInventar {
 
     @Basic
     @Column(name = "id_cod_3")
-    public int getIdCod3() {
+    public Long getIdCod3() {
         return idCod3;
     }
 
-    public void setIdCod3(int idCod3) {
+    public void setIdCod3(Long idCod3) {
         this.idCod3 = idCod3;
     }
 
     @Basic
     @Column(name = "id_persoana")
-    public int getIdPersoana() {
+    public Long getIdPersoana() {
         return idPersoana;
     }
 
-    public void setIdPersoana(int idPersoana) {
+    public void setIdPersoana(Long idPersoana) {
         this.idPersoana = idPersoana;
     }
 
     @Basic
     @Column(name = "id_loc")
-    public int getIdLoc() {
+    public Long getIdLoc() {
         return idLoc;
     }
 
-    public void setIdLoc(int idLoc) {
+    public void setIdLoc(Long idLoc) {
         this.idLoc = idLoc;
     }
 
@@ -89,35 +85,6 @@ public class EvidentaInventar {
         this.detalii = detalii;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EvidentaInventar that = (EvidentaInventar) o;
-
-        if (idCod3 != that.idCod3) return false;
-        if (idEvidentaInventar != that.idEvidentaInventar) return false;
-        if (idLoc != that.idLoc) return false;
-        if (idPersoana != that.idPersoana) return false;
-        if (dataPreluarii != null ? !dataPreluarii.equals(that.dataPreluarii) : that.dataPreluarii != null)
-            return false;
-        if (detalii != null ? !detalii.equals(that.detalii) : that.detalii != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (idEvidentaInventar ^ (idEvidentaInventar >>> 32));
-        result = 31 * result + idCod3;
-        result = 31 * result + idPersoana;
-        result = 31 * result + idLoc;
-        result = 31 * result + (dataPreluarii != null ? dataPreluarii.hashCode() : 0);
-        result = 31 * result + (detalii != null ? detalii.hashCode() : 0);
-        return result;
-    }
-
     @Basic
     @Column(name = "detalii_recuperare")
     public String getDetaliiRecuperare() {
@@ -130,11 +97,11 @@ public class EvidentaInventar {
 
     @Basic
     @Column(name = "id_loc_recuperare")
-    public int getIdLocRecuperare() {
+    public Long getIdLocRecuperare() {
         return idLocRecuperare;
     }
 
-    public void setIdLocRecuperare(int idLocRecuperare) {
+    public void setIdLocRecuperare(Long idLocRecuperare) {
         this.idLocRecuperare = idLocRecuperare;
     }
 }

@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity(name = "altemateriale")
 public class AlteMateriale {
 
-    private int idAlteMateriale;
+    private long idAlteMateriale;
     private String altemateriale;
     private String nume;
     private String creat_de;
@@ -28,11 +28,11 @@ public class AlteMateriale {
 
     @Id
     @Column(name = "id_alte_materiale", nullable = false, insertable = true, updatable = true)
-    public int getIdAlteMateriale() {
+    public long getIdAlteMateriale() {
         return idAlteMateriale;
     }
 
-    public void setIdAlteMateriale(int idAlteMateriale) {
+    public void setIdAlteMateriale(long idAlteMateriale) {
         this.idAlteMateriale = idAlteMateriale;
     }
 
@@ -66,30 +66,4 @@ public class AlteMateriale {
         this.creat_la = creat_la;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AlteMateriale that = (AlteMateriale) o;
-
-        if (idAlteMateriale != that.idAlteMateriale) return false;
-        if (altemateriale != null ? !altemateriale.equals(that.altemateriale) : that.altemateriale != null)
-            return false;
-        if (creat_de != null ? !creat_de.equals(that.creat_de) : that.creat_de != null) return false;
-        if (creat_la != null ? !creat_la.equals(that.creat_la) : that.creat_la != null) return false;
-        if (nume != null ? !nume.equals(that.nume) : that.nume != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = idAlteMateriale;
-        result = 31 * result + (altemateriale != null ? altemateriale.hashCode() : 0);
-        result = 31 * result + (nume != null ? nume.hashCode() : 0);
-        result = 31 * result + (creat_de != null ? creat_de.hashCode() : 0);
-        result = 31 * result + (creat_la != null ? creat_la.hashCode() : 0);
-        return result;
-    }
 }

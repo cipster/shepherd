@@ -1,13 +1,11 @@
 package model.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "raport_inventar", schema = "", catalog = "proiecte")
 public class RaportInventar {
+    private long idRaporInventar;
     private int cod1;
     private String cat1;
     private int cod2;
@@ -191,5 +189,15 @@ public class RaportInventar {
         result = 31 * result + (dataPrimire != null ? dataPrimire.hashCode() : 0);
         result = 31 * result + (detaliiRecuperare != null ? detaliiRecuperare.hashCode() : 0);
         return result;
+    }
+
+    @Id
+    @Column(name = "id_raport_inventar", nullable = false, insertable = true, updatable = true)
+    public long getIdRaporInventar() {
+        return idRaporInventar;
+    }
+
+    public void setIdRaporInventar(long idRaporInventar) {
+        this.idRaporInventar = idRaporInventar;
     }
 }

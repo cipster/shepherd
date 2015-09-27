@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity(name = "chestionarfinal")
 public class ChestionarFinal {
 
-    private int idChestionarFinal;
+    private long idChestionarFinal;
     private String chestionarFinal;
     private String nume;
     private String creat_de;
@@ -48,11 +48,11 @@ public class ChestionarFinal {
 
     @Id
     @Column(name = "id_chestionar_final", nullable = false, insertable = true, updatable = true)
-    public int getIdChestionarFinal() {
+    public long getIdChestionarFinal() {
         return idChestionarFinal;
     }
 
-    public void setIdChestionarFinal(int idChestionarFinal) {
+    public void setIdChestionarFinal(long idChestionarFinal) {
         this.idChestionarFinal = idChestionarFinal;
     }
 
@@ -64,32 +64,5 @@ public class ChestionarFinal {
 
     public void setChestionarFinal(String chestionarFinal) {
         this.chestionarFinal = chestionarFinal;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ChestionarFinal that = (ChestionarFinal) o;
-
-        if (idChestionarFinal != that.idChestionarFinal) return false;
-        if (chestionarFinal != null ? !chestionarFinal.equals(that.chestionarFinal) : that.chestionarFinal != null)
-            return false;
-        if (creat_de != null ? !creat_de.equals(that.creat_de) : that.creat_de != null) return false;
-        if (creat_la != null ? !creat_la.equals(that.creat_la) : that.creat_la != null) return false;
-        if (nume != null ? !nume.equals(that.nume) : that.nume != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = idChestionarFinal;
-        result = 31 * result + (chestionarFinal != null ? chestionarFinal.hashCode() : 0);
-        result = 31 * result + (nume != null ? nume.hashCode() : 0);
-        result = 31 * result + (creat_de != null ? creat_de.hashCode() : 0);
-        result = 31 * result + (creat_la != null ? creat_la.hashCode() : 0);
-        return result;
     }
 }

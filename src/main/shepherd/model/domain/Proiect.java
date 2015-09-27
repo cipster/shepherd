@@ -8,11 +8,11 @@ import javax.persistence.Id;
 @Entity(name = "listaproiecte")
 public class Proiect {
 
-    private int idProiect;
+    private long idProiect;
     private String numeProiect;
     private String nrProiect;
     private String an;
-    private int idClient;
+    private Long idClient;
     private String idPropunere;
     private String idChestionarFinal;
     private String idRaportFinal;
@@ -21,11 +21,11 @@ public class Proiect {
 
     @Id
     @Column(name = "id_proiect", nullable = false, insertable = true, updatable = true)
-    public int getIdProiect() {
+    public long getIdProiect() {
         return idProiect;
     }
 
-    public void setIdProiect(int idProiect) {
+    public void setIdProiect(long idProiect) {
         this.idProiect = idProiect;
     }
 
@@ -61,11 +61,11 @@ public class Proiect {
 
     @Basic
     @Column(name = "id_client", nullable = false, insertable = true, updatable = true)
-    public int getIdClient() {
+    public Long getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(int idClient) {
+    public void setIdClient(Long idClient) {
         this.idClient = idClient;
     }
 
@@ -119,43 +119,4 @@ public class Proiect {
         this.idAlteMateriale = idAlteMateriale;
     }
 
-    @Override
-    public int hashCode() {
-        int result = idProiect;
-        result = 31 * result + (numeProiect != null ? numeProiect.hashCode() : 0);
-        result = 31 * result + (nrProiect != null ? nrProiect.hashCode() : 0);
-        result = 31 * result + (an != null ? an.hashCode() : 0);
-        result = 31 * result + idClient;
-        result = 31 * result + (idPropunere != null ? idPropunere.hashCode() : 0);
-        result = 31 * result + (idChestionarFinal != null ? idChestionarFinal.hashCode() : 0);
-        result = 31 * result + (idRaportFinal != null ? idRaportFinal.hashCode() : 0);
-        result = 31 * result + (idBd != null ? idBd.hashCode() : 0);
-        result = 31 * result + (idAlteMateriale != null ? idAlteMateriale.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
-
-        Proiect that = (Proiect) o;
-
-        if(idClient != that.idClient) return false;
-        if(idProiect != that.idProiect) return false;
-        if(an != null ? !an.equals(that.an) : that.an != null) return false;
-        if(idAlteMateriale != null ? !idAlteMateriale.equals(that.idAlteMateriale) : that.idAlteMateriale != null) {
-            return false;
-        }
-        if(idBd != null ? !idBd.equals(that.idBd) : that.idBd != null) return false;
-        if(idChestionarFinal != null ? !idChestionarFinal.equals(that.idChestionarFinal) : that.idChestionarFinal != null) {
-            return false;
-        }
-        if(idPropunere != null ? !idPropunere.equals(that.idPropunere) : that.idPropunere != null) return false;
-        if(idRaportFinal != null ? !idRaportFinal.equals(that.idRaportFinal) : that.idRaportFinal != null) return false;
-        if(nrProiect != null ? !nrProiect.equals(that.nrProiect) : that.nrProiect != null) return false;
-        if(numeProiect != null ? !numeProiect.equals(that.numeProiect) : that.numeProiect != null) return false;
-
-        return true;
-    }
 }

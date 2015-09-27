@@ -3,10 +3,11 @@ package model.domain;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Evidenta {
-    private int idCod3;
+    private long idCod3;
     private String barcode;
     private String nume;
     private String denumireLoc;
@@ -16,13 +17,13 @@ public class Evidenta {
     private String detalii;
     private String detaliiRecuperare;
 
-    @Basic
+    @Id
     @Column(name = "id_cod_3")
-    public int getIdCod3() {
+    public long getIdCod3() {
         return idCod3;
     }
 
-    public void setIdCod3(int idCod3) {
+    public void setIdCod3(long idCod3) {
         this.idCod3 = idCod3;
     }
 
@@ -84,36 +85,6 @@ public class Evidenta {
 
     public void setDetalii(String detalii) {
         this.detalii = detalii;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Evidenta evidenta = (Evidenta) o;
-
-        if (idCod3 != evidenta.idCod3) return false;
-        if (barcode != null ? !barcode.equals(evidenta.barcode) : evidenta.barcode != null) return false;
-        if (nume != null ? !nume.equals(evidenta.nume) : evidenta.nume != null) return false;
-        if (denumireLoc != null ? !denumireLoc.equals(evidenta.denumireLoc) : evidenta.denumireLoc != null) return false;
-        if (dataPreluarii != null ? !dataPreluarii.equals(evidenta.dataPreluarii) : evidenta.dataPreluarii != null) return false;
-        if (dataRecuperarii != null ? !dataRecuperarii.equals(evidenta.dataRecuperarii) : evidenta.dataRecuperarii != null) return false;
-        if (detalii != null ? !detalii.equals(evidenta.detalii) : evidenta.detalii != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = idCod3;
-        result = 31 * result + (barcode != null ? barcode.hashCode() : 0);
-        result = 31 * result + (nume != null ? nume.hashCode() : 0);
-        result = 31 * result + (denumireLoc != null ? denumireLoc.hashCode() : 0);
-        result = 31 * result + (dataPreluarii != null ? dataPreluarii.hashCode() : 0);
-        result = 31 * result + (dataRecuperarii != null ? dataRecuperarii.hashCode() : 0);
-        result = 31 * result + (detalii != null ? detalii.hashCode() : 0);
-        return result;
     }
 
     @Basic

@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity(name = "bd")
 public class Bd {
 
-    private int idBd;
+    private long idBd;
     private String bd;
     private String nume;
     private String creat_de;
@@ -48,11 +48,11 @@ public class Bd {
 
     @Id
     @Column(name = "id_bd", nullable = false, insertable = true, updatable = true)
-    public int getIdBd() {
+    public long getIdBd() {
         return idBd;
     }
 
-    public void setIdBd(int idBd) {
+    public void setIdBd(long idBd) {
         this.idBd = idBd;
     }
 
@@ -66,26 +66,4 @@ public class Bd {
         this.bd = bd;
     }
 
-    @Override
-    public int hashCode() {
-        int result = idBd;
-        result = 31 * result + (bd != null ? bd.hashCode() : 0);
-        result = 31 * result + (nume != null ? nume.hashCode() : 0);
-        result = 31 * result + (creat_de != null ? creat_de.hashCode() : 0);
-        result = 31 * result + (creat_la != null ? creat_la.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
-
-        Bd bd1 = (Bd) o;
-
-        if(idBd != bd1.idBd) return false;
-        if(!bd.equals( bd1.bd)) return false;
-
-        return true;
-    }
 }

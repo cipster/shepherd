@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -23,7 +24,7 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Arrays;
@@ -34,9 +35,10 @@ import java.util.Properties;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = {"controllers", "services"})
-@Import({WebSecurityConfig.class, BeanConfig.class, DatasourceConfig.class})
+@Import({WebSecurityConfig.class, DatasourceConfig.class, FreemarkerConfig.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
 
+    private static final String MESSAGE_SOURCE_BASE_NAME = "classpath:i18n/messages";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -74,14 +76,17 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
 
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:messages", "classpath:application.properties");
-        // if true, the key of the message will be displayed if the key is not
-        // found, instead of throwing a NoSuchMessageException
+        messageSource.setBasenames(MESSAGE_SOURCE_BASE_NAME);
         messageSource.setUseCodeAsDefaultMessage(true);
         messageSource.setDefaultEncoding("UTF-8");
         // # -1 : never reload, 0 always reload
         messageSource.setCacheSeconds(0);
         return messageSource;
+    }
+
+    @Bean
+    PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Bean
@@ -115,11 +120,21 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         return contentViewResolver;
     }
 
+//    @Bean
+//    public InternalResourceViewResolver viewResolver() {
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/WEB-INF/view/");
+//        resolver.setSuffix(".jsp");
+//        return resolver;
+//    }
+
     @Bean
-    public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/view/");
-        resolver.setSuffix(".jsp");
+    public FreeMarkerViewResolver viewResolver() {
+        FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
+        resolver.setCache(true);
+        resolver.setPrefix("");
+        resolver.setSuffix(".ftl");
+
         return resolver;
     }
 
@@ -134,7 +149,9 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public MappingJackson2HttpMessageConverter jackson2Converter() {
-        return new MappingJackson2HttpMessageConverter();
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setPrettyPrint(true);
+        return converter;
     }
 
     @Bean

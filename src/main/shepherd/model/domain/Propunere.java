@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity(name = "propunere")
 public class Propunere {
 
-    private int idPropunere;
+    private long idPropunere;
     private String propunere;
     private String nume;
     private String creat_de;
@@ -48,11 +48,11 @@ public class Propunere {
 
     @Id
     @Column(name = "id_propunere", nullable = false, insertable = true, updatable = true)
-    public int getIdPropunere() {
+    public long getIdPropunere() {
         return idPropunere;
     }
 
-    public void setIdPropunere(int idPropunere) {
+    public void setIdPropunere(long idPropunere) {
         this.idPropunere = idPropunere;
     }
 
@@ -66,30 +66,4 @@ public class Propunere {
         this.propunere = propunere;
     }
 
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Propunere propunere1 = (Propunere) o;
-
-        if (idPropunere != propunere1.idPropunere) return false;
-        if (creat_de != null ? !creat_de.equals(propunere1.creat_de) : propunere1.creat_de != null) return false;
-        if (creat_la != null ? !creat_la.equals(propunere1.creat_la) : propunere1.creat_la != null) return false;
-        if (nume != null ? !nume.equals(propunere1.nume) : propunere1.nume != null) return false;
-        if (propunere != null ? !propunere.equals(propunere1.propunere) : propunere1.propunere != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = idPropunere;
-        result = 31 * result + (propunere != null ? propunere.hashCode() : 0);
-        result = 31 * result + (nume != null ? nume.hashCode() : 0);
-        result = 31 * result + (creat_de != null ? creat_de.hashCode() : 0);
-        result = 31 * result + (creat_la != null ? creat_la.hashCode() : 0);
-        return result;
-    }
 }

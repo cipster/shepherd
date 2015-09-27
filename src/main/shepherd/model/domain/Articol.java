@@ -7,16 +7,16 @@ import javax.persistence.Id;
 
 @Entity
 public class Articol {
-    private int idCod3;
+    private long idCod3;
     private String denumire1;
     private String denumire2;
     private String denumire3;
     private String barcode;
     private String detalii;
     private String pretAchizitie;
-    private int stare;
-    private int idLoc;
-    private int idPersoana;
+    private Integer stare;
+    private Integer idLoc;
+    private Integer idPersoana;
     private String dataAdaugare;
     private String dataRecuperare;
     private String dataPrimire;
@@ -25,11 +25,11 @@ public class Articol {
 
     @Id
     @Column(name = "id_cod_3")
-    public int getIdCod3() {
+    public long getIdCod3() {
         return idCod3;
     }
 
-    public void setIdCod3(int idCod3) {
+    public void setIdCod3(long idCod3) {
         this.idCod3 = idCod3;
     }
 
@@ -95,21 +95,21 @@ public class Articol {
 
     @Basic
     @Column(name = "stare")
-    public int getStare() {
+    public Integer getStare() {
         return stare;
     }
 
-    public void setStare(int stare) {
+    public void setStare(Integer stare) {
         this.stare = stare;
     }
 
     @Basic
     @Column(name = "id_loc")
-    public int getIdLoc() {
+    public Integer getIdLoc() {
         return idLoc;
     }
 
-    public void setIdLoc(int idLoc) {
+    public void setIdLoc(Integer idLoc) {
         this.idLoc = idLoc;
     }
 
@@ -165,56 +165,12 @@ public class Articol {
 
     @Basic
     @Column(name = "id_persoana")
-    public int getIdPersoana() {
+    public Integer getIdPersoana() {
         return idPersoana;
     }
 
-    public void setIdPersoana(int idPersoana) {
+    public void setIdPersoana(Integer idPersoana) {
         this.idPersoana = idPersoana;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Articol)) return false;
-
-        Articol articol = (Articol) o;
-
-        if (idCod3 != articol.idCod3) return false;
-        if (stare != articol.stare) return false;
-        if (idLoc != articol.idLoc) return false;
-        if (idPersoana != articol.idPersoana) return false;
-        if (denumire1 != null ? !denumire1.equals(articol.denumire1) : articol.denumire1 != null) return false;
-        if (denumire2 != null ? !denumire2.equals(articol.denumire2) : articol.denumire2 != null) return false;
-        if (denumire3 != null ? !denumire3.equals(articol.denumire3) : articol.denumire3 != null) return false;
-        if (barcode != null ? !barcode.equals(articol.barcode) : articol.barcode != null) return false;
-        if (detalii != null ? !detalii.equals(articol.detalii) : articol.detalii != null) return false;
-        if (pretAchizitie != null ? !pretAchizitie.equals(articol.pretAchizitie) : articol.pretAchizitie != null) return false;
-        if (dataAdaugare != null ? !dataAdaugare.equals(articol.dataAdaugare) : articol.dataAdaugare != null) return false;
-        if (dataRecuperare != null ? !dataRecuperare.equals(articol.dataRecuperare) : articol.dataRecuperare != null) return false;
-        if (dataPrimire != null ? !dataPrimire.equals(articol.dataPrimire) : articol.dataPrimire != null) return false;
-        if (detaliiRecuperare != null ? !detaliiRecuperare.equals(articol.detaliiRecuperare) : articol.detaliiRecuperare != null) return false;
-        return !(modificatDe != null ? !modificatDe.equals(articol.modificatDe) : articol.modificatDe != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = idCod3;
-        result = 31 * result + (denumire1 != null ? denumire1.hashCode() : 0);
-        result = 31 * result + (denumire2 != null ? denumire2.hashCode() : 0);
-        result = 31 * result + (denumire3 != null ? denumire3.hashCode() : 0);
-        result = 31 * result + (barcode != null ? barcode.hashCode() : 0);
-        result = 31 * result + (detalii != null ? detalii.hashCode() : 0);
-        result = 31 * result + (pretAchizitie != null ? pretAchizitie.hashCode() : 0);
-        result = 31 * result + stare;
-        result = 31 * result + idLoc;
-        result = 31 * result + idPersoana;
-        result = 31 * result + (dataAdaugare != null ? dataAdaugare.hashCode() : 0);
-        result = 31 * result + (dataRecuperare != null ? dataRecuperare.hashCode() : 0);
-        result = 31 * result + (dataPrimire != null ? dataPrimire.hashCode() : 0);
-        result = 31 * result + (detaliiRecuperare != null ? detaliiRecuperare.hashCode() : 0);
-        result = 31 * result + (modificatDe != null ? modificatDe.hashCode() : 0);
-        return result;
-    }
 }

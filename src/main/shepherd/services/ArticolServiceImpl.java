@@ -11,9 +11,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
+import services.repository.*;
+import util.UserUtils;
 import util.enums.DAOResult;
 
 import java.util.Collections;
@@ -23,22 +22,22 @@ public class ArticolServiceImpl implements ArticolService {
     private final Log LOGGER = LogFactory.getLog(getClass());
 
     @Autowired
-    private ArticolDAO articolDAO;
+    private ArticolRepository articolRepository;
     @Autowired
-    private Cod3DAO cod3DAO;
+    private Cod3Repository cod3Repository;
     @Autowired
-    private EvidentaDAO evidentaDAO;
+    private EvidentaRepository evidentaRepository;
     @Autowired
-    private EvidentaInventarDAO evidentaInventarDAO;
+    private EvidentaInventarRepository evidentaInventarRepository;
     @Autowired
-    private PersoanaDAO persoanaDAO;
+    private PersoanaRepository persoanaRepository;
 
 
     @Override
     public List<Articol> fetchAllArticole() {
         List<Articol> articoleList;
         try {
-            articoleList = articolDAO.getAll();
+            articoleList = (List<Articol>) articolRepository.findAll();
         } catch (Exception e) {
             articoleList = Collections.emptyList();
         }
@@ -49,7 +48,7 @@ public class ArticolServiceImpl implements ArticolService {
     public List<Cod3> fetchAllCod3() {
         List<Cod3> articoleList;
         try {
-            articoleList = cod3DAO.getAll();
+            articoleList = (List<Cod3>) cod3Repository.findAll();
         } catch (Exception e) {
             articoleList = Collections.emptyList();
         }
@@ -59,8 +58,10 @@ public class ArticolServiceImpl implements ArticolService {
     @Override
     public ControllerResult addArticol(Cod3 cod3) throws DAOException {
         ControllerResult controllerResult;
+        Cod3 created = cod3Repository.save(cod3);
         try {
-            if ( cod3DAO.create(cod3) > DAOResult.ZERO ) {
+
+            if (created != null) {
                 controllerResult = new ControllerResult(HttpStatus.OK.value(), "Articolul " + cod3.getDenumire3() + " a fost adăugat cu succes!");
             } else {
                 throw new RuntimeException("Articolul nu a fost adăugat!");
@@ -74,21 +75,19 @@ public class ArticolServiceImpl implements ArticolService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ControllerResult modArticol(Cod3 cod3) throws DAOException {
-        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = user.getUsername(); //get logged in username
+        String username = UserUtils.getLoggedInUsername(); //get logged in username
         ControllerResult controllerResult;
         EvidentaInventar evidentaInventar;
         String detalii = "Modificat de administrator: " + username;
-        int idCod3 = cod3DAO.findByID(cod3.getCod3()).getCod3();
+        int idCod3 = cod3Repository.findByID(cod3.getCod3()).getCod3();
         try {
-            evidentaInventar = evidentaInventarDAO.findByIdArticol(String.valueOf(idCod3));
+            evidentaInventar = evidentaInventarRepository.findByIdArticol(String.valueOf(idCod3));
             cod3.setDetaliiRecuperare(detalii);
-            if ( cod3DAO.update(cod3) > DAOResult.ZERO ) {
+            if (cod3Repository.update(cod3) > DAOResult.ZERO) {
                 controllerResult = new ControllerResult(HttpStatus.OK.value(), "Articolul " + cod3.getDenumire3() + " a fost modificat cu succes!");
-                if(evidentaInventar != null) {
-                    evidentaInventarDAO.update(evidentaInventar);
+                if (evidentaInventar != null) {
+                    evidentaInventarRepository.update(evidentaInventar);
                 }
             } else {
                 throw new RuntimeException("Articolul nu a fost modificat!");
@@ -104,11 +103,8 @@ public class ArticolServiceImpl implements ArticolService {
     public ControllerResult delArticol(Cod3 cod3) throws DAOException {
         ControllerResult controllerResult;
         try {
-            if ( cod3DAO.deleteByID(cod3.getCod3()) > DAOResult.ZERO ) {
-                controllerResult = new ControllerResult(HttpStatus.OK.value(), "Articolul " + cod3.getDenumire3() + " a fost şters cu succes!");
-            } else {
-                throw new RuntimeException("Articolul nu a fost şters!");
-            }
+            cod3Repository.delete(cod3);
+            controllerResult = new ControllerResult(HttpStatus.OK.value(), "Articolul " + cod3.getDenumire3() + " a fost şters cu succes!");
 
         } catch (RuntimeException e) {
             LOGGER.error(e.getMessage(), e);
@@ -121,7 +117,7 @@ public class ArticolServiceImpl implements ArticolService {
     public List<Evidenta> fetchEvidentaByBarcode(String barcode) {
         List<Evidenta> evidenta;
         try {
-            evidenta = evidentaDAO.findEvidentaByBarcode(barcode);
+            evidenta = evidentaRepository.findAllByBarcodeEquals(barcode);
         } catch (Exception e) {
             evidenta = Collections.emptyList();
         }
