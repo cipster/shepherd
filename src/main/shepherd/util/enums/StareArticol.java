@@ -13,15 +13,14 @@ public enum StareArticol {
     DISPARUT(7,"Disparut"),
     CASAT(8,"Casat");
 
-    private int code;
-    private String label;
-
     /**
      * A mapping between the integer code and its corresponding Status to facilitate lookup by code.
      */
     private static Map<Integer, StareArticol> codeToStatusMapping;
+    private int code;
+    private String label;
 
-    private StareArticol(int code, String label) {
+    StareArticol(int code, String label) {
         this.code = code;
         this.label = label;
     }

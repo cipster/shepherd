@@ -953,17 +953,17 @@
         }
 
         $("#iesebarcodeinput").css({
-            position: 'absolute',
-            top: '-700px'
+            position: 'absolute'
+//            top: '-700px'
         });
         $("#intrabarcodeinput").css({
-            position: 'absolute',
-            top: '-700px'
+            position: 'absolute'
+//            top: '-700px'
         });
 
         $("#primirescanbarcodeinput").css({
-            position: 'absolute',
-            top: '-700px'
+            position: 'absolute'
+//            top: '-700px'
         });
 
         selcod1.chosen({

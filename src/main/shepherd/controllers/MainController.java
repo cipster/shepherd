@@ -1,14 +1,14 @@
 package controllers;
 
-import model.domain.Proiect;
 import model.dao.*;
+import model.domain.Client;
+import model.domain.Proiect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import model.domain.Client;
 
 @Controller
 public class MainController {

@@ -33,9 +33,8 @@ public class FileBean {
         if(creatDe != null ? !creatDe.equals(fileBean.creatDe) : fileBean.creatDe != null) return false;
         if(creatLa != null ? !creatLa.equals(fileBean.creatLa) : fileBean.creatLa != null) return false;
         if(!Arrays.equals(file, fileBean.file)) return false;
-        if(filename != null ? !filename.equals(fileBean.filename) : fileBean.filename != null) return false;
+        return !(filename != null ? !filename.equals(fileBean.filename) : fileBean.filename != null);
 
-        return true;
     }
 
     public int getId() {

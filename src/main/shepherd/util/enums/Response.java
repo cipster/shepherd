@@ -9,15 +9,14 @@ public enum Response {
     EXISTS(-2,"-2"),
     EMPTY(-5,"");
 
-    private int code;
-    private String label;
-
     /**
      * A mapping between the integer code and its corresponding Status to facilitate lookup by code.
      */
     private static Map<Integer, Response> codeToStatusMapping;
+    private int code;
+    private String label;
 
-    private Response(int code, String label) {
+    Response(int code, String label) {
         this.code = code;
         this.label = label;
     }

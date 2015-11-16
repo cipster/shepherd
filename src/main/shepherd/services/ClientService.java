@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ClientService {
 
-    public Client createClient(Client client) throws RuntimeException;
-    public Client modifyClient(Client client) throws RuntimeException;
-    public boolean deleteClient(Client client) throws RuntimeException;
+    Client createClient(Client client) throws RuntimeException;
+
+    Client modifyClient(Client client) throws RuntimeException;
+
+    boolean deleteClient(Client client) throws RuntimeException;
 
 
 }

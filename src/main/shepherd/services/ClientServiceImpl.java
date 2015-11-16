@@ -50,18 +50,12 @@ public class ClientServiceImpl implements ClientService {
 	private boolean clientDoesntExist(Client client) {
 		Client existingClient = clientDAO.findByID(client.getIdClient());
 
-		if ( existingClient == null )
-			return true;
-		else
-			return false;
+		return existingClient == null;
 	}
 
 	private boolean clientExists(Client client) {
 		Client existingClient = clientDAO.findClientByName(client.getClient());
 
-		if ( existingClient == null )
-			return false;
-		else
-			return true;
+		return existingClient != null;
 	}
 }

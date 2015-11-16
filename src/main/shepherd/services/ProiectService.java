@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ProiectService {
 
-    public Proiect createProject(Proiect proiect) throws RuntimeException;
-    public Proiect modifyProject(Proiect proiect) throws RuntimeException;
-    public boolean deleteProject(String idProiect) throws RuntimeException;
+    Proiect createProject(Proiect proiect) throws RuntimeException;
+
+    Proiect modifyProject(Proiect proiect) throws RuntimeException;
+
+    boolean deleteProject(String idProiect) throws RuntimeException;
 }

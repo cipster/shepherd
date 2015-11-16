@@ -1,7 +1,7 @@
 package controllers;
 
-import model.domain.*;
 import model.dao.*;
+import model.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;

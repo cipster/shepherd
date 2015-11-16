@@ -960,7 +960,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.base64 = {
         /**
@@ -982,7 +981,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.between = {
         html5Attributes: {
@@ -1028,7 +1026,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.callback = {
         /**
@@ -1056,7 +1053,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.choice = {
         html5Attributes: {
@@ -1089,7 +1085,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.creditCard = {
         /**
@@ -1189,7 +1184,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.cusip = {
         /**
@@ -1241,7 +1235,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.cvv = {
         html5Attributes: {
@@ -1354,7 +1347,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.date = {
         html5Attributes: {
@@ -1459,7 +1451,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.different = {
         html5Attributes: {
@@ -1497,7 +1488,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.digits = {
         /**
@@ -1518,7 +1508,6 @@
         }
     }
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.ean = {
         /**
@@ -1555,7 +1544,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.emailAddress = {
         enableByHtml5: function ($field) {
@@ -1583,7 +1571,6 @@
         }
     }
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.file = {
         html5Attributes: {
@@ -1649,7 +1636,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.greaterThan = {
         html5Attributes: {
@@ -1690,7 +1676,6 @@
         }
     }
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.grid = {
         /**
@@ -1724,7 +1709,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.hex = {
         /**
@@ -1746,7 +1730,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.hexColor = {
         enableByHtml5: function ($field) {
@@ -1771,7 +1754,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.iban = {
         html5Attributes: {
@@ -1909,7 +1891,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.id = {
         html5Attributes: {
@@ -2670,7 +2651,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.identical = {
         html5Attributes: {
@@ -2707,7 +2687,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.imei = {
         /**
@@ -2749,7 +2728,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.integer = {
         enableByHtml5: function ($field) {
@@ -2774,7 +2752,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.ip = {
         html5Attributes: {
@@ -2810,7 +2787,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.isbn = {
         /**
@@ -2892,7 +2868,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.isin = {
         // Available country codes
@@ -2948,7 +2923,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.ismn = {
         /**
@@ -3004,7 +2978,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.issn = {
         /**
@@ -3047,7 +3020,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.lessThan = {
         html5Attributes: {
@@ -3088,7 +3060,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.mac = {
         /**
@@ -3110,7 +3081,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.notEmpty = {
         enableByHtml5: function ($field) {
@@ -3139,7 +3109,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.numeric = {
         html5Attributes: {
@@ -3171,7 +3140,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.phone = {
         html5Attributes: {
@@ -3210,7 +3178,6 @@
         }
     }
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.regexp = {
         html5Attributes: {
@@ -3249,7 +3216,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.remote = {
         html5Attributes: {
@@ -3308,7 +3274,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.rtn = {
         /**
@@ -3343,7 +3308,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.sedol = {
         /**
@@ -3380,7 +3344,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.siren = {
         /**
@@ -3405,7 +3368,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.siret = {
         /**
@@ -3440,7 +3402,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.step = {
         html5Attributes: {
@@ -3498,7 +3459,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.stringCase = {
         html5Attributes: {
@@ -3533,7 +3493,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.stringLength = {
         html5Attributes: {
@@ -3580,7 +3539,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.uri = {
         enableByHtml5: function ($field) {
@@ -3678,7 +3636,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.uuid = {
         html5Attributes: {
@@ -3715,7 +3672,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.vat = {
         html5Attributes: {
@@ -4870,7 +4826,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.vin = {
         /**
@@ -4916,7 +4871,6 @@
         }
     };
 }(window.jQuery));
-;
 (function ($) {
     $.fn.bootstrapValidator.validators.zipCode = {
         html5Attributes: {

@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Service
 public interface UserService {
-	public UserAndRolesResult getRolesByUsername(String username) throws RuntimeException;
-	public List<User> fetchAllUsers();
+	UserAndRolesResult getRolesByUsername(String username) throws RuntimeException;
+
+	List<User> fetchAllUsers();
 }

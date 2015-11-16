@@ -1,1 +1,11 @@
-package util;import org.springframework.security.core.Authentication;import org.springframework.security.core.context.SecurityContextHolder;public class UserUtils {    public static String getLoggedInUsername() {        Authentication auth = SecurityContextHolder.getContext().getAuthentication();        return auth.getName();    }}
+package util;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+public class UserUtils {
+    public static String getLoggedInUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+}

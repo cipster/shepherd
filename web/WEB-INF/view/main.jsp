@@ -908,7 +908,7 @@
             },
             error: function (e) {
                 alert("Nu sunt fisiere la acest proiect!");
-                return;
+
             }
         });
         propString += '</td>';

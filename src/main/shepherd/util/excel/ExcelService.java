@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface ExcelService {
-    public int generateExcelFile(File file, Map<Integer,List<Object>> dataMap) throws IOException;
+    int generateExcelFile(File file, Map<Integer, List<Object>> dataMap) throws IOException;
 }

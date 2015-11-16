@@ -14,16 +14,15 @@ public enum RoleType {
     ROLE_SUPERUSER(8,"SUPERUSER", "ROLE_SUPERUSER"),
     ROLE_INVENTAR(9,"INVENTAR", "ROLE_INVENTAR");
 
-    private int code;
-    private String label;
-    private String fullName;
-
     /**
      * A mapping between the integer code and its corresponding Status to facilitate lookup by code.
      */
     private static Map<Integer, RoleType> codeToStatusMapping;
+    private int code;
+    private String label;
+    private String fullName;
 
-    private RoleType(int code, String label, String fullName) {
+    RoleType(int code, String label, String fullName) {
         this.code = code;
         this.label = label;
         this.fullName = fullName;
